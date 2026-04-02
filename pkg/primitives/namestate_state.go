@@ -57,6 +57,8 @@ type NameStateRules struct {
 	ClaimPeriod     uint32
 	RenewalWindow   uint32
 	AuctionMaturity uint32
+	BlocksPerDay    uint32
+	TransferLockup  uint32
 	NoReserved      bool
 }
 

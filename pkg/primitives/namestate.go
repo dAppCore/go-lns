@@ -99,6 +99,10 @@ func outpointEqual(a, b Outpoint) bool {
 	return a.TxHash == b.TxHash && a.Index == b.Index
 }
 
+func outpointIsNull(owner Outpoint) bool {
+	return owner == (Outpoint{}) || owner.IsNull()
+}
+
 func (ns *NameState) setOwner(owner Outpoint) *NameState {
 	if outpointEqual(ns.Owner, owner) {
 		return ns

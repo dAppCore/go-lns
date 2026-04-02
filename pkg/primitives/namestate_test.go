@@ -3,6 +3,7 @@
 package primitives
 
 import (
+	"math"
 	"testing"
 )
 
@@ -198,5 +199,79 @@ func TestNameStateMaybeExpire(t *testing.T) {
 
 	if string(ns.Data) != "payload" {
 		t.Fatalf("MaybeExpire should preserve data, got %q", string(ns.Data))
+	}
+}
+
+func TestNameStateToStats(t *testing.T) {
+	rules := NameStateRules{
+		TreeInterval:    10,
+		LockupPeriod:    20,
+		BiddingPeriod:   30,
+		RevealPeriod:    40,
+		RenewalWindow:   50,
+		AuctionMaturity: 25,
+		BlocksPerDay:    240,
+		TransferLockup:  15,
+	}
+
+	opening := NameState{Height: 100}
+	stats := opening.ToStats(100, rules)
+	if stats == nil {
+		t.Fatal("ToStats should return stats for an active name")
+	}
+
+	if stats.OpenPeriodStart != 100 || stats.OpenPeriodEnd != 111 || stats.BlocksUntilBidding != 11 {
+		t.Fatalf("unexpected opening stats: %+v", stats)
+	}
+
+	if stats.HoursUntilBidding != 1.1 {
+		t.Fatalf("unexpected opening hours: got %v, want 1.1", stats.HoursUntilBidding)
+	}
+
+	closed := NameState{
+		Height:   100,
+		Renewal:  150,
+		Owner:    Outpoint{TxHash: Hash{1, 2, 3}, Index: 4},
+		Transfer: 180,
+	}
+
+	stats = closed.ToStats(185, rules)
+	if stats == nil {
+		t.Fatal("ToStats should return stats for a closed name")
+	}
+
+	if stats.RenewalPeriodStart != 150 || stats.RenewalPeriodEnd != 200 || stats.BlocksUntilExpire != 15 {
+		t.Fatalf("unexpected closed stats: %+v", stats)
+	}
+
+	if math.Abs(stats.DaysUntilExpire-0.0625) > 1e-9 {
+		t.Fatalf("unexpected expire days: got %v, want 0.0625", stats.DaysUntilExpire)
+	}
+
+	if stats.TransferLockupStart != 180 || stats.TransferLockupEnd != 195 || stats.BlocksUntilValidFinalize != 10 {
+		t.Fatalf("unexpected transfer stats: %+v", stats)
+	}
+
+	expired := NameState{
+		Height:  100,
+		Renewal: 120,
+		Owner:   Outpoint{TxHash: Hash{1, 2, 3}, Index: 4},
+	}
+
+	stats = expired.ToStats(210, rules)
+	if stats == nil {
+		t.Fatal("ToStats should return stats for an expired name with an owner")
+	}
+
+	if stats.BlocksSinceExpired != 40 {
+		t.Fatalf("unexpected expired stats: %+v", stats)
+	}
+
+	if got := (NameState{
+		Height:  100,
+		Renewal: 120,
+		Owner:   Outpoint{Index: ^uint32(0)},
+	}).ToStats(210, rules); got != nil {
+		t.Fatal("ToStats should return nil for an expired name without an owner")
 	}
 }
