@@ -534,6 +534,26 @@ func CountRenewals(tx primitives.Transaction) int {
 	return covenant.CountRenewals(tx)
 }
 
+// HasNames reports whether any name covenant in the transaction matches the set.
+func HasNames(tx primitives.Transaction, set map[primitives.Hash]struct{}) bool {
+	return covenant.HasNames(tx, set)
+}
+
+// AddNames adds the transaction's name covenants to the set.
+func AddNames(tx primitives.Transaction, set map[primitives.Hash]struct{}) {
+	covenant.AddNames(tx, set)
+}
+
+// RemoveNames removes the transaction's name covenants from the set.
+func RemoveNames(tx primitives.Transaction, set map[primitives.Hash]struct{}) {
+	covenant.RemoveNames(tx, set)
+}
+
+// HasSaneCovenants performs structural covenant validation on a transaction.
+func HasSaneCovenants(tx primitives.Transaction) bool {
+	return covenant.HasSaneCovenants(tx)
+}
+
 // ServiceName returns the registered name for the LNS service group.
 //
 //	name := svc.ServiceName()
@@ -792,6 +812,26 @@ func (s *Service) CountUpdates(tx primitives.Transaction) int {
 // CountRenewals counts REGISTER, RENEW, and FINALIZE covenants in a transaction.
 func (s *Service) CountRenewals(tx primitives.Transaction) int {
 	return covenant.CountRenewals(tx)
+}
+
+// HasNames reports whether any name covenant in the transaction matches the set.
+func (s *Service) HasNames(tx primitives.Transaction, set map[primitives.Hash]struct{}) bool {
+	return covenant.HasNames(tx, set)
+}
+
+// AddNames adds the transaction's name covenants to the set.
+func (s *Service) AddNames(tx primitives.Transaction, set map[primitives.Hash]struct{}) {
+	covenant.AddNames(tx, set)
+}
+
+// RemoveNames removes the transaction's name covenants from the set.
+func (s *Service) RemoveNames(tx primitives.Transaction, set map[primitives.Hash]struct{}) {
+	covenant.RemoveNames(tx, set)
+}
+
+// HasSaneCovenants performs structural covenant validation on a transaction.
+func (s *Service) HasSaneCovenants(tx primitives.Transaction) bool {
+	return covenant.HasSaneCovenants(tx)
 }
 
 // Types mirrors the covenant type lookup table from pkg/covenant.

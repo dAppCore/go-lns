@@ -71,3 +71,65 @@ func TestGrindName(t *testing.T) {
 		t.Fatal("GrindName should reject zero-length names")
 	}
 }
+
+func TestNameSetHelpers(t *testing.T) {
+	hash, err := HashString("example-name")
+	if err != nil {
+		t.Fatalf("HashString returned error: %v", err)
+	}
+
+	tx := primitives.Transaction{
+		Outputs: []primitives.Output{
+			{Covenant: primitives.Covenant{Type: uint8(TypeOpen), Items: [][]byte{hash[:], []byte{0, 0, 0, 0}, []byte("example-name")}}},
+			{Covenant: primitives.Covenant{Type: uint8(TypeBid), Items: [][]byte{hash[:], []byte{1, 0, 0, 0}, []byte("example-name"), make([]byte, 32)}}},
+		},
+	}
+
+	set := map[primitives.Hash]struct{}{
+		hash: {},
+	}
+
+	if !HasNames(tx, set) {
+		t.Fatal("HasNames should report a matching name hash")
+	}
+
+	RemoveNames(tx, set)
+
+	if len(set) != 0 {
+		t.Fatalf("RemoveNames left %d entries, want 0", len(set))
+	}
+
+	AddNames(tx, set)
+
+	if len(set) != 1 {
+		t.Fatalf("AddNames left %d entries, want 1", len(set))
+	}
+}
+
+func TestHasSaneCovenants(t *testing.T) {
+	hash, err := HashString("example-name")
+	if err != nil {
+		t.Fatalf("HashString returned error: %v", err)
+	}
+
+	valid := primitives.Transaction{
+		Outputs: []primitives.Output{
+			{Covenant: primitives.Covenant{Type: uint8(TypeOpen), Items: [][]byte{hash[:], []byte{0, 0, 0, 0}, []byte("example-name")}}},
+			{Covenant: primitives.Covenant{Type: uint8(TypeRegister), Items: [][]byte{hash[:], []byte{1, 0, 0, 0}, []byte("record"), make([]byte, 32)}}},
+		},
+	}
+
+	if !HasSaneCovenants(valid) {
+		t.Fatal("HasSaneCovenants should accept structurally valid covenants")
+	}
+
+	invalid := primitives.Transaction{
+		Outputs: []primitives.Output{
+			{Covenant: primitives.Covenant{Type: uint8(TypeOpen), Items: [][]byte{hash[:], []byte{1, 0, 0, 0}, []byte("example-name")}}},
+		},
+	}
+
+	if HasSaneCovenants(invalid) {
+		t.Fatal("HasSaneCovenants should reject non-zero open heights")
+	}
+}

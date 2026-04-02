@@ -1351,3 +1351,42 @@ func TestServiceLockedCatalog(t *testing.T) {
 		t.Fatal("GetLockedValues should expose catalog values")
 	}
 }
+
+func TestServiceNameSetHelpers(t *testing.T) {
+	svc := &Service{}
+
+	hash, err := svc.HashString("example-name")
+	if err != nil {
+		t.Fatalf("HashString returned error: %v", err)
+	}
+
+	tx := primitives.Transaction{
+		Outputs: []primitives.Output{
+			{Covenant: primitives.Covenant{Type: uint8(covenant.TypeOpen), Items: [][]byte{hash[:], []byte{0, 0, 0, 0}, []byte("example-name")}}},
+		},
+	}
+
+	set := map[primitives.Hash]struct{}{
+		hash: {},
+	}
+
+	if !svc.HasNames(tx, set) {
+		t.Fatal("HasNames should report a matching name hash")
+	}
+
+	svc.RemoveNames(tx, set)
+
+	if len(set) != 0 {
+		t.Fatalf("RemoveNames left %d entries, want 0", len(set))
+	}
+
+	svc.AddNames(tx, set)
+
+	if len(set) != 1 {
+		t.Fatalf("AddNames left %d entries, want 1", len(set))
+	}
+
+	if !svc.HasSaneCovenants(tx) {
+		t.Fatal("HasSaneCovenants should accept structurally valid covenants")
+	}
+}
