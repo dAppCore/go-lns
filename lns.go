@@ -124,14 +124,14 @@ func canonicalizeName(name any) (string, bool) {
 }
 
 func resolveCanonicalName(method string, name any) (primitives.Hash, error) {
-	switch name.(type) {
+	switch v := name.(type) {
 	case string, []byte:
-		normalized, ok := canonicalizeName(name)
+		normalized, ok := canonicalizeName(v)
 		if !ok {
 			return primitives.Hash{}, core.E(method, "invalid name", nil)
 		}
 
-		return covenant.HashBinary([]byte(normalized))
+		return covenant.HashString(normalized)
 	default:
 		return primitives.Hash{}, core.E(method, "invalid name type", nil)
 	}

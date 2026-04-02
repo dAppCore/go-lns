@@ -81,6 +81,25 @@ func TestPackageResolveAndVerifyAliases(t *testing.T) {
 		t.Fatalf("Hash should reject unsupported input types with an invalid name type error, got %v", err)
 	}
 
+	for _, tc := range []struct {
+		name string
+		fn   func(any) (primitives.Hash, error)
+	}{
+		{name: "ResolveString", fn: func(name any) (primitives.Hash, error) { return ResolveString(name.(string)) }},
+		{name: "ResolveBinary", fn: func(name any) (primitives.Hash, error) { return ResolveBinary(name.([]byte)) }},
+		{name: "HashString", fn: func(name any) (primitives.Hash, error) { return HashString(name.(string)) }},
+		{name: "HashBinary", fn: func(name any) (primitives.Hash, error) { return HashBinary(name.([]byte)) }},
+	} {
+		input := any("foo.lthn..")
+		if tc.name == "ResolveBinary" || tc.name == "HashBinary" {
+			input = []byte("foo.lthn..")
+		}
+
+		if _, err := tc.fn(input); err == nil {
+			t.Fatalf("%s should reject malformed names", tc.name)
+		}
+	}
+
 	if got, err := HashString("Foo-Bar.lthn"); err != nil {
 		t.Fatalf("HashString returned error: %v", err)
 	} else if got != want {
