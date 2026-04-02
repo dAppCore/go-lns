@@ -58,6 +58,11 @@ func Resolve(name any) (primitives.Hash, error) {
 	return resolveCanonicalName("dns.Resolve", name)
 }
 
+// GetResolve is an alias for Resolve.
+func GetResolve(name any) (primitives.Hash, error) {
+	return Resolve(name)
+}
+
 // Hash returns the canonical hash for a .lthn name.
 //
 // Hash is the direct package-level alias for Resolve.
@@ -65,9 +70,19 @@ func Hash(name any) (primitives.Hash, error) {
 	return Resolve(name)
 }
 
+// GetHash is an alias for Hash.
+func GetHash(name any) (primitives.Hash, error) {
+	return Hash(name)
+}
+
 // Verify reports whether a .lthn name is valid after canonicalisation.
 func Verify(name any) bool {
 	return verifyCanonicalName(name)
+}
+
+// GetVerify is an alias for Verify.
+func GetVerify(name any) bool {
+	return Verify(name)
 }
 
 // ResolveString is an alias for Resolve.
@@ -77,11 +92,21 @@ func ResolveString(name string) (primitives.Hash, error) {
 	return Resolve(name)
 }
 
+// GetResolveString is an alias for ResolveString.
+func GetResolveString(name string) (primitives.Hash, error) {
+	return ResolveString(name)
+}
+
 // ResolveBinary is an alias for Resolve.
 //
 //	hash, err := dns.ResolveBinary([]byte("example.lthn"))
 func ResolveBinary(name []byte) (primitives.Hash, error) {
 	return Resolve(name)
+}
+
+// GetResolveBinary is an alias for ResolveBinary.
+func GetResolveBinary(name []byte) (primitives.Hash, error) {
+	return ResolveBinary(name)
 }
 
 // HashString is an alias for ResolveString.
@@ -91,6 +116,11 @@ func HashString(name string) (primitives.Hash, error) {
 	return ResolveString(name)
 }
 
+// GetHashString is an alias for HashString.
+func GetHashString(name string) (primitives.Hash, error) {
+	return HashString(name)
+}
+
 // HashBinary is an alias for ResolveBinary.
 //
 //	hash, err := dns.HashBinary([]byte("example.lthn"))
@@ -98,9 +128,19 @@ func HashBinary(name []byte) (primitives.Hash, error) {
 	return ResolveBinary(name)
 }
 
+// GetHashBinary is an alias for HashBinary.
+func GetHashBinary(name []byte) (primitives.Hash, error) {
+	return HashBinary(name)
+}
+
 // ResolveName is an alias for Resolve.
 func ResolveName(name any) (primitives.Hash, error) {
 	return Resolve(name)
+}
+
+// GetResolveName is an alias for ResolveName.
+func GetResolveName(name any) (primitives.Hash, error) {
+	return ResolveName(name)
 }
 
 // HashName is an alias for Hash.
@@ -108,9 +148,19 @@ func HashName(name any) (primitives.Hash, error) {
 	return Hash(name)
 }
 
+// GetHashName is an alias for HashName.
+func GetHashName(name any) (primitives.Hash, error) {
+	return HashName(name)
+}
+
 // VerifyName is an alias for Verify.
 func VerifyName(name any) bool {
 	return Verify(name)
+}
+
+// GetVerifyName is an alias for VerifyName.
+func GetVerifyName(name any) bool {
+	return VerifyName(name)
 }
 
 // ResolveByString is an alias for ResolveString.
@@ -120,11 +170,21 @@ func ResolveByString(name string) (primitives.Hash, error) {
 	return ResolveString(name)
 }
 
+// GetResolveByString is an alias for ResolveByString.
+func GetResolveByString(name string) (primitives.Hash, error) {
+	return ResolveByString(name)
+}
+
 // ResolveByBinary is an alias for ResolveBinary.
 //
 //	hash, err := dns.ResolveByBinary([]byte("example.lthn"))
 func ResolveByBinary(name []byte) (primitives.Hash, error) {
 	return ResolveBinary(name)
+}
+
+// GetResolveByBinary is an alias for ResolveByBinary.
+func GetResolveByBinary(name []byte) (primitives.Hash, error) {
+	return ResolveByBinary(name)
 }
 
 // HashByString is an alias for HashString.
@@ -134,11 +194,21 @@ func HashByString(name string) (primitives.Hash, error) {
 	return HashString(name)
 }
 
+// GetHashByString is an alias for HashByString.
+func GetHashByString(name string) (primitives.Hash, error) {
+	return HashByString(name)
+}
+
 // HashByBinary is an alias for HashBinary.
 //
 //	hash, err := dns.HashByBinary([]byte("example.lthn"))
 func HashByBinary(name []byte) (primitives.Hash, error) {
 	return HashBinary(name)
+}
+
+// GetHashByBinary is an alias for HashByBinary.
+func GetHashByBinary(name []byte) (primitives.Hash, error) {
+	return HashByBinary(name)
 }
 
 // VerifyString is an alias for Verify.
@@ -148,11 +218,21 @@ func VerifyString(name string) bool {
 	return Verify(name)
 }
 
+// GetVerifyString is an alias for VerifyString.
+func GetVerifyString(name string) bool {
+	return VerifyString(name)
+}
+
 // VerifyBinary is an alias for Verify.
 //
 //	ok := dns.VerifyBinary([]byte("example.lthn"))
 func VerifyBinary(name []byte) bool {
 	return Verify(name)
+}
+
+// GetVerifyBinary is an alias for VerifyBinary.
+func GetVerifyBinary(name []byte) bool {
+	return VerifyBinary(name)
 }
 
 // VerifyByString is an alias for VerifyString.
@@ -162,11 +242,21 @@ func VerifyByString(name string) bool {
 	return VerifyString(name)
 }
 
+// GetVerifyByString is an alias for VerifyByString.
+func GetVerifyByString(name string) bool {
+	return VerifyByString(name)
+}
+
 // VerifyByBinary is an alias for VerifyBinary.
 //
 //	ok := dns.VerifyByBinary([]byte("example.lthn"))
 func VerifyByBinary(name []byte) bool {
 	return VerifyBinary(name)
+}
+
+// GetVerifyByBinary is an alias for VerifyByBinary.
+func GetVerifyByBinary(name []byte) bool {
+	return VerifyByBinary(name)
 }
 
 // Service handles DNS resolution for .lthn names against the LNS chain state.
@@ -254,11 +344,21 @@ func (s *Service) Resolve(name any) (primitives.Hash, error) {
 	return resolveCanonicalName("dns.Service.Resolve", name)
 }
 
+// GetResolve is an alias for Resolve.
+func (s *Service) GetResolve(name any) (primitives.Hash, error) {
+	return s.Resolve(name)
+}
+
 // Hash returns the canonical hash for a .lthn name.
 //
 // Hash is the direct service-level alias for Resolve.
 func (s *Service) Hash(name any) (primitives.Hash, error) {
 	return s.Resolve(name)
+}
+
+// GetHash is an alias for Hash.
+func (s *Service) GetHash(name any) (primitives.Hash, error) {
+	return s.Hash(name)
 }
 
 // Verify reports whether a .lthn name is valid after canonicalisation.
@@ -272,6 +372,11 @@ func (s *Service) Verify(name any) bool {
 	return verifyCanonicalName(name)
 }
 
+// GetVerify is an alias for Verify.
+func (s *Service) GetVerify(name any) bool {
+	return s.Verify(name)
+}
+
 // HashString returns the canonical hash for a .lthn name supplied as a string.
 //
 //	hash, err := svc.HashString("example.lthn")
@@ -279,11 +384,21 @@ func (s *Service) HashString(name string) (primitives.Hash, error) {
 	return s.ResolveString(name)
 }
 
+// GetHashString is an alias for HashString.
+func (s *Service) GetHashString(name string) (primitives.Hash, error) {
+	return s.HashString(name)
+}
+
 // HashBinary returns the canonical hash for a .lthn name supplied as bytes.
 //
 //	hash, err := svc.HashBinary([]byte("example.lthn"))
 func (s *Service) HashBinary(name []byte) (primitives.Hash, error) {
 	return s.ResolveBinary(name)
+}
+
+// GetHashBinary is an alias for HashBinary.
+func (s *Service) GetHashBinary(name []byte) (primitives.Hash, error) {
+	return s.HashBinary(name)
 }
 
 // ResolveByString is an alias for ResolveString.
@@ -294,12 +409,22 @@ func (s *Service) ResolveByString(name string) (primitives.Hash, error) {
 	return s.ResolveString(name)
 }
 
+// GetResolveByString is an alias for ResolveByString.
+func (s *Service) GetResolveByString(name string) (primitives.Hash, error) {
+	return s.ResolveByString(name)
+}
+
 // ResolveByBinary is an alias for ResolveBinary.
 //
 //	svc := dns.NewService()
 //	hash, err := svc.ResolveByBinary([]byte("example.lthn"))
 func (s *Service) ResolveByBinary(name []byte) (primitives.Hash, error) {
 	return s.ResolveBinary(name)
+}
+
+// GetResolveByBinary is an alias for ResolveByBinary.
+func (s *Service) GetResolveByBinary(name []byte) (primitives.Hash, error) {
+	return s.ResolveByBinary(name)
 }
 
 // HashByString is an alias for HashString.
@@ -310,12 +435,22 @@ func (s *Service) HashByString(name string) (primitives.Hash, error) {
 	return s.HashString(name)
 }
 
+// GetHashByString is an alias for HashByString.
+func (s *Service) GetHashByString(name string) (primitives.Hash, error) {
+	return s.HashByString(name)
+}
+
 // HashByBinary is an alias for HashBinary.
 //
 //	svc := dns.NewService()
 //	hash, err := svc.HashByBinary([]byte("example.lthn"))
 func (s *Service) HashByBinary(name []byte) (primitives.Hash, error) {
 	return s.HashBinary(name)
+}
+
+// GetHashByBinary is an alias for HashByBinary.
+func (s *Service) GetHashByBinary(name []byte) (primitives.Hash, error) {
+	return s.HashByBinary(name)
 }
 
 // ResolveString returns the canonical hash for a .lthn name supplied as a string.
@@ -326,12 +461,22 @@ func (s *Service) ResolveString(name string) (primitives.Hash, error) {
 	return s.Resolve(name)
 }
 
+// GetResolveString is an alias for ResolveString.
+func (s *Service) GetResolveString(name string) (primitives.Hash, error) {
+	return s.ResolveString(name)
+}
+
 // ResolveBinary returns the canonical hash for a .lthn name supplied as bytes.
 //
 //	svc := dns.NewService()
 //	hash, err := svc.ResolveBinary([]byte("example.lthn"))
 func (s *Service) ResolveBinary(name []byte) (primitives.Hash, error) {
 	return s.Resolve(name)
+}
+
+// GetResolveBinary is an alias for ResolveBinary.
+func (s *Service) GetResolveBinary(name []byte) (primitives.Hash, error) {
+	return s.ResolveBinary(name)
 }
 
 // ResolveName is an alias for Resolve.
@@ -342,11 +487,21 @@ func (s *Service) ResolveName(name any) (primitives.Hash, error) {
 	return s.Resolve(name)
 }
 
+// GetResolveName is an alias for ResolveName.
+func (s *Service) GetResolveName(name any) (primitives.Hash, error) {
+	return s.ResolveName(name)
+}
+
 // HashName is an alias for Hash.
 //
 //	hash, err := svc.HashName("example.lthn")
 func (s *Service) HashName(name any) (primitives.Hash, error) {
 	return s.Hash(name)
+}
+
+// GetHashName is an alias for HashName.
+func (s *Service) GetHashName(name any) (primitives.Hash, error) {
+	return s.HashName(name)
 }
 
 // VerifyString reports whether a .lthn name supplied as a string is valid.
@@ -357,12 +512,22 @@ func (s *Service) VerifyString(name string) bool {
 	return s.Verify(name)
 }
 
+// GetVerifyString is an alias for VerifyString.
+func (s *Service) GetVerifyString(name string) bool {
+	return s.VerifyString(name)
+}
+
 // VerifyBinary reports whether a .lthn name supplied as bytes is valid.
 //
 //	svc := dns.NewService()
 //	ok := svc.VerifyBinary([]byte("example.lthn"))
 func (s *Service) VerifyBinary(name []byte) bool {
 	return s.Verify(name)
+}
+
+// GetVerifyBinary is an alias for VerifyBinary.
+func (s *Service) GetVerifyBinary(name []byte) bool {
+	return s.VerifyBinary(name)
 }
 
 // VerifyName is an alias for Verify.
@@ -373,9 +538,19 @@ func (s *Service) VerifyName(name any) bool {
 	return s.Verify(name)
 }
 
+// GetVerifyName is an alias for VerifyName.
+func (s *Service) GetVerifyName(name any) bool {
+	return s.VerifyName(name)
+}
+
 // ResolveByName is an alias for ResolveName.
 func ResolveByName(name any) (primitives.Hash, error) {
 	return ResolveName(name)
+}
+
+// GetResolveByName is an alias for ResolveByName.
+func GetResolveByName(name any) (primitives.Hash, error) {
+	return ResolveByName(name)
 }
 
 // HashByName is an alias for HashName.
@@ -383,9 +558,19 @@ func HashByName(name any) (primitives.Hash, error) {
 	return HashName(name)
 }
 
+// GetHashByName is an alias for HashByName.
+func GetHashByName(name any) (primitives.Hash, error) {
+	return HashByName(name)
+}
+
 // VerifyByName is an alias for VerifyName.
 func VerifyByName(name any) bool {
 	return VerifyName(name)
+}
+
+// GetVerifyByName is an alias for VerifyByName.
+func GetVerifyByName(name any) bool {
+	return VerifyByName(name)
 }
 
 // VerifyByString is an alias for VerifyString.
@@ -396,12 +581,22 @@ func (s *Service) VerifyByString(name string) bool {
 	return s.VerifyString(name)
 }
 
+// GetVerifyByString is an alias for VerifyByString.
+func (s *Service) GetVerifyByString(name string) bool {
+	return s.VerifyByString(name)
+}
+
 // VerifyByBinary is an alias for VerifyBinary.
 //
 //	svc := dns.NewService()
 //	ok := svc.VerifyByBinary([]byte("example.lthn"))
 func (s *Service) VerifyByBinary(name []byte) bool {
 	return s.VerifyBinary(name)
+}
+
+// GetVerifyByBinary is an alias for VerifyByBinary.
+func (s *Service) GetVerifyByBinary(name []byte) bool {
+	return s.VerifyByBinary(name)
 }
 
 // ResolveByName is an alias for ResolveName.
@@ -412,9 +607,19 @@ func (s *Service) ResolveByName(name any) (primitives.Hash, error) {
 	return s.ResolveName(name)
 }
 
+// GetResolveByName is an alias for ResolveByName.
+func (s *Service) GetResolveByName(name any) (primitives.Hash, error) {
+	return s.ResolveByName(name)
+}
+
 // HashByName is an alias for HashName.
 func (s *Service) HashByName(name any) (primitives.Hash, error) {
 	return s.HashName(name)
+}
+
+// GetHashByName is an alias for HashByName.
+func (s *Service) GetHashByName(name any) (primitives.Hash, error) {
+	return s.HashByName(name)
 }
 
 // VerifyByName is an alias for VerifyName.
@@ -423,4 +628,9 @@ func (s *Service) HashByName(name any) (primitives.Hash, error) {
 //	ok := svc.VerifyByName("example.lthn")
 func (s *Service) VerifyByName(name any) bool {
 	return s.VerifyName(name)
+}
+
+// GetVerifyByName is an alias for VerifyByName.
+func (s *Service) GetVerifyByName(name any) bool {
+	return s.VerifyByName(name)
 }
