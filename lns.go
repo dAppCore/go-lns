@@ -32,6 +32,8 @@ const ServiceName = "lns"
 //	svc := c.Service("lns")
 type Service struct {
 	*core.ServiceRuntime[serviceOptions]
+	reservedCatalogOverride *covenant.ReservedCatalog
+	lockedCatalogOverride   *covenant.LockedCatalog
 }
 
 var (
@@ -58,6 +60,32 @@ func WithCore(c *core.Core) ServiceOption {
 		}
 
 		s.ServiceRuntime = core.NewServiceRuntime(c, serviceOptions{})
+	}
+}
+
+// WithReservedCatalog sets a reserved-name catalog override for an LNS service.
+//
+//	svc := lns.NewServiceWithOptions(lns.WithReservedCatalog(customReserved))
+func WithReservedCatalog(catalog *covenant.ReservedCatalog) ServiceOption {
+	return func(s *Service) {
+		if s == nil || catalog == nil {
+			return
+		}
+
+		s.reservedCatalogOverride = catalog
+	}
+}
+
+// WithLockedCatalog sets a locked-name catalog override for an LNS service.
+//
+//	svc := lns.NewServiceWithOptions(lns.WithLockedCatalog(customLocked))
+func WithLockedCatalog(catalog *covenant.LockedCatalog) ServiceOption {
+	return func(s *Service) {
+		if s == nil || catalog == nil {
+			return
+		}
+
+		s.lockedCatalogOverride = catalog
 	}
 }
 
@@ -1901,11 +1929,19 @@ func (s *Service) Core() *core.Core {
 
 // reservedCatalog returns the package-backed reserved-name catalog.
 func (s *Service) reservedCatalog() *covenant.ReservedCatalog {
+	if s != nil && s.reservedCatalogOverride != nil {
+		return s.reservedCatalogOverride
+	}
+
 	return Reserved
 }
 
 // lockedCatalog returns the package-backed locked-name catalog.
 func (s *Service) lockedCatalog() *covenant.LockedCatalog {
+	if s != nil && s.lockedCatalogOverride != nil {
+		return s.lockedCatalogOverride
+	}
+
 	return Locked
 }
 

@@ -924,6 +924,39 @@ func TestNewServiceWithNilCoreOption(t *testing.T) {
 	}
 }
 
+func TestNewServiceWithCatalogOverrides(t *testing.T) {
+	reserved := covenant.DefaultReservedCatalog()
+	locked := covenant.DefaultLockedCatalog()
+
+	svc := NewServiceWithOptions(
+		WithReservedCatalog(reserved),
+		WithLockedCatalog(locked),
+	)
+
+	if svc.ReservedCatalog() != reserved {
+		t.Fatal("WithReservedCatalog should install the provided reserved catalog")
+	}
+
+	if svc.LockedCatalog() != locked {
+		t.Fatal("WithLockedCatalog should install the provided locked catalog")
+	}
+}
+
+func TestCatalogOptionIgnoresNilCatalogs(t *testing.T) {
+	svc := NewServiceWithOptions(
+		WithReservedCatalog(nil),
+		WithLockedCatalog(nil),
+	)
+
+	if svc.ReservedCatalog() != ReservedCatalog() {
+		t.Fatal("WithReservedCatalog(nil) should not replace the default reserved catalog")
+	}
+
+	if svc.LockedCatalog() != LockedCatalog() {
+		t.Fatal("WithLockedCatalog(nil) should not replace the default locked catalog")
+	}
+}
+
 func TestRegisterRejectsNilCore(t *testing.T) {
 	res := Register(nil)
 	if res.OK {
