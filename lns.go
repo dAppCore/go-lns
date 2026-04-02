@@ -232,6 +232,22 @@ var TypesByVal = covenant.TypesByVal
 // Blacklist mirrors the covenant blacklist used by the verifier.
 var Blacklist = covenant.Blacklist
 
+// NameFlags mirrors the covenant verification flag type.
+type NameFlags = covenant.NameFlags
+
+// Verification and size constants mirror pkg/covenant so callers can stay in
+// the top-level lns package for common rule metadata.
+const (
+	MaxNameSize                  = covenant.MaxNameSize
+	MaxResourceSize              = covenant.MaxResourceSize
+	VerifyCovenantsNone          = covenant.VerifyCovenantsNone
+	VerifyCovenantsHardened      = covenant.VerifyCovenantsHardened
+	VerifyCovenantsLockup        = covenant.VerifyCovenantsLockup
+	MandatoryVerifyCovenantFlags = covenant.MandatoryVerifyCovenantFlags
+	MaxCovenantSize              = covenant.MaxCovenantSize
+	CovenantMaxSize              = covenant.CovenantMaxSize
+)
+
 // GetTypeName is an alias for TypeName.
 //
 //	name := lns.GetTypeName(covenant.TypeBid)

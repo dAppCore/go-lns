@@ -161,6 +161,38 @@ func TestPackageTypeTables(t *testing.T) {
 	if _, ok := Blacklist["test"]; !ok {
 		t.Fatal("Blacklist should expose the covenant verifier blacklist")
 	}
+
+	if MaxNameSize != 63 {
+		t.Fatalf("MaxNameSize = %d, want 63", MaxNameSize)
+	}
+
+	if MaxResourceSize != 512 {
+		t.Fatalf("MaxResourceSize = %d, want 512", MaxResourceSize)
+	}
+
+	if VerifyCovenantsNone != 0 {
+		t.Fatalf("VerifyCovenantsNone = %d, want 0", VerifyCovenantsNone)
+	}
+
+	if VerifyCovenantsHardened != 1<<0 {
+		t.Fatalf("VerifyCovenantsHardened = %d, want %d", VerifyCovenantsHardened, 1<<0)
+	}
+
+	if VerifyCovenantsLockup != 1<<1 {
+		t.Fatalf("VerifyCovenantsLockup = %d, want %d", VerifyCovenantsLockup, 1<<1)
+	}
+
+	if MandatoryVerifyCovenantFlags != VerifyCovenantsNone {
+		t.Fatalf("MandatoryVerifyCovenantFlags = %d, want %d", MandatoryVerifyCovenantFlags, VerifyCovenantsNone)
+	}
+
+	if MaxCovenantSize != 585 {
+		t.Fatalf("MaxCovenantSize = %d, want 585", MaxCovenantSize)
+	}
+
+	if CovenantMaxSize != MaxCovenantSize {
+		t.Fatalf("CovenantMaxSize = %d, want %d", CovenantMaxSize, MaxCovenantSize)
+	}
 }
 
 func TestPackageCatalogAliases(t *testing.T) {
