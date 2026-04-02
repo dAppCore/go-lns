@@ -198,6 +198,60 @@ func (c *Covenant) SetRegister(nameHash Hash, height uint32, record []byte, bloc
 	return c
 }
 
+// SetUpdate configures the covenant as an UPDATE operation.
+func (c *Covenant) SetUpdate(nameHash Hash, height uint32, resource []byte) *Covenant {
+	c.Type = covenantTypeUpdate
+	c.Items = nil
+	c.PushHash(nameHash)
+	c.PushU32(height)
+	c.Push(resource)
+	return c
+}
+
+// SetRenew configures the covenant as a RENEW operation.
+func (c *Covenant) SetRenew(nameHash Hash, height uint32, blockHash Hash) *Covenant {
+	c.Type = covenantTypeRenew
+	c.Items = nil
+	c.PushHash(nameHash)
+	c.PushU32(height)
+	c.PushHash(blockHash)
+	return c
+}
+
+// SetTransfer configures the covenant as a TRANSFER operation.
+func (c *Covenant) SetTransfer(nameHash Hash, height uint32, address Address) *Covenant {
+	c.Type = covenantTypeTransfer
+	c.Items = nil
+	c.PushHash(nameHash)
+	c.PushU32(height)
+	c.PushU8(address.Version)
+	c.Push(address.Hash)
+	return c
+}
+
+// SetFinalize configures the covenant as a FINALIZE operation.
+func (c *Covenant) SetFinalize(nameHash Hash, height uint32, rawName []byte, flags uint8, claimed uint32, renewals uint32, blockHash Hash) *Covenant {
+	c.Type = covenantTypeFinalize
+	c.Items = nil
+	c.PushHash(nameHash)
+	c.PushU32(height)
+	c.Push(rawName)
+	c.PushU8(flags)
+	c.PushU32(claimed)
+	c.PushU32(renewals)
+	c.PushHash(blockHash)
+	return c
+}
+
+// SetRevoke configures the covenant as a REVOKE operation.
+func (c *Covenant) SetRevoke(nameHash Hash, height uint32) *Covenant {
+	c.Type = covenantTypeRevoke
+	c.Items = nil
+	c.PushHash(nameHash)
+	c.PushU32(height)
+	return c
+}
+
 // GetU8 returns the item at the requested index as a uint8.
 func (c Covenant) GetU8(index int) (uint8, error) {
 	item, err := c.Get(index)

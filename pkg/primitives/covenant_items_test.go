@@ -311,6 +311,208 @@ func TestCovenantItemHelpers(t *testing.T) {
 		t.Fatalf("SetRegister() block hash = %x, want 1c1d1e...", blockHash[:3])
 	}
 
+	cov.SetUpdate(Hash{31, 32, 33}, 155, []byte("update"))
+
+	if got := cov.Type; got != covenantTypeUpdate {
+		t.Fatalf("SetUpdate() set type %d, want %d", got, covenantTypeUpdate)
+	}
+
+	if got := cov.Len(); got != 3 {
+		t.Fatalf("SetUpdate() len = %d, want 3", got)
+	}
+
+	hash, err = cov.GetHash(0)
+	if err != nil {
+		t.Fatalf("SetUpdate() GetHash returned error: %v", err)
+	}
+	if hash[0] != 31 || hash[1] != 32 || hash[2] != 33 {
+		t.Fatalf("SetUpdate() hash = %x, want 1f2021...", hash[:3])
+	}
+
+	height, err = cov.GetU32(1)
+	if err != nil {
+		t.Fatalf("SetUpdate() GetU32 returned error: %v", err)
+	}
+	if height != 155 {
+		t.Fatalf("SetUpdate() height = %d, want 155", height)
+	}
+
+	str, err = cov.GetString(2)
+	if err != nil {
+		t.Fatalf("SetUpdate() GetString returned error: %v", err)
+	}
+	if str != "update" {
+		t.Fatalf("SetUpdate() GetString() = %q, want %q", str, "update")
+	}
+
+	cov.SetRenew(Hash{34, 35, 36}, 166, Hash{37, 38, 39})
+
+	if got := cov.Type; got != covenantTypeRenew {
+		t.Fatalf("SetRenew() set type %d, want %d", got, covenantTypeRenew)
+	}
+
+	if got := cov.Len(); got != 3 {
+		t.Fatalf("SetRenew() len = %d, want 3", got)
+	}
+
+	hash, err = cov.GetHash(0)
+	if err != nil {
+		t.Fatalf("SetRenew() GetHash returned error: %v", err)
+	}
+	if hash[0] != 34 || hash[1] != 35 || hash[2] != 36 {
+		t.Fatalf("SetRenew() hash = %x, want 222324...", hash[:3])
+	}
+
+	height, err = cov.GetU32(1)
+	if err != nil {
+		t.Fatalf("SetRenew() GetU32 returned error: %v", err)
+	}
+	if height != 166 {
+		t.Fatalf("SetRenew() height = %d, want 166", height)
+	}
+
+	blockHash, err = cov.GetHash(2)
+	if err != nil {
+		t.Fatalf("SetRenew() GetHash(2) returned error: %v", err)
+	}
+	if blockHash[0] != 37 || blockHash[1] != 38 || blockHash[2] != 39 {
+		t.Fatalf("SetRenew() block hash = %x, want 252627...", blockHash[:3])
+	}
+
+	cov.SetTransfer(Hash{40, 41, 42}, 177, Address{Version: 0, Hash: []byte{1, 2, 3, 4, 5}})
+
+	if got := cov.Type; got != covenantTypeTransfer {
+		t.Fatalf("SetTransfer() set type %d, want %d", got, covenantTypeTransfer)
+	}
+
+	if got := cov.Len(); got != 4 {
+		t.Fatalf("SetTransfer() len = %d, want 4", got)
+	}
+
+	hash, err = cov.GetHash(0)
+	if err != nil {
+		t.Fatalf("SetTransfer() GetHash returned error: %v", err)
+	}
+	if hash[0] != 40 || hash[1] != 41 || hash[2] != 42 {
+		t.Fatalf("SetTransfer() hash = %x, want 28292a...", hash[:3])
+	}
+
+	height, err = cov.GetU32(1)
+	if err != nil {
+		t.Fatalf("SetTransfer() GetU32 returned error: %v", err)
+	}
+	if height != 177 {
+		t.Fatalf("SetTransfer() height = %d, want 177", height)
+	}
+
+	version, err := cov.GetU8(2)
+	if err != nil {
+		t.Fatalf("SetTransfer() GetU8 returned error: %v", err)
+	}
+	if version != 0 {
+		t.Fatalf("SetTransfer() version = %d, want 0", version)
+	}
+
+	addrHash, err := cov.Get(3)
+	if err != nil {
+		t.Fatalf("SetTransfer() Get(3) returned error: %v", err)
+	}
+	if len(addrHash) != 5 || addrHash[0] != 1 || addrHash[4] != 5 {
+		t.Fatalf("SetTransfer() address hash = %x, want 0102030405", addrHash)
+	}
+
+	cov.SetFinalize(Hash{43, 44, 45}, 188, []byte("final"), 12, 21, 34, Hash{46, 47, 48})
+
+	if got := cov.Type; got != covenantTypeFinalize {
+		t.Fatalf("SetFinalize() set type %d, want %d", got, covenantTypeFinalize)
+	}
+
+	if got := cov.Len(); got != 7 {
+		t.Fatalf("SetFinalize() len = %d, want 7", got)
+	}
+
+	hash, err = cov.GetHash(0)
+	if err != nil {
+		t.Fatalf("SetFinalize() GetHash returned error: %v", err)
+	}
+	if hash[0] != 43 || hash[1] != 44 || hash[2] != 45 {
+		t.Fatalf("SetFinalize() hash = %x, want 2b2c2d...", hash[:3])
+	}
+
+	height, err = cov.GetU32(1)
+	if err != nil {
+		t.Fatalf("SetFinalize() GetU32 returned error: %v", err)
+	}
+	if height != 188 {
+		t.Fatalf("SetFinalize() height = %d, want 188", height)
+	}
+
+	str, err = cov.GetString(2)
+	if err != nil {
+		t.Fatalf("SetFinalize() GetString returned error: %v", err)
+	}
+	if str != "final" {
+		t.Fatalf("SetFinalize() GetString() = %q, want %q", str, "final")
+	}
+
+	flags, err = cov.GetU8(3)
+	if err != nil {
+		t.Fatalf("SetFinalize() GetU8 returned error: %v", err)
+	}
+	if flags != 12 {
+		t.Fatalf("SetFinalize() flags = %d, want 12", flags)
+	}
+
+	claimed, err := cov.GetU32(4)
+	if err != nil {
+		t.Fatalf("SetFinalize() GetU32(4) returned error: %v", err)
+	}
+	if claimed != 21 {
+		t.Fatalf("SetFinalize() claimed = %d, want 21", claimed)
+	}
+
+	renewals, err := cov.GetU32(5)
+	if err != nil {
+		t.Fatalf("SetFinalize() GetU32(5) returned error: %v", err)
+	}
+	if renewals != 34 {
+		t.Fatalf("SetFinalize() renewals = %d, want 34", renewals)
+	}
+
+	blockHash, err = cov.GetHash(6)
+	if err != nil {
+		t.Fatalf("SetFinalize() GetHash(6) returned error: %v", err)
+	}
+	if blockHash[0] != 46 || blockHash[1] != 47 || blockHash[2] != 48 {
+		t.Fatalf("SetFinalize() block hash = %x, want 2e2f30...", blockHash[:3])
+	}
+
+	cov.SetRevoke(Hash{49, 50, 51}, 199)
+
+	if got := cov.Type; got != covenantTypeRevoke {
+		t.Fatalf("SetRevoke() set type %d, want %d", got, covenantTypeRevoke)
+	}
+
+	if got := cov.Len(); got != 2 {
+		t.Fatalf("SetRevoke() len = %d, want 2", got)
+	}
+
+	hash, err = cov.GetHash(0)
+	if err != nil {
+		t.Fatalf("SetRevoke() GetHash returned error: %v", err)
+	}
+	if hash[0] != 49 || hash[1] != 50 || hash[2] != 51 {
+		t.Fatalf("SetRevoke() hash = %x, want 313233...", hash[:3])
+	}
+
+	height, err = cov.GetU32(1)
+	if err != nil {
+		t.Fatalf("SetRevoke() GetU32 returned error: %v", err)
+	}
+	if height != 199 {
+		t.Fatalf("SetRevoke() height = %d, want 199", height)
+	}
+
 	cov = Covenant{}
 	cov.PushU8(7).
 		PushU32(0x11223344).
