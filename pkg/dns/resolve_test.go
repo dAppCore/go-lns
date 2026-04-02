@@ -35,6 +35,8 @@ func TestResolveRejectsInvalidNames(t *testing.T) {
 
 	cases := []string{
 		"",
+		" foo-bar.lthn",
+		"foo-bar.lthn ",
 		"foo.bar.lthn",
 		"foo..lthn",
 		"foo.lthn..",
