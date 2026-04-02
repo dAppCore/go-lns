@@ -151,7 +151,7 @@ func lookupCatalogName[T any](
 	byLabel func(string) (T, bool),
 	byHash func(primitives.Hash) (T, bool),
 ) (T, bool) {
-	label, ok := nameutil.Canonicalize(name)
+	label, ok := nameutil.CatalogLabel(name)
 	if !ok {
 		var zero T
 		return zero, false
@@ -161,7 +161,13 @@ func lookupCatalogName[T any](
 		return item, true
 	}
 
-	hash, err := resolveCanonicalName(method, name)
+	normalized, ok := nameutil.Canonicalize(name)
+	if !ok {
+		var zero T
+		return zero, false
+	}
+
+	hash, err := resolveCanonicalName(method, normalized)
 	if err != nil {
 		var zero T
 		return zero, false
