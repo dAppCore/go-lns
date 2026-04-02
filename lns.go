@@ -277,11 +277,31 @@ var TypesByVal = covenant.TypesByVal
 // Blacklist mirrors the covenant blacklist used by the verifier.
 var Blacklist = covenant.Blacklist
 
+// VerificationFlags mirrors the covenant verification flag lookup table.
+var VerificationFlags = covenant.VerificationFlags
+
+// VerificationFlagsByVal mirrors the covenant verification flag reverse table.
+var VerificationFlagsByVal = covenant.VerificationFlagsByVal
+
 // GetBlacklist is an alias for Blacklist.
 //
 //	blacklist := lns.GetBlacklist()
 func GetBlacklist() map[string]struct{} {
 	return Blacklist
+}
+
+// GetVerificationFlags is an alias for VerificationFlags.
+//
+//	flags := lns.GetVerificationFlags()
+func GetVerificationFlags() map[string]NameFlags {
+	return VerificationFlags
+}
+
+// GetVerificationFlagsByVal is an alias for VerificationFlagsByVal.
+//
+//	flags := lns.GetVerificationFlagsByVal()
+func GetVerificationFlagsByVal() map[NameFlags]string {
+	return VerificationFlagsByVal
 }
 
 // CovenantType mirrors the covenant type enum from pkg/covenant.
@@ -583,6 +603,26 @@ func (s *Service) Blacklist() map[string]struct{} {
 // GetBlacklist is an alias for Blacklist.
 func (s *Service) GetBlacklist() map[string]struct{} {
 	return s.Blacklist()
+}
+
+// VerificationFlags mirrors the covenant verification flag lookup table.
+func (s *Service) VerificationFlags() map[string]covenant.NameFlags {
+	return covenant.VerificationFlags
+}
+
+// GetVerificationFlags is an alias for VerificationFlags.
+func (s *Service) GetVerificationFlags() map[string]covenant.NameFlags {
+	return s.VerificationFlags()
+}
+
+// VerificationFlagsByVal mirrors the covenant verification flag reverse table.
+func (s *Service) VerificationFlagsByVal() map[covenant.NameFlags]string {
+	return covenant.VerificationFlagsByVal
+}
+
+// GetVerificationFlagsByVal is an alias for VerificationFlagsByVal.
+func (s *Service) GetVerificationFlagsByVal() map[covenant.NameFlags]string {
+	return s.VerificationFlagsByVal()
 }
 
 // GetReserved looks up a reserved .lthn name after canonicalisation.

@@ -243,6 +243,34 @@ func TestServiceRuleTables(t *testing.T) {
 	}
 }
 
+func TestServiceVerificationFlagTables(t *testing.T) {
+	svc := &Service{}
+
+	if len(svc.VerificationFlags()) != 3 {
+		t.Fatalf("VerificationFlags has %d entries, want 3", len(svc.VerificationFlags()))
+	}
+
+	if len(svc.GetVerificationFlags()) != len(svc.VerificationFlags()) {
+		t.Fatal("GetVerificationFlags should alias VerificationFlags")
+	}
+
+	if len(svc.VerificationFlagsByVal()) != len(svc.VerificationFlags()) {
+		t.Fatalf("VerificationFlagsByVal has %d entries, want %d", len(svc.VerificationFlagsByVal()), len(svc.VerificationFlags()))
+	}
+
+	if len(svc.GetVerificationFlagsByVal()) != len(svc.VerificationFlagsByVal()) {
+		t.Fatal("GetVerificationFlagsByVal should alias VerificationFlagsByVal")
+	}
+
+	if got, ok := svc.VerificationFlags()["VERIFY_COVENANTS_HARDENED"]; !ok || got != covenant.VerifyCovenantsHardened {
+		t.Fatalf("VerificationFlags[HARDENED] = %d, want %d", got, covenant.VerifyCovenantsHardened)
+	}
+
+	if got, ok := svc.VerificationFlagsByVal()[covenant.VerifyCovenantsLockup]; !ok || got != "VERIFY_COVENANTS_LOCKUP" {
+		t.Fatalf("VerificationFlagsByVal[LOCKUP] = %q, want %q", got, "VERIFY_COVENANTS_LOCKUP")
+	}
+}
+
 func TestServiceHashByStringAndBinaryAliases(t *testing.T) {
 	svc := &Service{}
 

@@ -199,6 +199,32 @@ func TestPackageBlacklistAlias(t *testing.T) {
 	}
 }
 
+func TestPackageVerificationFlagTables(t *testing.T) {
+	if len(VerificationFlags) != 3 {
+		t.Fatalf("VerificationFlags has %d entries, want 3", len(VerificationFlags))
+	}
+
+	if len(GetVerificationFlags()) != len(VerificationFlags) {
+		t.Fatal("GetVerificationFlags should alias VerificationFlags")
+	}
+
+	if len(VerificationFlagsByVal) != len(VerificationFlags) {
+		t.Fatalf("VerificationFlagsByVal has %d entries, want %d", len(VerificationFlagsByVal), len(VerificationFlags))
+	}
+
+	if len(GetVerificationFlagsByVal()) != len(VerificationFlagsByVal) {
+		t.Fatal("GetVerificationFlagsByVal should alias VerificationFlagsByVal")
+	}
+
+	if got, ok := VerificationFlags["VERIFY_COVENANTS_LOCKUP"]; !ok || got != covenant.VerifyCovenantsLockup {
+		t.Fatalf("VerificationFlags[LOCKUP] = %d, want %d", got, covenant.VerifyCovenantsLockup)
+	}
+
+	if got, ok := VerificationFlagsByVal[covenant.VerifyCovenantsNone]; !ok || got != "VERIFY_COVENANTS_NONE" {
+		t.Fatalf("VerificationFlagsByVal[None] = %q, want %q", got, "VERIFY_COVENANTS_NONE")
+	}
+}
+
 func TestPackageTypeConstants(t *testing.T) {
 	cases := []struct {
 		name string

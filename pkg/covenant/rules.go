@@ -28,3 +28,30 @@ const (
 	// CovenantMaxSize is an alias for MaxCovenantSize.
 	CovenantMaxSize = MaxCovenantSize
 )
+
+// VerificationFlags mirrors the JS rules.nameFlags lookup table.
+//
+// The map is exported so callers can discover the named verification masks
+// without hard-coding the string keys used by the reference implementation.
+var VerificationFlags = map[string]NameFlags{
+	"VERIFY_COVENANTS_NONE":     VerifyCovenantsNone,
+	"VERIFY_COVENANTS_HARDENED": VerifyCovenantsHardened,
+	"VERIFY_COVENANTS_LOCKUP":   VerifyCovenantsLockup,
+}
+
+// VerificationFlagsByVal mirrors the JS nameFlags lookup table in reverse.
+var VerificationFlagsByVal = map[NameFlags]string{
+	VerifyCovenantsNone:     "VERIFY_COVENANTS_NONE",
+	VerifyCovenantsHardened: "VERIFY_COVENANTS_HARDENED",
+	VerifyCovenantsLockup:   "VERIFY_COVENANTS_LOCKUP",
+}
+
+// GetVerificationFlags returns the covenant verification flag lookup table.
+func GetVerificationFlags() map[string]NameFlags {
+	return VerificationFlags
+}
+
+// GetVerificationFlagsByVal returns the reverse covenant verification table.
+func GetVerificationFlagsByVal() map[NameFlags]string {
+	return VerificationFlagsByVal
+}

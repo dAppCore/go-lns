@@ -43,6 +43,32 @@ func TestNameFlags(t *testing.T) {
 	}
 }
 
+func TestVerificationFlagTables(t *testing.T) {
+	if len(VerificationFlags) != 3 {
+		t.Fatalf("VerificationFlags has %d entries, want 3", len(VerificationFlags))
+	}
+
+	if len(VerificationFlagsByVal) != len(VerificationFlags) {
+		t.Fatalf("VerificationFlagsByVal has %d entries, want %d", len(VerificationFlagsByVal), len(VerificationFlags))
+	}
+
+	if got, ok := VerificationFlags["VERIFY_COVENANTS_HARDENED"]; !ok || got != VerifyCovenantsHardened {
+		t.Fatalf("VerificationFlags[HARDENED] = %d, want %d", got, VerifyCovenantsHardened)
+	}
+
+	if got, ok := VerificationFlagsByVal[VerifyCovenantsLockup]; !ok || got != "VERIFY_COVENANTS_LOCKUP" {
+		t.Fatalf("VerificationFlagsByVal[LOCKUP] = %q, want %q", got, "VERIFY_COVENANTS_LOCKUP")
+	}
+
+	if GetVerificationFlags()["VERIFY_COVENANTS_NONE"] != VerifyCovenantsNone {
+		t.Fatal("GetVerificationFlags should alias VerificationFlags")
+	}
+
+	if GetVerificationFlagsByVal()[VerifyCovenantsHardened] != "VERIFY_COVENANTS_HARDENED" {
+		t.Fatal("GetVerificationFlagsByVal should alias VerificationFlagsByVal")
+	}
+}
+
 func TestTypeMaps(t *testing.T) {
 	if len(Types) != len(TypesByVal) {
 		t.Fatalf("Types and TypesByVal should expose the same number of entries: %d vs %d", len(Types), len(TypesByVal))
