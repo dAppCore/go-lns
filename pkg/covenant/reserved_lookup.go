@@ -90,9 +90,19 @@ func GetReservedHash(hash primitives.Hash) (ReservedName, bool) {
 	return defaultReservedCatalog().Get(hash)
 }
 
+// HasReservedHash reports whether a precomputed hash is present in the catalog.
+func HasReservedHash(hash primitives.Hash) bool {
+	return DefaultReservedCatalog().Has(hash)
+}
+
 // GetReservedByHash is an alias for GetReservedHash.
 func GetReservedByHash(hash primitives.Hash) (ReservedName, bool) {
 	return GetReservedHash(hash)
+}
+
+// HasReservedByHash is an alias for HasReservedHash.
+func HasReservedByHash(hash primitives.Hash) bool {
+	return HasReservedHash(hash)
 }
 
 // DefaultReservedCatalog returns the lazily loaded reserved-name catalog.

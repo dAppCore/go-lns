@@ -69,9 +69,19 @@ func GetLockedHash(hash primitives.Hash) (LockedName, bool) {
 	return defaultLockedCatalog().Get(hash)
 }
 
+// HasLockedHash reports whether a precomputed hash is present in the catalog.
+func HasLockedHash(hash primitives.Hash) bool {
+	return DefaultLockedCatalog().Has(hash)
+}
+
 // GetLockedByHash is an alias for GetLockedHash.
 func GetLockedByHash(hash primitives.Hash) (LockedName, bool) {
 	return GetLockedHash(hash)
+}
+
+// HasLockedByHash is an alias for HasLockedHash.
+func HasLockedByHash(hash primitives.Hash) bool {
+	return HasLockedHash(hash)
 }
 
 // DefaultLockedCatalog returns the lazily loaded locked-name catalog.
