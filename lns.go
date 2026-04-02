@@ -188,12 +188,34 @@ func (s *Service) GetReservedName(name any) (covenant.ReservedName, bool) {
 	return s.GetReserved(name)
 }
 
+// GetReservedString looks up a reserved name supplied as a string.
+func (s *Service) GetReservedString(name string) (covenant.ReservedName, bool) {
+	return covenant.GetReservedName(name)
+}
+
+// GetReservedBinary looks up a reserved name supplied as bytes.
+func (s *Service) GetReservedBinary(name []byte) (covenant.ReservedName, bool) {
+	return covenant.GetReservedName(string(name))
+}
+
 // HasReserved reports whether a canonicalised .lthn name is reserved.
 //
 // This mirrors the covenant package lookup helper without exposing the hash
 // plumbing to service-level callers.
 func (s *Service) HasReserved(name any) bool {
 	_, ok := s.GetReserved(name)
+	return ok
+}
+
+// HasReservedString reports whether a reserved name supplied as a string exists.
+func (s *Service) HasReservedString(name string) bool {
+	_, ok := s.GetReservedString(name)
+	return ok
+}
+
+// HasReservedBinary reports whether a reserved name supplied as bytes exists.
+func (s *Service) HasReservedBinary(name []byte) bool {
+	_, ok := s.GetReservedBinary(name)
 	return ok
 }
 
@@ -272,12 +294,34 @@ func (s *Service) GetLockedName(name any) (covenant.LockedName, bool) {
 	return s.GetLocked(name)
 }
 
+// GetLockedString looks up a locked name supplied as a string.
+func (s *Service) GetLockedString(name string) (covenant.LockedName, bool) {
+	return covenant.GetLockedName(name)
+}
+
+// GetLockedBinary looks up a locked name supplied as bytes.
+func (s *Service) GetLockedBinary(name []byte) (covenant.LockedName, bool) {
+	return covenant.GetLockedName(string(name))
+}
+
 // HasLocked reports whether a canonicalised .lthn name is locked.
 //
 // This mirrors the covenant package lookup helper without exposing the hash
 // plumbing to service-level callers.
 func (s *Service) HasLocked(name any) bool {
 	_, ok := s.GetLocked(name)
+	return ok
+}
+
+// HasLockedString reports whether a locked name supplied as a string exists.
+func (s *Service) HasLockedString(name string) bool {
+	_, ok := s.GetLockedString(name)
+	return ok
+}
+
+// HasLockedBinary reports whether a locked name supplied as bytes exists.
+func (s *Service) HasLockedBinary(name []byte) bool {
+	_, ok := s.GetLockedBinary(name)
 	return ok
 }
 
