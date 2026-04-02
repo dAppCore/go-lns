@@ -112,6 +112,26 @@ func TestServiceGetReserved(t *testing.T) {
 	}
 }
 
+func TestServiceHasReserved(t *testing.T) {
+	svc := &Service{}
+
+	if !svc.HasReserved("RESERVED.lthn") {
+		t.Fatal("HasReserved should report canonical reserved names")
+	}
+
+	if !svc.HasReserved([]byte("reserved.lthn")) {
+		t.Fatal("HasReserved([]byte) should report canonical reserved names")
+	}
+
+	if svc.HasReserved("not-reserved.lthn") {
+		t.Fatal("HasReserved should return false for unknown names")
+	}
+
+	if svc.HasReserved(123) {
+		t.Fatal("HasReserved should reject unsupported input types")
+	}
+}
+
 func TestServiceGetLocked(t *testing.T) {
 	svc := &Service{}
 
@@ -138,6 +158,26 @@ func TestServiceGetLocked(t *testing.T) {
 
 	if _, ok := svc.GetLocked(123); ok {
 		t.Fatal("GetLocked should reject unsupported input types")
+	}
+}
+
+func TestServiceHasLocked(t *testing.T) {
+	svc := &Service{}
+
+	if !svc.HasLocked("NEC.lthn") {
+		t.Fatal("HasLocked should report canonical locked names")
+	}
+
+	if !svc.HasLocked([]byte("nec.lthn")) {
+		t.Fatal("HasLocked([]byte) should report canonical locked names")
+	}
+
+	if svc.HasLocked("not-locked.lthn") {
+		t.Fatal("HasLocked should return false for unknown names")
+	}
+
+	if svc.HasLocked(123) {
+		t.Fatal("HasLocked should reject unsupported input types")
 	}
 }
 
