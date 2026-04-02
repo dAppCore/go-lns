@@ -169,9 +169,14 @@ func TestLockedLookupRejectsUnknownNames(t *testing.T) {
 
 func TestLockedCatalogHelpers(t *testing.T) {
 	catalog := DefaultLockedCatalog()
+	getCatalog := GetLockedCatalog()
 
 	if catalog.Size() == 0 {
 		t.Fatal("catalog should report a non-zero size")
+	}
+
+	if getCatalog != catalog {
+		t.Fatal("GetLockedCatalog should alias DefaultLockedCatalog")
 	}
 
 	if catalog.GetSize() != catalog.Size() {

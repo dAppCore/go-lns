@@ -149,6 +149,11 @@ func DefaultReservedCatalog() *ReservedCatalog {
 	return defaultReservedCatalog()
 }
 
+// GetReservedCatalog is an alias for DefaultReservedCatalog.
+func GetReservedCatalog() *ReservedCatalog {
+	return DefaultReservedCatalog()
+}
+
 // Size reports the number of reserved-name entries in the catalog.
 func (c *ReservedCatalog) Size() int {
 	if c == nil {
