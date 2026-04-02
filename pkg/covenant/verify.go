@@ -8,6 +8,9 @@ import (
 	"dappco.re/go/lns/pkg/primitives"
 )
 
+// maxScriptStack mirrors the JS consensus limit used for covenant sanity checks.
+const maxScriptStack = 1000
+
 // CoinView is the minimal lookup interface required by VerifyCovenants.
 //
 // It returns the previous output for an outpoint, which is sufficient for the
@@ -243,6 +246,14 @@ func VerifyCovenants(tx primitives.Transaction, view CoinView, height uint32, ne
 			return -1
 
 		default:
+			if len(cov.Items) > maxScriptStack {
+				return -1
+			}
+
+			if cov.GetVarSize() > MaxCovenantSize {
+				return -1
+			}
+
 			if cov.IsName() {
 				return -1
 			}

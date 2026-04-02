@@ -342,6 +342,29 @@ func TestVerifyCovenantsRejectsInvalidStructure(t *testing.T) {
 	}
 }
 
+func TestHasSaneCovenantsRejectsOversizedUnknownCovenants(t *testing.T) {
+	tx := primitives.Transaction{
+		Outputs: []primitives.Output{
+			{
+				Covenant: primitives.Covenant{
+					Type: uint8(99),
+					Items: func() [][]byte {
+						items := make([][]byte, maxScriptStack+1)
+						for i := range items {
+							items[i] = []byte{}
+						}
+						return items
+					}(),
+				},
+			},
+		},
+	}
+
+	if HasSaneCovenants(tx) {
+		t.Fatal("HasSaneCovenants should reject unknown covenants that exceed the script stack limit")
+	}
+}
+
 func TestVerifyCovenantsCoinbaseLinkedOutputs(t *testing.T) {
 	reservedHash, err := HashString("reserved")
 	if err != nil {
