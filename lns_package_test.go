@@ -331,6 +331,7 @@ func TestPackageConstantGetters(t *testing.T) {
 func TestPackageNameStateAliases(t *testing.T) {
 	var state NameState
 	var delta NameDelta
+	var rules NameStateRules
 
 	if state.Name != nil {
 		t.Fatal("NameState alias should expose the primitives name state type")
@@ -351,6 +352,10 @@ func TestPackageNameStateAliases(t *testing.T) {
 
 	if got := NameStateStatus(NameStateClosed).String(); got != "CLOSED" {
 		t.Fatalf("NameStateStatus.String() = %q, want %q", got, "CLOSED")
+	}
+
+	if rules.TreeInterval != 0 || rules.LockupPeriod != 0 || rules.BiddingPeriod != 0 || rules.RevealPeriod != 0 {
+		t.Fatal("NameStateRules alias should expose the primitives name state rules type")
 	}
 }
 

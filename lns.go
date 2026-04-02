@@ -521,6 +521,9 @@ type NameState = primitives.NameState
 // NameDelta mirrors the sparse name-state delta type from pkg/primitives.
 type NameDelta = primitives.NameDelta
 
+// NameStateRules mirrors the phase-timing rule set from pkg/primitives.
+type NameStateRules = primitives.NameStateRules
+
 // NameStateStats mirrors the derived timing summary type from pkg/primitives.
 type NameStateStats = primitives.NameStateStats
 
