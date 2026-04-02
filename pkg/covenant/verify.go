@@ -29,19 +29,44 @@ type Network struct {
 // VerifyCovenants performs contextual covenant verification for a transaction.
 //
 // The function mirrors the JS reference return convention: 0 on success and
-// -1 on failure. The Go port currently covers the covenant transitions that
-// depend only on the transaction and coin view. Coinbase proof validation is
-// intentionally conservative because the corresponding proof types live in the
-// wider blockchain stack, which is not part of this package.
+// -1 on failure. The Go port covers the covenant transitions that depend only
+// on the transaction and coin view, and it conservatively validates the
+// coinbase-linked covenant shape without decoding the higher-level proof
+// formats that live in the wider blockchain stack.
 func VerifyCovenants(tx primitives.Transaction, view CoinView, height uint32, network Network) int {
 	if !HasSaneCovenants(tx) {
 		return -1
 	}
 
 	if isCoinbaseTx(tx) {
-		// The JS reference performs proof validation here, but those proof
-		// types live outside this package. We keep coinbase handling conservative
-		// and rely on structural sanity checks above.
+		for i := 1; i < len(tx.Inputs); i++ {
+			if i >= len(tx.Outputs) {
+				return -1
+			}
+
+			input := tx.Inputs[i]
+			output := tx.Outputs[i]
+			cov := output.Covenant
+
+			if len(input.Witness) != 1 {
+				return -1
+			}
+
+			switch cov.Type {
+			case uint8(TypeNone):
+				continue
+
+			case uint8(TypeClaim):
+				blockHeight, err := cov.GetU32(1)
+				if err != nil || blockHeight != height {
+					return -1
+				}
+
+			default:
+				return -1
+			}
+		}
+
 		return 0
 	}
 

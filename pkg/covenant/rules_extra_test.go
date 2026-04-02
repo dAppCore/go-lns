@@ -337,3 +337,89 @@ func TestVerifyCovenantsRejectsInvalidStructure(t *testing.T) {
 		t.Fatalf("VerifyCovenants returned %d for an invalid covenant structure, want -1", got)
 	}
 }
+
+func TestVerifyCovenantsCoinbaseLinkedOutputs(t *testing.T) {
+	reservedHash, err := HashString("reserved")
+	if err != nil {
+		t.Fatalf("HashString returned error: %v", err)
+	}
+
+	makeClaim := func(blockHeight uint32) primitives.Covenant {
+		var blockHash primitives.Hash
+		var claimHash primitives.Hash
+		copy(claimHash[:], reservedHash[:])
+
+		items := [][]byte{
+			claimHash[:],
+			make([]byte, 4),
+			[]byte("reserved"),
+			[]byte{0},
+			blockHash[:],
+			make([]byte, 4),
+		}
+
+		binary.LittleEndian.PutUint32(items[1], blockHeight)
+		binary.LittleEndian.PutUint32(items[5], blockHeight)
+
+		return primitives.Covenant{Type: uint8(TypeClaim), Items: items}
+	}
+
+	t.Run("valid claim height", func(t *testing.T) {
+		tx := primitives.Transaction{
+			Inputs: []primitives.Input{
+				{Prevout: primitives.NewOutpoint()},
+				{
+					Prevout: primitives.Outpoint{TxHash: primitives.Hash{1}, Index: 0},
+					Witness: [][]byte{[]byte("proof")},
+				},
+			},
+			Outputs: []primitives.Output{
+				{Covenant: primitives.Covenant{Type: uint8(TypeNone)}},
+				{Covenant: makeClaim(100)},
+			},
+		}
+
+		if got := VerifyCovenants(tx, testCoinView{coins: map[primitives.Outpoint]primitives.Output{}}, 100, Network{}); got != 0 {
+			t.Fatalf("VerifyCovenants returned %d, want 0", got)
+		}
+	})
+
+	t.Run("claim height mismatch", func(t *testing.T) {
+		tx := primitives.Transaction{
+			Inputs: []primitives.Input{
+				{Prevout: primitives.NewOutpoint()},
+				{
+					Prevout: primitives.Outpoint{TxHash: primitives.Hash{2}, Index: 0},
+					Witness: [][]byte{[]byte("proof")},
+				},
+			},
+			Outputs: []primitives.Output{
+				{Covenant: primitives.Covenant{Type: uint8(TypeNone)}},
+				{Covenant: makeClaim(101)},
+			},
+		}
+
+		if got := VerifyCovenants(tx, testCoinView{coins: map[primitives.Outpoint]primitives.Output{}}, 100, Network{}); got != -1 {
+			t.Fatalf("VerifyCovenants returned %d for a claim with a mismatched height, want -1", got)
+		}
+	})
+
+	t.Run("missing witness", func(t *testing.T) {
+		tx := primitives.Transaction{
+			Inputs: []primitives.Input{
+				{Prevout: primitives.NewOutpoint()},
+				{
+					Prevout: primitives.Outpoint{TxHash: primitives.Hash{3}, Index: 0},
+				},
+			},
+			Outputs: []primitives.Output{
+				{Covenant: primitives.Covenant{Type: uint8(TypeNone)}},
+				{Covenant: primitives.Covenant{Type: uint8(TypeNone)}},
+			},
+		}
+
+		if got := VerifyCovenants(tx, testCoinView{coins: map[primitives.Outpoint]primitives.Output{}}, 100, Network{}); got != -1 {
+			t.Fatalf("VerifyCovenants returned %d for a coinbase-linked output without a witness, want -1", got)
+		}
+	})
+}
