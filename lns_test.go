@@ -499,6 +499,67 @@ func TestServiceRolloutHelpers(t *testing.T) {
 	}
 }
 
+func TestServiceGrindAndCountHelpers(t *testing.T) {
+	svc := &Service{}
+
+	tx := primitives.Transaction{
+		Outputs: []primitives.Output{
+			{Covenant: primitives.Covenant{Type: uint8(covenant.TypeOpen)}},
+			{Covenant: primitives.Covenant{Type: uint8(covenant.TypeClaim)}},
+			{Covenant: primitives.Covenant{Type: uint8(covenant.TypeUpdate)}},
+			{Covenant: primitives.Covenant{Type: uint8(covenant.TypeTransfer)}},
+			{Covenant: primitives.Covenant{Type: uint8(covenant.TypeRevoke)}},
+			{Covenant: primitives.Covenant{Type: uint8(covenant.TypeRegister)}},
+			{Covenant: primitives.Covenant{Type: uint8(covenant.TypeRenew)}},
+			{Covenant: primitives.Covenant{Type: uint8(covenant.TypeFinalize)}},
+		},
+	}
+
+	if got := svc.CountOpens(tx); got != 1 {
+		t.Fatalf("CountOpens() = %d, want 1", got)
+	}
+
+	if got := svc.CountUpdates(tx); got != 5 {
+		t.Fatalf("CountUpdates() = %d, want 5", got)
+	}
+
+	if got := svc.CountRenewals(tx); got != 3 {
+		t.Fatalf("CountRenewals() = %d, want 3", got)
+	}
+
+	rules := NameRules{
+		AuctionStart:    100,
+		RolloutInterval: 7,
+	}
+
+	name, err := svc.GrindName(8, 100, rules)
+	if err != nil {
+		t.Fatalf("GrindName returned error: %v", err)
+	}
+
+	alias, err := svc.GetGrindName(8, 100, rules)
+	if err != nil {
+		t.Fatalf("GetGrindName returned error: %v", err)
+	}
+
+	if len(name) != 8 {
+		t.Fatalf("GrindName returned %q with length %d, want 8", name, len(name))
+	}
+
+	if len(alias) != 8 {
+		t.Fatalf("GetGrindName returned %q with length %d, want 8", alias, len(alias))
+	}
+
+	hash, err := covenant.HashString(name)
+	if err != nil {
+		t.Fatalf("HashString returned error: %v", err)
+	}
+
+	if !svc.HasRollout(hash, 100, rules) {
+		t.Fatalf("GrindName returned %q that does not satisfy rollout", name)
+	}
+}
+
 func TestServiceGetBlindAndGetTypeNameAliases(t *testing.T) {
 	svc := &Service{}
 

@@ -508,6 +508,32 @@ func IsLockedUp(nameHash primitives.Hash, height uint32, rules NameRules) bool {
 	return covenant.IsLockedUp(nameHash, height, rules)
 }
 
+// GrindName searches for an available name that satisfies the current rollout
+// and reservation rules.
+func GrindName(size int, height uint32, rules NameRules) (string, error) {
+	return covenant.GrindName(size, height, rules)
+}
+
+// GetGrindName is an alias for GrindName.
+func GetGrindName(size int, height uint32, rules NameRules) (string, error) {
+	return GrindName(size, height, rules)
+}
+
+// CountOpens counts OPEN covenants in a transaction.
+func CountOpens(tx primitives.Transaction) int {
+	return covenant.CountOpens(tx)
+}
+
+// CountUpdates counts update-style covenants in a transaction.
+func CountUpdates(tx primitives.Transaction) int {
+	return covenant.CountUpdates(tx)
+}
+
+// CountRenewals counts REGISTER, RENEW, and FINALIZE covenants in a transaction.
+func CountRenewals(tx primitives.Transaction) int {
+	return covenant.CountRenewals(tx)
+}
+
 // ServiceName returns the registered name for the LNS service group.
 //
 //	name := svc.ServiceName()
@@ -740,6 +766,32 @@ func (s *Service) IsReserved(nameHash primitives.Hash, height uint32, rules Name
 // IsLockedUp reports whether a name hash is locked at the given height.
 func (s *Service) IsLockedUp(nameHash primitives.Hash, height uint32, rules NameRules) bool {
 	return covenant.IsLockedUp(nameHash, height, rules)
+}
+
+// GrindName searches for an available name that satisfies the current rollout
+// and reservation rules.
+func (s *Service) GrindName(size int, height uint32, rules NameRules) (string, error) {
+	return covenant.GrindName(size, height, rules)
+}
+
+// GetGrindName is an alias for GrindName.
+func (s *Service) GetGrindName(size int, height uint32, rules NameRules) (string, error) {
+	return s.GrindName(size, height, rules)
+}
+
+// CountOpens counts OPEN covenants in a transaction.
+func (s *Service) CountOpens(tx primitives.Transaction) int {
+	return covenant.CountOpens(tx)
+}
+
+// CountUpdates counts update-style covenants in a transaction.
+func (s *Service) CountUpdates(tx primitives.Transaction) int {
+	return covenant.CountUpdates(tx)
+}
+
+// CountRenewals counts REGISTER, RENEW, and FINALIZE covenants in a transaction.
+func (s *Service) CountRenewals(tx primitives.Transaction) int {
+	return covenant.CountRenewals(tx)
 }
 
 // Types mirrors the covenant type lookup table from pkg/covenant.
