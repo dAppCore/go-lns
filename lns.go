@@ -54,9 +54,7 @@ func WithCore(c *core.Core) ServiceOption {
 //
 //	svc := lns.NewServiceWithOptions(lns.WithCore(c))
 func NewServiceWithOptions(opts ...ServiceOption) *Service {
-	svc := &Service{
-		ServiceRuntime: core.NewServiceRuntime(nil, serviceOptions{}),
-	}
+	svc := &Service{}
 
 	for _, opt := range opts {
 		if opt != nil {
