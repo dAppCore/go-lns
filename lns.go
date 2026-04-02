@@ -1326,19 +1326,11 @@ func (s *Service) Core() *core.Core {
 
 // reservedCatalog returns the package-backed reserved-name catalog.
 func (s *Service) reservedCatalog() *covenant.ReservedCatalog {
-	if s == nil {
-		return Reserved
-	}
-
 	return Reserved
 }
 
 // lockedCatalog returns the package-backed locked-name catalog.
 func (s *Service) lockedCatalog() *covenant.LockedCatalog {
-	if s == nil {
-		return Locked
-	}
-
 	return Locked
 }
 
