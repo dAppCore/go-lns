@@ -138,9 +138,19 @@ func (c *LockedCatalog) Size() int {
 	return len(c.byHash)
 }
 
+// GetSize is an alias for Size.
+func (c *LockedCatalog) GetSize() int {
+	return c.Size()
+}
+
 // PrefixSize reports the byte offset where the locked-name table entries begin.
 func (c *LockedCatalog) PrefixSize() int {
 	return lockedCatalogPrefixSize
+}
+
+// GetPrefixSize is an alias for PrefixSize.
+func (c *LockedCatalog) GetPrefixSize() int {
+	return c.PrefixSize()
 }
 
 // Has reports whether the catalog contains the hash.
@@ -214,6 +224,11 @@ func (c *LockedCatalog) Entries() []LockedEntry {
 	return entries
 }
 
+// GetEntries is an alias for Entries.
+func (c *LockedCatalog) GetEntries() []LockedEntry {
+	return c.Entries()
+}
+
 // Keys returns the locked-name hashes in deterministic order.
 func (c *LockedCatalog) Keys() []primitives.Hash {
 	if c == nil || len(c.byHash) == 0 {
@@ -224,6 +239,11 @@ func (c *LockedCatalog) Keys() []primitives.Hash {
 	keys := make([]primitives.Hash, len(hashes))
 	copy(keys, hashes)
 	return keys
+}
+
+// GetKeys is an alias for Keys.
+func (c *LockedCatalog) GetKeys() []primitives.Hash {
+	return c.Keys()
 }
 
 // Values returns the locked-name entries in deterministic order.
@@ -245,6 +265,11 @@ func (c *LockedCatalog) Values() []LockedName {
 	}
 
 	return values
+}
+
+// GetValues is an alias for Values.
+func (c *LockedCatalog) GetValues() []LockedName {
+	return c.Values()
 }
 
 func (c *LockedCatalog) sortedHashes() []primitives.Hash {

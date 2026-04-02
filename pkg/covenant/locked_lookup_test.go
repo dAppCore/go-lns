@@ -174,8 +174,16 @@ func TestLockedCatalogHelpers(t *testing.T) {
 		t.Fatal("catalog should report a non-zero size")
 	}
 
+	if catalog.GetSize() != catalog.Size() {
+		t.Fatal("catalog.GetSize should alias Size")
+	}
+
 	if catalog.PrefixSize() != lockedCatalogPrefixSize {
 		t.Fatalf("catalog.PrefixSize() = %d, want %d", catalog.PrefixSize(), lockedCatalogPrefixSize)
+	}
+
+	if catalog.GetPrefixSize() != lockedCatalogPrefixSize {
+		t.Fatalf("catalog.GetPrefixSize() = %d, want %d", catalog.GetPrefixSize(), lockedCatalogPrefixSize)
 	}
 
 	if !catalog.HasByName("NEC") {
@@ -197,11 +205,14 @@ func TestLockedCatalogHelpers(t *testing.T) {
 	}
 
 	entries := catalog.Entries()
+	getEntries := catalog.GetEntries()
 	keys := catalog.Keys()
+	getKeys := catalog.GetKeys()
 	values := catalog.Values()
+	getValues := catalog.GetValues()
 
-	if len(entries) != len(keys) || len(entries) != len(values) {
-		t.Fatalf("catalog iterator lengths differ: entries=%d keys=%d values=%d", len(entries), len(keys), len(values))
+	if len(entries) != len(keys) || len(entries) != len(values) || len(entries) != len(getEntries) || len(entries) != len(getKeys) || len(entries) != len(getValues) {
+		t.Fatalf("catalog iterator lengths differ: entries=%d getEntries=%d keys=%d getKeys=%d values=%d getValues=%d", len(entries), len(getEntries), len(keys), len(getKeys), len(values), len(getValues))
 	}
 
 	var (

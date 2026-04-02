@@ -178,20 +178,40 @@ func TestReservedCatalogHelpers(t *testing.T) {
 		t.Fatal("catalog should report a non-zero size")
 	}
 
+	if catalog.GetSize() != catalog.Size() {
+		t.Fatal("catalog.GetSize should alias Size")
+	}
+
 	if catalog.NameValue() == 0 {
 		t.Fatal("catalog should expose the reserved base value")
+	}
+
+	if catalog.GetNameValue() != catalog.NameValue() {
+		t.Fatal("catalog.GetNameValue should alias NameValue")
 	}
 
 	if catalog.RootValue() == 0 {
 		t.Fatal("catalog should expose the root increment")
 	}
 
+	if catalog.GetRootValue() != catalog.RootValue() {
+		t.Fatal("catalog.GetRootValue should alias RootValue")
+	}
+
 	if catalog.TopValue() == 0 {
 		t.Fatal("catalog should expose the top-100 increment")
 	}
 
+	if catalog.GetTopValue() != catalog.TopValue() {
+		t.Fatal("catalog.GetTopValue should alias TopValue")
+	}
+
 	if catalog.PrefixSize() != reservedCatalogPrefixSize {
 		t.Fatalf("catalog.PrefixSize() = %d, want %d", catalog.PrefixSize(), reservedCatalogPrefixSize)
+	}
+
+	if catalog.GetPrefixSize() != reservedCatalogPrefixSize {
+		t.Fatalf("catalog.GetPrefixSize() = %d, want %d", catalog.GetPrefixSize(), reservedCatalogPrefixSize)
 	}
 
 	if !catalog.HasByName("RESERVED") {
@@ -213,11 +233,14 @@ func TestReservedCatalogHelpers(t *testing.T) {
 	}
 
 	entries := catalog.Entries()
+	getEntries := catalog.GetEntries()
 	keys := catalog.Keys()
+	getKeys := catalog.GetKeys()
 	values := catalog.Values()
+	getValues := catalog.GetValues()
 
-	if len(entries) != len(keys) || len(entries) != len(values) {
-		t.Fatalf("catalog iterator lengths differ: entries=%d keys=%d values=%d", len(entries), len(keys), len(values))
+	if len(entries) != len(keys) || len(entries) != len(values) || len(entries) != len(getEntries) || len(entries) != len(getKeys) || len(entries) != len(getValues) {
+		t.Fatalf("catalog iterator lengths differ: entries=%d getEntries=%d keys=%d getKeys=%d values=%d getValues=%d", len(entries), len(getEntries), len(keys), len(getKeys), len(values), len(getValues))
 	}
 
 	var (

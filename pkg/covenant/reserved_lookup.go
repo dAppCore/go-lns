@@ -159,6 +159,11 @@ func (c *ReservedCatalog) Size() int {
 	return len(c.byHash)
 }
 
+// GetSize is an alias for Size.
+func (c *ReservedCatalog) GetSize() int {
+	return c.Size()
+}
+
 // NameValue reports the base value used for reserved-name lookups.
 func (c *ReservedCatalog) NameValue() uint64 {
 	if c == nil {
@@ -166,6 +171,11 @@ func (c *ReservedCatalog) NameValue() uint64 {
 	}
 
 	return c.nameValue
+}
+
+// GetNameValue is an alias for NameValue.
+func (c *ReservedCatalog) GetNameValue() uint64 {
+	return c.NameValue()
 }
 
 // RootValue reports the root-name increment used for reserved-name lookups.
@@ -177,6 +187,11 @@ func (c *ReservedCatalog) RootValue() uint64 {
 	return c.rootValue
 }
 
+// GetRootValue is an alias for RootValue.
+func (c *ReservedCatalog) GetRootValue() uint64 {
+	return c.RootValue()
+}
+
 // TopValue reports the top-100 increment used for reserved-name lookups.
 func (c *ReservedCatalog) TopValue() uint64 {
 	if c == nil {
@@ -186,9 +201,19 @@ func (c *ReservedCatalog) TopValue() uint64 {
 	return c.topValue
 }
 
+// GetTopValue is an alias for TopValue.
+func (c *ReservedCatalog) GetTopValue() uint64 {
+	return c.TopValue()
+}
+
 // PrefixSize reports the byte offset where the reserved-name table entries begin.
 func (c *ReservedCatalog) PrefixSize() int {
 	return reservedCatalogPrefixSize
+}
+
+// GetPrefixSize is an alias for PrefixSize.
+func (c *ReservedCatalog) GetPrefixSize() int {
+	return c.PrefixSize()
 }
 
 // Has reports whether the catalog contains the hash.
@@ -262,6 +287,11 @@ func (c *ReservedCatalog) Entries() []ReservedEntry {
 	return entries
 }
 
+// GetEntries is an alias for Entries.
+func (c *ReservedCatalog) GetEntries() []ReservedEntry {
+	return c.Entries()
+}
+
 // Keys returns the reserved-name hashes in deterministic order.
 func (c *ReservedCatalog) Keys() []primitives.Hash {
 	if c == nil || len(c.byHash) == 0 {
@@ -272,6 +302,11 @@ func (c *ReservedCatalog) Keys() []primitives.Hash {
 	keys := make([]primitives.Hash, len(hashes))
 	copy(keys, hashes)
 	return keys
+}
+
+// GetKeys is an alias for Keys.
+func (c *ReservedCatalog) GetKeys() []primitives.Hash {
+	return c.Keys()
 }
 
 // Values returns the reserved-name entries in deterministic order.
@@ -293,6 +328,11 @@ func (c *ReservedCatalog) Values() []ReservedName {
 	}
 
 	return values
+}
+
+// GetValues is an alias for Values.
+func (c *ReservedCatalog) GetValues() []ReservedName {
+	return c.Values()
 }
 
 func (c *ReservedCatalog) sortedHashes() []primitives.Hash {
