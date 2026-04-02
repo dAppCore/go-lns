@@ -56,3 +56,66 @@ func TestReservedLookupRejectsUnknownNames(t *testing.T) {
 		t.Fatal("GetReservedName should return false for unknown names")
 	}
 }
+
+func TestReservedCatalogHelpers(t *testing.T) {
+	catalog := DefaultReservedCatalog()
+
+	if !catalog.HasByName("RESERVED") {
+		t.Fatal("catalog should find names case-insensitively")
+	}
+
+	item, ok := catalog.GetByName("RESERVED")
+	if !ok {
+		t.Fatal("catalog should return an entry by name")
+	}
+
+	hash, err := HashString("reserved")
+	if err != nil {
+		t.Fatalf("HashString returned error: %v", err)
+	}
+
+	if item.Hash != hash {
+		t.Fatalf("item.Hash = %x, want %x", item.Hash, hash)
+	}
+
+	entries := catalog.Entries()
+	keys := catalog.Keys()
+	values := catalog.Values()
+
+	if len(entries) != len(keys) || len(entries) != len(values) {
+		t.Fatalf("catalog iterator lengths differ: entries=%d keys=%d values=%d", len(entries), len(keys), len(values))
+	}
+
+	var (
+		entryFound bool
+		keyFound   bool
+		valueFound bool
+	)
+
+	for _, entry := range entries {
+		if entry.Hash == hash {
+			entryFound = true
+			if entry.Value != item {
+				t.Fatalf("entry.Value = %#v, want %#v", entry.Value, item)
+			}
+		}
+	}
+
+	for _, key := range keys {
+		if key == hash {
+			keyFound = true
+			break
+		}
+	}
+
+	for _, value := range values {
+		if value.Hash == hash {
+			valueFound = true
+			break
+		}
+	}
+
+	if !entryFound || !keyFound || !valueFound {
+		t.Fatalf("catalog iterators missing reserved hash: entry=%v key=%v value=%v", entryFound, keyFound, valueFound)
+	}
+}

@@ -3,12 +3,14 @@
 package covenant
 
 import (
+	"bytes"
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
 	"os"
 	"path/filepath"
 	"runtime"
+	"sort"
 	"strings"
 	"sync"
 
@@ -37,6 +39,12 @@ type ReservedCatalog struct {
 	byHash map[primitives.Hash]ReservedName
 }
 
+// ReservedEntry pairs a reserved-name hash with its catalog entry.
+type ReservedEntry struct {
+	Hash  primitives.Hash
+	Value ReservedName
+}
+
 type reservedCatalogMeta struct {
 	nameValue uint64
 	rootValue uint64
@@ -53,8 +61,7 @@ var (
 // Lookup is case-insensitive and matches the reference table's lower-casing
 // behaviour.
 func HasReservedName(name string) bool {
-	_, ok := GetReservedName(name)
-	return ok
+	return DefaultReservedCatalog().HasByName(name)
 }
 
 // GetReservedName returns the reserved-name entry for the provided label.
@@ -62,18 +69,7 @@ func HasReservedName(name string) bool {
 // The input is lower-cased before validation and hashing, matching the JS
 // reference helper.
 func GetReservedName(name string) (ReservedName, bool) {
-	name = strings.ToLower(name)
-
-	if !VerifyString(name) {
-		return ReservedName{}, false
-	}
-
-	hash, err := HashString(name)
-	if err != nil {
-		return ReservedName{}, false
-	}
-
-	return defaultReservedCatalog().Get(hash)
+	return DefaultReservedCatalog().GetByName(name)
 }
 
 // GetReservedHash returns the reserved-name entry for a precomputed hash.
@@ -104,6 +100,96 @@ func (c *ReservedCatalog) Get(hash primitives.Hash) (ReservedName, bool) {
 
 	item, ok := c.byHash[hash]
 	return item, ok
+}
+
+// HasByName reports whether the catalog contains the provided label.
+func (c *ReservedCatalog) HasByName(name string) bool {
+	_, ok := c.GetByName(name)
+	return ok
+}
+
+// GetByName returns the reserved-name entry for the provided label.
+func (c *ReservedCatalog) GetByName(name string) (ReservedName, bool) {
+	name = strings.ToLower(name)
+
+	if !VerifyString(name) {
+		return ReservedName{}, false
+	}
+
+	hash, err := HashString(name)
+	if err != nil {
+		return ReservedName{}, false
+	}
+
+	return c.Get(hash)
+}
+
+// Entries returns the catalog contents as hash/item pairs.
+func (c *ReservedCatalog) Entries() []ReservedEntry {
+	if c == nil || len(c.byHash) == 0 {
+		return nil
+	}
+
+	hashes := c.sortedHashes()
+	entries := make([]ReservedEntry, 0, len(hashes))
+
+	for _, hash := range hashes {
+		item, ok := c.byHash[hash]
+		if !ok {
+			continue
+		}
+
+		entries = append(entries, ReservedEntry{Hash: hash, Value: item})
+	}
+
+	return entries
+}
+
+// Keys returns the reserved-name hashes in deterministic order.
+func (c *ReservedCatalog) Keys() []primitives.Hash {
+	if c == nil || len(c.byHash) == 0 {
+		return nil
+	}
+
+	hashes := c.sortedHashes()
+	keys := make([]primitives.Hash, len(hashes))
+	copy(keys, hashes)
+	return keys
+}
+
+// Values returns the reserved-name entries in deterministic order.
+func (c *ReservedCatalog) Values() []ReservedName {
+	if c == nil || len(c.byHash) == 0 {
+		return nil
+	}
+
+	hashes := c.sortedHashes()
+	values := make([]ReservedName, 0, len(hashes))
+
+	for _, hash := range hashes {
+		item, ok := c.byHash[hash]
+		if !ok {
+			continue
+		}
+
+		values = append(values, item)
+	}
+
+	return values
+}
+
+func (c *ReservedCatalog) sortedHashes() []primitives.Hash {
+	hashes := make([]primitives.Hash, 0, len(c.byHash))
+
+	for hash := range c.byHash {
+		hashes = append(hashes, hash)
+	}
+
+	sort.Slice(hashes, func(i, j int) bool {
+		return bytes.Compare(hashes[i][:], hashes[j][:]) < 0
+	})
+
+	return hashes
 }
 
 func defaultReservedCatalog() *ReservedCatalog {

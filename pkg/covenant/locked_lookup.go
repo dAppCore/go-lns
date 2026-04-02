@@ -3,12 +3,14 @@
 package covenant
 
 import (
+	"bytes"
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
 	"os"
 	"path/filepath"
 	"runtime"
+	"sort"
 	"strings"
 	"sync"
 
@@ -29,6 +31,12 @@ type LockedCatalog struct {
 	byHash map[primitives.Hash]LockedName
 }
 
+// LockedEntry pairs a locked-name hash with its catalog entry.
+type LockedEntry struct {
+	Hash  primitives.Hash
+	Value LockedName
+}
+
 var (
 	lockedCatalogOnce sync.Once
 	lockedCatalog     *LockedCatalog
@@ -36,24 +44,12 @@ var (
 
 // HasLockedName reports whether the JS lockup table contains the name.
 func HasLockedName(name string) bool {
-	_, ok := GetLockedName(name)
-	return ok
+	return DefaultLockedCatalog().HasByName(name)
 }
 
 // GetLockedName returns the locked-name entry for the provided label.
 func GetLockedName(name string) (LockedName, bool) {
-	name = strings.ToLower(name)
-
-	if !VerifyString(name) {
-		return LockedName{}, false
-	}
-
-	hash, err := HashString(name)
-	if err != nil {
-		return LockedName{}, false
-	}
-
-	return defaultLockedCatalog().Get(hash)
+	return DefaultLockedCatalog().GetByName(name)
 }
 
 // GetLockedHash returns the locked-name entry for a precomputed hash.
@@ -84,6 +80,96 @@ func (c *LockedCatalog) Get(hash primitives.Hash) (LockedName, bool) {
 
 	item, ok := c.byHash[hash]
 	return item, ok
+}
+
+// HasByName reports whether the catalog contains the provided label.
+func (c *LockedCatalog) HasByName(name string) bool {
+	_, ok := c.GetByName(name)
+	return ok
+}
+
+// GetByName returns the locked-name entry for the provided label.
+func (c *LockedCatalog) GetByName(name string) (LockedName, bool) {
+	name = strings.ToLower(name)
+
+	if !VerifyString(name) {
+		return LockedName{}, false
+	}
+
+	hash, err := HashString(name)
+	if err != nil {
+		return LockedName{}, false
+	}
+
+	return c.Get(hash)
+}
+
+// Entries returns the catalog contents as hash/item pairs.
+func (c *LockedCatalog) Entries() []LockedEntry {
+	if c == nil || len(c.byHash) == 0 {
+		return nil
+	}
+
+	hashes := c.sortedHashes()
+	entries := make([]LockedEntry, 0, len(hashes))
+
+	for _, hash := range hashes {
+		item, ok := c.byHash[hash]
+		if !ok {
+			continue
+		}
+
+		entries = append(entries, LockedEntry{Hash: hash, Value: item})
+	}
+
+	return entries
+}
+
+// Keys returns the locked-name hashes in deterministic order.
+func (c *LockedCatalog) Keys() []primitives.Hash {
+	if c == nil || len(c.byHash) == 0 {
+		return nil
+	}
+
+	hashes := c.sortedHashes()
+	keys := make([]primitives.Hash, len(hashes))
+	copy(keys, hashes)
+	return keys
+}
+
+// Values returns the locked-name entries in deterministic order.
+func (c *LockedCatalog) Values() []LockedName {
+	if c == nil || len(c.byHash) == 0 {
+		return nil
+	}
+
+	hashes := c.sortedHashes()
+	values := make([]LockedName, 0, len(hashes))
+
+	for _, hash := range hashes {
+		item, ok := c.byHash[hash]
+		if !ok {
+			continue
+		}
+
+		values = append(values, item)
+	}
+
+	return values
+}
+
+func (c *LockedCatalog) sortedHashes() []primitives.Hash {
+	hashes := make([]primitives.Hash, 0, len(c.byHash))
+
+	for hash := range c.byHash {
+		hashes = append(hashes, hash)
+	}
+
+	sort.Slice(hashes, func(i, j int) bool {
+		return bytes.Compare(hashes[i][:], hashes[j][:]) < 0
+	})
+
+	return hashes
 }
 
 func defaultLockedCatalog() *LockedCatalog {
