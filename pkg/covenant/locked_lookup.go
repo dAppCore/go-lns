@@ -141,11 +141,11 @@ func (c *LockedCatalog) HasByName(name string) bool {
 
 // GetByName returns the locked-name entry for the provided label.
 //
-// The lookup lower-cases the input and hashes it directly, matching the JS
-// reference helper's behavior.
+// The lookup lower-cases ASCII input and hashes it directly, matching the JS
+// reference helper's ASCII encoding behavior.
 func (c *LockedCatalog) GetByName(name string) (LockedName, bool) {
-	name = core.Lower(name)
-	if len(name) == 0 || len(name) > maxNameSize {
+	name, ok := asciiLowerName(name)
+	if !ok {
 		return LockedName{}, false
 	}
 

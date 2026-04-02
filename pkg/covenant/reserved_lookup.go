@@ -189,11 +189,11 @@ func (c *ReservedCatalog) HasByName(name string) bool {
 
 // GetByName returns the reserved-name entry for the provided label.
 //
-// The lookup lower-cases the input and hashes it directly, matching the JS
-// reference helper's behavior.
+// The lookup lower-cases ASCII input and hashes it directly, matching the JS
+// reference helper's ASCII encoding behavior.
 func (c *ReservedCatalog) GetByName(name string) (ReservedName, bool) {
-	name = core.Lower(name)
-	if len(name) == 0 || len(name) > maxNameSize {
+	name, ok := asciiLowerName(name)
+	if !ok {
 		return ReservedName{}, false
 	}
 

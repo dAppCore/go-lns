@@ -215,3 +215,15 @@ func TestLockedCatalogGetByNameSkipsSyntaxValidation(t *testing.T) {
 		t.Fatalf("item.Hash = %x, want %x", item.Hash, hash)
 	}
 }
+
+func TestLockedCatalogGetByNameRejectsNonASCII(t *testing.T) {
+	catalog := DefaultLockedCatalog()
+
+	if catalog.HasByName("Kfoo") {
+		t.Fatal("HasByName should reject non-ASCII labels")
+	}
+
+	if _, ok := catalog.GetByName("Kfoo"); ok {
+		t.Fatal("GetByName should reject non-ASCII labels")
+	}
+}
