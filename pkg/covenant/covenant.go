@@ -105,6 +105,15 @@ func (ct CovenantType) IsKnown() bool {
 	return ct <= TypeRevoke
 }
 
+// IsLinked returns true if the covenant type is part of the linked set
+// (REVEAL through REVOKE, inclusive).
+//
+//	covenant.TypeReveal.IsLinked() // true
+//	covenant.TypeBid.IsLinked()    // false
+func (ct CovenantType) IsLinked() bool {
+	return ct >= TypeReveal && ct <= TypeRevoke
+}
+
 // String returns the human-readable name for a covenant type.
 // Satisfies the fmt.Stringer interface.
 //
