@@ -109,6 +109,41 @@ func TestNameUndoRoundTrip(t *testing.T) {
 	}
 }
 
+func TestNameUndoPreservesInsertionOrder(t *testing.T) {
+	view := NewNameView()
+
+	var firstHash Hash
+	firstHash[0] = 0x01
+
+	var secondHash Hash
+	secondHash[0] = 0x02
+
+	first, err := view.GetNameStateSync(nil, firstHash)
+	if err != nil {
+		t.Fatalf("GetNameStateSync(first) returned error: %v", err)
+	}
+	first.setValue(11)
+
+	second, err := view.GetNameStateSync(nil, secondHash)
+	if err != nil {
+		t.Fatalf("GetNameStateSync(second) returned error: %v", err)
+	}
+	second.setValue(22)
+
+	undo := view.ToNameUndo()
+	if len(undo.Names) != 2 {
+		t.Fatalf("ToNameUndo produced %d entries, want 2", len(undo.Names))
+	}
+
+	if undo.Names[0].NameHash != firstHash {
+		t.Fatalf("first undo entry hash = %x, want %x", undo.Names[0].NameHash, firstHash)
+	}
+
+	if undo.Names[1].NameHash != secondHash {
+		t.Fatalf("second undo entry hash = %x, want %x", undo.Names[1].NameHash, secondHash)
+	}
+}
+
 func (d NameDelta) MarshalMust(t *testing.T) []byte {
 	t.Helper()
 

@@ -3,8 +3,10 @@
 package primitives
 
 import (
+	"bytes"
 	"encoding/binary"
 	"fmt"
+	"sort"
 )
 
 // NameStateGetter is the minimal lookup interface used by NameView.
@@ -15,6 +17,7 @@ type NameStateGetter interface {
 // NameView caches name states during state-tree processing.
 type NameView struct {
 	names map[Hash]*NameState
+	order []Hash
 }
 
 // NewNameView creates an empty name-state view.
@@ -49,12 +52,14 @@ func (v *NameView) GetNameStateSync(db NameStateGetter, nameHash Hash) (*NameSta
 
 		if ns != nil {
 			v.names[nameHash] = ns
+			v.order = append(v.order, nameHash)
 			return ns, nil
 		}
 	}
 
 	ns := &NameState{NameHash: nameHash}
 	v.names[nameHash] = ns
+	v.order = append(v.order, nameHash)
 	return ns, nil
 }
 
@@ -91,15 +96,46 @@ func (u *NameUndo) FromView(view *NameView) NameUndo {
 	}
 
 	u.Names = u.Names[:0]
-	for hash, ns := range view.names {
+
+	seen := make(map[Hash]struct{}, len(view.order))
+
+	appendEntry := func(hash Hash, ns *NameState) {
 		if ns == nil || !ns.HasDelta() {
-			continue
+			return
 		}
 
 		u.Names = append(u.Names, NameUndoEntry{
 			NameHash: hash,
 			Delta:    *ns.Delta(),
 		})
+	}
+
+	for _, hash := range view.order {
+		ns, ok := view.names[hash]
+		if !ok {
+			continue
+		}
+
+		seen[hash] = struct{}{}
+		appendEntry(hash, ns)
+	}
+
+	if len(seen) != len(view.names) {
+		remaining := make([]Hash, 0, len(view.names)-len(seen))
+		for hash := range view.names {
+			if _, ok := seen[hash]; ok {
+				continue
+			}
+			remaining = append(remaining, hash)
+		}
+
+		sort.Slice(remaining, func(i, j int) bool {
+			return bytes.Compare(remaining[i][:], remaining[j][:]) < 0
+		})
+
+		for _, hash := range remaining {
+			appendEntry(hash, view.names[hash])
+		}
 	}
 
 	return *u
