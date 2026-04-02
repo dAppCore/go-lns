@@ -4,6 +4,7 @@ package covenant
 
 import (
 	"bytes"
+	"crypto/sha3"
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
@@ -66,8 +67,7 @@ func HasReservedName(name string) bool {
 
 // GetReservedName returns the reserved-name entry for the provided label.
 //
-// The input is lower-cased before validation and hashing, matching the JS
-// reference helper.
+// The input is lower-cased before hashing, matching the JS reference helper.
 func GetReservedName(name string) (ReservedName, bool) {
 	return DefaultReservedCatalog().GetByName(name)
 }
@@ -109,18 +109,16 @@ func (c *ReservedCatalog) HasByName(name string) bool {
 }
 
 // GetByName returns the reserved-name entry for the provided label.
+//
+// The lookup lower-cases the input and hashes it directly, matching the JS
+// reference helper's behavior.
 func (c *ReservedCatalog) GetByName(name string) (ReservedName, bool) {
 	name = strings.ToLower(name)
-
-	if !VerifyString(name) {
+	if len(name) == 0 || len(name) > maxNameSize {
 		return ReservedName{}, false
 	}
 
-	hash, err := HashString(name)
-	if err != nil {
-		return ReservedName{}, false
-	}
-
+	hash := primitives.Hash(sha3.Sum256([]byte(name)))
 	return c.Get(hash)
 }
 

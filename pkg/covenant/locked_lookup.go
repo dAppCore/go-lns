@@ -4,6 +4,7 @@ package covenant
 
 import (
 	"bytes"
+	"crypto/sha3"
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
@@ -89,18 +90,16 @@ func (c *LockedCatalog) HasByName(name string) bool {
 }
 
 // GetByName returns the locked-name entry for the provided label.
+//
+// The lookup lower-cases the input and hashes it directly, matching the JS
+// reference helper's behavior.
 func (c *LockedCatalog) GetByName(name string) (LockedName, bool) {
 	name = strings.ToLower(name)
-
-	if !VerifyString(name) {
+	if len(name) == 0 || len(name) > maxNameSize {
 		return LockedName{}, false
 	}
 
-	hash, err := HashString(name)
-	if err != nil {
-		return LockedName{}, false
-	}
-
+	hash := primitives.Hash(sha3.Sum256([]byte(name)))
 	return c.Get(hash)
 }
 

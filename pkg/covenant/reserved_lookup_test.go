@@ -2,7 +2,12 @@
 
 package covenant
 
-import "testing"
+import (
+	"crypto/sha3"
+	"testing"
+
+	"dappco.re/go/lns/pkg/primitives"
+)
 
 func TestReservedLookupByName(t *testing.T) {
 	item, ok := GetReservedName("RESERVED")
@@ -117,5 +122,27 @@ func TestReservedCatalogHelpers(t *testing.T) {
 
 	if !entryFound || !keyFound || !valueFound {
 		t.Fatalf("catalog iterators missing reserved hash: entry=%v key=%v value=%v", entryFound, keyFound, valueFound)
+	}
+}
+
+func TestReservedCatalogGetByNameSkipsSyntaxValidation(t *testing.T) {
+	hash := primitives.Hash(sha3.Sum256([]byte("foo.bar")))
+	catalog := &ReservedCatalog{
+		byHash: map[primitives.Hash]ReservedName{
+			hash: {
+				Name:   "foo.bar",
+				Hash:   hash,
+				Target: "foo.bar.",
+			},
+		},
+	}
+
+	item, ok := catalog.GetByName("FOO.BAR")
+	if !ok {
+		t.Fatal("GetByName should hash arbitrary lowercased labels")
+	}
+
+	if item.Hash != hash {
+		t.Fatalf("item.Hash = %x, want %x", item.Hash, hash)
 	}
 }
