@@ -573,7 +573,15 @@ func TestPackageCatalogAliases(t *testing.T) {
 		t.Fatal("GetReservedByHash should return a reserved entry")
 	}
 
+	if !HasReservedHash(reservedCatalog.Keys()[0]) || !HasReservedByHash(reservedCatalog.Keys()[0]) {
+		t.Fatal("HasReservedHash aliases should report reserved entries")
+	}
+
 	if _, ok := GetLockedByHash(lockedCatalog.Keys()[0]); !ok {
 		t.Fatal("GetLockedByHash should return a locked entry")
+	}
+
+	if !HasLockedHash(lockedCatalog.Keys()[0]) || !HasLockedByHash(lockedCatalog.Keys()[0]) {
+		t.Fatal("HasLockedHash aliases should report locked entries")
 	}
 }
