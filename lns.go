@@ -210,6 +210,29 @@ func lookupCatalogName[T any](
 	return LookupCatalogName(name, byLabel, byHash)
 }
 
+// LookupCatalogName resolves a raw or canonical catalog label with service-scoped
+// dispatch semantics that match the package-level helper.
+//
+//	The helper first checks the raw label path, then falls back to canonical
+//
+// name hashing and hash callback resolution.
+func (s *Service) LookupCatalogName(
+	name any,
+	byLabel func(string) (any, bool),
+	byHash func(primitives.Hash) (any, bool),
+) (any, bool) {
+	return LookupCatalogName(name, byLabel, byHash)
+}
+
+// GetLookupCatalogName is an alias for LookupCatalogName.
+func (s *Service) GetLookupCatalogName(
+	name any,
+	byLabel func(string) (any, bool),
+	byHash func(primitives.Hash) (any, bool),
+) (any, bool) {
+	return s.LookupCatalogName(name, byLabel, byHash)
+}
+
 // Resolve returns the canonical hash for a validated .lthn name.
 //
 // This is the package-level convenience wrapper around Service.Resolve.

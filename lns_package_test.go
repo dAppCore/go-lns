@@ -308,6 +308,46 @@ func TestLookupCatalogNamePreservesDottedLabels(t *testing.T) {
 	if !ok || got != "hash" {
 		t.Fatalf("GetLookupCatalogName should alias LookupCatalogName, got %q ok=%v", got, ok)
 	}
+
+	svc := NewService(nil)
+
+	gotAny, ok := svc.LookupCatalogName(
+		"foo.bar",
+		func(name string) (any, bool) {
+			item, ok := byLabel[name]
+			return any(item), ok
+		},
+		func(name primitives.Hash) (any, bool) {
+			item, ok := byHash[name]
+			return any(item), ok
+		},
+	)
+	if !ok {
+		t.Fatalf("svc.LookupCatalogName should resolve dotted raw labels, got ok=%v", ok)
+	}
+	gotStr, ok := gotAny.(string)
+	if !ok || gotStr != "label" {
+		t.Fatalf("svc.LookupCatalogName should resolve dotted raw labels, got %v ok=%v", gotAny, ok)
+	}
+
+	gotAny, ok = svc.GetLookupCatalogName(
+		"FOO.BAR.LTHN",
+		func(name string) (any, bool) {
+			item, ok := byLabel[name]
+			return any(item), ok
+		},
+		func(name primitives.Hash) (any, bool) {
+			item, ok := byHash[name]
+			return any(item), ok
+		},
+	)
+	if !ok {
+		t.Fatalf("svc.GetLookupCatalogName should alias svc.LookupCatalogName, got ok=%v", ok)
+	}
+	gotStr, ok = gotAny.(string)
+	if !ok || gotStr != "hash" {
+		t.Fatalf("svc.GetLookupCatalogName should alias svc.LookupCatalogName, got %v ok=%v", gotAny, ok)
+	}
 }
 
 func TestPackageTypeTables(t *testing.T) {
