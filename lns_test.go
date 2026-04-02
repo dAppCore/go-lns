@@ -307,6 +307,22 @@ func TestServiceGetReservedStringAndBinary(t *testing.T) {
 	if !svc.HasReservedBinary([]byte("RESERVED")) {
 		t.Fatal("HasReservedBinary should report reserved catalog labels")
 	}
+
+	if _, ok := svc.GetReservedString("RESERVED.lthn"); !ok {
+		t.Fatal("GetReservedString should also accept canonical reserved names")
+	}
+
+	if _, ok := svc.GetReservedBinary([]byte("reserved.lthn")); !ok {
+		t.Fatal("GetReservedBinary should also accept canonical reserved names")
+	}
+
+	if !svc.HasReservedString("reserved.lthn") {
+		t.Fatal("HasReservedString should report canonical reserved names")
+	}
+
+	if !svc.HasReservedBinary([]byte("RESERVED.lthn")) {
+		t.Fatal("HasReservedBinary should report canonical reserved names")
+	}
 }
 
 func TestServiceHasReservedByName(t *testing.T) {
@@ -516,6 +532,22 @@ func TestServiceGetLockedStringAndBinary(t *testing.T) {
 
 	if !svc.HasLockedBinary([]byte("NEC")) {
 		t.Fatal("HasLockedBinary should report locked catalog labels")
+	}
+
+	if _, ok := svc.GetLockedString("NEC.lthn"); !ok {
+		t.Fatal("GetLockedString should also accept canonical locked names")
+	}
+
+	if _, ok := svc.GetLockedBinary([]byte("nec.lthn")); !ok {
+		t.Fatal("GetLockedBinary should also accept canonical locked names")
+	}
+
+	if !svc.HasLockedString("nec.lthn") {
+		t.Fatal("HasLockedString should report canonical locked names")
+	}
+
+	if !svc.HasLockedBinary([]byte("NEC.lthn")) {
+		t.Fatal("HasLockedBinary should report canonical locked names")
 	}
 }
 
