@@ -3,6 +3,7 @@
 package primitives
 
 import (
+	"encoding/json"
 	"testing"
 
 	core "dappco.re/go/core"
@@ -573,5 +574,72 @@ func TestCovenantItemErrors(t *testing.T) {
 
 	if _, err := cov.GetString(1); err == nil {
 		t.Fatal("GetString() should reject a non-string item")
+	}
+}
+
+func TestCovenantJSONRoundTrip(t *testing.T) {
+	original := Covenant{}
+	original.SetFinalize(
+		Hash{43, 44, 45},
+		188,
+		[]byte("final"),
+		12,
+		21,
+		34,
+		Hash{46, 47, 48},
+	)
+
+	jsonView := original.GetJSON()
+	if jsonView.Type != covenantTypeFinalize {
+		t.Fatalf("GetJSON() type = %d, want %d", jsonView.Type, covenantTypeFinalize)
+	}
+
+	if jsonView.Action != "FINALIZE" {
+		t.Fatalf("GetJSON() action = %q, want %q", jsonView.Action, "FINALIZE")
+	}
+
+	if len(jsonView.Items) != 7 {
+		t.Fatalf("GetJSON() item count = %d, want 7", len(jsonView.Items))
+	}
+
+	raw, err := json.Marshal(jsonView)
+	if err != nil {
+		t.Fatalf("json.Marshal returned error: %v", err)
+	}
+
+	var decoded CovenantJSON
+	if err := json.Unmarshal(raw, &decoded); err != nil {
+		t.Fatalf("json.Unmarshal returned error: %v", err)
+	}
+
+	var roundTripped Covenant
+	if err := roundTripped.FromJSON(decoded); err != nil {
+		t.Fatalf("FromJSON returned error: %v", err)
+	}
+
+	if roundTripped.Type != original.Type {
+		t.Fatalf("round-tripped type = %d, want %d", roundTripped.Type, original.Type)
+	}
+
+	if roundTripped.Len() != original.Len() {
+		t.Fatalf("round-tripped item count = %d, want %d", roundTripped.Len(), original.Len())
+	}
+
+	for i := range original.Items {
+		if string(roundTripped.Items[i]) != string(original.Items[i]) {
+			t.Fatalf("round-tripped item %d = %x, want %x", i, roundTripped.Items[i], original.Items[i])
+		}
+	}
+}
+
+func TestCovenantJSONRejectsInvalidEncoding(t *testing.T) {
+	var cov Covenant
+
+	err := cov.FromJSON(CovenantJSON{
+		Type:  covenantTypeOpen,
+		Items: []string{"zz"},
+	})
+	if err == nil {
+		t.Fatal("FromJSON should reject invalid hex data")
 	}
 }
