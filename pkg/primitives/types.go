@@ -164,6 +164,11 @@ func (a Address) IsValid() bool {
 	return true
 }
 
+// GetSize returns the size of the address when serialised.
+func (a Address) GetSize() int {
+	return 1 + 1 + len(a.Hash)
+}
+
 // Outpoint references a specific output from a previous transaction.
 // Used by transaction inputs to identify the coin being spent.
 //

@@ -130,4 +130,12 @@ func TestAddressHelpers(t *testing.T) {
 	if !injected.Equals(left) {
 		t.Fatal("Inject() should copy the source address")
 	}
+
+	if got := (Address{}).GetSize(); got != 2 {
+		t.Fatalf("GetSize() = %d, want 2", got)
+	}
+
+	if got := (Address{Version: 0, Hash: make([]byte, 20)}).GetSize(); got != 22 {
+		t.Fatalf("GetSize() = %d, want 22", got)
+	}
 }
