@@ -119,6 +119,24 @@ func (s *Service) VerifyName(name any) bool {
 	return s.Verify(name)
 }
 
+// ResolveByName is an alias for ResolveName.
+//
+//	c := core.New(core.WithService(lns.Register))
+//	svc := c.Service("lns").(*lns.Service)
+//	hash, err := svc.ResolveByName("example.lthn")
+func (s *Service) ResolveByName(name any) (primitives.Hash, error) {
+	return s.ResolveName(name)
+}
+
+// VerifyByName is an alias for VerifyName.
+//
+//	c := core.New(core.WithService(lns.Register))
+//	svc := c.Service("lns").(*lns.Service)
+//	ok := svc.VerifyByName("example.lthn")
+func (s *Service) VerifyByName(name any) bool {
+	return s.VerifyName(name)
+}
+
 // VerifyString reports whether a .lthn name supplied as a string is valid.
 func (s *Service) VerifyString(name string) bool {
 	normalized, ok := canonicalizeName(name)

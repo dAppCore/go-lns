@@ -150,6 +150,24 @@ func TestServiceResolveNameAliases(t *testing.T) {
 	}
 }
 
+func TestServiceResolveByNameAliases(t *testing.T) {
+	svc := &Service{}
+
+	got, err := svc.ResolveByName("Foo-Bar.lthn")
+	if err != nil {
+		t.Fatalf("ResolveByName returned error: %v", err)
+	}
+
+	want := primitives.Hash(sha3.Sum256([]byte("foo-bar")))
+	if got != want {
+		t.Fatalf("ResolveByName returned %x, want %x", got, want)
+	}
+
+	if _, err := svc.ResolveByName(123); err == nil {
+		t.Fatal("ResolveByName should reject unsupported input types")
+	}
+}
+
 func TestServiceVerifyNameAliases(t *testing.T) {
 	svc := &Service{}
 
@@ -163,6 +181,22 @@ func TestServiceVerifyNameAliases(t *testing.T) {
 
 	if svc.VerifyName(123) {
 		t.Fatal("VerifyName should reject unsupported input types")
+	}
+}
+
+func TestServiceVerifyByNameAliases(t *testing.T) {
+	svc := &Service{}
+
+	if !svc.VerifyByName("Foo-Bar.lthn") {
+		t.Fatal("VerifyByName should accept canonical names")
+	}
+
+	if svc.VerifyByName("foo.bar.lthn") {
+		t.Fatal("VerifyByName should reject malformed names")
+	}
+
+	if svc.VerifyByName(123) {
+		t.Fatal("VerifyByName should reject unsupported input types")
 	}
 }
 

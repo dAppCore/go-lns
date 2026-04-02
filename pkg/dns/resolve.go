@@ -138,6 +138,22 @@ func (s *Service) VerifyName(name any) bool {
 	return s.Verify(name)
 }
 
+// ResolveByName is an alias for ResolveName.
+//
+//	svc := dns.NewService()
+//	hash, err := svc.ResolveByName("example.lthn")
+func (s *Service) ResolveByName(name any) (primitives.Hash, error) {
+	return s.ResolveName(name)
+}
+
+// VerifyByName is an alias for VerifyName.
+//
+//	svc := dns.NewService()
+//	ok := svc.VerifyByName("example.lthn")
+func (s *Service) VerifyByName(name any) bool {
+	return s.VerifyName(name)
+}
+
 func canonicalizeName(name any) (string, bool) {
 	var value string
 
