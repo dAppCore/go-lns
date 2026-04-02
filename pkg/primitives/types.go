@@ -215,3 +215,8 @@ func (o Outpoint) IsNull() bool {
 func (i Input) IsCoinbase() bool {
 	return i.Prevout.IsNull()
 }
+
+// IsFinal reports whether the input sequence disables locktime semantics.
+func (i Input) IsFinal() bool {
+	return i.Sequence == ^uint32(0)
+}

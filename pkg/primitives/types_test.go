@@ -27,3 +27,15 @@ func TestInputIsCoinbase(t *testing.T) {
 		t.Fatal("input with a real prevout should not be coinbase")
 	}
 }
+
+func TestInputIsFinal(t *testing.T) {
+	final := Input{Sequence: ^uint32(0)}
+	if !final.IsFinal() {
+		t.Fatal("input with max sequence should be final")
+	}
+
+	nonFinal := Input{Sequence: 0}
+	if nonFinal.IsFinal() {
+		t.Fatal("input with a lower sequence should not be final")
+	}
+}
