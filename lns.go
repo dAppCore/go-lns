@@ -82,6 +82,11 @@ func (s *Service) GetReserved(name any) (covenant.ReservedName, bool) {
 	return covenant.GetReservedHash(hash)
 }
 
+// GetReservedName is an alias for GetReserved.
+func (s *Service) GetReservedName(name any) (covenant.ReservedName, bool) {
+	return s.GetReserved(name)
+}
+
 // HasReserved reports whether a canonicalised .lthn name is reserved.
 //
 // This mirrors the covenant package lookup helper without exposing the hash
@@ -89,6 +94,11 @@ func (s *Service) GetReserved(name any) (covenant.ReservedName, bool) {
 func (s *Service) HasReserved(name any) bool {
 	_, ok := s.GetReserved(name)
 	return ok
+}
+
+// HasReservedName is an alias for HasReserved.
+func (s *Service) HasReservedName(name any) bool {
+	return s.HasReserved(name)
 }
 
 // GetReservedHash looks up a reserved .lthn name by its canonical hash.
@@ -118,6 +128,11 @@ func (s *Service) GetLocked(name any) (covenant.LockedName, bool) {
 	return covenant.GetLockedHash(hash)
 }
 
+// GetLockedName is an alias for GetLocked.
+func (s *Service) GetLockedName(name any) (covenant.LockedName, bool) {
+	return s.GetLocked(name)
+}
+
 // HasLocked reports whether a canonicalised .lthn name is locked.
 //
 // This mirrors the covenant package lookup helper without exposing the hash
@@ -125,6 +140,11 @@ func (s *Service) GetLocked(name any) (covenant.LockedName, bool) {
 func (s *Service) HasLocked(name any) bool {
 	_, ok := s.GetLocked(name)
 	return ok
+}
+
+// HasLockedName is an alias for HasLocked.
+func (s *Service) HasLockedName(name any) bool {
+	return s.HasLocked(name)
 }
 
 // GetLockedHash looks up a locked .lthn name by its canonical hash.

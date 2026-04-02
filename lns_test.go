@@ -133,6 +133,23 @@ func TestServiceHasReserved(t *testing.T) {
 	}
 }
 
+func TestServiceReservedNameAliases(t *testing.T) {
+	svc := &Service{}
+
+	item, ok := svc.GetReservedName("RESERVED.lthn")
+	if !ok {
+		t.Fatal("GetReservedName should find the reserved reference entry")
+	}
+
+	if item.Name != "reserved" {
+		t.Fatalf("item.Name = %q, want %q", item.Name, "reserved")
+	}
+
+	if !svc.HasReservedName("reserved.lthn") {
+		t.Fatal("HasReservedName should report canonical reserved names")
+	}
+}
+
 func TestServiceGetReservedHash(t *testing.T) {
 	svc := &Service{}
 
@@ -205,6 +222,23 @@ func TestServiceHasLocked(t *testing.T) {
 
 	if svc.HasLocked(123) {
 		t.Fatal("HasLocked should reject unsupported input types")
+	}
+}
+
+func TestServiceLockedNameAliases(t *testing.T) {
+	svc := &Service{}
+
+	item, ok := svc.GetLockedName("NEC.lthn")
+	if !ok {
+		t.Fatal("GetLockedName should find the locked reference entry")
+	}
+
+	if item.Name != "nec" {
+		t.Fatalf("item.Name = %q, want %q", item.Name, "nec")
+	}
+
+	if !svc.HasLockedName("nec.lthn") {
+		t.Fatal("HasLockedName should report canonical locked names")
 	}
 }
 
