@@ -101,6 +101,21 @@ func VerifyName(name any) bool {
 	}
 }
 
+// VerifyByName is an alias for VerifyName.
+func VerifyByName(name any) bool {
+	return VerifyName(name)
+}
+
+// VerifyByString is an alias for VerifyString.
+func VerifyByString(name string) bool {
+	return VerifyString(name)
+}
+
+// VerifyByBinary is an alias for VerifyBinary.
+func VerifyByBinary(name []byte) bool {
+	return VerifyBinary(name)
+}
+
 // HashString hashes a validated domain name.
 func HashString(name string) (primitives.Hash, error) {
 	if !VerifyString(name) {
@@ -111,6 +126,11 @@ func HashString(name string) (primitives.Hash, error) {
 	return primitives.Hash(sum), nil
 }
 
+// HashByString is an alias for HashString.
+func HashByString(name string) (primitives.Hash, error) {
+	return HashString(name)
+}
+
 // HashBinary hashes a validated domain name.
 func HashBinary(name []byte) (primitives.Hash, error) {
 	if !VerifyBinary(name) {
@@ -119,6 +139,11 @@ func HashBinary(name []byte) (primitives.Hash, error) {
 
 	sum := sha3.Sum256(name)
 	return primitives.Hash(sum), nil
+}
+
+// HashByBinary is an alias for HashBinary.
+func HashByBinary(name []byte) (primitives.Hash, error) {
+	return HashBinary(name)
 }
 
 // HashName hashes a validated domain name.
@@ -133,4 +158,9 @@ func HashName(name any) (primitives.Hash, error) {
 	default:
 		return primitives.Hash{}, core.E("covenant.HashName", "invalid name type", nil)
 	}
+}
+
+// HashByName is an alias for HashName.
+func HashByName(name any) (primitives.Hash, error) {
+	return HashName(name)
 }
