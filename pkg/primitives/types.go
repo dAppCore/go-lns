@@ -149,6 +149,13 @@ type Covenant struct {
 	Items [][]byte
 }
 
+const covenantTypeRevoke = 11 // Matches the JS covenant.TypeRevoke value.
+
+// IsUnspendable reports whether the covenant burns the output.
+func (c Covenant) IsUnspendable() bool {
+	return c.Type == covenantTypeRevoke
+}
+
 // Transaction is a complete name-chain transaction containing inputs that
 // spend previous outputs and outputs that create new coins or name operations.
 //
@@ -275,4 +282,9 @@ func (i Input) IsCoinbase() bool {
 // IsFinal reports whether the input sequence disables locktime semantics.
 func (i Input) IsFinal() bool {
 	return i.Sequence == ^uint32(0)
+}
+
+// IsUnspendable reports whether the output cannot be spent.
+func (o Output) IsUnspendable() bool {
+	return o.Address.IsNulldata() || o.Covenant.IsUnspendable()
 }

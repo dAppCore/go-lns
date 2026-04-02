@@ -39,3 +39,27 @@ func TestInputIsFinal(t *testing.T) {
 		t.Fatal("input with a lower sequence should not be final")
 	}
 }
+
+func TestCovenantIsUnspendable(t *testing.T) {
+	if got := (Covenant{}).IsUnspendable(); got {
+		t.Fatal("zero covenant should be spendable")
+	}
+
+	if got := (Covenant{Type: covenantTypeRevoke}).IsUnspendable(); !got {
+		t.Fatal("revoke covenant should be unspendable")
+	}
+}
+
+func TestOutputIsUnspendable(t *testing.T) {
+	if got := (Output{}).IsUnspendable(); got {
+		t.Fatal("zero output should be spendable")
+	}
+
+	if got := (Output{Address: Address{Version: 31}}).IsUnspendable(); !got {
+		t.Fatal("nulldata output should be unspendable")
+	}
+
+	if got := (Output{Covenant: Covenant{Type: covenantTypeRevoke}}).IsUnspendable(); !got {
+		t.Fatal("revoke covenant output should be unspendable")
+	}
+}
