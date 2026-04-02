@@ -269,6 +269,48 @@ func TestCovenantItemHelpers(t *testing.T) {
 		t.Fatalf("SetClaim() commit height = %d, want 99", commitHeight)
 	}
 
+	cov.SetRegister(Hash{25, 26, 27}, 144, []byte("record"), Hash{28, 29, 30})
+
+	if got := cov.Type; got != covenantTypeRegister {
+		t.Fatalf("SetRegister() set type %d, want %d", got, covenantTypeRegister)
+	}
+
+	if got := cov.Len(); got != 4 {
+		t.Fatalf("SetRegister() len = %d, want 4", got)
+	}
+
+	hash, err = cov.GetHash(0)
+	if err != nil {
+		t.Fatalf("SetRegister() GetHash returned error: %v", err)
+	}
+	if hash[0] != 25 || hash[1] != 26 || hash[2] != 27 {
+		t.Fatalf("SetRegister() hash = %x, want 191a1b...", hash[:3])
+	}
+
+	height, err = cov.GetU32(1)
+	if err != nil {
+		t.Fatalf("SetRegister() GetU32 returned error: %v", err)
+	}
+	if height != 144 {
+		t.Fatalf("SetRegister() height = %d, want 144", height)
+	}
+
+	str, err = cov.GetString(2)
+	if err != nil {
+		t.Fatalf("SetRegister() GetString returned error: %v", err)
+	}
+	if str != "record" {
+		t.Fatalf("SetRegister() GetString() = %q, want %q", str, "record")
+	}
+
+	blockHash, err := cov.GetHash(3)
+	if err != nil {
+		t.Fatalf("SetRegister() GetHash(3) returned error: %v", err)
+	}
+	if blockHash[0] != 28 || blockHash[1] != 29 || blockHash[2] != 30 {
+		t.Fatalf("SetRegister() block hash = %x, want 1c1d1e...", blockHash[:3])
+	}
+
 	cov = Covenant{}
 	cov.PushU8(7).
 		PushU32(0x11223344).

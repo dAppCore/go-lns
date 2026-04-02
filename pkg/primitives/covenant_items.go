@@ -187,6 +187,17 @@ func (c *Covenant) SetClaim(nameHash Hash, height uint32, rawName []byte, flags 
 	return c
 }
 
+// SetRegister configures the covenant as a REGISTER operation.
+func (c *Covenant) SetRegister(nameHash Hash, height uint32, record []byte, blockHash Hash) *Covenant {
+	c.Type = covenantTypeRegister
+	c.Items = nil
+	c.PushHash(nameHash)
+	c.PushU32(height)
+	c.Push(record)
+	c.PushHash(blockHash)
+	return c
+}
+
 // GetU8 returns the item at the requested index as a uint8.
 func (c Covenant) GetU8(index int) (uint8, error) {
 	item, err := c.Get(index)
