@@ -87,6 +87,13 @@ func TypeName(ct CovenantType) string {
 	return "UNKNOWN"
 }
 
+// GetTypeName is an alias for TypeName.
+//
+//	name := covenant.GetTypeName(covenant.TypeBid)
+func GetTypeName(ct CovenantType) string {
+	return TypeName(ct)
+}
+
 // IsName returns true if the covenant type is a name-related operation
 // (anything from CLAIM through REVOKE, inclusive).
 //

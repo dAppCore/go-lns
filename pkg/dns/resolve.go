@@ -17,6 +17,9 @@ import (
 	"dappco.re/go/lns/pkg/primitives"
 )
 
+// ServiceName is the registered name for the DNS service group.
+const ServiceName = "dns"
+
 // Service handles DNS resolution for .lthn names against the LNS chain state.
 //
 //	svc := dns.NewService()
@@ -66,6 +69,13 @@ func (s *Service) Core() *core.Core {
 //	core := svc.GetCore()
 func (s *Service) GetCore() *core.Core {
 	return s.Core()
+}
+
+// GetServiceName returns the registered name for the DNS service group.
+//
+//	name := svc.GetServiceName()
+func (s *Service) GetServiceName() string {
+	return ServiceName
 }
 
 // Resolve normalises a .lthn name and returns its canonical hash.

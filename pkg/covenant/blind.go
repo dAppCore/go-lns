@@ -39,3 +39,10 @@ func Blind(value uint64, nonce primitives.Hash) (primitives.Hash, error) {
 	copy(blind[:], sum.Sum(nil))
 	return blind, nil
 }
+
+// GetBlind is an alias for Blind.
+//
+//	bid, err := covenant.GetBlind(1000, nonce)
+func GetBlind(value uint64, nonce primitives.Hash) (primitives.Hash, error) {
+	return Blind(value, nonce)
+}

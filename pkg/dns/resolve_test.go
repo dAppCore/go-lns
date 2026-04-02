@@ -322,3 +322,11 @@ func TestCoreAccessors(t *testing.T) {
 		t.Fatal("GetCore should alias Core")
 	}
 }
+
+func TestServiceName(t *testing.T) {
+	svc := NewService()
+
+	if got := svc.GetServiceName(); got != ServiceName {
+		t.Fatalf("GetServiceName() = %q, want %q", got, ServiceName)
+	}
+}

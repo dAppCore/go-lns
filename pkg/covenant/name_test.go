@@ -43,6 +43,16 @@ func TestNameFlags(t *testing.T) {
 	}
 }
 
+func TestGetTypeName(t *testing.T) {
+	if got := GetTypeName(TypeBid); got != "BID" {
+		t.Fatalf("GetTypeName(TypeBid) = %q, want %q", got, "BID")
+	}
+
+	if got := GetTypeName(CovenantType(99)); got != "UNKNOWN" {
+		t.Fatalf("GetTypeName(99) = %q, want %q", got, "UNKNOWN")
+	}
+}
+
 func TestVerifyString(t *testing.T) {
 	cases := []struct {
 		name string
