@@ -133,28 +133,28 @@ func HashBinary(name []byte) (primitives.Hash, error) {
 //
 //	hash, err := lns.ResolveByString("example.lthn")
 func ResolveByString(name string) (primitives.Hash, error) {
-	return resolveCanonicalName("lns.ResolveByString", name)
+	return ResolveString(name)
 }
 
 // ResolveByBinary is an alias for ResolveBinary.
 //
 //	hash, err := lns.ResolveByBinary([]byte("example.lthn"))
 func ResolveByBinary(name []byte) (primitives.Hash, error) {
-	return resolveCanonicalName("lns.ResolveByBinary", name)
+	return ResolveBinary(name)
 }
 
 // HashByString is an alias for HashString.
 //
 //	hash, err := lns.HashByString("example.lthn")
 func HashByString(name string) (primitives.Hash, error) {
-	return resolveCanonicalName("lns.HashByString", name)
+	return HashString(name)
 }
 
 // HashByBinary is an alias for HashBinary.
 //
 //	hash, err := lns.HashByBinary([]byte("example.lthn"))
 func HashByBinary(name []byte) (primitives.Hash, error) {
-	return resolveCanonicalName("lns.HashByBinary", name)
+	return HashBinary(name)
 }
 
 // ResolveString returns the canonical hash for a .lthn name supplied as a string.
@@ -175,42 +175,42 @@ func ResolveBinary(name []byte) (primitives.Hash, error) {
 //
 //	hash, err := lns.ResolveName("example.lthn")
 func ResolveName(name any) (primitives.Hash, error) {
-	return resolveCanonicalName("lns.ResolveName", name)
+	return Resolve(name)
 }
 
 // HashName is an alias for Hash.
 //
 //	hash, err := lns.HashName("example.lthn")
 func HashName(name any) (primitives.Hash, error) {
-	return resolveCanonicalName("lns.HashName", name)
+	return Hash(name)
 }
 
 // VerifyName is an alias for Verify.
 //
 //	ok := lns.VerifyName("example.lthn")
 func VerifyName(name any) bool {
-	return verifyCanonicalName(name)
+	return Verify(name)
 }
 
 // ResolveByName is an alias for ResolveName.
 //
 //	hash, err := lns.ResolveByName("example.lthn")
 func ResolveByName(name any) (primitives.Hash, error) {
-	return resolveCanonicalName("lns.ResolveByName", name)
+	return ResolveName(name)
 }
 
 // HashByName is an alias for HashName.
 //
 //	hash, err := lns.HashByName("example.lthn")
 func HashByName(name any) (primitives.Hash, error) {
-	return resolveCanonicalName("lns.HashByName", name)
+	return HashName(name)
 }
 
 // VerifyByName is an alias for VerifyName.
 //
 //	ok := lns.VerifyByName("example.lthn")
 func VerifyByName(name any) bool {
-	return verifyCanonicalName(name)
+	return VerifyName(name)
 }
 
 // VerifyString reports whether a .lthn name supplied as a string is valid.
@@ -231,14 +231,14 @@ func VerifyBinary(name []byte) bool {
 //
 //	ok := lns.VerifyByString("example.lthn")
 func VerifyByString(name string) bool {
-	return verifyCanonicalName(name)
+	return VerifyString(name)
 }
 
 // VerifyByBinary is an alias for VerifyBinary.
 //
 //	ok := lns.VerifyByBinary([]byte("example.lthn"))
 func VerifyByBinary(name []byte) bool {
-	return verifyCanonicalName(name)
+	return VerifyBinary(name)
 }
 
 // Blind returns the sealed-bid commitment for an amount and nonce.
@@ -252,7 +252,7 @@ func Blind(value uint64, nonce primitives.Hash) (primitives.Hash, error) {
 //
 //	bid, err := lns.GetBlind(1000, nonce)
 func GetBlind(value uint64, nonce primitives.Hash) (primitives.Hash, error) {
-	return covenant.Blind(value, nonce)
+	return Blind(value, nonce)
 }
 
 // TypeName returns the canonical string for a covenant type.
@@ -405,7 +405,7 @@ func GetTypesByVal() map[covenant.CovenantType]string {
 //
 //	name := lns.GetTypeName(covenant.TypeBid)
 func GetTypeName(ct covenant.CovenantType) string {
-	return covenant.TypeName(ct)
+	return TypeName(ct)
 }
 
 // MaxNameSize returns the maximum supported name size.
