@@ -79,6 +79,40 @@ func TestServiceVerify(t *testing.T) {
 	}
 }
 
+func TestServiceResolveNameAliases(t *testing.T) {
+	svc := &Service{}
+
+	got, err := svc.ResolveName("Foo-Bar.lthn")
+	if err != nil {
+		t.Fatalf("ResolveName returned error: %v", err)
+	}
+
+	want := primitives.Hash(sha3.Sum256([]byte("foo-bar")))
+	if got != want {
+		t.Fatalf("ResolveName returned %x, want %x", got, want)
+	}
+
+	if _, err := svc.ResolveName(123); err == nil {
+		t.Fatal("ResolveName should reject unsupported input types")
+	}
+}
+
+func TestServiceVerifyNameAliases(t *testing.T) {
+	svc := &Service{}
+
+	if !svc.VerifyName("Foo-Bar.lthn") {
+		t.Fatal("VerifyName should accept canonical names")
+	}
+
+	if svc.VerifyName("foo.bar.lthn") {
+		t.Fatal("VerifyName should reject malformed names")
+	}
+
+	if svc.VerifyName(123) {
+		t.Fatal("VerifyName should reject unsupported input types")
+	}
+}
+
 func TestServiceGetReserved(t *testing.T) {
 	svc := &Service{}
 

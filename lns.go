@@ -49,6 +49,10 @@ func Register(c *core.Core) core.Result {
 //
 // This mirrors the subpackage resolver while keeping the service-level API
 // ergonomic for callers that only have an lns.Service instance.
+//
+//	c := core.New(core.WithService(lns.Register))
+//	svc := c.Service("lns").(*lns.Service)
+//	hash, err := svc.Resolve("example.lthn")
 func (s *Service) Resolve(name any) (primitives.Hash, error) {
 	return s.dnsService().Resolve(name)
 }
@@ -56,8 +60,30 @@ func (s *Service) Resolve(name any) (primitives.Hash, error) {
 // Verify reports whether a .lthn name is valid after canonicalisation.
 //
 // This keeps the service-level API aligned with the DNS resolver helpers.
+//
+//	c := core.New(core.WithService(lns.Register))
+//	svc := c.Service("lns").(*lns.Service)
+//	ok := svc.Verify("example.lthn")
 func (s *Service) Verify(name any) bool {
 	return s.dnsService().Verify(name)
+}
+
+// ResolveName is an alias for Resolve.
+//
+//	c := core.New(core.WithService(lns.Register))
+//	svc := c.Service("lns").(*lns.Service)
+//	hash, err := svc.ResolveName("example.lthn")
+func (s *Service) ResolveName(name any) (primitives.Hash, error) {
+	return s.Resolve(name)
+}
+
+// VerifyName is an alias for Verify.
+//
+//	c := core.New(core.WithService(lns.Register))
+//	svc := c.Service("lns").(*lns.Service)
+//	ok := svc.VerifyName("example.lthn")
+func (s *Service) VerifyName(name any) bool {
+	return s.Verify(name)
 }
 
 func (s *Service) dnsService() *dns.Service {

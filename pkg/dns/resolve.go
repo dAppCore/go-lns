@@ -60,6 +60,9 @@ func WithCore(c *core.Core) ServiceOption {
 // matching DNS case-insensitivity while still enforcing the covenant name
 // rules. Byte-slice inputs are accepted for parity with the covenant helper
 // APIs and are interpreted as ASCII name data.
+//
+//	svc := dns.NewService()
+//	hash, err := svc.Resolve("example.lthn")
 func (s *Service) Resolve(name any) (primitives.Hash, error) {
 	normalized, ok := canonicalizeName(name)
 	if !ok {
@@ -77,6 +80,9 @@ func (s *Service) Resolve(name any) (primitives.Hash, error) {
 //
 // This mirrors Resolve's input handling but returns a boolean so callers can
 // validate user input without allocating or hashing.
+//
+//	svc := dns.NewService()
+//	ok := svc.Verify("example.lthn")
 func (s *Service) Verify(name any) bool {
 	normalized, ok := canonicalizeName(name)
 	if !ok {
@@ -84,6 +90,22 @@ func (s *Service) Verify(name any) bool {
 	}
 
 	return covenant.VerifyString(normalized)
+}
+
+// ResolveName is an alias for Resolve.
+//
+//	svc := dns.NewService()
+//	hash, err := svc.ResolveName("example.lthn")
+func (s *Service) ResolveName(name any) (primitives.Hash, error) {
+	return s.Resolve(name)
+}
+
+// VerifyName is an alias for Verify.
+//
+//	svc := dns.NewService()
+//	ok := svc.VerifyName("example.lthn")
+func (s *Service) VerifyName(name any) bool {
+	return s.Verify(name)
 }
 
 func canonicalizeName(name any) (string, bool) {

@@ -30,6 +30,24 @@ func TestResolve(t *testing.T) {
 	}
 }
 
+func TestResolveNameAliases(t *testing.T) {
+	svc := NewService()
+
+	got, err := svc.ResolveName("Foo-Bar.lthn")
+	if err != nil {
+		t.Fatalf("ResolveName returned error: %v", err)
+	}
+
+	want := sha3.Sum256([]byte("foo-bar"))
+	if got != want {
+		t.Fatalf("ResolveName returned %x, want %x", got, want)
+	}
+
+	if _, err := svc.ResolveName(123); err == nil {
+		t.Fatal("ResolveName should reject unsupported input types")
+	}
+}
+
 func TestResolveRejectsInvalidNames(t *testing.T) {
 	svc := NewService()
 
@@ -73,5 +91,21 @@ func TestVerify(t *testing.T) {
 		if got := svc.Verify(tc.name); got != tc.ok {
 			t.Fatalf("Verify(%v) = %v, want %v", tc.name, got, tc.ok)
 		}
+	}
+}
+
+func TestVerifyNameAliases(t *testing.T) {
+	svc := NewService()
+
+	if !svc.VerifyName("Foo-Bar.lthn") {
+		t.Fatal("VerifyName should accept canonical names")
+	}
+
+	if svc.VerifyName("foo.bar.lthn") {
+		t.Fatal("VerifyName should reject malformed names")
+	}
+
+	if svc.VerifyName(123) {
+		t.Fatal("VerifyName should reject unsupported input types")
 	}
 }
