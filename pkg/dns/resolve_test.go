@@ -5,6 +5,8 @@ package dns
 import (
 	"crypto/sha3"
 	"testing"
+
+	core "dappco.re/go/core"
 )
 
 func TestResolve(t *testing.T) {
@@ -305,5 +307,18 @@ func TestVerifyByNameAliases(t *testing.T) {
 
 	if svc.VerifyByName(123) {
 		t.Fatal("VerifyByName should reject unsupported input types")
+	}
+}
+
+func TestCoreAccessors(t *testing.T) {
+	c := &core.Core{}
+	svc := NewService(WithCore(c))
+
+	if svc.Core() != c {
+		t.Fatal("Core should return the configured Core instance")
+	}
+
+	if svc.GetCore() != c {
+		t.Fatal("GetCore should alias Core")
 	}
 }

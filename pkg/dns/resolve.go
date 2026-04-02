@@ -50,6 +50,24 @@ func WithCore(c *core.Core) ServiceOption {
 	}
 }
 
+// Core returns the Core instance associated with the DNS service.
+//
+//	core := svc.Core()
+func (s *Service) Core() *core.Core {
+	if s == nil {
+		return nil
+	}
+
+	return s.core
+}
+
+// GetCore is an alias for Core.
+//
+//	core := svc.GetCore()
+func (s *Service) GetCore() *core.Core {
+	return s.Core()
+}
+
 // Resolve normalises a .lthn name and returns its canonical hash.
 //
 // The resolver accepts either a bare name ("example") or a fully qualified

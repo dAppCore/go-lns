@@ -7,6 +7,7 @@ import (
 	"encoding/binary"
 	"testing"
 
+	core "dappco.re/go/core"
 	"dappco.re/go/lns/pkg/covenant"
 	"dappco.re/go/lns/pkg/primitives"
 	"golang.org/x/crypto/blake2b"
@@ -356,6 +357,42 @@ func TestServiceTypeName(t *testing.T) {
 
 	if got := svc.TypeName(covenant.CovenantType(99)); got != "UNKNOWN" {
 		t.Fatalf("TypeName(99) = %q, want %q", got, "UNKNOWN")
+	}
+}
+
+func TestServiceGetBlindAndGetTypeNameAliases(t *testing.T) {
+	svc := &Service{}
+
+	var nonce primitives.Hash
+	got, err := svc.GetBlind(1, nonce)
+	if err != nil {
+		t.Fatalf("GetBlind returned error: %v", err)
+	}
+
+	want, err := svc.Blind(1, nonce)
+	if err != nil {
+		t.Fatalf("Blind returned error: %v", err)
+	}
+
+	if got != want {
+		t.Fatalf("GetBlind returned %x, want %x", got, want)
+	}
+
+	if got := svc.GetTypeName(covenant.TypeBid); got != "BID" {
+		t.Fatalf("GetTypeName(TypeBid) = %q, want %q", got, "BID")
+	}
+}
+
+func TestServiceCoreAccessors(t *testing.T) {
+	runtime := core.NewServiceRuntime(nil, serviceOptions{})
+	svc := &Service{ServiceRuntime: runtime}
+
+	if svc.Core() != nil {
+		t.Fatal("Core should return nil when the service has no Core")
+	}
+
+	if svc.GetCore() != nil {
+		t.Fatal("GetCore should alias Core")
 	}
 }
 

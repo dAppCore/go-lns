@@ -254,11 +254,25 @@ func (s *Service) Blind(value uint64, nonce primitives.Hash) (primitives.Hash, e
 	return covenant.Blind(value, nonce)
 }
 
+// GetBlind is an alias for Blind.
+//
+//	bid, err := svc.GetBlind(1000, nonce)
+func (s *Service) GetBlind(value uint64, nonce primitives.Hash) (primitives.Hash, error) {
+	return s.Blind(value, nonce)
+}
+
 // TypeName returns the canonical string for a covenant type.
 //
 //	name := svc.TypeName(covenant.TypeBid)
 func (s *Service) TypeName(ct covenant.CovenantType) string {
 	return covenant.TypeName(ct)
+}
+
+// GetTypeName is an alias for TypeName.
+//
+//	name := svc.GetTypeName(covenant.TypeBid)
+func (s *Service) GetTypeName(ct covenant.CovenantType) string {
+	return s.TypeName(ct)
 }
 
 // GetReserved looks up a reserved .lthn name after canonicalisation.
@@ -624,6 +638,24 @@ func (s *Service) HasLockedByHash(hash primitives.Hash) bool {
 //	items := catalog.Entries()
 func (s *Service) ReservedCatalog() *covenant.ReservedCatalog {
 	return covenant.DefaultReservedCatalog()
+}
+
+// Core returns the Core instance this service is registered with.
+//
+//	core := svc.Core()
+func (s *Service) Core() *core.Core {
+	if s == nil || s.ServiceRuntime == nil {
+		return nil
+	}
+
+	return s.ServiceRuntime.Core()
+}
+
+// GetCore is an alias for Core.
+//
+//	core := svc.GetCore()
+func (s *Service) GetCore() *core.Core {
+	return s.Core()
 }
 
 // GetReservedCatalog is an alias for ReservedCatalog.
