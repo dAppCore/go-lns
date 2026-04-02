@@ -143,6 +143,28 @@ func TestHasSaneCovenants(t *testing.T) {
 	if HasSaneCovenants(invalid) {
 		t.Fatal("HasSaneCovenants should reject non-zero open heights")
 	}
+
+	coinbaseClaim := primitives.Transaction{
+		Inputs: []primitives.Input{
+			{Prevout: primitives.NewOutpoint()},
+			{Prevout: primitives.Outpoint{TxHash: primitives.Hash{3}, Index: 0}},
+		},
+		Outputs: []primitives.Output{
+			{Covenant: primitives.Covenant{Type: uint8(TypeNone)}},
+			{Covenant: primitives.Covenant{Type: uint8(TypeClaim), Items: [][]byte{
+				hash[:],
+				make([]byte, 4),
+				[]byte("example-name"),
+				[]byte{0},
+				make([]byte, 32),
+				make([]byte, 4),
+			}}},
+		},
+	}
+
+	if HasSaneCovenants(coinbaseClaim) {
+		t.Fatal("HasSaneCovenants should reject coinbase claims without exactly one witness item")
+	}
 }
 
 type testCoinView struct {

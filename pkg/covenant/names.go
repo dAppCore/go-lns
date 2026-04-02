@@ -159,6 +159,11 @@ func HasSaneCovenants(tx primitives.Transaction) bool {
 					return false
 				}
 
+				input := tx.Inputs[i]
+				if len(input.Witness) != 1 {
+					return false
+				}
+
 				if len(cov.Items[0]) != 32 || len(cov.Items[1]) != 4 || len(cov.Items[2]) == 0 || len(cov.Items[2]) > MaxNameSize || len(cov.Items[3]) != 1 || len(cov.Items[4]) != 32 || len(cov.Items[5]) != 4 {
 					return false
 				}

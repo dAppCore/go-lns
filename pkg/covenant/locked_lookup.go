@@ -139,6 +139,11 @@ func GetLockedCatalog() *LockedCatalog {
 	return DefaultLockedCatalog()
 }
 
+// GetDefaultLockedCatalog is an alias for DefaultLockedCatalog.
+func GetDefaultLockedCatalog() *LockedCatalog {
+	return DefaultLockedCatalog()
+}
+
 // Size reports the number of locked-name entries in the catalog.
 func (c *LockedCatalog) Size() int {
 	if c == nil {
