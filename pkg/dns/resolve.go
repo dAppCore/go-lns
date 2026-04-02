@@ -7,7 +7,7 @@
 // Create a resolver and look up a name:
 //
 //	svc := dns.NewService()
-//	// svc.Resolve("example") — implementation pending
+//	hash, err := svc.Resolve("example.lthn")
 package dns
 
 import (
@@ -17,8 +17,6 @@ import (
 )
 
 // Service handles DNS resolution for .lthn names against the LNS chain state.
-// The full resolution logic (672 lines from the existing Go implementation)
-// will be merged in a subsequent pass.
 //
 //	svc := dns.NewService()
 type Service struct {
