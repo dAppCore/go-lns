@@ -33,6 +33,29 @@ func TestServiceResolve(t *testing.T) {
 	}
 }
 
+func TestServiceResolveStringAndBinary(t *testing.T) {
+	svc := &Service{}
+
+	got, err := svc.ResolveString("Foo-Bar.lthn")
+	if err != nil {
+		t.Fatalf("ResolveString returned error: %v", err)
+	}
+
+	want := primitives.Hash(sha3.Sum256([]byte("foo-bar")))
+	if got != want {
+		t.Fatalf("ResolveString returned %x, want %x", got, want)
+	}
+
+	got, err = svc.ResolveBinary([]byte("Foo-Bar.lthn"))
+	if err != nil {
+		t.Fatalf("ResolveBinary returned error: %v", err)
+	}
+
+	if got != want {
+		t.Fatalf("ResolveBinary returned %x, want %x", got, want)
+	}
+}
+
 func TestServiceResolveRejectsInvalidNames(t *testing.T) {
 	svc := &Service{}
 
@@ -76,6 +99,26 @@ func TestServiceVerify(t *testing.T) {
 		if got := svc.Verify(tc.name); got != tc.ok {
 			t.Fatalf("Verify(%v) = %v, want %v", tc.name, got, tc.ok)
 		}
+	}
+}
+
+func TestServiceVerifyStringAndBinary(t *testing.T) {
+	svc := &Service{}
+
+	if !svc.VerifyString("Foo-Bar.lthn") {
+		t.Fatal("VerifyString should accept canonical names")
+	}
+
+	if svc.VerifyString("foo.bar.lthn") {
+		t.Fatal("VerifyString should reject malformed names")
+	}
+
+	if !svc.VerifyBinary([]byte("Foo-Bar.lthn")) {
+		t.Fatal("VerifyBinary should accept canonical names")
+	}
+
+	if svc.VerifyBinary([]byte("foo.bar.lthn")) {
+		t.Fatal("VerifyBinary should reject malformed names")
 	}
 }
 

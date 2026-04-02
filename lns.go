@@ -13,9 +13,10 @@
 package lns
 
 import (
+	"strings"
+
 	core "dappco.re/go/core"
 	"dappco.re/go/lns/pkg/covenant"
-	"dappco.re/go/lns/pkg/dns"
 	"dappco.re/go/lns/pkg/primitives"
 )
 
@@ -54,7 +55,14 @@ func Register(c *core.Core) core.Result {
 //	svc := c.Service("lns").(*lns.Service)
 //	hash, err := svc.Resolve("example.lthn")
 func (s *Service) Resolve(name any) (primitives.Hash, error) {
-	return s.dnsService().Resolve(name)
+	switch v := name.(type) {
+	case string:
+		return s.ResolveString(v)
+	case []byte:
+		return s.ResolveBinary(v)
+	default:
+		return primitives.Hash{}, core.E("lns.Service.Resolve", "invalid name type", nil)
+	}
 }
 
 // Verify reports whether a .lthn name is valid after canonicalisation.
@@ -65,7 +73,34 @@ func (s *Service) Resolve(name any) (primitives.Hash, error) {
 //	svc := c.Service("lns").(*lns.Service)
 //	ok := svc.Verify("example.lthn")
 func (s *Service) Verify(name any) bool {
-	return s.dnsService().Verify(name)
+	switch v := name.(type) {
+	case string:
+		return s.VerifyString(v)
+	case []byte:
+		return s.VerifyBinary(v)
+	default:
+		return false
+	}
+}
+
+// ResolveString returns the canonical hash for a .lthn name supplied as a string.
+func (s *Service) ResolveString(name string) (primitives.Hash, error) {
+	normalized, ok := canonicalizeName(name)
+	if !ok {
+		return primitives.Hash{}, core.E("lns.Service.ResolveString", "invalid name", nil)
+	}
+
+	return covenant.HashString(normalized)
+}
+
+// ResolveBinary returns the canonical hash for a .lthn name supplied as bytes.
+func (s *Service) ResolveBinary(name []byte) (primitives.Hash, error) {
+	normalized, ok := canonicalizeName(name)
+	if !ok {
+		return primitives.Hash{}, core.E("lns.Service.ResolveBinary", "invalid name", nil)
+	}
+
+	return covenant.HashString(normalized)
 }
 
 // ResolveName is an alias for Resolve.
@@ -86,13 +121,24 @@ func (s *Service) VerifyName(name any) bool {
 	return s.Verify(name)
 }
 
-func (s *Service) dnsService() *dns.Service {
-	opts := make([]dns.ServiceOption, 0, 1)
-	if s != nil && s.ServiceRuntime != nil {
-		opts = append(opts, dns.WithCore(s.Core()))
+// VerifyString reports whether a .lthn name supplied as a string is valid.
+func (s *Service) VerifyString(name string) bool {
+	normalized, ok := canonicalizeName(name)
+	if !ok {
+		return false
 	}
 
-	return dns.NewService(opts...)
+	return covenant.VerifyString(normalized)
+}
+
+// VerifyBinary reports whether a .lthn name supplied as bytes is valid.
+func (s *Service) VerifyBinary(name []byte) bool {
+	normalized, ok := canonicalizeName(name)
+	if !ok {
+		return false
+	}
+
+	return covenant.VerifyString(normalized)
 }
 
 // GetReserved looks up a reserved .lthn name after canonicalisation.
@@ -355,4 +401,30 @@ func catalogLabel(name any) (string, bool) {
 	default:
 		return "", false
 	}
+}
+
+func canonicalizeName(name any) (string, bool) {
+	var value string
+
+	switch v := name.(type) {
+	case string:
+		value = v
+	case []byte:
+		value = string(v)
+	default:
+		return "", false
+	}
+
+	value = strings.ToLower(value)
+
+	switch {
+	case strings.HasSuffix(value, ".lthn."):
+		value = strings.TrimSuffix(value, ".lthn.")
+	case strings.HasSuffix(value, ".lthn"):
+		value = strings.TrimSuffix(value, ".lthn")
+	case strings.HasSuffix(value, "."):
+		value = strings.TrimSuffix(value, ".")
+	}
+
+	return value, true
 }
