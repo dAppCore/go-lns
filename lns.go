@@ -47,6 +47,13 @@ func Register(c *core.Core) core.Result {
 	return core.Result{Value: svc, OK: true}
 }
 
+// GetServiceName returns the registered name for the LNS service group.
+//
+//	name := lns.GetServiceName()
+func GetServiceName() string {
+	return ServiceName
+}
+
 func packageService() *Service {
 	return packageSvc
 }

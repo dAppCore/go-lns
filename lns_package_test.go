@@ -145,6 +145,12 @@ func TestPackageBlindAndTypeAliases(t *testing.T) {
 	}
 }
 
+func TestPackageServiceNameAlias(t *testing.T) {
+	if got := GetServiceName(); got != ServiceName {
+		t.Fatalf("GetServiceName() = %q, want %q", got, ServiceName)
+	}
+}
+
 func TestPackageTypeTables(t *testing.T) {
 	if len(Types) == 0 || len(TypesByVal) == 0 {
 		t.Fatal("type lookup tables should not be empty")
