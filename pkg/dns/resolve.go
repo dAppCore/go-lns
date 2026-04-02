@@ -11,8 +11,6 @@
 package dns
 
 import (
-	"strings"
-
 	core "dappco.re/go/core"
 	"dappco.re/go/lns/pkg/covenant"
 	"dappco.re/go/lns/pkg/primitives"
@@ -120,15 +118,15 @@ func canonicalizeName(name any) (string, bool) {
 		return "", false
 	}
 
-	value = strings.ToLower(value)
+	value = core.Lower(value)
 
 	switch {
-	case strings.HasSuffix(value, ".lthn."):
-		value = strings.TrimSuffix(value, ".lthn.")
-	case strings.HasSuffix(value, ".lthn"):
-		value = strings.TrimSuffix(value, ".lthn")
-	case strings.HasSuffix(value, "."):
-		value = strings.TrimSuffix(value, ".")
+	case core.HasSuffix(value, ".lthn."):
+		value = core.TrimSuffix(value, ".lthn.")
+	case core.HasSuffix(value, ".lthn"):
+		value = core.TrimSuffix(value, ".lthn")
+	case core.HasSuffix(value, "."):
+		value = core.TrimSuffix(value, ".")
 	}
 
 	return value, true

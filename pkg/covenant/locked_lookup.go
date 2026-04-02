@@ -7,14 +7,13 @@ import (
 	"crypto/sha3"
 	"encoding/hex"
 	"encoding/json"
-	"fmt"
 	"os"
 	"path/filepath"
 	"runtime"
 	"sort"
-	"strings"
 	"sync"
 
+	core "dappco.re/go/core"
 	"dappco.re/go/lns/pkg/primitives"
 )
 
@@ -135,7 +134,7 @@ func (c *LockedCatalog) HasByName(name string) bool {
 // The lookup lower-cases the input and hashes it directly, matching the JS
 // reference helper's behavior.
 func (c *LockedCatalog) GetByName(name string) (LockedName, bool) {
-	name = strings.ToLower(name)
+	name = core.Lower(name)
 	if len(name) == 0 || len(name) > maxNameSize {
 		return LockedName{}, false
 	}
@@ -238,7 +237,7 @@ func loadLockedCatalog() (*LockedCatalog, error) {
 
 	var raw map[string]json.RawMessage
 	if err := json.Unmarshal(data, &raw); err != nil {
-		return nil, fmt.Errorf("covenant.loadLockedCatalog: %w", err)
+		return nil, core.E("covenant.loadLockedCatalog", "failed to decode locked catalog", err)
 	}
 
 	catalog := &LockedCatalog{
@@ -269,30 +268,30 @@ func loadLockedCatalog() (*LockedCatalog, error) {
 func parseLockedEntry(hash primitives.Hash, raw json.RawMessage) (LockedName, error) {
 	var fields []json.RawMessage
 	if err := json.Unmarshal(raw, &fields); err != nil {
-		return LockedName{}, fmt.Errorf("covenant.parseLockedEntry: %w", err)
+		return LockedName{}, core.E("covenant.parseLockedEntry", "failed to decode locked entry", err)
 	}
 
 	if len(fields) != 2 {
-		return LockedName{}, fmt.Errorf("covenant.parseLockedEntry: invalid entry size %d", len(fields))
+		return LockedName{}, core.E("covenant.parseLockedEntry", "invalid entry size", nil)
 	}
 
 	var target string
 	if err := json.Unmarshal(fields[0], &target); err != nil {
-		return LockedName{}, fmt.Errorf("covenant.parseLockedEntry: %w", err)
+		return LockedName{}, core.E("covenant.parseLockedEntry", "failed to decode target", err)
 	}
 
-	dot := strings.IndexByte(target, '.')
-	if dot <= 0 {
-		return LockedName{}, fmt.Errorf("covenant.parseLockedEntry: invalid target %q", target)
+	parts := core.SplitN(target, ".", 2)
+	if len(parts) != 2 || len(parts[0]) == 0 {
+		return LockedName{}, core.E("covenant.parseLockedEntry", "invalid target", nil)
 	}
 
 	flags, err := parseLockedUint(fields[1])
 	if err != nil {
-		return LockedName{}, fmt.Errorf("covenant.parseLockedEntry: %w", err)
+		return LockedName{}, core.E("covenant.parseLockedEntry", "failed to decode flags", err)
 	}
 
 	item := LockedName{
-		Name:   target[:dot],
+		Name:   parts[0],
 		Hash:   hash,
 		Target: target,
 		Root:   flags&1 != 0,
@@ -314,11 +313,11 @@ func parseLockedUint(raw json.RawMessage) (uint64, error) {
 func decodeLockedHash(key string) (primitives.Hash, error) {
 	raw, err := hex.DecodeString(key)
 	if err != nil {
-		return primitives.Hash{}, fmt.Errorf("covenant.decodeLockedHash: %w", err)
+		return primitives.Hash{}, core.E("covenant.decodeLockedHash", "failed to decode locked hash", err)
 	}
 
 	if len(raw) != len(primitives.Hash{}) {
-		return primitives.Hash{}, fmt.Errorf("covenant.decodeLockedHash: invalid hash length %d", len(raw))
+		return primitives.Hash{}, core.E("covenant.decodeLockedHash", "invalid hash length", nil)
 	}
 
 	var hash primitives.Hash
@@ -335,7 +334,7 @@ func readLockedData() ([]byte, error) {
 		}
 	}
 
-	return nil, fmt.Errorf("covenant.readLockedData: could not locate docs/js-covenants/lockup.json")
+	return nil, core.E("covenant.readLockedData", "could not locate docs/js-covenants/lockup.json", nil)
 }
 
 func lockedDataPaths() []string {

@@ -7,14 +7,13 @@ import (
 	"crypto/sha3"
 	"encoding/hex"
 	"encoding/json"
-	"fmt"
 	"os"
 	"path/filepath"
 	"runtime"
 	"sort"
-	"strings"
 	"sync"
 
+	core "dappco.re/go/core"
 	"dappco.re/go/lns/pkg/primitives"
 )
 
@@ -183,7 +182,7 @@ func (c *ReservedCatalog) HasByName(name string) bool {
 // The lookup lower-cases the input and hashes it directly, matching the JS
 // reference helper's behavior.
 func (c *ReservedCatalog) GetByName(name string) (ReservedName, bool) {
-	name = strings.ToLower(name)
+	name = core.Lower(name)
 	if len(name) == 0 || len(name) > maxNameSize {
 		return ReservedName{}, false
 	}
@@ -286,7 +285,7 @@ func loadReservedCatalog() (*ReservedCatalog, error) {
 
 	var raw map[string]json.RawMessage
 	if err := json.Unmarshal(data, &raw); err != nil {
-		return nil, fmt.Errorf("covenant.loadReservedCatalog: %w", err)
+		return nil, core.E("covenant.loadReservedCatalog", "failed to decode reserved catalog", err)
 	}
 
 	catalog := &ReservedCatalog{
@@ -326,11 +325,11 @@ func loadReservedCatalog() (*ReservedCatalog, error) {
 func parseReservedMeta(raw json.RawMessage) (reservedCatalogMeta, error) {
 	var values []uint64
 	if err := json.Unmarshal(raw, &values); err != nil {
-		return reservedCatalogMeta{}, fmt.Errorf("covenant.parseReservedMeta: %w", err)
+		return reservedCatalogMeta{}, core.E("covenant.parseReservedMeta", "failed to decode reserved metadata", err)
 	}
 
 	if len(values) != 4 {
-		return reservedCatalogMeta{}, fmt.Errorf("covenant.parseReservedMeta: invalid metadata size %d", len(values))
+		return reservedCatalogMeta{}, core.E("covenant.parseReservedMeta", "invalid metadata size", nil)
 	}
 
 	return reservedCatalogMeta{
@@ -343,38 +342,38 @@ func parseReservedMeta(raw json.RawMessage) (reservedCatalogMeta, error) {
 func parseReservedEntry(hash primitives.Hash, raw json.RawMessage, meta reservedCatalogMeta) (ReservedName, error) {
 	var fields []json.RawMessage
 	if err := json.Unmarshal(raw, &fields); err != nil {
-		return ReservedName{}, fmt.Errorf("covenant.parseReservedEntry: %w", err)
+		return ReservedName{}, core.E("covenant.parseReservedEntry", "failed to decode reserved entry", err)
 	}
 
 	if len(fields) < 2 || len(fields) > 3 {
-		return ReservedName{}, fmt.Errorf("covenant.parseReservedEntry: invalid entry size %d", len(fields))
+		return ReservedName{}, core.E("covenant.parseReservedEntry", "invalid entry size", nil)
 	}
 
 	var target string
 	if err := json.Unmarshal(fields[0], &target); err != nil {
-		return ReservedName{}, fmt.Errorf("covenant.parseReservedEntry: %w", err)
+		return ReservedName{}, core.E("covenant.parseReservedEntry", "failed to decode target", err)
 	}
 
-	dot := strings.IndexByte(target, '.')
-	if dot <= 0 {
-		return ReservedName{}, fmt.Errorf("covenant.parseReservedEntry: invalid target %q", target)
+	parts := core.SplitN(target, ".", 2)
+	if len(parts) != 2 || len(parts[0]) == 0 {
+		return ReservedName{}, core.E("covenant.parseReservedEntry", "invalid target", nil)
 	}
 
 	flags, err := parseReservedUint(fields[1])
 	if err != nil {
-		return ReservedName{}, fmt.Errorf("covenant.parseReservedEntry: %w", err)
+		return ReservedName{}, core.E("covenant.parseReservedEntry", "failed to decode flags", err)
 	}
 
 	var custom uint64
 	if len(fields) == 3 {
 		custom, err = parseReservedUint(fields[2])
 		if err != nil {
-			return ReservedName{}, fmt.Errorf("covenant.parseReservedEntry: %w", err)
+			return ReservedName{}, core.E("covenant.parseReservedEntry", "failed to decode custom value", err)
 		}
 	}
 
 	item := ReservedName{
-		Name:   target[:dot],
+		Name:   parts[0],
 		Hash:   hash,
 		Target: target,
 		Root:   flags&1 != 0,
@@ -416,11 +415,11 @@ func parseReservedUint(raw json.RawMessage) (uint64, error) {
 func decodeReservedHash(key string) (primitives.Hash, error) {
 	raw, err := hex.DecodeString(key)
 	if err != nil {
-		return primitives.Hash{}, fmt.Errorf("covenant.decodeReservedHash: %w", err)
+		return primitives.Hash{}, core.E("covenant.decodeReservedHash", "failed to decode reserved hash", err)
 	}
 
 	if len(raw) != len(primitives.Hash{}) {
-		return primitives.Hash{}, fmt.Errorf("covenant.decodeReservedHash: invalid hash length %d", len(raw))
+		return primitives.Hash{}, core.E("covenant.decodeReservedHash", "invalid hash length", nil)
 	}
 
 	var hash primitives.Hash
@@ -437,7 +436,7 @@ func readReservedData() ([]byte, error) {
 		}
 	}
 
-	return nil, fmt.Errorf("covenant.readReservedData: could not locate docs/js-covenants/names.json")
+	return nil, core.E("covenant.readReservedData", "could not locate docs/js-covenants/names.json", nil)
 }
 
 func reservedDataPaths() []string {

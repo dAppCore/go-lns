@@ -13,8 +13,6 @@
 package lns
 
 import (
-	"strings"
-
 	core "dappco.re/go/core"
 	"dappco.re/go/lns/pkg/covenant"
 	"dappco.re/go/lns/pkg/primitives"
@@ -432,12 +430,12 @@ func canonicalizeName(name any) (string, bool) {
 	str := string(value)
 
 	switch {
-	case strings.HasSuffix(str, ".lthn."):
-		str = strings.TrimSuffix(str, ".lthn.")
-	case strings.HasSuffix(str, ".lthn"):
-		str = strings.TrimSuffix(str, ".lthn")
-	case strings.HasSuffix(str, "."):
-		str = strings.TrimSuffix(str, ".")
+	case core.HasSuffix(str, ".lthn."):
+		str = core.TrimSuffix(str, ".lthn.")
+	case core.HasSuffix(str, ".lthn"):
+		str = core.TrimSuffix(str, ".lthn")
+	case core.HasSuffix(str, "."):
+		str = core.TrimSuffix(str, ".")
 	}
 
 	if len(str) == 0 {

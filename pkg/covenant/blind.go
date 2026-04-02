@@ -4,8 +4,8 @@ package covenant
 
 import (
 	"encoding/binary"
-	"fmt"
 
+	core "dappco.re/go/core"
 	"golang.org/x/crypto/blake2b"
 
 	"dappco.re/go/lns/pkg/primitives"
@@ -26,11 +26,11 @@ func Blind(value uint64, nonce primitives.Hash) (primitives.Hash, error) {
 
 	sum, err := blake2b.New256(nil)
 	if err != nil {
-		return primitives.Hash{}, fmt.Errorf("covenant.Blind: %w", err)
+		return primitives.Hash{}, core.E("covenant.Blind", "failed to initialise blake2b hash", err)
 	}
 
 	if _, err := sum.Write(data[:]); err != nil {
-		return primitives.Hash{}, fmt.Errorf("covenant.Blind: %w", err)
+		return primitives.Hash{}, core.E("covenant.Blind", "failed to hash blind data", err)
 	}
 
 	var blind primitives.Hash
