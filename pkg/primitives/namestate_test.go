@@ -143,3 +143,60 @@ func TestNameStateDeltaHelpers(t *testing.T) {
 		t.Fatal("Clear should discard the cached delta")
 	}
 }
+
+func TestNameStateMaybeExpire(t *testing.T) {
+	rules := NameStateRules{
+		TreeInterval:    0,
+		LockupPeriod:    1,
+		BiddingPeriod:   1,
+		RevealPeriod:    1,
+		ClaimPeriod:     6,
+		RenewalWindow:   7,
+		AuctionMaturity: 8,
+	}
+
+	ns := NameState{
+		Height:     10,
+		Renewal:    10,
+		Owner:      Outpoint{TxHash: Hash{1, 2, 3}, Index: 4},
+		Value:      12,
+		Highest:    13,
+		Data:       []byte("payload"),
+		Transfer:   14,
+		Revoked:    0,
+		Claimed:    0,
+		Renewals:   15,
+		Registered: true,
+		Expired:    false,
+		Weak:       true,
+	}
+
+	if got := ns.MaybeExpire(13, rules); got {
+		t.Fatal("MaybeExpire should not expire a closed name without a renewal timeout")
+	}
+
+	if ns.Expired {
+		t.Fatal("MaybeExpire should leave the state unchanged when not expired")
+	}
+
+	ns.Renewal = 0
+	if got := ns.MaybeExpire(13, rules); !got {
+		t.Fatal("MaybeExpire should expire a name once the renewal window has elapsed")
+	}
+
+	if !ns.Expired {
+		t.Fatal("MaybeExpire should mark the name expired")
+	}
+
+	if ns.Height != 13 || ns.Renewal != 13 {
+		t.Fatalf("MaybeExpire should reset timestamps, got height=%d renewal=%d", ns.Height, ns.Renewal)
+	}
+
+	if !ns.Owner.IsNull() || ns.Value != 0 || ns.Highest != 0 || ns.Transfer != 0 || ns.Revoked != 0 || ns.Claimed != 0 || ns.Renewals != 0 || ns.Registered || ns.Weak {
+		t.Fatal("MaybeExpire should clear mutable ownership and auction fields")
+	}
+
+	if string(ns.Data) != "payload" {
+		t.Fatalf("MaybeExpire should preserve data, got %q", string(ns.Data))
+	}
+}
