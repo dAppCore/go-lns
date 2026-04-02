@@ -34,17 +34,24 @@ type Service struct {
 // serviceOptions holds configuration for the LNS service.
 type serviceOptions struct{}
 
-var packageSvc = &Service{}
+var packageSvc = NewService(nil)
+
+// NewService constructs an LNS Service bound to the provided Core instance.
+//
+//	c := core.New()
+//	svc := lns.NewService(c)
+func NewService(c *core.Core) *Service {
+	return &Service{
+		ServiceRuntime: core.NewServiceRuntime(c, serviceOptions{}),
+	}
+}
 
 // Register constructs an LNS Service bound to the provided Core instance.
 // Pass to core.WithService during Core construction:
 //
 //	c := core.New(core.WithService(lns.Register))
 func Register(c *core.Core) core.Result {
-	svc := &Service{
-		ServiceRuntime: core.NewServiceRuntime(c, serviceOptions{}),
-	}
-	return core.Result{Value: svc, OK: true}
+	return core.Result{Value: NewService(c), OK: true}
 }
 
 // GetServiceName returns the registered name for the LNS service group.

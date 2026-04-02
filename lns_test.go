@@ -440,6 +440,21 @@ func TestServiceCoreAccessors(t *testing.T) {
 	}
 }
 
+func TestNewService(t *testing.T) {
+	svc := NewService(nil)
+	if svc == nil {
+		t.Fatal("NewService should return a service instance")
+	}
+
+	if svc.Core() != nil {
+		t.Fatal("NewService(nil) should preserve a nil Core")
+	}
+
+	if got := svc.ServiceName(); got != ServiceName {
+		t.Fatalf("NewService ServiceName() = %q, want %q", got, ServiceName)
+	}
+}
+
 func TestServiceGetReserved(t *testing.T) {
 	svc := &Service{}
 
