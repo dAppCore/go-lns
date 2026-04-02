@@ -98,7 +98,7 @@ func (s *Service) ResolveBinary(name []byte) (primitives.Hash, error) {
 		return primitives.Hash{}, core.E("lns.Service.ResolveBinary", "invalid name", nil)
 	}
 
-	return covenant.HashString(normalized)
+	return covenant.HashBinary([]byte(normalized))
 }
 
 // ResolveName is an alias for Resolve.
@@ -154,7 +154,7 @@ func (s *Service) VerifyBinary(name []byte) bool {
 		return false
 	}
 
-	return covenant.VerifyString(normalized)
+	return covenant.VerifyBinary([]byte(normalized))
 }
 
 // GetReserved looks up a reserved .lthn name after canonicalisation.
