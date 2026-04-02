@@ -174,6 +174,64 @@ func TestCovenantItemHelpers(t *testing.T) {
 		t.Fatalf("SetReveal() nonce = %x, want 0d0e0f...", nonce[:3])
 	}
 
+	cov.SetClaim(Hash{16, 17, 18}, 88, []byte("claim"), 9, Hash{19, 20, 21}, 99)
+
+	if got := cov.Type; got != covenantTypeClaim {
+		t.Fatalf("SetClaim() set type %d, want %d", got, covenantTypeClaim)
+	}
+
+	if got := cov.Len(); got != 6 {
+		t.Fatalf("SetClaim() len = %d, want 6", got)
+	}
+
+	hash, err = cov.GetHash(0)
+	if err != nil {
+		t.Fatalf("SetClaim() GetHash returned error: %v", err)
+	}
+	if hash[0] != 16 || hash[1] != 17 || hash[2] != 18 {
+		t.Fatalf("SetClaim() hash = %x, want 101112...", hash[:3])
+	}
+
+	height, err = cov.GetU32(1)
+	if err != nil {
+		t.Fatalf("SetClaim() GetU32 returned error: %v", err)
+	}
+	if height != 88 {
+		t.Fatalf("SetClaim() height = %d, want 88", height)
+	}
+
+	str, err = cov.GetString(2)
+	if err != nil {
+		t.Fatalf("SetClaim() GetString returned error: %v", err)
+	}
+	if str != "claim" {
+		t.Fatalf("SetClaim() GetString() = %q, want %q", str, "claim")
+	}
+
+	flags, err := cov.GetU8(3)
+	if err != nil {
+		t.Fatalf("SetClaim() GetU8 returned error: %v", err)
+	}
+	if flags != 9 {
+		t.Fatalf("SetClaim() flags = %d, want 9", flags)
+	}
+
+	commitHash, err := cov.GetHash(4)
+	if err != nil {
+		t.Fatalf("SetClaim() GetHash(4) returned error: %v", err)
+	}
+	if commitHash[0] != 19 || commitHash[1] != 20 || commitHash[2] != 21 {
+		t.Fatalf("SetClaim() commit hash = %x, want 131415...", commitHash[:3])
+	}
+
+	commitHeight, err := cov.GetU32(5)
+	if err != nil {
+		t.Fatalf("SetClaim() GetU32(5) returned error: %v", err)
+	}
+	if commitHeight != 99 {
+		t.Fatalf("SetClaim() commit height = %d, want 99", commitHeight)
+	}
+
 	cov = Covenant{}
 	cov.PushU8(7).
 		PushU32(0x11223344).

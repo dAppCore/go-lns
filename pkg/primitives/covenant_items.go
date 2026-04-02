@@ -158,6 +158,19 @@ func (c *Covenant) SetReveal(nameHash Hash, height uint32, nonce Hash) *Covenant
 	return c
 }
 
+// SetClaim configures the covenant as a CLAIM operation.
+func (c *Covenant) SetClaim(nameHash Hash, height uint32, rawName []byte, flags uint8, commitHash Hash, commitHeight uint32) *Covenant {
+	c.Type = covenantTypeClaim
+	c.Items = nil
+	c.PushHash(nameHash)
+	c.PushU32(height)
+	c.Push(rawName)
+	c.PushU8(flags)
+	c.PushHash(commitHash)
+	c.PushU32(commitHeight)
+	return c
+}
+
 // GetU8 returns the item at the requested index as a uint8.
 func (c Covenant) GetU8(index int) (uint8, error) {
 	item, err := c.Get(index)
