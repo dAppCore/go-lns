@@ -616,7 +616,7 @@ func (s *Service) ServiceName() string {
 //
 //	name := svc.GetServiceName()
 func (s *Service) GetServiceName() string {
-	return s.ServiceName()
+	return ServiceName
 }
 
 // Resolve returns the canonical hash for a validated .lthn name.
@@ -922,7 +922,7 @@ func (s *Service) Blacklist() map[string]struct{} {
 
 // GetBlacklist is an alias for Blacklist.
 func (s *Service) GetBlacklist() map[string]struct{} {
-	return s.Blacklist()
+	return Blacklist
 }
 
 // VerificationFlags mirrors the covenant verification flag lookup table.
@@ -932,7 +932,7 @@ func (s *Service) VerificationFlags() map[string]covenant.NameFlags {
 
 // GetVerificationFlags is an alias for VerificationFlags.
 func (s *Service) GetVerificationFlags() map[string]covenant.NameFlags {
-	return s.VerificationFlags()
+	return VerificationFlags
 }
 
 // VerificationFlagsByVal mirrors the covenant verification flag reverse table.
@@ -942,7 +942,7 @@ func (s *Service) VerificationFlagsByVal() map[covenant.NameFlags]string {
 
 // GetVerificationFlagsByVal is an alias for VerificationFlagsByVal.
 func (s *Service) GetVerificationFlagsByVal() map[covenant.NameFlags]string {
-	return s.VerificationFlagsByVal()
+	return VerificationFlagsByVal
 }
 
 // GetReserved looks up a reserved .lthn name after canonicalisation.
@@ -1345,21 +1345,21 @@ func (s *Service) GetCore() *core.Core {
 //
 //	catalog := svc.GetReservedCatalog()
 func (s *Service) GetReservedCatalog() *covenant.ReservedCatalog {
-	return s.ReservedCatalog()
+	return Reserved
 }
 
 // DefaultReservedCatalog returns the reserved-name catalog used by the service.
 //
 //	catalog := svc.DefaultReservedCatalog()
 func (s *Service) DefaultReservedCatalog() *covenant.ReservedCatalog {
-	return s.reservedCatalog()
+	return Reserved
 }
 
 // GetDefaultReservedCatalog is an alias for DefaultReservedCatalog.
 //
 //	catalog := svc.GetDefaultReservedCatalog()
 func (s *Service) GetDefaultReservedCatalog() *covenant.ReservedCatalog {
-	return s.DefaultReservedCatalog()
+	return Reserved
 }
 
 // DefaultReservedCatalog exposes the reserved-name catalog used by LNS.
@@ -1499,21 +1499,21 @@ func (s *Service) LockedCatalog() *covenant.LockedCatalog {
 //
 //	catalog := svc.GetLockedCatalog()
 func (s *Service) GetLockedCatalog() *covenant.LockedCatalog {
-	return s.LockedCatalog()
+	return Locked
 }
 
 // DefaultLockedCatalog returns the locked-name catalog used by the service.
 //
 //	catalog := svc.DefaultLockedCatalog()
 func (s *Service) DefaultLockedCatalog() *covenant.LockedCatalog {
-	return s.lockedCatalog()
+	return Locked
 }
 
 // GetDefaultLockedCatalog is an alias for DefaultLockedCatalog.
 //
 //	catalog := svc.GetDefaultLockedCatalog()
 func (s *Service) GetDefaultLockedCatalog() *covenant.LockedCatalog {
-	return s.DefaultLockedCatalog()
+	return Locked
 }
 
 // DefaultLockedCatalog exposes the locked-name catalog used by LNS.
