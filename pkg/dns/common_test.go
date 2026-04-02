@@ -8,12 +8,16 @@ import (
 )
 
 func TestCommonConstants(t *testing.T) {
-	if DEFAULT_TTL != 21600 {
-		t.Fatalf("DEFAULT_TTL = %d, want 21600", DEFAULT_TTL)
+	if DEFAULT_TTL != 21600 || GetDefaultTTL() != DEFAULT_TTL {
+		t.Fatalf("DEFAULT_TTL = %d, GetDefaultTTL() = %d, want 21600", DEFAULT_TTL, GetDefaultTTL())
 	}
 
 	if len(DUMMY) != 0 {
 		t.Fatalf("DUMMY length = %d, want 0", len(DUMMY))
+	}
+
+	if len(GetDummy()) != len(DUMMY) {
+		t.Fatalf("GetDummy length = %d, want %d", len(GetDummy()), len(DUMMY))
 	}
 
 	cases := []struct {
@@ -32,6 +36,26 @@ func TestCommonConstants(t *testing.T) {
 	for _, tc := range cases {
 		if !bytes.Equal(tc.got, tc.want) {
 			t.Fatalf("%s = %x, want %x", tc.name, tc.got, tc.want)
+		}
+
+		var got []byte
+		switch tc.name {
+		case "TYPE_MAP_ROOT":
+			got = GetTypeMapRoot()
+		case "TYPE_MAP_EMPTY":
+			got = GetTypeMapEmpty()
+		case "TYPE_MAP_NS":
+			got = GetTypeMapNS()
+		case "TYPE_MAP_TXT":
+			got = GetTypeMapTXT()
+		case "TYPE_MAP_A":
+			got = GetTypeMapA()
+		case "TYPE_MAP_AAAA":
+			got = GetTypeMapAAAA()
+		}
+
+		if !bytes.Equal(got, tc.want) {
+			t.Fatalf("%s getter = %x, want %x", tc.name, got, tc.want)
 		}
 	}
 }

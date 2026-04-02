@@ -8,8 +8,18 @@ import "encoding/hex"
 // helpers.
 var DUMMY = []byte{}
 
+// GetDummy returns the zero-length DNS reference buffer.
+func GetDummy() []byte {
+	return DUMMY
+}
+
 // DEFAULT_TTL mirrors the reference DNS TTL used for synthesized records.
 const DEFAULT_TTL = 21600
+
+// GetDefaultTTL returns the reference DNS TTL used for synthesized records.
+func GetDefaultTTL() int {
+	return DEFAULT_TTL
+}
 
 // Type map bitmaps mirror the JS DNS reference constants.
 var (
@@ -20,6 +30,36 @@ var (
 	TYPE_MAP_A     = mustHex("0006400000000003")
 	TYPE_MAP_AAAA  = mustHex("0006000000080003")
 )
+
+// GetTypeMapRoot returns the reference type bitmap for the root zone.
+func GetTypeMapRoot() []byte {
+	return TYPE_MAP_ROOT
+}
+
+// GetTypeMapEmpty returns the reference type bitmap for an empty response.
+func GetTypeMapEmpty() []byte {
+	return TYPE_MAP_EMPTY
+}
+
+// GetTypeMapNS returns the reference type bitmap for NS responses.
+func GetTypeMapNS() []byte {
+	return TYPE_MAP_NS
+}
+
+// GetTypeMapTXT returns the reference type bitmap for TXT responses.
+func GetTypeMapTXT() []byte {
+	return TYPE_MAP_TXT
+}
+
+// GetTypeMapA returns the reference type bitmap for A responses.
+func GetTypeMapA() []byte {
+	return TYPE_MAP_A
+}
+
+// GetTypeMapAAAA returns the reference type bitmap for AAAA responses.
+func GetTypeMapAAAA() []byte {
+	return TYPE_MAP_AAAA
+}
 
 // HSType mirrors the JS hsTypes record-type enum.
 type HSType uint8
