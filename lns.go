@@ -1,0 +1,41 @@
+// SPDX-License-Identifier: EUPL-1.2
+
+// Package lns is the Lethean Name System — a CoreGO native conversion of the
+// HSD (Handshake) JavaScript sidechain. It provides name auctions, DNS
+// resolution, and covenant-based name management for .lthn domains.
+//
+// Register LNS as a Core service:
+//
+//	c := core.New(core.WithService(lns.Register))
+//
+// Sub-packages (primitives, covenant, dns) provide the domain types
+// and resolution logic used by the service.
+package lns
+
+import core "dappco.re/go/core"
+
+// ServiceName is the registered name for the LNS service group.
+const ServiceName = "lns"
+
+// Service is the LNS service that manages .lthn name resolution,
+// covenant processing, and name-chain state queries.
+//
+//	c := core.New(core.WithService(lns.Register))
+//	svc := c.Service("lns")
+type Service struct {
+	*core.ServiceRuntime[serviceOptions]
+}
+
+// serviceOptions holds configuration for the LNS service.
+type serviceOptions struct{}
+
+// Register constructs an LNS Service bound to the provided Core instance.
+// Pass to core.WithService during Core construction:
+//
+//	c := core.New(core.WithService(lns.Register))
+func Register(c *core.Core) core.Result {
+	svc := &Service{
+		ServiceRuntime: core.NewServiceRuntime(c, serviceOptions{}),
+	}
+	return core.Result{Value: svc, OK: true}
+}
