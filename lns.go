@@ -1347,7 +1347,7 @@ func (s *Service) GetReservedCatalog() *covenant.ReservedCatalog {
 //
 //	catalog := svc.DefaultReservedCatalog()
 func (s *Service) DefaultReservedCatalog() *covenant.ReservedCatalog {
-	return DefaultReservedCatalog()
+	return s.reservedCatalog()
 }
 
 // GetDefaultReservedCatalog is an alias for DefaultReservedCatalog.
@@ -1501,7 +1501,7 @@ func (s *Service) GetLockedCatalog() *covenant.LockedCatalog {
 //
 //	catalog := svc.DefaultLockedCatalog()
 func (s *Service) DefaultLockedCatalog() *covenant.LockedCatalog {
-	return DefaultLockedCatalog()
+	return s.lockedCatalog()
 }
 
 // GetDefaultLockedCatalog is an alias for DefaultLockedCatalog.
