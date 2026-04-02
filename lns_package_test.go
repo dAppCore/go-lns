@@ -18,21 +18,40 @@ func TestPackageResolveAndVerifyAliases(t *testing.T) {
 	want := primitives.Hash(sha3.Sum256([]byte("foo-bar")))
 
 	resolveCases := []struct {
-		name string
-		fn   func(any) (primitives.Hash, error)
+		name  string
+		input any
+		fn    func(any) (primitives.Hash, error)
 	}{
-		{name: "Resolve", fn: Resolve},
-		{name: "GetResolve", fn: GetResolve},
-		{name: "Hash", fn: Hash},
-		{name: "GetHash", fn: GetHash},
-		{name: "ResolveName", fn: ResolveName},
-		{name: "HashName", fn: HashName},
-		{name: "ResolveByName", fn: ResolveByName},
-		{name: "HashByName", fn: HashByName},
+		{name: "Resolve", input: "Foo-Bar.lthn", fn: Resolve},
+		{name: "GetResolve", input: "Foo-Bar.lthn", fn: GetResolve},
+		{name: "Hash", input: "Foo-Bar.lthn", fn: Hash},
+		{name: "GetHash", input: "Foo-Bar.lthn", fn: GetHash},
+		{name: "GetResolveString", input: "Foo-Bar.lthn", fn: func(name any) (primitives.Hash, error) { return GetResolveString(name.(string)) }},
+		{name: "GetResolveBinary", input: []byte("Foo-Bar.lthn"), fn: func(name any) (primitives.Hash, error) { return GetResolveBinary(name.([]byte)) }},
+		{name: "ResolveName", input: "Foo-Bar.lthn", fn: ResolveName},
+		{name: "GetResolveName", input: "Foo-Bar.lthn", fn: GetResolveName},
+		{name: "HashName", input: "Foo-Bar.lthn", fn: HashName},
+		{name: "GetHashName", input: "Foo-Bar.lthn", fn: GetHashName},
+		{name: "ResolveByName", input: "Foo-Bar.lthn", fn: ResolveByName},
+		{name: "GetResolveByName", input: "Foo-Bar.lthn", fn: GetResolveByName},
+		{name: "HashByName", input: "Foo-Bar.lthn", fn: HashByName},
+		{name: "GetHashByName", input: "Foo-Bar.lthn", fn: GetHashByName},
+		{name: "ResolveByString", input: "Foo-Bar.lthn", fn: func(name any) (primitives.Hash, error) { return ResolveByString(name.(string)) }},
+		{name: "GetResolveByString", input: "Foo-Bar.lthn", fn: func(name any) (primitives.Hash, error) { return GetResolveByString(name.(string)) }},
+		{name: "ResolveByBinary", input: []byte("Foo-Bar.lthn"), fn: func(name any) (primitives.Hash, error) { return ResolveByBinary(name.([]byte)) }},
+		{name: "GetResolveByBinary", input: []byte("Foo-Bar.lthn"), fn: func(name any) (primitives.Hash, error) { return GetResolveByBinary(name.([]byte)) }},
+		{name: "HashString", input: "Foo-Bar.lthn", fn: func(name any) (primitives.Hash, error) { return HashString(name.(string)) }},
+		{name: "GetHashString", input: "Foo-Bar.lthn", fn: func(name any) (primitives.Hash, error) { return GetHashString(name.(string)) }},
+		{name: "HashBinary", input: []byte("Foo-Bar.lthn"), fn: func(name any) (primitives.Hash, error) { return HashBinary(name.([]byte)) }},
+		{name: "GetHashBinary", input: []byte("Foo-Bar.lthn"), fn: func(name any) (primitives.Hash, error) { return GetHashBinary(name.([]byte)) }},
+		{name: "HashByString", input: "Foo-Bar.lthn", fn: func(name any) (primitives.Hash, error) { return HashByString(name.(string)) }},
+		{name: "GetHashByString", input: "Foo-Bar.lthn", fn: func(name any) (primitives.Hash, error) { return GetHashByString(name.(string)) }},
+		{name: "HashByBinary", input: []byte("Foo-Bar.lthn"), fn: func(name any) (primitives.Hash, error) { return HashByBinary(name.([]byte)) }},
+		{name: "GetHashByBinary", input: []byte("Foo-Bar.lthn"), fn: func(name any) (primitives.Hash, error) { return GetHashByBinary(name.([]byte)) }},
 	}
 
 	for _, tc := range resolveCases {
-		got, err := tc.fn("Foo-Bar.lthn")
+		got, err := tc.fn(tc.input)
 		if err != nil {
 			t.Fatalf("%s returned error: %v", tc.name, err)
 		}
@@ -75,21 +94,33 @@ func TestPackageResolveAndVerifyAliases(t *testing.T) {
 	}
 
 	verifyCases := []struct {
-		name string
-		fn   func(any) bool
+		name     string
+		input    any
+		badInput any
+		fn       func(any) bool
 	}{
-		{name: "Verify", fn: Verify},
-		{name: "GetVerify", fn: GetVerify},
-		{name: "VerifyName", fn: VerifyName},
-		{name: "VerifyByName", fn: VerifyByName},
+		{name: "Verify", input: "Foo-Bar.lthn", badInput: "foo.bar.lthn", fn: Verify},
+		{name: "GetVerify", input: "Foo-Bar.lthn", badInput: "foo.bar.lthn", fn: GetVerify},
+		{name: "VerifyName", input: "Foo-Bar.lthn", badInput: "foo.bar.lthn", fn: VerifyName},
+		{name: "GetVerifyName", input: "Foo-Bar.lthn", badInput: "foo.bar.lthn", fn: GetVerifyName},
+		{name: "VerifyByName", input: "Foo-Bar.lthn", badInput: "foo.bar.lthn", fn: VerifyByName},
+		{name: "GetVerifyByName", input: "Foo-Bar.lthn", badInput: "foo.bar.lthn", fn: GetVerifyByName},
+		{name: "VerifyString", input: "Foo-Bar.lthn", badInput: "foo.bar.lthn", fn: func(name any) bool { return VerifyString(name.(string)) }},
+		{name: "GetVerifyString", input: "Foo-Bar.lthn", badInput: "foo.bar.lthn", fn: func(name any) bool { return GetVerifyString(name.(string)) }},
+		{name: "VerifyBinary", input: []byte("Foo-Bar.lthn"), badInput: []byte("foo.bar.lthn"), fn: func(name any) bool { return VerifyBinary(name.([]byte)) }},
+		{name: "GetVerifyBinary", input: []byte("Foo-Bar.lthn"), badInput: []byte("foo.bar.lthn"), fn: func(name any) bool { return GetVerifyBinary(name.([]byte)) }},
+		{name: "VerifyByString", input: "Foo-Bar.lthn", badInput: "foo.bar.lthn", fn: func(name any) bool { return VerifyByString(name.(string)) }},
+		{name: "GetVerifyByString", input: "Foo-Bar.lthn", badInput: "foo.bar.lthn", fn: func(name any) bool { return GetVerifyByString(name.(string)) }},
+		{name: "VerifyByBinary", input: []byte("Foo-Bar.lthn"), badInput: []byte("foo.bar.lthn"), fn: func(name any) bool { return VerifyByBinary(name.([]byte)) }},
+		{name: "GetVerifyByBinary", input: []byte("Foo-Bar.lthn"), badInput: []byte("foo.bar.lthn"), fn: func(name any) bool { return GetVerifyByBinary(name.([]byte)) }},
 	}
 
 	for _, tc := range verifyCases {
-		if !tc.fn("Foo-Bar.lthn") {
+		if !tc.fn(tc.input) {
 			t.Fatalf("%s should accept canonical names", tc.name)
 		}
 
-		if tc.fn("foo.bar.lthn") {
+		if tc.fn(tc.badInput) {
 			t.Fatalf("%s should reject malformed names", tc.name)
 		}
 	}

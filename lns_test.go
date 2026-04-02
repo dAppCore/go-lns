@@ -69,6 +69,47 @@ func TestServiceResolveStringAndBinary(t *testing.T) {
 	}
 }
 
+func TestServiceGetResolverAliases(t *testing.T) {
+	svc := &Service{}
+
+	want := primitives.Hash(sha3.Sum256([]byte("foo-bar")))
+
+	resolveCases := []struct {
+		name string
+		fn   func(any) (primitives.Hash, error)
+	}{
+		{name: "GetResolveString", fn: func(name any) (primitives.Hash, error) { return svc.GetResolveString(name.(string)) }},
+		{name: "GetResolveBinary", fn: func(name any) (primitives.Hash, error) { return svc.GetResolveBinary(name.([]byte)) }},
+		{name: "GetResolveName", fn: svc.GetResolveName},
+		{name: "GetResolveByName", fn: svc.GetResolveByName},
+		{name: "GetResolveByString", fn: func(name any) (primitives.Hash, error) { return svc.GetResolveByString(name.(string)) }},
+		{name: "GetResolveByBinary", fn: func(name any) (primitives.Hash, error) { return svc.GetResolveByBinary(name.([]byte)) }},
+		{name: "GetHashString", fn: func(name any) (primitives.Hash, error) { return svc.GetHashString(name.(string)) }},
+		{name: "GetHashBinary", fn: func(name any) (primitives.Hash, error) { return svc.GetHashBinary(name.([]byte)) }},
+		{name: "GetHashName", fn: svc.GetHashName},
+		{name: "GetHashByName", fn: svc.GetHashByName},
+		{name: "GetHashByString", fn: func(name any) (primitives.Hash, error) { return svc.GetHashByString(name.(string)) }},
+		{name: "GetHashByBinary", fn: func(name any) (primitives.Hash, error) { return svc.GetHashByBinary(name.([]byte)) }},
+	}
+
+	for _, tc := range resolveCases {
+		var input any = "Foo-Bar.lthn"
+		switch tc.name {
+		case "GetResolveBinary", "GetResolveByBinary", "GetHashBinary", "GetHashByBinary":
+			input = []byte("Foo-Bar.lthn")
+		}
+
+		got, err := tc.fn(input)
+		if err != nil {
+			t.Fatalf("%s returned error: %v", tc.name, err)
+		}
+
+		if got != want {
+			t.Fatalf("%s returned %x, want %x", tc.name, got, want)
+		}
+	}
+}
+
 func TestServiceResolveRejectsInvalidNames(t *testing.T) {
 	svc := &Service{}
 
@@ -142,6 +183,29 @@ func TestServiceVerifyStringAndBinary(t *testing.T) {
 
 	if svc.VerifyBinary([]byte("Kfoo.lthn")) {
 		t.Fatal("VerifyBinary should reject non-ASCII names")
+	}
+}
+
+func TestServiceGetVerifyAliases(t *testing.T) {
+	svc := &Service{}
+
+	verifyCases := []struct {
+		name  string
+		input any
+		fn    func(any) bool
+	}{
+		{name: "GetVerifyName", input: "Foo-Bar.lthn", fn: svc.GetVerifyName},
+		{name: "GetVerifyByName", input: "Foo-Bar.lthn", fn: svc.GetVerifyByName},
+		{name: "GetVerifyString", input: "Foo-Bar.lthn", fn: func(name any) bool { return svc.GetVerifyString(name.(string)) }},
+		{name: "GetVerifyBinary", input: []byte("Foo-Bar.lthn"), fn: func(name any) bool { return svc.GetVerifyBinary(name.([]byte)) }},
+		{name: "GetVerifyByString", input: "Foo-Bar.lthn", fn: func(name any) bool { return svc.GetVerifyByString(name.(string)) }},
+		{name: "GetVerifyByBinary", input: []byte("Foo-Bar.lthn"), fn: func(name any) bool { return svc.GetVerifyByBinary(name.([]byte)) }},
+	}
+
+	for _, tc := range verifyCases {
+		if !tc.fn(tc.input) {
+			t.Fatalf("%s should accept canonical names", tc.name)
+		}
 	}
 }
 
