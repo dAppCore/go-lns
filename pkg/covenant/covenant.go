@@ -77,6 +77,11 @@ var Types = map[string]CovenantType{
 	"REVOKE":   TypeRevoke,
 }
 
+// GetTypes returns the covenant type lookup table.
+func GetTypes() map[string]CovenantType {
+	return Types
+}
+
 // TypesByVal mirrors the JS rules.typesByVal lookup table.
 var TypesByVal = map[CovenantType]string{
 	TypeNone:     "NONE",
@@ -91,6 +96,11 @@ var TypesByVal = map[CovenantType]string{
 	TypeTransfer: "TRANSFER",
 	TypeFinalize: "FINALIZE",
 	TypeRevoke:   "REVOKE",
+}
+
+// GetTypesByVal returns the reverse covenant type lookup table.
+func GetTypesByVal() map[CovenantType]string {
+	return TypesByVal
 }
 
 // TypeName returns the human-readable name for a covenant type.

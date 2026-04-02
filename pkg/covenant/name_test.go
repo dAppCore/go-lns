@@ -74,6 +74,14 @@ func TestTypeMaps(t *testing.T) {
 		t.Fatalf("Types and TypesByVal should expose the same number of entries: %d vs %d", len(Types), len(TypesByVal))
 	}
 
+	if len(GetTypes()) != len(Types) {
+		t.Fatal("GetTypes should alias Types")
+	}
+
+	if len(GetTypesByVal()) != len(TypesByVal) {
+		t.Fatal("GetTypesByVal should alias TypesByVal")
+	}
+
 	for label, typ := range Types {
 		if got, ok := TypesByVal[typ]; !ok || got != label {
 			t.Fatalf("TypesByVal[%d] = %q, want %q", typ, got, label)
@@ -90,6 +98,10 @@ func TestBlacklist(t *testing.T) {
 		if _, ok := Blacklist[name]; !ok {
 			t.Fatalf("Blacklist should include %q", name)
 		}
+	}
+
+	if len(GetBlacklist()) != len(Blacklist) {
+		t.Fatal("GetBlacklist should alias Blacklist")
 	}
 }
 

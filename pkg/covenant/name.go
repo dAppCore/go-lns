@@ -31,6 +31,11 @@ var blacklist = map[string]struct{}{
 // covenant verifier without duplicating the list.
 var Blacklist = blacklist
 
+// GetBlacklist returns the covenant verifier blacklist.
+func GetBlacklist() map[string]struct{} {
+	return Blacklist
+}
+
 // VerifyString reports whether a domain name meets the covenant rules.
 //
 //	ok := covenant.VerifyString("example")
