@@ -842,9 +842,18 @@ func TestServiceGetLockedByHash(t *testing.T) {
 func TestServiceReservedCatalog(t *testing.T) {
 	svc := &Service{}
 	catalog := svc.ReservedCatalog()
+	getCatalog := svc.GetReservedCatalog()
 
 	if catalog == nil {
 		t.Fatal("ReservedCatalog should return a catalog")
+	}
+
+	if getCatalog == nil {
+		t.Fatal("GetReservedCatalog should return a catalog")
+	}
+
+	if getCatalog != catalog {
+		t.Fatal("GetReservedCatalog should alias ReservedCatalog")
 	}
 
 	if got := svc.ReservedSize(); got != catalog.Size() {
@@ -903,9 +912,18 @@ func TestServiceReservedCatalog(t *testing.T) {
 func TestServiceLockedCatalog(t *testing.T) {
 	svc := &Service{}
 	catalog := svc.LockedCatalog()
+	getCatalog := svc.GetLockedCatalog()
 
 	if catalog == nil {
 		t.Fatal("LockedCatalog should return a catalog")
+	}
+
+	if getCatalog == nil {
+		t.Fatal("GetLockedCatalog should return a catalog")
+	}
+
+	if getCatalog != catalog {
+		t.Fatal("GetLockedCatalog should alias LockedCatalog")
 	}
 
 	if got := svc.LockedSize(); got != catalog.Size() {
