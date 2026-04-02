@@ -192,16 +192,7 @@ func (s *Service) ResolveString(name string) (primitives.Hash, error) {
 //	svc := dns.NewService()
 //	hash, err := svc.ResolveBinary([]byte("example.lthn"))
 func (s *Service) ResolveBinary(name []byte) (primitives.Hash, error) {
-	normalized, ok := nameutil.Canonicalize(name)
-	if !ok {
-		return primitives.Hash{}, core.E("dns.Service.ResolveBinary", "invalid name type", nil)
-	}
-
-	if !covenant.VerifyBinary([]byte(normalized)) {
-		return primitives.Hash{}, core.E("dns.Service.ResolveBinary", "invalid name", nil)
-	}
-
-	return covenant.HashBinary([]byte(normalized))
+	return s.Resolve(name)
 }
 
 // ResolveName is an alias for Resolve.
@@ -232,12 +223,7 @@ func (s *Service) VerifyString(name string) bool {
 //	svc := dns.NewService()
 //	ok := svc.VerifyBinary([]byte("example.lthn"))
 func (s *Service) VerifyBinary(name []byte) bool {
-	normalized, ok := nameutil.Canonicalize(name)
-	if !ok {
-		return false
-	}
-
-	return covenant.VerifyBinary([]byte(normalized))
+	return s.Verify(name)
 }
 
 // VerifyName is an alias for Verify.
