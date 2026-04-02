@@ -636,6 +636,34 @@ func TestServiceCoreNilSafety(t *testing.T) {
 	}
 }
 
+func TestServiceNilReceiverCatalogAccessors(t *testing.T) {
+	var svc *Service
+
+	if svc.ReservedCatalog() != Reserved {
+		t.Fatal("ReservedCatalog should fall back to the package catalog on a nil receiver")
+	}
+
+	if svc.LockedCatalog() != Locked {
+		t.Fatal("LockedCatalog should fall back to the package catalog on a nil receiver")
+	}
+
+	if svc.ReservedSize() != Reserved.Size() {
+		t.Fatal("ReservedSize should be nil-safe")
+	}
+
+	if svc.LockedSize() != Locked.Size() {
+		t.Fatal("LockedSize should be nil-safe")
+	}
+
+	if len(svc.ReservedEntries()) != len(Reserved.Entries()) {
+		t.Fatal("ReservedEntries should be nil-safe")
+	}
+
+	if len(svc.LockedEntries()) != len(Locked.Entries()) {
+		t.Fatal("LockedEntries should be nil-safe")
+	}
+}
+
 func TestNewService(t *testing.T) {
 	svc := NewService(nil)
 	if svc == nil {
