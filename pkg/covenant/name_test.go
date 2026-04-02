@@ -58,6 +58,20 @@ func TestVerifyBinary(t *testing.T) {
 	}
 }
 
+func TestVerifyName(t *testing.T) {
+	if !VerifyName("foo-bar") {
+		t.Fatal("VerifyName should accept string inputs")
+	}
+
+	if !VerifyName([]byte("foo_bar")) {
+		t.Fatal("VerifyName should accept byte-slice inputs")
+	}
+
+	if VerifyName(123) {
+		t.Fatal("VerifyName should reject unsupported input types")
+	}
+}
+
 func TestHashString(t *testing.T) {
 	got, err := HashString("foo-bar")
 	if err != nil {
@@ -82,6 +96,28 @@ func TestHashBinary(t *testing.T) {
 	}
 }
 
+func TestHashName(t *testing.T) {
+	got, err := HashName("foo-bar")
+	if err != nil {
+		t.Fatalf("HashName(string) returned error: %v", err)
+	}
+
+	want := sha3.Sum256([]byte("foo-bar"))
+	if got != want {
+		t.Fatalf("HashName(string) returned %x, want %x", got, want)
+	}
+
+	got, err = HashName([]byte("foo_bar"))
+	if err != nil {
+		t.Fatalf("HashName([]byte) returned error: %v", err)
+	}
+
+	want = sha3.Sum256([]byte("foo_bar"))
+	if got != want {
+		t.Fatalf("HashName([]byte) returned %x, want %x", got, want)
+	}
+}
+
 func TestHashRejectsInvalidName(t *testing.T) {
 	if _, err := HashString("Foo"); err == nil {
 		t.Fatal("HashString should reject invalid names")
@@ -89,5 +125,9 @@ func TestHashRejectsInvalidName(t *testing.T) {
 
 	if _, err := HashBinary([]byte("foo-")); err == nil {
 		t.Fatal("HashBinary should reject invalid names")
+	}
+
+	if _, err := HashName(123); err == nil {
+		t.Fatal("HashName should reject unsupported input types")
 	}
 }

@@ -82,8 +82,17 @@ func VerifyBinary(name []byte) bool {
 }
 
 // VerifyName reports whether a name meets the covenant rules.
-func VerifyName(name []byte) bool {
-	return VerifyBinary(name)
+//
+// It accepts either a string or a byte slice to mirror the JS reference API.
+func VerifyName(name any) bool {
+	switch v := name.(type) {
+	case string:
+		return VerifyString(v)
+	case []byte:
+		return VerifyBinary(v)
+	default:
+		return false
+	}
 }
 
 // HashString hashes a validated domain name.
@@ -107,6 +116,15 @@ func HashBinary(name []byte) (primitives.Hash, error) {
 }
 
 // HashName hashes a validated domain name.
-func HashName(name []byte) (primitives.Hash, error) {
-	return HashBinary(name)
+//
+// It accepts either a string or a byte slice to mirror the JS reference API.
+func HashName(name any) (primitives.Hash, error) {
+	switch v := name.(type) {
+	case string:
+		return HashString(v)
+	case []byte:
+		return HashBinary(v)
+	default:
+		return primitives.Hash{}, core.E("covenant.HashName", "invalid name type", nil)
+	}
 }
