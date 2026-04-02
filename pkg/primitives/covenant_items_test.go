@@ -140,6 +140,40 @@ func TestCovenantItemHelpers(t *testing.T) {
 		t.Fatalf("SetBid() blind = %x, want 070809...", blind[:3])
 	}
 
+	cov.SetReveal(Hash{10, 11, 12}, 77, Hash{13, 14, 15})
+
+	if got := cov.Type; got != covenantTypeReveal {
+		t.Fatalf("SetReveal() set type %d, want %d", got, covenantTypeReveal)
+	}
+
+	if got := cov.Len(); got != 3 {
+		t.Fatalf("SetReveal() len = %d, want 3", got)
+	}
+
+	hash, err = cov.GetHash(0)
+	if err != nil {
+		t.Fatalf("SetReveal() GetHash returned error: %v", err)
+	}
+	if hash[0] != 10 || hash[1] != 11 || hash[2] != 12 {
+		t.Fatalf("SetReveal() hash = %x, want 0a0b0c...", hash[:3])
+	}
+
+	height, err = cov.GetU32(1)
+	if err != nil {
+		t.Fatalf("SetReveal() GetU32 returned error: %v", err)
+	}
+	if height != 77 {
+		t.Fatalf("SetReveal() height = %d, want 77", height)
+	}
+
+	nonce, err := cov.GetHash(2)
+	if err != nil {
+		t.Fatalf("SetReveal() GetHash(2) returned error: %v", err)
+	}
+	if nonce[0] != 13 || nonce[1] != 14 || nonce[2] != 15 {
+		t.Fatalf("SetReveal() nonce = %x, want 0d0e0f...", nonce[:3])
+	}
+
 	cov = Covenant{}
 	cov.PushU8(7).
 		PushU32(0x11223344).

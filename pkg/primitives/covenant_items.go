@@ -148,6 +148,16 @@ func (c *Covenant) SetBid(nameHash Hash, height uint32, rawName []byte, blind Ha
 	return c
 }
 
+// SetReveal configures the covenant as a REVEAL operation.
+func (c *Covenant) SetReveal(nameHash Hash, height uint32, nonce Hash) *Covenant {
+	c.Type = covenantTypeReveal
+	c.Items = nil
+	c.PushHash(nameHash)
+	c.PushU32(height)
+	c.PushHash(nonce)
+	return c
+}
+
 // GetU8 returns the item at the requested index as a uint8.
 func (c Covenant) GetU8(index int) (uint8, error) {
 	item, err := c.Get(index)
