@@ -65,9 +65,9 @@ func GetResolve(name any) (primitives.Hash, error) {
 
 // Hash returns the canonical hash for a .lthn name.
 //
-// Hash is the direct package-level alias for Resolve.
+// Hash returns the canonical hash for a .lthn name.
 func Hash(name any) (primitives.Hash, error) {
-	return Resolve(name)
+	return resolveCanonicalName("dns.Hash", name)
 }
 
 // GetHash is an alias for Hash.
@@ -85,11 +85,11 @@ func GetVerify(name any) bool {
 	return Verify(name)
 }
 
-// ResolveString is an alias for Resolve.
+// ResolveString returns the canonical hash for a .lthn name supplied as a string.
 //
 //	hash, err := dns.ResolveString("example.lthn")
 func ResolveString(name string) (primitives.Hash, error) {
-	return Resolve(name)
+	return resolveCanonicalName("dns.ResolveString", name)
 }
 
 // GetResolveString is an alias for ResolveString.
@@ -97,11 +97,11 @@ func GetResolveString(name string) (primitives.Hash, error) {
 	return ResolveString(name)
 }
 
-// ResolveBinary is an alias for Resolve.
+// ResolveBinary returns the canonical hash for a .lthn name supplied as bytes.
 //
 //	hash, err := dns.ResolveBinary([]byte("example.lthn"))
 func ResolveBinary(name []byte) (primitives.Hash, error) {
-	return Resolve(name)
+	return resolveCanonicalName("dns.ResolveBinary", name)
 }
 
 // GetResolveBinary is an alias for ResolveBinary.
@@ -109,11 +109,11 @@ func GetResolveBinary(name []byte) (primitives.Hash, error) {
 	return ResolveBinary(name)
 }
 
-// HashString is an alias for ResolveString.
+// HashString returns the canonical hash for a .lthn name supplied as a string.
 //
 //	hash, err := dns.HashString("example.lthn")
 func HashString(name string) (primitives.Hash, error) {
-	return ResolveString(name)
+	return resolveCanonicalName("dns.HashString", name)
 }
 
 // GetHashString is an alias for HashString.
@@ -121,11 +121,11 @@ func GetHashString(name string) (primitives.Hash, error) {
 	return HashString(name)
 }
 
-// HashBinary is an alias for ResolveBinary.
+// HashBinary returns the canonical hash for a .lthn name supplied as bytes.
 //
 //	hash, err := dns.HashBinary([]byte("example.lthn"))
 func HashBinary(name []byte) (primitives.Hash, error) {
-	return ResolveBinary(name)
+	return resolveCanonicalName("dns.HashBinary", name)
 }
 
 // GetHashBinary is an alias for HashBinary.
@@ -350,10 +350,8 @@ func (s *Service) GetResolve(name any) (primitives.Hash, error) {
 }
 
 // Hash returns the canonical hash for a .lthn name.
-//
-// Hash is the direct service-level alias for Resolve.
 func (s *Service) Hash(name any) (primitives.Hash, error) {
-	return s.Resolve(name)
+	return resolveCanonicalName("dns.Service.Hash", name)
 }
 
 // GetHash is an alias for Hash.
@@ -381,7 +379,7 @@ func (s *Service) GetVerify(name any) bool {
 //
 //	hash, err := svc.HashString("example.lthn")
 func (s *Service) HashString(name string) (primitives.Hash, error) {
-	return s.ResolveString(name)
+	return resolveCanonicalName("dns.Service.HashString", name)
 }
 
 // GetHashString is an alias for HashString.
@@ -393,7 +391,7 @@ func (s *Service) GetHashString(name string) (primitives.Hash, error) {
 //
 //	hash, err := svc.HashBinary([]byte("example.lthn"))
 func (s *Service) HashBinary(name []byte) (primitives.Hash, error) {
-	return s.ResolveBinary(name)
+	return resolveCanonicalName("dns.Service.HashBinary", name)
 }
 
 // GetHashBinary is an alias for HashBinary.
@@ -458,7 +456,7 @@ func (s *Service) GetHashByBinary(name []byte) (primitives.Hash, error) {
 //	svc := dns.NewService()
 //	hash, err := svc.ResolveString("example.lthn")
 func (s *Service) ResolveString(name string) (primitives.Hash, error) {
-	return s.Resolve(name)
+	return resolveCanonicalName("dns.Service.ResolveString", name)
 }
 
 // GetResolveString is an alias for ResolveString.
@@ -471,7 +469,7 @@ func (s *Service) GetResolveString(name string) (primitives.Hash, error) {
 //	svc := dns.NewService()
 //	hash, err := svc.ResolveBinary([]byte("example.lthn"))
 func (s *Service) ResolveBinary(name []byte) (primitives.Hash, error) {
-	return s.Resolve(name)
+	return resolveCanonicalName("dns.Service.ResolveBinary", name)
 }
 
 // GetResolveBinary is an alias for ResolveBinary.

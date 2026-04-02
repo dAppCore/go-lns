@@ -518,12 +518,12 @@ func TestPackageLevelResolveAndVerifyAliases(t *testing.T) {
 		}
 	}
 
-	if _, err := Resolve(123); err == nil || !strings.Contains(err.Error(), "invalid name type") {
-		t.Fatalf("Resolve should reject unsupported input types with an invalid name type error, got %v", err)
+	if _, err := Resolve(123); err == nil || !strings.Contains(err.Error(), "dns.Resolve") {
+		t.Fatalf("Resolve should reject unsupported input types with a dns.Resolve error, got %v", err)
 	}
 
-	if _, err := Hash(123); err == nil || !strings.Contains(err.Error(), "invalid name type") {
-		t.Fatalf("Hash should reject unsupported input types with an invalid name type error, got %v", err)
+	if _, err := Hash(123); err == nil || !strings.Contains(err.Error(), "dns.Hash") {
+		t.Fatalf("Hash should reject unsupported input types with a dns.Hash error, got %v", err)
 	}
 
 	verifyCases := []struct {
