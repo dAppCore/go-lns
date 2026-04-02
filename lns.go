@@ -100,12 +100,17 @@ func canonicalizeName(name any) (string, bool) {
 }
 
 func resolveCanonicalName(method string, name any) (primitives.Hash, error) {
-	normalized, ok := canonicalizeName(name)
-	if !ok {
-		return primitives.Hash{}, core.E(method, "invalid name", nil)
-	}
+	switch name.(type) {
+	case string, []byte:
+		normalized, ok := canonicalizeName(name)
+		if !ok {
+			return primitives.Hash{}, core.E(method, "invalid name", nil)
+		}
 
-	return covenant.HashBinary([]byte(normalized))
+		return covenant.HashBinary([]byte(normalized))
+	default:
+		return primitives.Hash{}, core.E(method, "invalid name type", nil)
+	}
 }
 
 func verifyCanonicalName(name any) bool {

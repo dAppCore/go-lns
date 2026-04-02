@@ -5,6 +5,7 @@ package lns
 import (
 	"crypto/sha3"
 	"encoding/binary"
+	"strings"
 	"testing"
 
 	"golang.org/x/crypto/blake2b"
@@ -49,6 +50,14 @@ func TestPackageResolveAndVerifyAliases(t *testing.T) {
 		t.Fatalf("ResolveBinary returned error: %v", err)
 	} else if got != want {
 		t.Fatalf("ResolveBinary returned %x, want %x", got, want)
+	}
+
+	if _, err := Resolve(123); err == nil || !strings.Contains(err.Error(), "invalid name type") {
+		t.Fatalf("Resolve should reject unsupported input types with an invalid name type error, got %v", err)
+	}
+
+	if _, err := Hash(123); err == nil || !strings.Contains(err.Error(), "invalid name type") {
+		t.Fatalf("Hash should reject unsupported input types with an invalid name type error, got %v", err)
 	}
 
 	if got, err := HashString("Foo-Bar.lthn"); err != nil {

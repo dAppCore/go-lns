@@ -5,6 +5,7 @@ package lns
 import (
 	"crypto/sha3"
 	"encoding/binary"
+	"strings"
 	"testing"
 
 	core "dappco.re/go/core"
@@ -80,8 +81,8 @@ func TestServiceResolveRejectsInvalidNames(t *testing.T) {
 		}
 	}
 
-	if _, err := svc.Resolve(123); err == nil {
-		t.Fatal("Resolve should reject unsupported input types")
+	if _, err := svc.Resolve(123); err == nil || !strings.Contains(err.Error(), "invalid name type") {
+		t.Fatalf("Resolve should reject unsupported input types with an invalid name type error, got %v", err)
 	}
 }
 
@@ -202,8 +203,8 @@ func TestServiceHashAliases(t *testing.T) {
 		t.Fatalf("HashByName returned %x, want %x", got, want)
 	}
 
-	if _, err := svc.Hash(123); err == nil {
-		t.Fatal("Hash should reject unsupported input types")
+	if _, err := svc.Hash(123); err == nil || !strings.Contains(err.Error(), "invalid name type") {
+		t.Fatalf("Hash should reject unsupported input types with an invalid name type error, got %v", err)
 	}
 }
 
