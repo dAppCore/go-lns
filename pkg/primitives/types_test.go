@@ -54,6 +54,18 @@ func TestCovenantPredicates(t *testing.T) {
 	cases := []struct {
 		name           string
 		covenant       Covenant
+		isNone         bool
+		isClaim        bool
+		isOpen         bool
+		isBid          bool
+		isReveal       bool
+		isRedeem       bool
+		isRegister     bool
+		isUpdate       bool
+		isRenew        bool
+		isTransfer     bool
+		isFinalize     bool
+		isRevoke       bool
 		isKnown        bool
 		isUnknown      bool
 		isName         bool
@@ -64,6 +76,7 @@ func TestCovenantPredicates(t *testing.T) {
 		{
 			name:           "none",
 			covenant:       Covenant{Type: covenantTypeNone},
+			isNone:         true,
 			isKnown:        true,
 			isUnknown:      false,
 			isName:         false,
@@ -72,8 +85,20 @@ func TestCovenantPredicates(t *testing.T) {
 			isLinked:       false,
 		},
 		{
+			name:           "claim",
+			covenant:       Covenant{Type: covenantTypeClaim},
+			isClaim:        true,
+			isKnown:        true,
+			isUnknown:      false,
+			isName:         true,
+			isDustworthy:   false,
+			isNonspendable: true,
+			isLinked:       false,
+		},
+		{
 			name:           "open",
 			covenant:       Covenant{Type: covenantTypeOpen},
+			isOpen:         true,
 			isKnown:        true,
 			isUnknown:      false,
 			isName:         true,
@@ -84,6 +109,7 @@ func TestCovenantPredicates(t *testing.T) {
 		{
 			name:           "bid",
 			covenant:       Covenant{Type: covenantTypeBid},
+			isBid:          true,
 			isKnown:        true,
 			isUnknown:      false,
 			isName:         true,
@@ -94,6 +120,73 @@ func TestCovenantPredicates(t *testing.T) {
 		{
 			name:           "reveal",
 			covenant:       Covenant{Type: covenantTypeReveal},
+			isReveal:       true,
+			isKnown:        true,
+			isUnknown:      false,
+			isName:         true,
+			isDustworthy:   false,
+			isNonspendable: true,
+			isLinked:       true,
+		},
+		{
+			name:           "redeem",
+			covenant:       Covenant{Type: covenantTypeRedeem},
+			isRedeem:       true,
+			isKnown:        true,
+			isUnknown:      false,
+			isName:         true,
+			isDustworthy:   false,
+			isNonspendable: false,
+			isLinked:       true,
+		},
+		{
+			name:           "register",
+			covenant:       Covenant{Type: covenantTypeRegister},
+			isRegister:     true,
+			isKnown:        true,
+			isUnknown:      false,
+			isName:         true,
+			isDustworthy:   false,
+			isNonspendable: true,
+			isLinked:       true,
+		},
+		{
+			name:           "update",
+			covenant:       Covenant{Type: covenantTypeUpdate},
+			isUpdate:       true,
+			isKnown:        true,
+			isUnknown:      false,
+			isName:         true,
+			isDustworthy:   false,
+			isNonspendable: true,
+			isLinked:       true,
+		},
+		{
+			name:           "renew",
+			covenant:       Covenant{Type: covenantTypeRenew},
+			isRenew:        true,
+			isKnown:        true,
+			isUnknown:      false,
+			isName:         true,
+			isDustworthy:   false,
+			isNonspendable: true,
+			isLinked:       true,
+		},
+		{
+			name:           "transfer",
+			covenant:       Covenant{Type: covenantTypeTransfer},
+			isTransfer:     true,
+			isKnown:        true,
+			isUnknown:      false,
+			isName:         true,
+			isDustworthy:   false,
+			isNonspendable: true,
+			isLinked:       true,
+		},
+		{
+			name:           "finalize",
+			covenant:       Covenant{Type: covenantTypeFinalize},
+			isFinalize:     true,
 			isKnown:        true,
 			isUnknown:      false,
 			isName:         true,
@@ -104,6 +197,7 @@ func TestCovenantPredicates(t *testing.T) {
 		{
 			name:           "revoke",
 			covenant:       Covenant{Type: covenantTypeRevoke},
+			isRevoke:       true,
 			isKnown:        true,
 			isUnknown:      false,
 			isName:         true,
@@ -130,6 +224,54 @@ func TestCovenantPredicates(t *testing.T) {
 
 		if got := tc.covenant.IsUnknown(); got != tc.isUnknown {
 			t.Fatalf("%s: IsUnknown() = %v, want %v", tc.name, got, tc.isUnknown)
+		}
+
+		if got := tc.covenant.IsNone(); got != tc.isNone {
+			t.Fatalf("%s: IsNone() = %v, want %v", tc.name, got, tc.isNone)
+		}
+
+		if got := tc.covenant.IsClaim(); got != tc.isClaim {
+			t.Fatalf("%s: IsClaim() = %v, want %v", tc.name, got, tc.isClaim)
+		}
+
+		if got := tc.covenant.IsOpen(); got != tc.isOpen {
+			t.Fatalf("%s: IsOpen() = %v, want %v", tc.name, got, tc.isOpen)
+		}
+
+		if got := tc.covenant.IsBid(); got != tc.isBid {
+			t.Fatalf("%s: IsBid() = %v, want %v", tc.name, got, tc.isBid)
+		}
+
+		if got := tc.covenant.IsReveal(); got != tc.isReveal {
+			t.Fatalf("%s: IsReveal() = %v, want %v", tc.name, got, tc.isReveal)
+		}
+
+		if got := tc.covenant.IsRedeem(); got != tc.isRedeem {
+			t.Fatalf("%s: IsRedeem() = %v, want %v", tc.name, got, tc.isRedeem)
+		}
+
+		if got := tc.covenant.IsRegister(); got != tc.isRegister {
+			t.Fatalf("%s: IsRegister() = %v, want %v", tc.name, got, tc.isRegister)
+		}
+
+		if got := tc.covenant.IsUpdate(); got != tc.isUpdate {
+			t.Fatalf("%s: IsUpdate() = %v, want %v", tc.name, got, tc.isUpdate)
+		}
+
+		if got := tc.covenant.IsRenew(); got != tc.isRenew {
+			t.Fatalf("%s: IsRenew() = %v, want %v", tc.name, got, tc.isRenew)
+		}
+
+		if got := tc.covenant.IsTransfer(); got != tc.isTransfer {
+			t.Fatalf("%s: IsTransfer() = %v, want %v", tc.name, got, tc.isTransfer)
+		}
+
+		if got := tc.covenant.IsFinalize(); got != tc.isFinalize {
+			t.Fatalf("%s: IsFinalize() = %v, want %v", tc.name, got, tc.isFinalize)
+		}
+
+		if got := tc.covenant.IsRevoke(); got != tc.isRevoke {
+			t.Fatalf("%s: IsRevoke() = %v, want %v", tc.name, got, tc.isRevoke)
 		}
 
 		if got := tc.covenant.IsName(); got != tc.isName {

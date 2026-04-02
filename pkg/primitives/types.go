@@ -174,6 +174,66 @@ func (c Covenant) IsUnspendable() bool {
 	return c.Type == covenantTypeRevoke
 }
 
+// IsNone reports whether the covenant is a plain transfer.
+func (c Covenant) IsNone() bool {
+	return c.Type == covenantTypeNone
+}
+
+// IsClaim reports whether the covenant is a claim.
+func (c Covenant) IsClaim() bool {
+	return c.Type == covenantTypeClaim
+}
+
+// IsOpen reports whether the covenant is an open.
+func (c Covenant) IsOpen() bool {
+	return c.Type == covenantTypeOpen
+}
+
+// IsBid reports whether the covenant is a bid.
+func (c Covenant) IsBid() bool {
+	return c.Type == covenantTypeBid
+}
+
+// IsReveal reports whether the covenant is a reveal.
+func (c Covenant) IsReveal() bool {
+	return c.Type == covenantTypeReveal
+}
+
+// IsRedeem reports whether the covenant is a redeem.
+func (c Covenant) IsRedeem() bool {
+	return c.Type == covenantTypeRedeem
+}
+
+// IsRegister reports whether the covenant is a register.
+func (c Covenant) IsRegister() bool {
+	return c.Type == covenantTypeRegister
+}
+
+// IsUpdate reports whether the covenant is an update.
+func (c Covenant) IsUpdate() bool {
+	return c.Type == covenantTypeUpdate
+}
+
+// IsRenew reports whether the covenant is a renewal.
+func (c Covenant) IsRenew() bool {
+	return c.Type == covenantTypeRenew
+}
+
+// IsTransfer reports whether the covenant is a transfer.
+func (c Covenant) IsTransfer() bool {
+	return c.Type == covenantTypeTransfer
+}
+
+// IsFinalize reports whether the covenant is a finalise.
+func (c Covenant) IsFinalize() bool {
+	return c.Type == covenantTypeFinalize
+}
+
+// IsRevoke reports whether the covenant is a revocation.
+func (c Covenant) IsRevoke() bool {
+	return c.Type == covenantTypeRevoke
+}
+
 // IsName reports whether the covenant carries name-system semantics.
 func (c Covenant) IsName() bool {
 	return c.Type >= covenantTypeClaim && c.Type <= covenantTypeRevoke
