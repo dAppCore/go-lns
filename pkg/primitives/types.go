@@ -37,6 +37,72 @@ type Address struct {
 	Hash []byte
 }
 
+// Inject copies another address into this one.
+func (a *Address) Inject(other Address) *Address {
+	a.Version = other.Version
+	a.Hash = other.Hash
+	return a
+}
+
+// Clone returns a shallow copy of the address.
+func (a Address) Clone() Address {
+	var clone Address
+	return *clone.Inject(a)
+}
+
+// Equals reports whether two addresses have the same version and hash.
+func (a Address) Equals(other Address) bool {
+	if a.Version != other.Version {
+		return false
+	}
+
+	if len(a.Hash) != len(other.Hash) {
+		return false
+	}
+
+	for i := range a.Hash {
+		if a.Hash[i] != other.Hash[i] {
+			return false
+		}
+	}
+
+	return true
+}
+
+// Compare orders two addresses by version and then by hash bytes.
+func (a Address) Compare(other Address) int {
+	if a.Version < other.Version {
+		return -1
+	}
+
+	if a.Version > other.Version {
+		return 1
+	}
+
+	min := len(a.Hash)
+	if len(other.Hash) < min {
+		min = len(other.Hash)
+	}
+
+	for i := 0; i < min; i++ {
+		if a.Hash[i] < other.Hash[i] {
+			return -1
+		}
+		if a.Hash[i] > other.Hash[i] {
+			return 1
+		}
+	}
+
+	switch {
+	case len(a.Hash) < len(other.Hash):
+		return -1
+	case len(a.Hash) > len(other.Hash):
+		return 1
+	default:
+		return 0
+	}
+}
+
 // IsNull reports whether the address hash is entirely zero bytes.
 func (a Address) IsNull() bool {
 	for _, b := range a.Hash {

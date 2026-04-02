@@ -102,4 +102,32 @@ func TestAddressHelpers(t *testing.T) {
 			t.Fatalf("%s: IsValid() = %v, want %v", tc.name, got, tc.isValid)
 		}
 	}
+
+	left := Address{Version: 0, Hash: []byte{1, 2, 3}}
+	right := left.Clone()
+
+	if !left.Equals(right) {
+		t.Fatal("Clone() should produce an equal address")
+	}
+
+	if got := left.Compare(right); got != 0 {
+		t.Fatalf("Compare() = %d, want 0", got)
+	}
+
+	if got := (Address{Version: 0, Hash: []byte{1, 2, 3}}).Compare(Address{Version: 1, Hash: []byte{1, 2, 3}}); got >= 0 {
+		t.Fatalf("Compare() = %d, want negative", got)
+	}
+
+	if got := (Address{Version: 1, Hash: []byte{1, 2, 3}}).Compare(Address{Version: 0, Hash: []byte{1, 2, 3}}); got <= 0 {
+		t.Fatalf("Compare() = %d, want positive", got)
+	}
+
+	var injected Address
+	if got := injected.Inject(left); got != &injected {
+		t.Fatal("Inject() should return the receiver")
+	}
+
+	if !injected.Equals(left) {
+		t.Fatal("Inject() should copy the source address")
+	}
 }
