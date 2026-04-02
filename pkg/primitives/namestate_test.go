@@ -363,3 +363,100 @@ func TestNameStateJSONRoundTrip(t *testing.T) {
 		t.Fatalf("round-tripped state did not preserve fields: %+v", roundTripped)
 	}
 }
+
+func TestNameStateBinaryRoundTrip(t *testing.T) {
+	original := NameState{
+		Name:       []byte("example"),
+		NameHash:   Hash{1, 2, 3, 4},
+		Height:     100,
+		Renewal:    150,
+		Owner:      Outpoint{TxHash: Hash{5, 6, 7, 8}, Index: 9},
+		Value:      10,
+		Highest:    11,
+		Data:       []byte{0xaa, 0xbb},
+		Transfer:   180,
+		Revoked:    190,
+		Claimed:    2,
+		Renewals:   12,
+		Registered: true,
+		Expired:    true,
+		Weak:       true,
+	}
+
+	encoded, err := original.MarshalBinary()
+	if err != nil {
+		t.Fatalf("MarshalBinary returned error: %v", err)
+	}
+
+	if got := original.GetSize(); got != len(encoded) {
+		t.Fatalf("GetSize() = %d, want encoded length %d", got, len(encoded))
+	}
+
+	var decoded NameState
+	if err := decoded.UnmarshalBinary(encoded); err != nil {
+		t.Fatalf("UnmarshalBinary returned error: %v", err)
+	}
+
+	if !bytes.Equal(decoded.Name, original.Name) {
+		t.Fatalf("decoded name = %q, want %q", decoded.Name, original.Name)
+	}
+
+	if decoded.NameHash != (Hash{}) {
+		t.Fatalf("decoded name hash = %x, want zero value", decoded.NameHash)
+	}
+
+	if decoded.Height != original.Height ||
+		decoded.Renewal != original.Renewal ||
+		decoded.Owner != original.Owner ||
+		decoded.Value != original.Value ||
+		decoded.Highest != original.Highest ||
+		decoded.Transfer != original.Transfer ||
+		decoded.Revoked != original.Revoked ||
+		decoded.Claimed != original.Claimed ||
+		decoded.Renewals != original.Renewals ||
+		decoded.Registered != original.Registered ||
+		decoded.Expired != original.Expired ||
+		decoded.Weak != original.Weak {
+		t.Fatalf("decoded binary state did not preserve fields: %+v", decoded)
+	}
+
+	if !bytes.Equal(decoded.Data, original.Data) {
+		t.Fatalf("decoded data = %x, want %x", decoded.Data, original.Data)
+	}
+}
+
+func TestNameStateBinaryZeroValue(t *testing.T) {
+	var original NameState
+
+	encoded, err := original.MarshalBinary()
+	if err != nil {
+		t.Fatalf("MarshalBinary returned error: %v", err)
+	}
+
+	if got := original.GetSize(); got != len(encoded) {
+		t.Fatalf("GetSize() = %d, want encoded length %d", got, len(encoded))
+	}
+
+	var decoded NameState
+	if err := decoded.UnmarshalBinary(encoded); err != nil {
+		t.Fatalf("UnmarshalBinary returned error: %v", err)
+	}
+
+	if len(decoded.Name) != 0 ||
+		decoded.NameHash != (Hash{}) ||
+		decoded.Height != 0 ||
+		decoded.Renewal != 0 ||
+		decoded.Owner != (Outpoint{}) ||
+		decoded.Value != 0 ||
+		decoded.Highest != 0 ||
+		len(decoded.Data) != 0 ||
+		decoded.Transfer != 0 ||
+		decoded.Revoked != 0 ||
+		decoded.Claimed != 0 ||
+		decoded.Renewals != 0 ||
+		decoded.Registered ||
+		decoded.Expired ||
+		decoded.Weak {
+		t.Fatalf("decoded zero value = %+v, want zero value", decoded)
+	}
+}
