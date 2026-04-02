@@ -45,6 +45,191 @@ func Register(c *core.Core) core.Result {
 	return core.Result{Value: svc, OK: true}
 }
 
+func packageService() *Service {
+	return &Service{}
+}
+
+// Resolve returns the canonical hash for a validated .lthn name.
+//
+// This is the package-level convenience wrapper around Service.Resolve.
+//
+//	hash, err := lns.Resolve("example.lthn")
+func Resolve(name any) (primitives.Hash, error) {
+	return packageService().Resolve(name)
+}
+
+// Hash returns the canonical hash for a validated .lthn name.
+//
+// This is the package-level convenience wrapper around Service.Hash.
+//
+//	hash, err := lns.Hash("example.lthn")
+func Hash(name any) (primitives.Hash, error) {
+	return packageService().Hash(name)
+}
+
+// Verify reports whether a .lthn name is valid after canonicalisation.
+//
+// This is the package-level convenience wrapper around Service.Verify.
+//
+//	ok := lns.Verify("example.lthn")
+func Verify(name any) bool {
+	return packageService().Verify(name)
+}
+
+// HashString returns the canonical hash for a .lthn name supplied as a string.
+//
+//	hash, err := lns.HashString("example.lthn")
+func HashString(name string) (primitives.Hash, error) {
+	return packageService().HashString(name)
+}
+
+// HashBinary returns the canonical hash for a .lthn name supplied as bytes.
+//
+//	hash, err := lns.HashBinary([]byte("example.lthn"))
+func HashBinary(name []byte) (primitives.Hash, error) {
+	return packageService().HashBinary(name)
+}
+
+// ResolveByString is an alias for ResolveString.
+//
+//	hash, err := lns.ResolveByString("example.lthn")
+func ResolveByString(name string) (primitives.Hash, error) {
+	return packageService().ResolveByString(name)
+}
+
+// ResolveByBinary is an alias for ResolveBinary.
+//
+//	hash, err := lns.ResolveByBinary([]byte("example.lthn"))
+func ResolveByBinary(name []byte) (primitives.Hash, error) {
+	return packageService().ResolveByBinary(name)
+}
+
+// HashByString is an alias for HashString.
+//
+//	hash, err := lns.HashByString("example.lthn")
+func HashByString(name string) (primitives.Hash, error) {
+	return packageService().HashByString(name)
+}
+
+// HashByBinary is an alias for HashBinary.
+//
+//	hash, err := lns.HashByBinary([]byte("example.lthn"))
+func HashByBinary(name []byte) (primitives.Hash, error) {
+	return packageService().HashByBinary(name)
+}
+
+// ResolveString returns the canonical hash for a .lthn name supplied as a string.
+//
+//	hash, err := lns.ResolveString("example.lthn")
+func ResolveString(name string) (primitives.Hash, error) {
+	return packageService().ResolveString(name)
+}
+
+// ResolveBinary returns the canonical hash for a .lthn name supplied as bytes.
+//
+//	hash, err := lns.ResolveBinary([]byte("example.lthn"))
+func ResolveBinary(name []byte) (primitives.Hash, error) {
+	return packageService().ResolveBinary(name)
+}
+
+// ResolveName is an alias for Resolve.
+//
+//	hash, err := lns.ResolveName("example.lthn")
+func ResolveName(name any) (primitives.Hash, error) {
+	return packageService().ResolveName(name)
+}
+
+// HashName is an alias for Hash.
+//
+//	hash, err := lns.HashName("example.lthn")
+func HashName(name any) (primitives.Hash, error) {
+	return packageService().HashName(name)
+}
+
+// VerifyName is an alias for Verify.
+//
+//	ok := lns.VerifyName("example.lthn")
+func VerifyName(name any) bool {
+	return packageService().VerifyName(name)
+}
+
+// ResolveByName is an alias for ResolveName.
+//
+//	hash, err := lns.ResolveByName("example.lthn")
+func ResolveByName(name any) (primitives.Hash, error) {
+	return packageService().ResolveByName(name)
+}
+
+// HashByName is an alias for HashName.
+//
+//	hash, err := lns.HashByName("example.lthn")
+func HashByName(name any) (primitives.Hash, error) {
+	return packageService().HashByName(name)
+}
+
+// VerifyByName is an alias for VerifyName.
+//
+//	ok := lns.VerifyByName("example.lthn")
+func VerifyByName(name any) bool {
+	return packageService().VerifyByName(name)
+}
+
+// VerifyString reports whether a .lthn name supplied as a string is valid.
+//
+//	ok := lns.VerifyString("example.lthn")
+func VerifyString(name string) bool {
+	return packageService().VerifyString(name)
+}
+
+// VerifyBinary reports whether a .lthn name supplied as bytes is valid.
+//
+//	ok := lns.VerifyBinary([]byte("example.lthn"))
+func VerifyBinary(name []byte) bool {
+	return packageService().VerifyBinary(name)
+}
+
+// VerifyByString is an alias for VerifyString.
+//
+//	ok := lns.VerifyByString("example.lthn")
+func VerifyByString(name string) bool {
+	return packageService().VerifyByString(name)
+}
+
+// VerifyByBinary is an alias for VerifyBinary.
+//
+//	ok := lns.VerifyByBinary([]byte("example.lthn"))
+func VerifyByBinary(name []byte) bool {
+	return packageService().VerifyByBinary(name)
+}
+
+// Blind returns the sealed-bid commitment for an amount and nonce.
+//
+//	bid, err := lns.Blind(1000, nonce)
+func Blind(value uint64, nonce primitives.Hash) (primitives.Hash, error) {
+	return packageService().Blind(value, nonce)
+}
+
+// GetBlind is an alias for Blind.
+//
+//	bid, err := lns.GetBlind(1000, nonce)
+func GetBlind(value uint64, nonce primitives.Hash) (primitives.Hash, error) {
+	return packageService().GetBlind(value, nonce)
+}
+
+// TypeName returns the canonical string for a covenant type.
+//
+//	name := lns.TypeName(covenant.TypeBid)
+func TypeName(ct covenant.CovenantType) string {
+	return packageService().TypeName(ct)
+}
+
+// GetTypeName is an alias for TypeName.
+//
+//	name := lns.GetTypeName(covenant.TypeBid)
+func GetTypeName(ct covenant.CovenantType) string {
+	return packageService().GetTypeName(ct)
+}
+
 // ServiceName returns the registered name for the LNS service group.
 //
 //	name := svc.ServiceName()
@@ -831,6 +1016,456 @@ func DefaultLockedCatalog() *covenant.LockedCatalog {
 //	catalog := lns.GetLockedCatalog()
 func GetLockedCatalog() *covenant.LockedCatalog {
 	return DefaultLockedCatalog()
+}
+
+// ReservedCatalog exposes the reserved-name catalog used by the package.
+//
+//	catalog := lns.ReservedCatalog()
+func ReservedCatalog() *covenant.ReservedCatalog {
+	return packageService().ReservedCatalog()
+}
+
+// LockedCatalog exposes the locked-name catalog used by the package.
+//
+//	catalog := lns.LockedCatalog()
+func LockedCatalog() *covenant.LockedCatalog {
+	return packageService().LockedCatalog()
+}
+
+// ReservedSize reports the number of reserved-name entries available to the package.
+//
+//	size := lns.ReservedSize()
+func ReservedSize() int {
+	return ReservedCatalog().Size()
+}
+
+// GetReservedSize is an alias for ReservedSize.
+//
+//	size := lns.GetReservedSize()
+func GetReservedSize() int {
+	return ReservedSize()
+}
+
+// ReservedNameValue reports the base value used for reserved-name lookups.
+//
+//	base := lns.ReservedNameValue()
+func ReservedNameValue() uint64 {
+	return ReservedCatalog().NameValue()
+}
+
+// GetReservedNameValue is an alias for ReservedNameValue.
+//
+//	base := lns.GetReservedNameValue()
+func GetReservedNameValue() uint64 {
+	return ReservedNameValue()
+}
+
+// ReservedRootValue reports the root-name increment used for reserved-name lookups.
+//
+//	root := lns.ReservedRootValue()
+func ReservedRootValue() uint64 {
+	return ReservedCatalog().RootValue()
+}
+
+// GetReservedRootValue is an alias for ReservedRootValue.
+//
+//	root := lns.GetReservedRootValue()
+func GetReservedRootValue() uint64 {
+	return ReservedRootValue()
+}
+
+// ReservedTopValue reports the top-100 increment used for reserved-name lookups.
+//
+//	top := lns.ReservedTopValue()
+func ReservedTopValue() uint64 {
+	return ReservedCatalog().TopValue()
+}
+
+// GetReservedTopValue is an alias for ReservedTopValue.
+//
+//	top := lns.GetReservedTopValue()
+func GetReservedTopValue() uint64 {
+	return ReservedTopValue()
+}
+
+// ReservedPrefixSize reports the byte offset where reserved-name entries begin.
+//
+//	offset := lns.ReservedPrefixSize()
+func ReservedPrefixSize() int {
+	return ReservedCatalog().PrefixSize()
+}
+
+// GetReservedPrefixSize is an alias for ReservedPrefixSize.
+//
+//	offset := lns.GetReservedPrefixSize()
+func GetReservedPrefixSize() int {
+	return ReservedPrefixSize()
+}
+
+// ReservedEntries exposes the reserved-name catalog entries used by the package.
+//
+//	entries := lns.ReservedEntries()
+func ReservedEntries() []covenant.ReservedEntry {
+	return ReservedCatalog().Entries()
+}
+
+// GetReservedEntries is an alias for ReservedEntries.
+//
+//	entries := lns.GetReservedEntries()
+func GetReservedEntries() []covenant.ReservedEntry {
+	return ReservedEntries()
+}
+
+// ReservedKeys exposes the reserved-name hashes used by the package.
+//
+//	keys := lns.ReservedKeys()
+func ReservedKeys() []primitives.Hash {
+	return ReservedCatalog().Keys()
+}
+
+// GetReservedKeys is an alias for ReservedKeys.
+//
+//	keys := lns.GetReservedKeys()
+func GetReservedKeys() []primitives.Hash {
+	return ReservedKeys()
+}
+
+// ReservedValues exposes the reserved-name entries used by the package.
+//
+//	values := lns.ReservedValues()
+func ReservedValues() []covenant.ReservedName {
+	return ReservedCatalog().Values()
+}
+
+// GetReservedValues is an alias for ReservedValues.
+//
+//	values := lns.GetReservedValues()
+func GetReservedValues() []covenant.ReservedName {
+	return ReservedValues()
+}
+
+// LockedSize reports the number of locked-name entries available to the package.
+//
+//	size := lns.LockedSize()
+func LockedSize() int {
+	return LockedCatalog().Size()
+}
+
+// GetLockedSize is an alias for LockedSize.
+//
+//	size := lns.GetLockedSize()
+func GetLockedSize() int {
+	return LockedSize()
+}
+
+// LockedPrefixSize reports the byte offset where locked-name entries begin.
+//
+//	offset := lns.LockedPrefixSize()
+func LockedPrefixSize() int {
+	return LockedCatalog().PrefixSize()
+}
+
+// GetLockedPrefixSize is an alias for LockedPrefixSize.
+//
+//	offset := lns.GetLockedPrefixSize()
+func GetLockedPrefixSize() int {
+	return LockedPrefixSize()
+}
+
+// LockedEntries exposes the locked-name catalog entries used by the package.
+//
+//	entries := lns.LockedEntries()
+func LockedEntries() []covenant.LockedEntry {
+	return LockedCatalog().Entries()
+}
+
+// GetLockedEntries is an alias for LockedEntries.
+//
+//	entries := lns.GetLockedEntries()
+func GetLockedEntries() []covenant.LockedEntry {
+	return LockedEntries()
+}
+
+// LockedKeys exposes the locked-name hashes used by the package.
+//
+//	keys := lns.LockedKeys()
+func LockedKeys() []primitives.Hash {
+	return LockedCatalog().Keys()
+}
+
+// GetLockedKeys is an alias for LockedKeys.
+//
+//	keys := lns.GetLockedKeys()
+func GetLockedKeys() []primitives.Hash {
+	return LockedKeys()
+}
+
+// LockedValues exposes the locked-name entries used by the package.
+//
+//	values := lns.LockedValues()
+func LockedValues() []covenant.LockedName {
+	return LockedCatalog().Values()
+}
+
+// GetLockedValues is an alias for LockedValues.
+//
+//	values := lns.GetLockedValues()
+func GetLockedValues() []covenant.LockedName {
+	return LockedValues()
+}
+
+// GetReserved looks up a reserved .lthn name after canonicalisation.
+//
+//	item, ok := lns.GetReserved("reserved.lthn")
+func GetReserved(name any) (covenant.ReservedName, bool) {
+	return packageService().GetReserved(name)
+}
+
+// GetReservedName looks up a reserved name using the raw catalog label.
+//
+//	item, ok := lns.GetReservedName("reserved")
+func GetReservedName(name any) (covenant.ReservedName, bool) {
+	return packageService().GetReservedName(name)
+}
+
+// GetReservedString looks up a reserved name supplied as a string.
+//
+//	item, ok := lns.GetReservedString("reserved")
+func GetReservedString(name string) (covenant.ReservedName, bool) {
+	return packageService().GetReservedString(name)
+}
+
+// GetReservedBinary looks up a reserved name supplied as bytes.
+//
+//	item, ok := lns.GetReservedBinary([]byte("reserved"))
+func GetReservedBinary(name []byte) (covenant.ReservedName, bool) {
+	return packageService().GetReservedBinary(name)
+}
+
+// GetReservedByString is an alias for GetReservedString.
+//
+//	item, ok := lns.GetReservedByString("reserved")
+func GetReservedByString(name string) (covenant.ReservedName, bool) {
+	return packageService().GetReservedByString(name)
+}
+
+// GetReservedByBinary is an alias for GetReservedBinary.
+//
+//	item, ok := lns.GetReservedByBinary([]byte("reserved"))
+func GetReservedByBinary(name []byte) (covenant.ReservedName, bool) {
+	return packageService().GetReservedByBinary(name)
+}
+
+// HasReserved reports whether a canonicalised .lthn name is reserved.
+//
+//	ok := lns.HasReserved("reserved.lthn")
+func HasReserved(name any) bool {
+	return packageService().HasReserved(name)
+}
+
+// HasReservedString reports whether a reserved name supplied as a string exists.
+//
+//	ok := lns.HasReservedString("reserved")
+func HasReservedString(name string) bool {
+	return packageService().HasReservedString(name)
+}
+
+// HasReservedBinary reports whether a reserved name supplied as bytes exists.
+//
+//	ok := lns.HasReservedBinary([]byte("reserved"))
+func HasReservedBinary(name []byte) bool {
+	return packageService().HasReservedBinary(name)
+}
+
+// HasReservedByString is an alias for HasReservedString.
+//
+//	ok := lns.HasReservedByString("reserved")
+func HasReservedByString(name string) bool {
+	return packageService().HasReservedByString(name)
+}
+
+// HasReservedByBinary is an alias for HasReservedBinary.
+//
+//	ok := lns.HasReservedByBinary([]byte("reserved"))
+func HasReservedByBinary(name []byte) bool {
+	return packageService().HasReservedByBinary(name)
+}
+
+// GetReservedByName is an alias for GetReservedName.
+//
+//	item, ok := lns.GetReservedByName("reserved")
+func GetReservedByName(name any) (covenant.ReservedName, bool) {
+	return packageService().GetReservedByName(name)
+}
+
+// HasReservedByName is an alias for HasReservedName.
+//
+//	ok := lns.HasReservedByName("reserved")
+func HasReservedByName(name any) bool {
+	return packageService().HasReservedByName(name)
+}
+
+// HasReservedName reports whether a reserved name exists using the raw catalog label.
+//
+//	ok := lns.HasReservedName("reserved")
+func HasReservedName(name any) bool {
+	return packageService().HasReservedName(name)
+}
+
+// GetReservedHash looks up a reserved .lthn name by its canonical hash.
+//
+//	hash, _ := covenant.HashString("reserved")
+//	item, ok := lns.GetReservedHash(hash)
+func GetReservedHash(hash primitives.Hash) (covenant.ReservedName, bool) {
+	return packageService().GetReservedHash(hash)
+}
+
+// HasReservedHash reports whether a canonical hash is reserved.
+//
+//	ok := lns.HasReservedHash(hash)
+func HasReservedHash(hash primitives.Hash) bool {
+	return packageService().HasReservedHash(hash)
+}
+
+// GetReservedByHash is an alias for GetReservedHash.
+//
+//	item, ok := lns.GetReservedByHash(hash)
+func GetReservedByHash(hash primitives.Hash) (covenant.ReservedName, bool) {
+	return packageService().GetReservedByHash(hash)
+}
+
+// HasReservedByHash is an alias for HasReservedHash.
+//
+//	ok := lns.HasReservedByHash(hash)
+func HasReservedByHash(hash primitives.Hash) bool {
+	return packageService().HasReservedByHash(hash)
+}
+
+// GetLocked looks up a locked .lthn name after canonicalisation.
+//
+//	item, ok := lns.GetLocked("nec.lthn")
+func GetLocked(name any) (covenant.LockedName, bool) {
+	return packageService().GetLocked(name)
+}
+
+// GetLockedName looks up a locked name using the raw catalog label.
+//
+//	item, ok := lns.GetLockedName("nec")
+func GetLockedName(name any) (covenant.LockedName, bool) {
+	return packageService().GetLockedName(name)
+}
+
+// GetLockedString looks up a locked name supplied as a string.
+//
+//	item, ok := lns.GetLockedString("nec")
+func GetLockedString(name string) (covenant.LockedName, bool) {
+	return packageService().GetLockedString(name)
+}
+
+// GetLockedBinary looks up a locked name supplied as bytes.
+//
+//	item, ok := lns.GetLockedBinary([]byte("nec"))
+func GetLockedBinary(name []byte) (covenant.LockedName, bool) {
+	return packageService().GetLockedBinary(name)
+}
+
+// GetLockedByString is an alias for GetLockedString.
+//
+//	item, ok := lns.GetLockedByString("nec")
+func GetLockedByString(name string) (covenant.LockedName, bool) {
+	return packageService().GetLockedByString(name)
+}
+
+// GetLockedByBinary is an alias for GetLockedBinary.
+//
+//	item, ok := lns.GetLockedByBinary([]byte("nec"))
+func GetLockedByBinary(name []byte) (covenant.LockedName, bool) {
+	return packageService().GetLockedByBinary(name)
+}
+
+// HasLocked reports whether a canonicalised .lthn name is locked.
+//
+//	ok := lns.HasLocked("nec.lthn")
+func HasLocked(name any) bool {
+	return packageService().HasLocked(name)
+}
+
+// HasLockedString reports whether a locked name supplied as a string exists.
+//
+//	ok := lns.HasLockedString("nec")
+func HasLockedString(name string) bool {
+	return packageService().HasLockedString(name)
+}
+
+// HasLockedBinary reports whether a locked name supplied as bytes exists.
+//
+//	ok := lns.HasLockedBinary([]byte("nec"))
+func HasLockedBinary(name []byte) bool {
+	return packageService().HasLockedBinary(name)
+}
+
+// HasLockedByString is an alias for HasLockedString.
+//
+//	ok := lns.HasLockedByString("nec")
+func HasLockedByString(name string) bool {
+	return packageService().HasLockedByString(name)
+}
+
+// HasLockedByBinary is an alias for HasLockedBinary.
+//
+//	ok := lns.HasLockedByBinary([]byte("nec"))
+func HasLockedByBinary(name []byte) bool {
+	return packageService().HasLockedByBinary(name)
+}
+
+// GetLockedByName is an alias for GetLockedName.
+//
+//	item, ok := lns.GetLockedByName("nec")
+func GetLockedByName(name any) (covenant.LockedName, bool) {
+	return packageService().GetLockedByName(name)
+}
+
+// HasLockedByName is an alias for HasLockedName.
+//
+//	ok := lns.HasLockedByName("nec")
+func HasLockedByName(name any) bool {
+	return packageService().HasLockedByName(name)
+}
+
+// HasLockedName reports whether a locked name exists using the raw catalog label.
+//
+//	ok := lns.HasLockedName("nec")
+func HasLockedName(name any) bool {
+	return packageService().HasLockedName(name)
+}
+
+// GetLockedHash looks up a locked .lthn name by its canonical hash.
+//
+//	hash, _ := covenant.HashString("nec")
+//	item, ok := lns.GetLockedHash(hash)
+func GetLockedHash(hash primitives.Hash) (covenant.LockedName, bool) {
+	return packageService().GetLockedHash(hash)
+}
+
+// HasLockedHash reports whether a canonical hash is locked.
+//
+//	ok := lns.HasLockedHash(hash)
+func HasLockedHash(hash primitives.Hash) bool {
+	return packageService().HasLockedHash(hash)
+}
+
+// GetLockedByHash is an alias for GetLockedHash.
+//
+//	item, ok := lns.GetLockedByHash(hash)
+func GetLockedByHash(hash primitives.Hash) (covenant.LockedName, bool) {
+	return packageService().GetLockedByHash(hash)
+}
+
+// HasLockedByHash is an alias for HasLockedHash.
+//
+//	ok := lns.HasLockedByHash(hash)
+func HasLockedByHash(hash primitives.Hash) bool {
+	return packageService().HasLockedByHash(hash)
 }
 
 // LockedSize reports the number of locked-name entries available to the service.
