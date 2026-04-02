@@ -160,6 +160,16 @@ func (s *Service) HasReservedHash(hash primitives.Hash) bool {
 	return ok
 }
 
+// GetReservedByHash is an alias for GetReservedHash.
+func (s *Service) GetReservedByHash(hash primitives.Hash) (covenant.ReservedName, bool) {
+	return s.GetReservedHash(hash)
+}
+
+// HasReservedByHash is an alias for HasReservedHash.
+func (s *Service) HasReservedByHash(hash primitives.Hash) bool {
+	return s.HasReservedHash(hash)
+}
+
 // GetLocked looks up a locked .lthn name after canonicalisation.
 //
 // The lookup accepts the same inputs as Resolve and Verify, then returns the
@@ -223,6 +233,16 @@ func (s *Service) GetLockedHash(hash primitives.Hash) (covenant.LockedName, bool
 func (s *Service) HasLockedHash(hash primitives.Hash) bool {
 	_, ok := s.GetLockedHash(hash)
 	return ok
+}
+
+// GetLockedByHash is an alias for GetLockedHash.
+func (s *Service) GetLockedByHash(hash primitives.Hash) (covenant.LockedName, bool) {
+	return s.GetLockedHash(hash)
+}
+
+// HasLockedByHash is an alias for HasLockedHash.
+func (s *Service) HasLockedByHash(hash primitives.Hash) bool {
+	return s.HasLockedHash(hash)
 }
 
 // ReservedCatalog exposes the reserved-name catalog used by the service.

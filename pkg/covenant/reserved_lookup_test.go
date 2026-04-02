@@ -52,6 +52,22 @@ func TestReservedLookupByHash(t *testing.T) {
 	}
 }
 
+func TestReservedLookupByHashAlias(t *testing.T) {
+	hash, err := HashString("reserved")
+	if err != nil {
+		t.Fatalf("HashString returned error: %v", err)
+	}
+
+	item, ok := GetReservedByHash(hash)
+	if !ok {
+		t.Fatal("GetReservedByHash should find the reserved reference entry")
+	}
+
+	if item.Hash != hash {
+		t.Fatalf("item.Hash = %x, want %x", item.Hash, hash)
+	}
+}
+
 func TestReservedLookupRejectsUnknownNames(t *testing.T) {
 	if HasReservedName("does-not-exist") {
 		t.Fatal("unknown names should not be reported as reserved")

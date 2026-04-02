@@ -68,6 +68,11 @@ func GetLockedHash(hash primitives.Hash) (LockedName, bool) {
 	return defaultLockedCatalog().Get(hash)
 }
 
+// GetLockedByHash is an alias for GetLockedHash.
+func GetLockedByHash(hash primitives.Hash) (LockedName, bool) {
+	return GetLockedHash(hash)
+}
+
 // DefaultLockedCatalog returns the lazily loaded locked-name catalog.
 func DefaultLockedCatalog() *LockedCatalog {
 	return defaultLockedCatalog()

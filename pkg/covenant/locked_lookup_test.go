@@ -48,6 +48,22 @@ func TestLockedLookupByHash(t *testing.T) {
 	}
 }
 
+func TestLockedLookupByHashAlias(t *testing.T) {
+	hash, err := HashString("nec")
+	if err != nil {
+		t.Fatalf("HashString returned error: %v", err)
+	}
+
+	item, ok := GetLockedByHash(hash)
+	if !ok {
+		t.Fatal("GetLockedByHash should find the locked reference entry")
+	}
+
+	if item.Hash != hash {
+		t.Fatalf("item.Hash = %x, want %x", item.Hash, hash)
+	}
+}
+
 func TestLockedLookupRejectsUnknownNames(t *testing.T) {
 	if HasLockedName("does-not-exist") {
 		t.Fatal("unknown names should not be reported as locked")

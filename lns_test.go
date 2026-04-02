@@ -251,6 +251,32 @@ func TestServiceGetReservedHash(t *testing.T) {
 	}
 }
 
+func TestServiceGetReservedByHash(t *testing.T) {
+	svc := &Service{}
+
+	hash, err := covenant.HashString("reserved")
+	if err != nil {
+		t.Fatalf("HashString returned error: %v", err)
+	}
+
+	item, ok := svc.GetReservedByHash(hash)
+	if !ok {
+		t.Fatal("GetReservedByHash should find the reserved reference entry")
+	}
+
+	if item.Name != "reserved" {
+		t.Fatalf("item.Name = %q, want %q", item.Name, "reserved")
+	}
+
+	if !svc.HasReservedByHash(hash) {
+		t.Fatal("HasReservedByHash should report canonical reserved hashes")
+	}
+
+	if svc.HasReservedByHash(primitives.Hash{}) {
+		t.Fatal("HasReservedByHash should return false for unknown hashes")
+	}
+}
+
 func TestServiceGetLocked(t *testing.T) {
 	svc := &Service{}
 
@@ -381,6 +407,32 @@ func TestServiceGetLockedHash(t *testing.T) {
 
 	if svc.HasLockedHash(primitives.Hash{}) {
 		t.Fatal("HasLockedHash should return false for unknown hashes")
+	}
+}
+
+func TestServiceGetLockedByHash(t *testing.T) {
+	svc := &Service{}
+
+	hash, err := covenant.HashString("nec")
+	if err != nil {
+		t.Fatalf("HashString returned error: %v", err)
+	}
+
+	item, ok := svc.GetLockedByHash(hash)
+	if !ok {
+		t.Fatal("GetLockedByHash should find the locked reference entry")
+	}
+
+	if item.Name != "nec" {
+		t.Fatalf("item.Name = %q, want %q", item.Name, "nec")
+	}
+
+	if !svc.HasLockedByHash(hash) {
+		t.Fatal("HasLockedByHash should report canonical locked hashes")
+	}
+
+	if svc.HasLockedByHash(primitives.Hash{}) {
+		t.Fatal("HasLockedByHash should return false for unknown hashes")
 	}
 }
 

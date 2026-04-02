@@ -90,6 +90,11 @@ func GetReservedHash(hash primitives.Hash) (ReservedName, bool) {
 	return defaultReservedCatalog().Get(hash)
 }
 
+// GetReservedByHash is an alias for GetReservedHash.
+func GetReservedByHash(hash primitives.Hash) (ReservedName, bool) {
+	return GetReservedHash(hash)
+}
+
 // DefaultReservedCatalog returns the lazily loaded reserved-name catalog.
 func DefaultReservedCatalog() *ReservedCatalog {
 	return defaultReservedCatalog()
