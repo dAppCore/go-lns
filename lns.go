@@ -874,9 +874,19 @@ func CountOpens(tx primitives.Transaction) int {
 	return covenant.CountOpens(tx)
 }
 
+// GetCountOpens is an alias for CountOpens.
+func GetCountOpens(tx primitives.Transaction) int {
+	return CountOpens(tx)
+}
+
 // CountUpdates counts update-style covenants in a transaction.
 func CountUpdates(tx primitives.Transaction) int {
 	return covenant.CountUpdates(tx)
+}
+
+// GetCountUpdates is an alias for CountUpdates.
+func GetCountUpdates(tx primitives.Transaction) int {
+	return CountUpdates(tx)
 }
 
 // CountRenewals counts REGISTER, RENEW, and FINALIZE covenants in a transaction.
@@ -884,9 +894,19 @@ func CountRenewals(tx primitives.Transaction) int {
 	return covenant.CountRenewals(tx)
 }
 
+// GetCountRenewals is an alias for CountRenewals.
+func GetCountRenewals(tx primitives.Transaction) int {
+	return CountRenewals(tx)
+}
+
 // HasNames reports whether any name covenant in the transaction matches the set.
 func HasNames(tx primitives.Transaction, set map[primitives.Hash]struct{}) bool {
 	return covenant.HasNames(tx, set)
+}
+
+// GetHasNames is an alias for HasNames.
+func GetHasNames(tx primitives.Transaction, set map[primitives.Hash]struct{}) bool {
+	return HasNames(tx, set)
 }
 
 // AddNames adds the transaction's name covenants to the set.
@@ -894,14 +914,29 @@ func AddNames(tx primitives.Transaction, set map[primitives.Hash]struct{}) {
 	covenant.AddNames(tx, set)
 }
 
+// GetAddNames is an alias for AddNames.
+func GetAddNames(tx primitives.Transaction, set map[primitives.Hash]struct{}) {
+	AddNames(tx, set)
+}
+
 // RemoveNames removes the transaction's name covenants from the set.
 func RemoveNames(tx primitives.Transaction, set map[primitives.Hash]struct{}) {
 	covenant.RemoveNames(tx, set)
 }
 
+// GetRemoveNames is an alias for RemoveNames.
+func GetRemoveNames(tx primitives.Transaction, set map[primitives.Hash]struct{}) {
+	RemoveNames(tx, set)
+}
+
 // HasSaneCovenants performs structural covenant validation on a transaction.
 func HasSaneCovenants(tx primitives.Transaction) bool {
 	return covenant.HasSaneCovenants(tx)
+}
+
+// GetHasSaneCovenants is an alias for HasSaneCovenants.
+func GetHasSaneCovenants(tx primitives.Transaction) bool {
+	return HasSaneCovenants(tx)
 }
 
 // VerifyCovenants performs contextual covenant validation on a transaction.
@@ -1371,9 +1406,19 @@ func (s *Service) CountOpens(tx primitives.Transaction) int {
 	return covenant.CountOpens(tx)
 }
 
+// GetCountOpens is an alias for CountOpens.
+func (s *Service) GetCountOpens(tx primitives.Transaction) int {
+	return s.CountOpens(tx)
+}
+
 // CountUpdates counts update-style covenants in a transaction.
 func (s *Service) CountUpdates(tx primitives.Transaction) int {
 	return covenant.CountUpdates(tx)
+}
+
+// GetCountUpdates is an alias for CountUpdates.
+func (s *Service) GetCountUpdates(tx primitives.Transaction) int {
+	return s.CountUpdates(tx)
 }
 
 // CountRenewals counts REGISTER, RENEW, and FINALIZE covenants in a transaction.
@@ -1381,9 +1426,19 @@ func (s *Service) CountRenewals(tx primitives.Transaction) int {
 	return covenant.CountRenewals(tx)
 }
 
+// GetCountRenewals is an alias for CountRenewals.
+func (s *Service) GetCountRenewals(tx primitives.Transaction) int {
+	return s.CountRenewals(tx)
+}
+
 // HasNames reports whether any name covenant in the transaction matches the set.
 func (s *Service) HasNames(tx primitives.Transaction, set map[primitives.Hash]struct{}) bool {
 	return covenant.HasNames(tx, set)
+}
+
+// GetHasNames is an alias for HasNames.
+func (s *Service) GetHasNames(tx primitives.Transaction, set map[primitives.Hash]struct{}) bool {
+	return s.HasNames(tx, set)
 }
 
 // AddNames adds the transaction's name covenants to the set.
@@ -1391,14 +1446,29 @@ func (s *Service) AddNames(tx primitives.Transaction, set map[primitives.Hash]st
 	covenant.AddNames(tx, set)
 }
 
+// GetAddNames is an alias for AddNames.
+func (s *Service) GetAddNames(tx primitives.Transaction, set map[primitives.Hash]struct{}) {
+	s.AddNames(tx, set)
+}
+
 // RemoveNames removes the transaction's name covenants from the set.
 func (s *Service) RemoveNames(tx primitives.Transaction, set map[primitives.Hash]struct{}) {
 	covenant.RemoveNames(tx, set)
 }
 
+// GetRemoveNames is an alias for RemoveNames.
+func (s *Service) GetRemoveNames(tx primitives.Transaction, set map[primitives.Hash]struct{}) {
+	s.RemoveNames(tx, set)
+}
+
 // HasSaneCovenants performs structural covenant validation on a transaction.
 func (s *Service) HasSaneCovenants(tx primitives.Transaction) bool {
 	return covenant.HasSaneCovenants(tx)
+}
+
+// GetHasSaneCovenants is an alias for HasSaneCovenants.
+func (s *Service) GetHasSaneCovenants(tx primitives.Transaction) bool {
+	return s.HasSaneCovenants(tx)
 }
 
 // VerifyCovenants performs contextual covenant validation on a transaction.

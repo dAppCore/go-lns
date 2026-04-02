@@ -733,12 +733,24 @@ func TestServiceGrindAndCountHelpers(t *testing.T) {
 		t.Fatalf("CountOpens() = %d, want 1", got)
 	}
 
+	if got := svc.GetCountOpens(tx); got != 1 {
+		t.Fatalf("GetCountOpens() = %d, want 1", got)
+	}
+
 	if got := svc.CountUpdates(tx); got != 5 {
 		t.Fatalf("CountUpdates() = %d, want 5", got)
 	}
 
+	if got := svc.GetCountUpdates(tx); got != 5 {
+		t.Fatalf("GetCountUpdates() = %d, want 5", got)
+	}
+
 	if got := svc.CountRenewals(tx); got != 3 {
 		t.Fatalf("CountRenewals() = %d, want 3", got)
+	}
+
+	if got := svc.GetCountRenewals(tx); got != 3 {
+		t.Fatalf("GetCountRenewals() = %d, want 3", got)
 	}
 
 	rules := NameRules{
@@ -1705,20 +1717,22 @@ func TestServiceNameSetHelpers(t *testing.T) {
 		t.Fatal("HasNames should report a matching name hash")
 	}
 
+	if !svc.GetHasNames(tx, set) {
+		t.Fatal("GetHasNames should report a matching name hash")
+	}
+
 	svc.RemoveNames(tx, set)
+	svc.GetRemoveNames(tx, set)
 
 	if len(set) != 0 {
-		t.Fatalf("RemoveNames left %d entries, want 0", len(set))
+		t.Fatalf("RemoveNames/GetRemoveNames left %d entries, want 0", len(set))
 	}
 
 	svc.AddNames(tx, set)
+	svc.GetAddNames(tx, set)
 
 	if len(set) != 1 {
-		t.Fatalf("AddNames left %d entries, want 1", len(set))
-	}
-
-	if !svc.HasSaneCovenants(tx) {
-		t.Fatal("HasSaneCovenants should accept structurally valid covenants")
+		t.Fatalf("AddNames/GetAddNames left %d entries, want 1", len(set))
 	}
 }
 
@@ -1779,6 +1793,14 @@ func TestServiceVerifyCovenants(t *testing.T) {
 				Covenant: finalizeCovenant,
 			},
 		},
+	}
+
+	if !svc.HasSaneCovenants(tx) {
+		t.Fatal("HasSaneCovenants should accept structurally valid covenants")
+	}
+
+	if !svc.GetHasSaneCovenants(tx) {
+		t.Fatal("GetHasSaneCovenants should accept structurally valid covenants")
 	}
 
 	view := packageTestCoinView{
