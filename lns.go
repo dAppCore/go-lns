@@ -34,6 +34,8 @@ type Service struct {
 // serviceOptions holds configuration for the LNS service.
 type serviceOptions struct{}
 
+var packageSvc = &Service{}
+
 // Register constructs an LNS Service bound to the provided Core instance.
 // Pass to core.WithService during Core construction:
 //
@@ -46,7 +48,7 @@ func Register(c *core.Core) core.Result {
 }
 
 func packageService() *Service {
-	return &Service{}
+	return packageSvc
 }
 
 // Resolve returns the canonical hash for a validated .lthn name.
