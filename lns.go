@@ -404,27 +404,45 @@ func catalogLabel(name any) (string, bool) {
 }
 
 func canonicalizeName(name any) (string, bool) {
-	var value string
+	var value []byte
 
 	switch v := name.(type) {
 	case string:
-		value = v
+		value = []byte(v)
 	case []byte:
-		value = string(v)
+		value = append([]byte(nil), v...)
 	default:
 		return "", false
 	}
 
-	value = strings.ToLower(value)
-
-	switch {
-	case strings.HasSuffix(value, ".lthn."):
-		value = strings.TrimSuffix(value, ".lthn.")
-	case strings.HasSuffix(value, ".lthn"):
-		value = strings.TrimSuffix(value, ".lthn")
-	case strings.HasSuffix(value, "."):
-		value = strings.TrimSuffix(value, ".")
+	if len(value) == 0 {
+		return "", false
 	}
 
-	return value, true
+	for i := range value {
+		if value[i]&0x80 != 0 {
+			return "", false
+		}
+
+		if value[i] >= 'A' && value[i] <= 'Z' {
+			value[i] += 'a' - 'A'
+		}
+	}
+
+	str := string(value)
+
+	switch {
+	case strings.HasSuffix(str, ".lthn."):
+		str = strings.TrimSuffix(str, ".lthn.")
+	case strings.HasSuffix(str, ".lthn"):
+		str = strings.TrimSuffix(str, ".lthn")
+	case strings.HasSuffix(str, "."):
+		str = strings.TrimSuffix(str, ".")
+	}
+
+	if len(str) == 0 {
+		return "", false
+	}
+
+	return str, true
 }

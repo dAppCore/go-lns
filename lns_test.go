@@ -68,6 +68,7 @@ func TestServiceResolveRejectsInvalidNames(t *testing.T) {
 		"foo.lthn..",
 		"foo-",
 		"test.lthn",
+		"Kfoo.lthn",
 	}
 
 	for _, name := range cases {
@@ -92,6 +93,7 @@ func TestServiceVerify(t *testing.T) {
 		{name: []byte("Foo-Bar.lthn"), ok: true},
 		{name: "foo.bar.lthn", ok: false},
 		{name: "foo-", ok: false},
+		{name: "Kfoo.lthn", ok: false},
 		{name: 123, ok: false},
 	}
 
@@ -119,6 +121,14 @@ func TestServiceVerifyStringAndBinary(t *testing.T) {
 
 	if svc.VerifyBinary([]byte("foo.bar.lthn")) {
 		t.Fatal("VerifyBinary should reject malformed names")
+	}
+
+	if svc.VerifyString("Kfoo.lthn") {
+		t.Fatal("VerifyString should reject non-ASCII names")
+	}
+
+	if svc.VerifyBinary([]byte("Kfoo.lthn")) {
+		t.Fatal("VerifyBinary should reject non-ASCII names")
 	}
 }
 
