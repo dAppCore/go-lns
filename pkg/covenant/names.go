@@ -265,7 +265,7 @@ func HasSaneCovenants(tx primitives.Transaction) bool {
 			}
 
 		default:
-			if cov.Len() > 255 || cov.GetVarSize() > MaxCovenantSize {
+			if cov.Len() > 255 || cov.GetSize() > MaxCovenantSize {
 				return false
 			}
 		}

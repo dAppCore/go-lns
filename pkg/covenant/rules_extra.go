@@ -12,8 +12,7 @@ import (
 
 const grindAttempts = 500000
 
-var grindNameChars = []byte("abcdefghijklmnopqrstuvwxyz0123456789-_")
-var grindNameEdgeChars = []byte("abcdefghijklmnopqrstuvwxyz0123456789")
+var grindNameChars = []byte("abcdefghijklmnopqrstuvwxyz")
 
 func randomName(size int) (string, error) {
 	if size <= 0 || size > MaxNameSize {
@@ -23,17 +22,12 @@ func randomName(size int) (string, error) {
 	buf := make([]byte, size)
 
 	for i := 0; i < size; i++ {
-		chars := grindNameChars
-		if size == 1 || i == 0 || i == size-1 {
-			chars = grindNameEdgeChars
-		}
-
-		n, err := rand.Int(rand.Reader, big.NewInt(int64(len(chars))))
+		n, err := rand.Int(rand.Reader, big.NewInt(int64(len(grindNameChars))))
 		if err != nil {
 			return "", core.E("covenant.GrindName", "random source failure", err)
 		}
 
-		buf[i] = chars[n.Int64()]
+		buf[i] = grindNameChars[n.Int64()]
 	}
 
 	return string(buf), nil

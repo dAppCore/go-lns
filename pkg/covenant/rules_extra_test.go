@@ -51,6 +51,12 @@ func TestGrindName(t *testing.T) {
 		t.Fatalf("GrindName returned %q with length %d, want 8", name, len(name))
 	}
 
+	for i := 0; i < len(name); i++ {
+		if name[i] < 'a' || name[i] > 'z' {
+			t.Fatalf("GrindName returned %q with non-lowercase character %q", name, name[i])
+		}
+	}
+
 	if !VerifyString(name) {
 		t.Fatalf("GrindName returned invalid name %q", name)
 	}
@@ -220,6 +226,75 @@ func TestVerifyCovenants(t *testing.T) {
 	tx.Outputs[0].Address.Hash[0] ^= 1
 	if got := VerifyCovenants(tx, view, 100, Network{}); got != -1 {
 		t.Fatalf("VerifyCovenants returned %d for an invalid finalize address, want -1", got)
+	}
+}
+
+func TestVerifyCovenantsBidReveal(t *testing.T) {
+	hash, err := HashString("example-name")
+	if err != nil {
+		t.Fatalf("HashString returned error: %v", err)
+	}
+
+	var prevHash primitives.Hash
+	prevHash[0] = 4
+
+	var nonce primitives.Hash
+	for i := range nonce {
+		nonce[i] = byte(i)
+	}
+
+	bidBlind, err := Blind(1000, nonce)
+	if err != nil {
+		t.Fatalf("Blind returned error: %v", err)
+	}
+
+	bidCovenant := primitives.Covenant{
+		Type: uint8(TypeBid),
+		Items: [][]byte{
+			hash[:],
+			[]byte{100, 0, 0, 0},
+			[]byte("example-name"),
+			bidBlind[:],
+		},
+	}
+
+	revealCovenant := primitives.Covenant{
+		Type: uint8(TypeReveal),
+		Items: [][]byte{
+			hash[:],
+			[]byte{100, 0, 0, 0},
+			nonce[:],
+		},
+	}
+
+	tx := primitives.Transaction{
+		Inputs: []primitives.Input{
+			{Prevout: primitives.Outpoint{TxHash: prevHash, Index: 0}},
+		},
+		Outputs: []primitives.Output{
+			{
+				Value:    1000,
+				Covenant: revealCovenant,
+			},
+		},
+	}
+
+	view := testCoinView{
+		coins: map[primitives.Outpoint]primitives.Output{
+			{TxHash: prevHash, Index: 0}: {
+				Value:    1500,
+				Covenant: bidCovenant,
+			},
+		},
+	}
+
+	if got := VerifyCovenants(tx, view, 100, Network{}); got != 0 {
+		t.Fatalf("VerifyCovenants returned %d, want 0", got)
+	}
+
+	tx.Outputs[0].Covenant.Items[2][0] ^= 1
+	if got := VerifyCovenants(tx, view, 100, Network{}); got != -1 {
+		t.Fatalf("VerifyCovenants returned %d for an invalid reveal nonce, want -1", got)
 	}
 }
 

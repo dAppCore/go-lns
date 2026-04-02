@@ -39,6 +39,9 @@ func VerifyCovenants(tx primitives.Transaction, view CoinView, height uint32, ne
 	}
 
 	if isCoinbaseTx(tx) {
+		// The JS reference performs proof validation here, but those proof
+		// types live outside this package. We keep coinbase handling conservative
+		// and rely on structural sanity checks above.
 		return 0
 	}
 
@@ -47,14 +50,14 @@ func VerifyCovenants(tx primitives.Transaction, view CoinView, height uint32, ne
 	}
 
 	for i, input := range tx.Inputs {
-		var output *primitives.Output
-		if i < len(tx.Outputs) {
-			output = &tx.Outputs[i]
-		}
-
 		coin, ok := view.GetOutput(input.Prevout)
 		if !ok {
 			return -1
+		}
+
+		var output *primitives.Output
+		if i < len(tx.Outputs) {
+			output = &tx.Outputs[i]
 		}
 
 		uc := coin.Covenant
@@ -87,9 +90,7 @@ func VerifyCovenants(tx primitives.Transaction, view CoinView, height uint32, ne
 				return -1
 			}
 
-			height0, err := cov.GetU32(1)
-			ucHeight, err := uc.GetU32(1)
-			if err != nil || height0 != ucHeight {
+			if !covenantU32Equals(cov, 1, uc, 1) {
 				return -1
 			}
 
@@ -119,9 +120,7 @@ func VerifyCovenants(tx primitives.Transaction, view CoinView, height uint32, ne
 					return -1
 				}
 
-				height0, err := cov.GetU32(1)
-				ucHeight, err := uc.GetU32(1)
-				if err != nil || height0 != ucHeight {
+				if !covenantU32Equals(cov, 1, uc, 1) {
 					return -1
 				}
 
@@ -134,9 +133,7 @@ func VerifyCovenants(tx primitives.Transaction, view CoinView, height uint32, ne
 					return -1
 				}
 
-				height0, err := cov.GetU32(1)
-				ucHeight, err := uc.GetU32(1)
-				if err != nil || height0 != ucHeight {
+				if !covenantU32Equals(cov, 1, uc, 1) {
 					return -1
 				}
 
@@ -167,9 +164,7 @@ func VerifyCovenants(tx primitives.Transaction, view CoinView, height uint32, ne
 				return -1
 			}
 
-			height0, err := cov.GetU32(1)
-			ucHeight, err := uc.GetU32(1)
-			if err != nil || height0 != ucHeight {
+			if !covenantU32Equals(cov, 1, uc, 1) {
 				return -1
 			}
 
@@ -188,9 +183,7 @@ func VerifyCovenants(tx primitives.Transaction, view CoinView, height uint32, ne
 					return -1
 				}
 
-				height0, err := cov.GetU32(1)
-				ucHeight, err := uc.GetU32(1)
-				if err != nil || height0 != ucHeight {
+				if !covenantU32Equals(cov, 1, uc, 1) {
 					return -1
 				}
 
@@ -203,9 +196,7 @@ func VerifyCovenants(tx primitives.Transaction, view CoinView, height uint32, ne
 					return -1
 				}
 
-				height0, err := cov.GetU32(1)
-				ucHeight, err := uc.GetU32(1)
-				if err != nil || height0 != ucHeight {
+				if !covenantU32Equals(cov, 1, uc, 1) {
 					return -1
 				}
 
@@ -248,4 +239,18 @@ func covenantHashEquals(cov primitives.Covenant, index int, other primitives.Cov
 	}
 
 	return hash == otherHash
+}
+
+func covenantU32Equals(left primitives.Covenant, leftIndex int, right primitives.Covenant, rightIndex int) bool {
+	leftValue, err := left.GetU32(leftIndex)
+	if err != nil {
+		return false
+	}
+
+	rightValue, err := right.GetU32(rightIndex)
+	if err != nil {
+		return false
+	}
+
+	return leftValue == rightValue
 }
