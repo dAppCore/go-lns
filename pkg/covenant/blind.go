@@ -1,0 +1,39 @@
+// SPDX-License-Identifier: EUPL-1.2
+
+package covenant
+
+import (
+	"encoding/binary"
+	"fmt"
+
+	"golang.org/x/crypto/blake2b"
+
+	"dappco.re/go/lns/pkg/primitives"
+)
+
+// Blind creates the sealed-bid commitment used by the JS covenant rules.
+//
+// The encoding matches the reference implementation:
+//   - 8-byte little-endian bid value
+//   - 32-byte nonce
+//
+// The nonce is accepted as a fixed-size hash to keep the Go API aligned with
+// the rest of the name-system primitives.
+func Blind(value uint64, nonce primitives.Hash) (primitives.Hash, error) {
+	var data [40]byte
+	binary.LittleEndian.PutUint64(data[:8], value)
+	copy(data[8:], nonce[:])
+
+	sum, err := blake2b.New256(nil)
+	if err != nil {
+		return primitives.Hash{}, fmt.Errorf("covenant.Blind: %w", err)
+	}
+
+	if _, err := sum.Write(data[:]); err != nil {
+		return primitives.Hash{}, fmt.Errorf("covenant.Blind: %w", err)
+	}
+
+	var blind primitives.Hash
+	copy(blind[:], sum.Sum(nil))
+	return blind, nil
+}
