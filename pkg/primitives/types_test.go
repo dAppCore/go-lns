@@ -2,10 +2,13 @@
 
 package primitives
 
-import "testing"
+import (
+	"bytes"
+	"testing"
+)
 
 func TestOutpointIsNull(t *testing.T) {
-	zero := Outpoint{Index: ^uint32(0)}
+	zero := NewOutpoint()
 	if !zero.IsNull() {
 		t.Fatal("null outpoint should be recognised")
 	}
@@ -13,6 +16,65 @@ func TestOutpointIsNull(t *testing.T) {
 	nonZero := Outpoint{Index: 0}
 	if nonZero.IsNull() {
 		t.Fatal("non-zero outpoint should not be null")
+	}
+}
+
+func TestOutpointHelpers(t *testing.T) {
+	var hash Hash
+	hash[0] = 0x11
+
+	left := Outpoint{TxHash: hash, Index: 7}
+	right := left.Clone()
+
+	if !left.Equals(right) {
+		t.Fatal("Clone() should produce an equal outpoint")
+	}
+
+	if got := left.Compare(right); got != 0 {
+		t.Fatalf("Compare() = %d, want 0", got)
+	}
+
+	if got := (Outpoint{TxHash: hash, Index: 7}).Compare(Outpoint{TxHash: hash, Index: 8}); got >= 0 {
+		t.Fatalf("Compare() = %d, want negative", got)
+	}
+
+	if got := (Outpoint{TxHash: hash, Index: 8}).Compare(Outpoint{TxHash: hash, Index: 7}); got <= 0 {
+		t.Fatalf("Compare() = %d, want positive", got)
+	}
+
+	var injected Outpoint
+	if got := injected.Inject(left); got != &injected {
+		t.Fatal("Inject() should return the receiver")
+	}
+
+	if !injected.Equals(left) {
+		t.Fatal("Inject() should copy the source outpoint")
+	}
+
+	if got := left.GetSize(); got != 36 {
+		t.Fatalf("GetSize() = %d, want 36", got)
+	}
+
+	encoded, err := left.MarshalBinary()
+	if err != nil {
+		t.Fatalf("MarshalBinary returned error: %v", err)
+	}
+
+	if len(encoded) != left.GetSize() {
+		t.Fatalf("MarshalBinary length = %d, want %d", len(encoded), left.GetSize())
+	}
+
+	var decoded Outpoint
+	if err := decoded.UnmarshalBinary(encoded); err != nil {
+		t.Fatalf("UnmarshalBinary returned error: %v", err)
+	}
+
+	if !decoded.Equals(left) {
+		t.Fatal("UnmarshalBinary should round-trip the outpoint")
+	}
+
+	if !bytes.Equal(encoded[:len(hash)], hash[:]) {
+		t.Fatal("MarshalBinary should preserve the tx hash prefix")
 	}
 }
 

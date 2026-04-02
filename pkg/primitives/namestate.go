@@ -276,7 +276,7 @@ func (ns *NameState) setWeak(weak bool) *NameState {
 func (ns *NameState) Reset(height uint32) *NameState {
 	ns.setHeight(height)
 	ns.setRenewal(height)
-	ns.setOwner(Outpoint{Index: ^uint32(0)})
+	ns.setOwner(NewOutpoint())
 	ns.setValue(0)
 	ns.setHighest(0)
 	ns.setData(nil)
