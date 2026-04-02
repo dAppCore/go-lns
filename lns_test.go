@@ -667,6 +667,17 @@ func TestNewServiceWithOptions(t *testing.T) {
 	}
 }
 
+func TestNewServiceWithNilCoreOption(t *testing.T) {
+	svc := NewServiceWithOptions(WithCore(nil))
+	if svc == nil {
+		t.Fatal("NewServiceWithOptions should return a service instance")
+	}
+
+	if svc.Core() != nil {
+		t.Fatal("WithCore(nil) should preserve a nil Core")
+	}
+}
+
 func TestServiceGetReserved(t *testing.T) {
 	svc := &Service{}
 

@@ -42,7 +42,7 @@ type ServiceOption func(*Service)
 //	svc := lns.NewServiceWithOptions(lns.WithCore(c))
 func WithCore(c *core.Core) ServiceOption {
 	return func(s *Service) {
-		if s == nil {
+		if s == nil || c == nil {
 			return
 		}
 
