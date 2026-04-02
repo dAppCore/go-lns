@@ -241,6 +241,26 @@ var TypesByVal = covenant.TypesByVal
 // Blacklist mirrors the covenant blacklist used by the verifier.
 var Blacklist = covenant.Blacklist
 
+// CovenantType mirrors the covenant type enum from pkg/covenant.
+type CovenantType = covenant.CovenantType
+
+// Covenant type constants mirror pkg/covenant so callers can stay in the
+// top-level lns package for common rule metadata.
+const (
+	TypeNone     = covenant.TypeNone
+	TypeClaim    = covenant.TypeClaim
+	TypeOpen     = covenant.TypeOpen
+	TypeBid      = covenant.TypeBid
+	TypeReveal   = covenant.TypeReveal
+	TypeRedeem   = covenant.TypeRedeem
+	TypeRegister = covenant.TypeRegister
+	TypeUpdate   = covenant.TypeUpdate
+	TypeRenew    = covenant.TypeRenew
+	TypeTransfer = covenant.TypeTransfer
+	TypeFinalize = covenant.TypeFinalize
+	TypeRevoke   = covenant.TypeRevoke
+)
+
 // NameFlags mirrors the covenant verification flag type.
 type NameFlags = covenant.NameFlags
 

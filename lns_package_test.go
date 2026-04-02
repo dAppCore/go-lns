@@ -164,6 +164,37 @@ func TestPackageTypeTables(t *testing.T) {
 		t.Fatalf("TypesByVal[TypeBid] = %q, want %q", got, "BID")
 	}
 
+	if CovenantType(TypeBid) != covenant.TypeBid {
+		t.Fatalf("CovenantType(TypeBid) = %d, want %d", CovenantType(TypeBid), covenant.TypeBid)
+	}
+}
+
+func TestPackageTypeConstants(t *testing.T) {
+	cases := []struct {
+		name string
+		got  covenant.CovenantType
+		want covenant.CovenantType
+	}{
+		{name: "TypeNone", got: TypeNone, want: covenant.TypeNone},
+		{name: "TypeClaim", got: TypeClaim, want: covenant.TypeClaim},
+		{name: "TypeOpen", got: TypeOpen, want: covenant.TypeOpen},
+		{name: "TypeBid", got: TypeBid, want: covenant.TypeBid},
+		{name: "TypeReveal", got: TypeReveal, want: covenant.TypeReveal},
+		{name: "TypeRedeem", got: TypeRedeem, want: covenant.TypeRedeem},
+		{name: "TypeRegister", got: TypeRegister, want: covenant.TypeRegister},
+		{name: "TypeUpdate", got: TypeUpdate, want: covenant.TypeUpdate},
+		{name: "TypeRenew", got: TypeRenew, want: covenant.TypeRenew},
+		{name: "TypeTransfer", got: TypeTransfer, want: covenant.TypeTransfer},
+		{name: "TypeFinalize", got: TypeFinalize, want: covenant.TypeFinalize},
+		{name: "TypeRevoke", got: TypeRevoke, want: covenant.TypeRevoke},
+	}
+
+	for _, tc := range cases {
+		if tc.got != tc.want {
+			t.Fatalf("%s = %d, want %d", tc.name, tc.got, tc.want)
+		}
+	}
+
 	if _, ok := Blacklist["test"]; !ok {
 		t.Fatal("Blacklist should expose the covenant verifier blacklist")
 	}
