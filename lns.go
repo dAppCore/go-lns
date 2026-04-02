@@ -107,7 +107,7 @@ func resolveCanonicalName(method string, name any) (primitives.Hash, error) {
 			return primitives.Hash{}, core.E(method, "invalid name", nil)
 		}
 
-		return covenant.HashBinary([]byte(normalized))
+		return covenant.HashString(normalized)
 	default:
 		return primitives.Hash{}, core.E(method, "invalid name type", nil)
 	}
@@ -119,7 +119,7 @@ func verifyCanonicalName(name any) bool {
 		return false
 	}
 
-	return covenant.VerifyBinary([]byte(normalized))
+	return covenant.VerifyString(normalized)
 }
 
 // Resolve returns the canonical hash for a validated .lthn name.
