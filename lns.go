@@ -263,18 +263,28 @@ func TypeName(ct covenant.CovenantType) string {
 }
 
 // Types mirrors the covenant type lookup table from pkg/covenant.
+//
+//	types := lns.Types
 var Types = covenant.Types
 
 // TypesByVal mirrors the covenant reverse lookup table from pkg/covenant.
+//
+//	typesByVal := lns.TypesByVal
 var TypesByVal = covenant.TypesByVal
 
 // Blacklist mirrors the covenant blacklist used by the verifier.
+//
+//	blacklist := lns.Blacklist
 var Blacklist = covenant.Blacklist
 
 // VerificationFlags mirrors the covenant verification flag lookup table.
+//
+//	flags := lns.VerificationFlags
 var VerificationFlags = covenant.VerificationFlags
 
 // VerificationFlagsByVal mirrors the covenant verification flag reverse table.
+//
+//	flagsByVal := lns.VerificationFlagsByVal
 var VerificationFlagsByVal = covenant.VerificationFlagsByVal
 
 // GetBlacklist is an alias for Blacklist.
