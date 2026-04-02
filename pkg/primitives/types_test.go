@@ -54,6 +54,8 @@ func TestCovenantPredicates(t *testing.T) {
 	cases := []struct {
 		name           string
 		covenant       Covenant
+		isKnown        bool
+		isUnknown      bool
 		isName         bool
 		isDustworthy   bool
 		isNonspendable bool
@@ -62,6 +64,8 @@ func TestCovenantPredicates(t *testing.T) {
 		{
 			name:           "none",
 			covenant:       Covenant{Type: covenantTypeNone},
+			isKnown:        true,
+			isUnknown:      false,
 			isName:         false,
 			isDustworthy:   true,
 			isNonspendable: false,
@@ -70,6 +74,8 @@ func TestCovenantPredicates(t *testing.T) {
 		{
 			name:           "open",
 			covenant:       Covenant{Type: covenantTypeOpen},
+			isKnown:        true,
+			isUnknown:      false,
 			isName:         true,
 			isDustworthy:   false,
 			isNonspendable: false,
@@ -78,6 +84,8 @@ func TestCovenantPredicates(t *testing.T) {
 		{
 			name:           "bid",
 			covenant:       Covenant{Type: covenantTypeBid},
+			isKnown:        true,
+			isUnknown:      false,
 			isName:         true,
 			isDustworthy:   true,
 			isNonspendable: true,
@@ -86,6 +94,8 @@ func TestCovenantPredicates(t *testing.T) {
 		{
 			name:           "reveal",
 			covenant:       Covenant{Type: covenantTypeReveal},
+			isKnown:        true,
+			isUnknown:      false,
 			isName:         true,
 			isDustworthy:   false,
 			isNonspendable: true,
@@ -94,6 +104,8 @@ func TestCovenantPredicates(t *testing.T) {
 		{
 			name:           "revoke",
 			covenant:       Covenant{Type: covenantTypeRevoke},
+			isKnown:        true,
+			isUnknown:      false,
 			isName:         true,
 			isDustworthy:   false,
 			isNonspendable: true,
@@ -102,6 +114,8 @@ func TestCovenantPredicates(t *testing.T) {
 		{
 			name:           "unknown",
 			covenant:       Covenant{Type: 99},
+			isKnown:        false,
+			isUnknown:      true,
 			isName:         false,
 			isDustworthy:   true,
 			isNonspendable: true,
@@ -110,6 +124,14 @@ func TestCovenantPredicates(t *testing.T) {
 	}
 
 	for _, tc := range cases {
+		if got := tc.covenant.IsKnown(); got != tc.isKnown {
+			t.Fatalf("%s: IsKnown() = %v, want %v", tc.name, got, tc.isKnown)
+		}
+
+		if got := tc.covenant.IsUnknown(); got != tc.isUnknown {
+			t.Fatalf("%s: IsUnknown() = %v, want %v", tc.name, got, tc.isUnknown)
+		}
+
 		if got := tc.covenant.IsName(); got != tc.isName {
 			t.Fatalf("%s: IsName() = %v, want %v", tc.name, got, tc.isName)
 		}

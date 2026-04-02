@@ -179,6 +179,16 @@ func (c Covenant) IsName() bool {
 	return c.Type >= covenantTypeClaim && c.Type <= covenantTypeRevoke
 }
 
+// IsKnown reports whether the covenant type is recognised.
+func (c Covenant) IsKnown() bool {
+	return c.Type <= covenantTypeRevoke
+}
+
+// IsUnknown reports whether the covenant type is not recognised.
+func (c Covenant) IsUnknown() bool {
+	return c.Type > covenantTypeRevoke
+}
+
 // IsDustworthy reports whether the covenant is subject to dust policy.
 func (c Covenant) IsDustworthy() bool {
 	switch c.Type {
