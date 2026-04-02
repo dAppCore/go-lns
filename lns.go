@@ -48,7 +48,7 @@ func Register(c *core.Core) core.Result {
 //
 // This mirrors the subpackage resolver while keeping the service-level API
 // ergonomic for callers that only have an lns.Service instance.
-func (s *Service) Resolve(name string) (primitives.Hash, error) {
+func (s *Service) Resolve(name any) (primitives.Hash, error) {
 	opts := make([]dns.ServiceOption, 0, 1)
 	if s != nil && s.ServiceRuntime != nil {
 		opts = append(opts, dns.WithCore(s.Core()))

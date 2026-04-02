@@ -19,6 +19,15 @@ func TestResolve(t *testing.T) {
 	if got != want {
 		t.Fatalf("Resolve returned %x, want %x", got, want)
 	}
+
+	got, err = svc.Resolve([]byte("Foo-Bar.lthn"))
+	if err != nil {
+		t.Fatalf("Resolve([]byte) returned error: %v", err)
+	}
+
+	if got != want {
+		t.Fatalf("Resolve([]byte) returned %x, want %x", got, want)
+	}
 }
 
 func TestResolveRejectsInvalidNames(t *testing.T) {
@@ -35,5 +44,9 @@ func TestResolveRejectsInvalidNames(t *testing.T) {
 		if _, err := svc.Resolve(name); err == nil {
 			t.Fatalf("Resolve(%q) should reject the name", name)
 		}
+	}
+
+	if _, err := svc.Resolve(123); err == nil {
+		t.Fatal("Resolve should reject unsupported input types")
 	}
 }
