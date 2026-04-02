@@ -64,6 +64,17 @@ func TestCovenantItemHelpers(t *testing.T) {
 		t.Fatalf("GetVarSize() = %d, want 46", got)
 	}
 
+	cov.Type = 99
+	cov.Items = [][]byte{{1, 2, 3}}
+	cov.SetNone()
+	if got := cov.Type; got != covenantTypeNone {
+		t.Fatalf("SetNone() set type %d, want %d", got, covenantTypeNone)
+	}
+
+	if got := cov.Len(); got != 0 {
+		t.Fatalf("SetNone() len = %d, want 0", got)
+	}
+
 	cov.SetOpen(Hash{9, 8, 7}, []byte("bar"))
 
 	if got := cov.Type; got != covenantTypeOpen {

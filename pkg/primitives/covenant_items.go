@@ -58,6 +58,13 @@ func (c *Covenant) Inject(other Covenant) *Covenant {
 	return c
 }
 
+// SetNone configures the covenant as a plain transfer with no items.
+func (c *Covenant) SetNone() *Covenant {
+	c.Type = covenantTypeNone
+	c.Items = nil
+	return c
+}
+
 // ToArray returns a shallow copy of the covenant item slice.
 func (c Covenant) ToArray() [][]byte {
 	if len(c.Items) == 0 {
