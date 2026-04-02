@@ -14,6 +14,7 @@ package lns
 
 import (
 	core "dappco.re/go/core"
+	"dappco.re/go/lns/internal/nameutil"
 	"dappco.re/go/lns/pkg/covenant"
 	"dappco.re/go/lns/pkg/primitives"
 )
@@ -136,7 +137,7 @@ func (s *Service) HashByBinary(name []byte) (primitives.Hash, error) {
 
 // ResolveString returns the canonical hash for a .lthn name supplied as a string.
 func (s *Service) ResolveString(name string) (primitives.Hash, error) {
-	normalized, ok := canonicalizeName(name)
+	normalized, ok := nameutil.Canonicalize(name)
 	if !ok {
 		return primitives.Hash{}, core.E("lns.Service.ResolveString", "invalid name", nil)
 	}
@@ -146,7 +147,7 @@ func (s *Service) ResolveString(name string) (primitives.Hash, error) {
 
 // ResolveBinary returns the canonical hash for a .lthn name supplied as bytes.
 func (s *Service) ResolveBinary(name []byte) (primitives.Hash, error) {
-	normalized, ok := canonicalizeName(name)
+	normalized, ok := nameutil.Canonicalize(name)
 	if !ok {
 		return primitives.Hash{}, core.E("lns.Service.ResolveBinary", "invalid name", nil)
 	}
@@ -212,7 +213,7 @@ func (s *Service) VerifyByName(name any) bool {
 //
 //	ok := svc.VerifyString("example.lthn")
 func (s *Service) VerifyString(name string) bool {
-	normalized, ok := canonicalizeName(name)
+	normalized, ok := nameutil.Canonicalize(name)
 	if !ok {
 		return false
 	}
@@ -224,7 +225,7 @@ func (s *Service) VerifyString(name string) bool {
 //
 //	ok := svc.VerifyBinary([]byte("example.lthn"))
 func (s *Service) VerifyBinary(name []byte) bool {
-	normalized, ok := canonicalizeName(name)
+	normalized, ok := nameutil.Canonicalize(name)
 	if !ok {
 		return false
 	}
@@ -270,7 +271,7 @@ func (s *Service) GetReserved(name any) (covenant.ReservedName, bool) {
 //	svc := c.Service("lns").(*lns.Service)
 //	item, ok := svc.GetReservedName("reserved")
 func (s *Service) GetReservedName(name any) (covenant.ReservedName, bool) {
-	if label, ok := catalogLabel(name); ok {
+	if label, ok := nameutil.CatalogLabel(name); ok {
 		if item, ok := covenant.GetReservedName(label); ok {
 			return item, true
 		}
@@ -433,7 +434,7 @@ func (s *Service) GetLocked(name any) (covenant.LockedName, bool) {
 //	svc := c.Service("lns").(*lns.Service)
 //	item, ok := svc.GetLockedName("nec")
 func (s *Service) GetLockedName(name any) (covenant.LockedName, bool) {
-	if label, ok := catalogLabel(name); ok {
+	if label, ok := nameutil.CatalogLabel(name); ok {
 		if item, ok := covenant.GetLockedName(label); ok {
 			return item, true
 		}
@@ -790,59 +791,4 @@ func (s *Service) LockedValues() []covenant.LockedName {
 //	values := svc.GetLockedValues()
 func (s *Service) GetLockedValues() []covenant.LockedName {
 	return s.LockedValues()
-}
-
-func catalogLabel(name any) (string, bool) {
-	switch v := name.(type) {
-	case string:
-		return v, true
-	case []byte:
-		return string(v), true
-	default:
-		return "", false
-	}
-}
-
-func canonicalizeName(name any) (string, bool) {
-	var value []byte
-
-	switch v := name.(type) {
-	case string:
-		value = []byte(v)
-	case []byte:
-		value = append([]byte(nil), v...)
-	default:
-		return "", false
-	}
-
-	if len(value) == 0 {
-		return "", false
-	}
-
-	for i := range value {
-		if value[i]&0x80 != 0 {
-			return "", false
-		}
-
-		if value[i] >= 'A' && value[i] <= 'Z' {
-			value[i] += 'a' - 'A'
-		}
-	}
-
-	str := string(value)
-
-	switch {
-	case core.HasSuffix(str, ".lthn."):
-		str = core.TrimSuffix(str, ".lthn.")
-	case core.HasSuffix(str, ".lthn"):
-		str = core.TrimSuffix(str, ".lthn")
-	case core.HasSuffix(str, "."):
-		str = core.TrimSuffix(str, ".")
-	}
-
-	if len(str) == 0 {
-		return "", false
-	}
-
-	return str, true
 }

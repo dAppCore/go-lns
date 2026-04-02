@@ -12,6 +12,7 @@ package dns
 
 import (
 	core "dappco.re/go/core"
+	"dappco.re/go/lns/internal/nameutil"
 	"dappco.re/go/lns/pkg/covenant"
 	"dappco.re/go/lns/pkg/primitives"
 )
@@ -60,7 +61,7 @@ func WithCore(c *core.Core) ServiceOption {
 //	svc := dns.NewService()
 //	hash, err := svc.Resolve("example.lthn")
 func (s *Service) Resolve(name any) (primitives.Hash, error) {
-	normalized, ok := canonicalizeName(name)
+	normalized, ok := nameutil.Canonicalize(name)
 	if !ok {
 		return primitives.Hash{}, core.E("dns.Service.Resolve", "invalid name type", nil)
 	}
@@ -87,7 +88,7 @@ func (s *Service) Hash(name any) (primitives.Hash, error) {
 //	svc := dns.NewService()
 //	ok := svc.Verify("example.lthn")
 func (s *Service) Verify(name any) bool {
-	normalized, ok := canonicalizeName(name)
+	normalized, ok := nameutil.Canonicalize(name)
 	if !ok {
 		return false
 	}
@@ -150,7 +151,7 @@ func (s *Service) ResolveString(name string) (primitives.Hash, error) {
 //	svc := dns.NewService()
 //	hash, err := svc.ResolveBinary([]byte("example.lthn"))
 func (s *Service) ResolveBinary(name []byte) (primitives.Hash, error) {
-	normalized, ok := canonicalizeName(name)
+	normalized, ok := nameutil.Canonicalize(name)
 	if !ok {
 		return primitives.Hash{}, core.E("dns.Service.ResolveBinary", "invalid name type", nil)
 	}
@@ -188,7 +189,7 @@ func (s *Service) VerifyString(name string) bool {
 //	svc := dns.NewService()
 //	ok := svc.VerifyBinary([]byte("example.lthn"))
 func (s *Service) VerifyBinary(name []byte) bool {
-	normalized, ok := canonicalizeName(name)
+	normalized, ok := nameutil.Canonicalize(name)
 	if !ok {
 		return false
 	}
@@ -239,30 +240,4 @@ func (s *Service) HashByName(name any) (primitives.Hash, error) {
 //	ok := svc.VerifyByName("example.lthn")
 func (s *Service) VerifyByName(name any) bool {
 	return s.VerifyName(name)
-}
-
-func canonicalizeName(name any) (string, bool) {
-	var value string
-
-	switch v := name.(type) {
-	case string:
-		value = v
-	case []byte:
-		value = string(v)
-	default:
-		return "", false
-	}
-
-	value = core.Lower(value)
-
-	switch {
-	case core.HasSuffix(value, ".lthn."):
-		value = core.TrimSuffix(value, ".lthn.")
-	case core.HasSuffix(value, ".lthn"):
-		value = core.TrimSuffix(value, ".lthn")
-	case core.HasSuffix(value, "."):
-		value = core.TrimSuffix(value, ".")
-	}
-
-	return value, true
 }
