@@ -34,8 +34,6 @@ type Service struct {
 // serviceOptions holds configuration for the LNS service.
 type serviceOptions struct{}
 
-var packageSvc = NewService(nil)
-
 // NewService constructs an LNS Service bound to the provided Core instance.
 //
 //	c := core.New()
@@ -59,10 +57,6 @@ func Register(c *core.Core) core.Result {
 //	name := lns.GetServiceName()
 func GetServiceName() string {
 	return ServiceName
-}
-
-func packageService() *Service {
-	return packageSvc
 }
 
 func canonicalizeName(name any) (string, bool) {
@@ -100,7 +94,7 @@ func verifyCanonicalName(name any) bool {
 //
 //	hash, err := lns.Resolve("example.lthn")
 func Resolve(name any) (primitives.Hash, error) {
-	return packageService().Resolve(name)
+	return resolveCanonicalName("lns.Resolve", name)
 }
 
 // Hash returns the canonical hash for a validated .lthn name.
@@ -109,7 +103,7 @@ func Resolve(name any) (primitives.Hash, error) {
 //
 //	hash, err := lns.Hash("example.lthn")
 func Hash(name any) (primitives.Hash, error) {
-	return packageService().Hash(name)
+	return resolveCanonicalName("lns.Hash", name)
 }
 
 // Verify reports whether a .lthn name is valid after canonicalisation.
@@ -118,154 +112,154 @@ func Hash(name any) (primitives.Hash, error) {
 //
 //	ok := lns.Verify("example.lthn")
 func Verify(name any) bool {
-	return packageService().Verify(name)
+	return verifyCanonicalName(name)
 }
 
 // HashString returns the canonical hash for a .lthn name supplied as a string.
 //
 //	hash, err := lns.HashString("example.lthn")
 func HashString(name string) (primitives.Hash, error) {
-	return packageService().HashString(name)
+	return resolveCanonicalName("lns.HashString", name)
 }
 
 // HashBinary returns the canonical hash for a .lthn name supplied as bytes.
 //
 //	hash, err := lns.HashBinary([]byte("example.lthn"))
 func HashBinary(name []byte) (primitives.Hash, error) {
-	return packageService().HashBinary(name)
+	return resolveCanonicalName("lns.HashBinary", name)
 }
 
 // ResolveByString is an alias for ResolveString.
 //
 //	hash, err := lns.ResolveByString("example.lthn")
 func ResolveByString(name string) (primitives.Hash, error) {
-	return packageService().ResolveByString(name)
+	return resolveCanonicalName("lns.ResolveByString", name)
 }
 
 // ResolveByBinary is an alias for ResolveBinary.
 //
 //	hash, err := lns.ResolveByBinary([]byte("example.lthn"))
 func ResolveByBinary(name []byte) (primitives.Hash, error) {
-	return packageService().ResolveByBinary(name)
+	return resolveCanonicalName("lns.ResolveByBinary", name)
 }
 
 // HashByString is an alias for HashString.
 //
 //	hash, err := lns.HashByString("example.lthn")
 func HashByString(name string) (primitives.Hash, error) {
-	return packageService().HashByString(name)
+	return resolveCanonicalName("lns.HashByString", name)
 }
 
 // HashByBinary is an alias for HashBinary.
 //
 //	hash, err := lns.HashByBinary([]byte("example.lthn"))
 func HashByBinary(name []byte) (primitives.Hash, error) {
-	return packageService().HashByBinary(name)
+	return resolveCanonicalName("lns.HashByBinary", name)
 }
 
 // ResolveString returns the canonical hash for a .lthn name supplied as a string.
 //
 //	hash, err := lns.ResolveString("example.lthn")
 func ResolveString(name string) (primitives.Hash, error) {
-	return packageService().ResolveString(name)
+	return resolveCanonicalName("lns.ResolveString", name)
 }
 
 // ResolveBinary returns the canonical hash for a .lthn name supplied as bytes.
 //
 //	hash, err := lns.ResolveBinary([]byte("example.lthn"))
 func ResolveBinary(name []byte) (primitives.Hash, error) {
-	return packageService().ResolveBinary(name)
+	return resolveCanonicalName("lns.ResolveBinary", name)
 }
 
 // ResolveName is an alias for Resolve.
 //
 //	hash, err := lns.ResolveName("example.lthn")
 func ResolveName(name any) (primitives.Hash, error) {
-	return packageService().ResolveName(name)
+	return resolveCanonicalName("lns.ResolveName", name)
 }
 
 // HashName is an alias for Hash.
 //
 //	hash, err := lns.HashName("example.lthn")
 func HashName(name any) (primitives.Hash, error) {
-	return packageService().HashName(name)
+	return resolveCanonicalName("lns.HashName", name)
 }
 
 // VerifyName is an alias for Verify.
 //
 //	ok := lns.VerifyName("example.lthn")
 func VerifyName(name any) bool {
-	return packageService().VerifyName(name)
+	return verifyCanonicalName(name)
 }
 
 // ResolveByName is an alias for ResolveName.
 //
 //	hash, err := lns.ResolveByName("example.lthn")
 func ResolveByName(name any) (primitives.Hash, error) {
-	return packageService().ResolveByName(name)
+	return resolveCanonicalName("lns.ResolveByName", name)
 }
 
 // HashByName is an alias for HashName.
 //
 //	hash, err := lns.HashByName("example.lthn")
 func HashByName(name any) (primitives.Hash, error) {
-	return packageService().HashByName(name)
+	return resolveCanonicalName("lns.HashByName", name)
 }
 
 // VerifyByName is an alias for VerifyName.
 //
 //	ok := lns.VerifyByName("example.lthn")
 func VerifyByName(name any) bool {
-	return packageService().VerifyByName(name)
+	return verifyCanonicalName(name)
 }
 
 // VerifyString reports whether a .lthn name supplied as a string is valid.
 //
 //	ok := lns.VerifyString("example.lthn")
 func VerifyString(name string) bool {
-	return packageService().VerifyString(name)
+	return verifyCanonicalName(name)
 }
 
 // VerifyBinary reports whether a .lthn name supplied as bytes is valid.
 //
 //	ok := lns.VerifyBinary([]byte("example.lthn"))
 func VerifyBinary(name []byte) bool {
-	return packageService().VerifyBinary(name)
+	return verifyCanonicalName(name)
 }
 
 // VerifyByString is an alias for VerifyString.
 //
 //	ok := lns.VerifyByString("example.lthn")
 func VerifyByString(name string) bool {
-	return packageService().VerifyByString(name)
+	return verifyCanonicalName(name)
 }
 
 // VerifyByBinary is an alias for VerifyBinary.
 //
 //	ok := lns.VerifyByBinary([]byte("example.lthn"))
 func VerifyByBinary(name []byte) bool {
-	return packageService().VerifyByBinary(name)
+	return verifyCanonicalName(name)
 }
 
 // Blind returns the sealed-bid commitment for an amount and nonce.
 //
 //	bid, err := lns.Blind(1000, nonce)
 func Blind(value uint64, nonce primitives.Hash) (primitives.Hash, error) {
-	return packageService().Blind(value, nonce)
+	return covenant.Blind(value, nonce)
 }
 
 // GetBlind is an alias for Blind.
 //
 //	bid, err := lns.GetBlind(1000, nonce)
 func GetBlind(value uint64, nonce primitives.Hash) (primitives.Hash, error) {
-	return packageService().GetBlind(value, nonce)
+	return covenant.Blind(value, nonce)
 }
 
 // TypeName returns the canonical string for a covenant type.
 //
 //	name := lns.TypeName(covenant.TypeBid)
 func TypeName(ct covenant.CovenantType) string {
-	return packageService().TypeName(ct)
+	return covenant.TypeName(ct)
 }
 
 // Types mirrors the covenant type lookup table from pkg/covenant.
@@ -358,7 +352,7 @@ func GetTypesByVal() map[covenant.CovenantType]string {
 //
 //	name := lns.GetTypeName(covenant.TypeBid)
 func GetTypeName(ct covenant.CovenantType) string {
-	return packageService().GetTypeName(ct)
+	return covenant.TypeName(ct)
 }
 
 // ServiceName returns the registered name for the LNS service group.
@@ -1032,7 +1026,7 @@ func DefaultReservedCatalog() *covenant.ReservedCatalog {
 //
 //	catalog := lns.GetReservedCatalog()
 func GetReservedCatalog() *covenant.ReservedCatalog {
-	return DefaultReservedCatalog()
+	return covenant.DefaultReservedCatalog()
 }
 
 // ReservedSize reports the number of reserved-name entries available to the service.
@@ -1165,21 +1159,21 @@ func DefaultLockedCatalog() *covenant.LockedCatalog {
 //
 //	catalog := lns.GetLockedCatalog()
 func GetLockedCatalog() *covenant.LockedCatalog {
-	return DefaultLockedCatalog()
+	return covenant.DefaultLockedCatalog()
 }
 
 // ReservedCatalog exposes the reserved-name catalog used by the package.
 //
 //	catalog := lns.ReservedCatalog()
 func ReservedCatalog() *covenant.ReservedCatalog {
-	return packageService().ReservedCatalog()
+	return covenant.DefaultReservedCatalog()
 }
 
 // LockedCatalog exposes the locked-name catalog used by the package.
 //
 //	catalog := lns.LockedCatalog()
 func LockedCatalog() *covenant.LockedCatalog {
-	return packageService().LockedCatalog()
+	return covenant.DefaultLockedCatalog()
 }
 
 // ReservedSize reports the number of reserved-name entries available to the package.
@@ -1368,98 +1362,127 @@ func GetLockedValues() []covenant.LockedName {
 //
 //	item, ok := lns.GetReserved("reserved.lthn")
 func GetReserved(name any) (covenant.ReservedName, bool) {
-	return packageService().GetReserved(name)
+	hash, err := resolveCanonicalName("lns.GetReserved", name)
+	if err != nil {
+		return covenant.ReservedName{}, false
+	}
+
+	return covenant.GetReservedHash(hash)
 }
 
 // GetReservedName looks up a reserved name using the raw catalog label.
 //
 //	item, ok := lns.GetReservedName("reserved")
 func GetReservedName(name any) (covenant.ReservedName, bool) {
-	return packageService().GetReservedName(name)
+	if label, ok := nameutil.CatalogLabel(name); ok {
+		if item, ok := covenant.GetReservedName(label); ok {
+			return item, true
+		}
+	}
+
+	return GetReserved(name)
 }
 
 // GetReservedString looks up a reserved name supplied as a string.
 //
 //	item, ok := lns.GetReservedString("reserved")
 func GetReservedString(name string) (covenant.ReservedName, bool) {
-	return packageService().GetReservedString(name)
+	if item, ok := covenant.GetReservedString(name); ok {
+		return item, true
+	}
+
+	return GetReserved(name)
 }
 
 // GetReservedBinary looks up a reserved name supplied as bytes.
 //
 //	item, ok := lns.GetReservedBinary([]byte("reserved"))
 func GetReservedBinary(name []byte) (covenant.ReservedName, bool) {
-	return packageService().GetReservedBinary(name)
+	if item, ok := covenant.GetReservedBinary(name); ok {
+		return item, true
+	}
+
+	return GetReserved(name)
 }
 
 // GetReservedByString is an alias for GetReservedString.
 //
 //	item, ok := lns.GetReservedByString("reserved")
 func GetReservedByString(name string) (covenant.ReservedName, bool) {
-	return packageService().GetReservedByString(name)
+	return GetReservedString(name)
 }
 
 // GetReservedByBinary is an alias for GetReservedBinary.
 //
 //	item, ok := lns.GetReservedByBinary([]byte("reserved"))
 func GetReservedByBinary(name []byte) (covenant.ReservedName, bool) {
-	return packageService().GetReservedByBinary(name)
+	return GetReservedBinary(name)
 }
 
 // HasReserved reports whether a canonicalised .lthn name is reserved.
 //
 //	ok := lns.HasReserved("reserved.lthn")
 func HasReserved(name any) bool {
-	return packageService().HasReserved(name)
+	_, ok := GetReserved(name)
+	return ok
 }
 
 // HasReservedString reports whether a reserved name supplied as a string exists.
 //
 //	ok := lns.HasReservedString("reserved")
 func HasReservedString(name string) bool {
-	return packageService().HasReservedString(name)
+	if covenant.HasReservedString(name) {
+		return true
+	}
+
+	return HasReserved(name)
 }
 
 // HasReservedBinary reports whether a reserved name supplied as bytes exists.
 //
 //	ok := lns.HasReservedBinary([]byte("reserved"))
 func HasReservedBinary(name []byte) bool {
-	return packageService().HasReservedBinary(name)
+	if covenant.HasReservedBinary(name) {
+		return true
+	}
+
+	return HasReserved(name)
 }
 
 // HasReservedByString is an alias for HasReservedString.
 //
 //	ok := lns.HasReservedByString("reserved")
 func HasReservedByString(name string) bool {
-	return packageService().HasReservedByString(name)
+	return HasReservedString(name)
 }
 
 // HasReservedByBinary is an alias for HasReservedBinary.
 //
 //	ok := lns.HasReservedByBinary([]byte("reserved"))
 func HasReservedByBinary(name []byte) bool {
-	return packageService().HasReservedByBinary(name)
+	return HasReservedBinary(name)
 }
 
 // GetReservedByName is an alias for GetReservedName.
 //
 //	item, ok := lns.GetReservedByName("reserved")
 func GetReservedByName(name any) (covenant.ReservedName, bool) {
-	return packageService().GetReservedByName(name)
+	return GetReservedName(name)
 }
 
 // HasReservedByName is an alias for HasReservedName.
 //
 //	ok := lns.HasReservedByName("reserved")
 func HasReservedByName(name any) bool {
-	return packageService().HasReservedByName(name)
+	return HasReservedName(name)
 }
 
 // HasReservedName reports whether a reserved name exists using the raw catalog label.
 //
 //	ok := lns.HasReservedName("reserved")
 func HasReservedName(name any) bool {
-	return packageService().HasReservedName(name)
+	_, ok := GetReservedName(name)
+	return ok
 }
 
 // GetReservedHash looks up a reserved .lthn name by its canonical hash.
@@ -1467,126 +1490,155 @@ func HasReservedName(name any) bool {
 //	hash, _ := covenant.HashString("reserved")
 //	item, ok := lns.GetReservedHash(hash)
 func GetReservedHash(hash primitives.Hash) (covenant.ReservedName, bool) {
-	return packageService().GetReservedHash(hash)
+	return covenant.GetReservedHash(hash)
 }
 
 // HasReservedHash reports whether a canonical hash is reserved.
 //
 //	ok := lns.HasReservedHash(hash)
 func HasReservedHash(hash primitives.Hash) bool {
-	return packageService().HasReservedHash(hash)
+	return covenant.HasReservedHash(hash)
 }
 
 // GetReservedByHash is an alias for GetReservedHash.
 //
 //	item, ok := lns.GetReservedByHash(hash)
 func GetReservedByHash(hash primitives.Hash) (covenant.ReservedName, bool) {
-	return packageService().GetReservedByHash(hash)
+	return GetReservedHash(hash)
 }
 
 // HasReservedByHash is an alias for HasReservedHash.
 //
 //	ok := lns.HasReservedByHash(hash)
 func HasReservedByHash(hash primitives.Hash) bool {
-	return packageService().HasReservedByHash(hash)
+	return HasReservedHash(hash)
 }
 
 // GetLocked looks up a locked .lthn name after canonicalisation.
 //
 //	item, ok := lns.GetLocked("nec.lthn")
 func GetLocked(name any) (covenant.LockedName, bool) {
-	return packageService().GetLocked(name)
+	hash, err := resolveCanonicalName("lns.GetLocked", name)
+	if err != nil {
+		return covenant.LockedName{}, false
+	}
+
+	return covenant.GetLockedHash(hash)
 }
 
 // GetLockedName looks up a locked name using the raw catalog label.
 //
 //	item, ok := lns.GetLockedName("nec")
 func GetLockedName(name any) (covenant.LockedName, bool) {
-	return packageService().GetLockedName(name)
+	if label, ok := nameutil.CatalogLabel(name); ok {
+		if item, ok := covenant.GetLockedName(label); ok {
+			return item, true
+		}
+	}
+
+	return GetLocked(name)
 }
 
 // GetLockedString looks up a locked name supplied as a string.
 //
 //	item, ok := lns.GetLockedString("nec")
 func GetLockedString(name string) (covenant.LockedName, bool) {
-	return packageService().GetLockedString(name)
+	if item, ok := covenant.GetLockedString(name); ok {
+		return item, true
+	}
+
+	return GetLocked(name)
 }
 
 // GetLockedBinary looks up a locked name supplied as bytes.
 //
 //	item, ok := lns.GetLockedBinary([]byte("nec"))
 func GetLockedBinary(name []byte) (covenant.LockedName, bool) {
-	return packageService().GetLockedBinary(name)
+	if item, ok := covenant.GetLockedBinary(name); ok {
+		return item, true
+	}
+
+	return GetLocked(name)
 }
 
 // GetLockedByString is an alias for GetLockedString.
 //
 //	item, ok := lns.GetLockedByString("nec")
 func GetLockedByString(name string) (covenant.LockedName, bool) {
-	return packageService().GetLockedByString(name)
+	return GetLockedString(name)
 }
 
 // GetLockedByBinary is an alias for GetLockedBinary.
 //
 //	item, ok := lns.GetLockedByBinary([]byte("nec"))
 func GetLockedByBinary(name []byte) (covenant.LockedName, bool) {
-	return packageService().GetLockedByBinary(name)
+	return GetLockedBinary(name)
 }
 
 // HasLocked reports whether a canonicalised .lthn name is locked.
 //
 //	ok := lns.HasLocked("nec.lthn")
 func HasLocked(name any) bool {
-	return packageService().HasLocked(name)
+	_, ok := GetLocked(name)
+	return ok
 }
 
 // HasLockedString reports whether a locked name supplied as a string exists.
 //
 //	ok := lns.HasLockedString("nec")
 func HasLockedString(name string) bool {
-	return packageService().HasLockedString(name)
+	if covenant.HasLockedString(name) {
+		return true
+	}
+
+	return HasLocked(name)
 }
 
 // HasLockedBinary reports whether a locked name supplied as bytes exists.
 //
 //	ok := lns.HasLockedBinary([]byte("nec"))
 func HasLockedBinary(name []byte) bool {
-	return packageService().HasLockedBinary(name)
+	if covenant.HasLockedBinary(name) {
+		return true
+	}
+
+	return HasLocked(name)
 }
 
 // HasLockedByString is an alias for HasLockedString.
 //
 //	ok := lns.HasLockedByString("nec")
 func HasLockedByString(name string) bool {
-	return packageService().HasLockedByString(name)
+	return HasLockedString(name)
 }
 
 // HasLockedByBinary is an alias for HasLockedBinary.
 //
 //	ok := lns.HasLockedByBinary([]byte("nec"))
 func HasLockedByBinary(name []byte) bool {
-	return packageService().HasLockedByBinary(name)
+	return HasLockedBinary(name)
 }
 
 // GetLockedByName is an alias for GetLockedName.
 //
 //	item, ok := lns.GetLockedByName("nec")
 func GetLockedByName(name any) (covenant.LockedName, bool) {
-	return packageService().GetLockedByName(name)
+	return GetLockedName(name)
 }
 
 // HasLockedByName is an alias for HasLockedName.
 //
 //	ok := lns.HasLockedByName("nec")
 func HasLockedByName(name any) bool {
-	return packageService().HasLockedByName(name)
+	return HasLockedName(name)
 }
 
 // HasLockedName reports whether a locked name exists using the raw catalog label.
 //
 //	ok := lns.HasLockedName("nec")
 func HasLockedName(name any) bool {
-	return packageService().HasLockedName(name)
+	_, ok := GetLockedName(name)
+	return ok
 }
 
 // GetLockedHash looks up a locked .lthn name by its canonical hash.
@@ -1594,28 +1646,28 @@ func HasLockedName(name any) bool {
 //	hash, _ := covenant.HashString("nec")
 //	item, ok := lns.GetLockedHash(hash)
 func GetLockedHash(hash primitives.Hash) (covenant.LockedName, bool) {
-	return packageService().GetLockedHash(hash)
+	return covenant.GetLockedHash(hash)
 }
 
 // HasLockedHash reports whether a canonical hash is locked.
 //
 //	ok := lns.HasLockedHash(hash)
 func HasLockedHash(hash primitives.Hash) bool {
-	return packageService().HasLockedHash(hash)
+	return covenant.HasLockedHash(hash)
 }
 
 // GetLockedByHash is an alias for GetLockedHash.
 //
 //	item, ok := lns.GetLockedByHash(hash)
 func GetLockedByHash(hash primitives.Hash) (covenant.LockedName, bool) {
-	return packageService().GetLockedByHash(hash)
+	return GetLockedHash(hash)
 }
 
 // HasLockedByHash is an alias for HasLockedHash.
 //
 //	ok := lns.HasLockedByHash(hash)
 func HasLockedByHash(hash primitives.Hash) bool {
-	return packageService().HasLockedByHash(hash)
+	return HasLockedHash(hash)
 }
 
 // LockedSize reports the number of locked-name entries available to the service.
