@@ -9,7 +9,13 @@ import (
 	"dappco.re/go/lns/pkg/primitives"
 )
 
-const maxNameSize = 63
+// MaxNameSize is the maximum size of a name label in bytes.
+const MaxNameSize = 63
+
+// MaxResourceSize is the maximum size of a DNS resource payload in bytes.
+const MaxResourceSize = 512
+
+const maxNameSize = MaxNameSize
 
 var blacklist = map[string]struct{}{
 	"example":   {},

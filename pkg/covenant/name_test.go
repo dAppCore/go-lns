@@ -7,6 +7,16 @@ import (
 	"testing"
 )
 
+func TestNameSizeLimits(t *testing.T) {
+	if MaxNameSize != 63 {
+		t.Fatalf("MaxNameSize = %d, want 63", MaxNameSize)
+	}
+
+	if MaxResourceSize != 512 {
+		t.Fatalf("MaxResourceSize = %d, want 512", MaxResourceSize)
+	}
+}
+
 func TestVerifyString(t *testing.T) {
 	cases := []struct {
 		name string
