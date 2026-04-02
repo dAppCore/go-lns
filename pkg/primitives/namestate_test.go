@@ -3,6 +3,8 @@
 package primitives
 
 import (
+	"bytes"
+	"encoding/json"
 	"math"
 	"testing"
 )
@@ -277,5 +279,87 @@ func TestNameStateToStats(t *testing.T) {
 		Owner:   Outpoint{Index: ^uint32(0)},
 	}).ToStats(210, rules); got != nil {
 		t.Fatal("ToStats should return nil for an expired name without an owner")
+	}
+}
+
+func TestNameStateJSONRoundTrip(t *testing.T) {
+	rules := NameStateRules{
+		TreeInterval:    10,
+		LockupPeriod:    20,
+		BiddingPeriod:   30,
+		RevealPeriod:    40,
+		ClaimPeriod:     140,
+		RenewalWindow:   50,
+		AuctionMaturity: 25,
+		BlocksPerDay:    250,
+		TransferLockup:  15,
+	}
+
+	original := NameState{
+		Name:       []byte("example"),
+		NameHash:   Hash{1, 2, 3, 4},
+		Height:     100,
+		Renewal:    150,
+		Owner:      Outpoint{TxHash: Hash{5, 6, 7, 8}, Index: 9},
+		Value:      10,
+		Highest:    11,
+		Data:       []byte{0xaa, 0xbb},
+		Transfer:   180,
+		Revoked:    0,
+		Claimed:    0,
+		Renewals:   12,
+		Registered: true,
+		Expired:    false,
+		Weak:       true,
+	}
+
+	jsonView := original.GetJSON(188, rules)
+	if jsonView.State != "CLOSED" {
+		t.Fatalf("GetJSON should include the derived state, got %q", jsonView.State)
+	}
+
+	if jsonView.Stats == nil {
+		t.Fatal("GetJSON should include stats for an active name")
+	}
+
+	if jsonView.Stats.BlocksUntilExpire != 12 {
+		t.Fatalf("GetJSON should expose stats, got %+v", jsonView.Stats)
+	}
+
+	raw, err := json.Marshal(jsonView)
+	if err != nil {
+		t.Fatalf("json.Marshal returned error: %v", err)
+	}
+
+	var decoded NameStateJSON
+	if err := json.Unmarshal(raw, &decoded); err != nil {
+		t.Fatalf("json.Unmarshal returned error: %v", err)
+	}
+
+	var roundTripped NameState
+	if err := roundTripped.FromJSON(decoded); err != nil {
+		t.Fatalf("FromJSON returned error: %v", err)
+	}
+
+	if !bytes.Equal(roundTripped.Name, original.Name) {
+		t.Fatalf("round-tripped name = %q, want %q", roundTripped.Name, original.Name)
+	}
+
+	if roundTripped.NameHash != original.NameHash {
+		t.Fatalf("round-tripped name hash = %x, want %x", roundTripped.NameHash, original.NameHash)
+	}
+
+	if roundTripped.Owner != original.Owner {
+		t.Fatalf("round-tripped owner = %+v, want %+v", roundTripped.Owner, original.Owner)
+	}
+
+	if !bytes.Equal(roundTripped.Data, original.Data) {
+		t.Fatalf("round-tripped data = %x, want %x", roundTripped.Data, original.Data)
+	}
+
+	if roundTripped.Transfer != original.Transfer ||
+		roundTripped.Registered != original.Registered ||
+		roundTripped.Weak != original.Weak {
+		t.Fatalf("round-tripped state did not preserve fields: %+v", roundTripped)
 	}
 }
