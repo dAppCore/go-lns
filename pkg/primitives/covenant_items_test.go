@@ -98,6 +98,48 @@ func TestCovenantItemHelpers(t *testing.T) {
 		t.Fatalf("SetOpen() GetString() = %q, want %q", str, "bar")
 	}
 
+	cov.SetBid(Hash{4, 5, 6}, 42, []byte("baz"), Hash{7, 8, 9})
+
+	if got := cov.Type; got != covenantTypeBid {
+		t.Fatalf("SetBid() set type %d, want %d", got, covenantTypeBid)
+	}
+
+	if got := cov.Len(); got != 4 {
+		t.Fatalf("SetBid() len = %d, want 4", got)
+	}
+
+	hash, err = cov.GetHash(0)
+	if err != nil {
+		t.Fatalf("SetBid() GetHash returned error: %v", err)
+	}
+	if hash[0] != 4 || hash[1] != 5 || hash[2] != 6 {
+		t.Fatalf("SetBid() hash = %x, want 040506...", hash[:3])
+	}
+
+	height, err = cov.GetU32(1)
+	if err != nil {
+		t.Fatalf("SetBid() GetU32 returned error: %v", err)
+	}
+	if height != 42 {
+		t.Fatalf("SetBid() height = %d, want 42", height)
+	}
+
+	str, err = cov.GetString(2)
+	if err != nil {
+		t.Fatalf("SetBid() GetString returned error: %v", err)
+	}
+	if str != "baz" {
+		t.Fatalf("SetBid() GetString() = %q, want %q", str, "baz")
+	}
+
+	blind, err := cov.GetHash(3)
+	if err != nil {
+		t.Fatalf("SetBid() GetHash(3) returned error: %v", err)
+	}
+	if blind[0] != 7 || blind[1] != 8 || blind[2] != 9 {
+		t.Fatalf("SetBid() blind = %x, want 070809...", blind[:3])
+	}
+
 	cov = Covenant{}
 	cov.PushU8(7).
 		PushU32(0x11223344).

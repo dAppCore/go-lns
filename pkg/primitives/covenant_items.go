@@ -137,6 +137,17 @@ func (c *Covenant) SetOpen(nameHash Hash, rawName []byte) *Covenant {
 	return c
 }
 
+// SetBid configures the covenant as a BID operation.
+func (c *Covenant) SetBid(nameHash Hash, height uint32, rawName []byte, blind Hash) *Covenant {
+	c.Type = covenantTypeBid
+	c.Items = nil
+	c.PushHash(nameHash)
+	c.PushU32(height)
+	c.Push(rawName)
+	c.PushHash(blind)
+	return c
+}
+
 // GetU8 returns the item at the requested index as a uint8.
 func (c Covenant) GetU8(index int) (uint8, error) {
 	item, err := c.Get(index)
