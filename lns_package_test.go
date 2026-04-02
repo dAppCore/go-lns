@@ -278,6 +278,36 @@ func TestLookupCatalogNamePreservesDottedLabels(t *testing.T) {
 	if !ok || got != "hash" {
 		t.Fatalf("lookupCatalogName should fall back to hash lookup for canonical dotted names, got %q ok=%v", got, ok)
 	}
+
+	got, ok = LookupCatalogName(
+		"foo.bar",
+		func(name string) (string, bool) {
+			item, ok := byLabel[name]
+			return item, ok
+		},
+		func(name primitives.Hash) (string, bool) {
+			item, ok := byHash[name]
+			return item, ok
+		},
+	)
+	if !ok || got != "label" {
+		t.Fatalf("LookupCatalogName should preserve dotted labels, got %q ok=%v", got, ok)
+	}
+
+	got, ok = GetLookupCatalogName(
+		"FOO.BAR.LTHN",
+		func(name string) (string, bool) {
+			item, ok := byLabel[name]
+			return item, ok
+		},
+		func(name primitives.Hash) (string, bool) {
+			item, ok := byHash[name]
+			return item, ok
+		},
+	)
+	if !ok || got != "hash" {
+		t.Fatalf("GetLookupCatalogName should alias LookupCatalogName, got %q ok=%v", got, ok)
+	}
 }
 
 func TestPackageTypeTables(t *testing.T) {

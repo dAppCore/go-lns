@@ -161,7 +161,12 @@ func verifyCanonicalName(name any) bool {
 	return covenant.VerifyString(normalized)
 }
 
-func lookupCatalogName[T any](
+// LookupCatalogName resolves a raw or canonical catalog label with the same
+// dotted-label preservation used by the LNS reserved and locked catalogs.
+//
+// The helper tries the exact raw label first so catalog entries that include
+// dots remain addressable before falling back to canonical name hashing.
+func LookupCatalogName[T any](
 	name any,
 	byLabel func(string) (T, bool),
 	byHash func(primitives.Hash) (T, bool),
@@ -186,6 +191,23 @@ func lookupCatalogName[T any](
 
 	hash := primitives.Hash(sha3.Sum256([]byte(normalized)))
 	return byHash(hash)
+}
+
+// GetLookupCatalogName is an alias for LookupCatalogName.
+func GetLookupCatalogName[T any](
+	name any,
+	byLabel func(string) (T, bool),
+	byHash func(primitives.Hash) (T, bool),
+) (T, bool) {
+	return LookupCatalogName(name, byLabel, byHash)
+}
+
+func lookupCatalogName[T any](
+	name any,
+	byLabel func(string) (T, bool),
+	byHash func(primitives.Hash) (T, bool),
+) (T, bool) {
+	return LookupCatalogName(name, byLabel, byHash)
 }
 
 // Resolve returns the canonical hash for a validated .lthn name.
