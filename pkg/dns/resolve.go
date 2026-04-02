@@ -86,9 +86,15 @@ func canonicalizeName(name any) (string, bool) {
 	}
 
 	value = strings.TrimSpace(strings.ToLower(value))
-	value = strings.TrimSuffix(value, ".")
-	value = strings.TrimSuffix(value, ".lthn")
-	value = strings.TrimSuffix(value, ".")
+
+	switch {
+	case strings.HasSuffix(value, ".lthn."):
+		value = strings.TrimSuffix(value, ".lthn.")
+	case strings.HasSuffix(value, ".lthn"):
+		value = strings.TrimSuffix(value, ".lthn")
+	case strings.HasSuffix(value, "."):
+		value = strings.TrimSuffix(value, ".")
+	}
 
 	return value, true
 }
