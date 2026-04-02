@@ -138,6 +138,8 @@ func (s *Service) VerifyByName(name any) bool {
 }
 
 // VerifyString reports whether a .lthn name supplied as a string is valid.
+//
+//	ok := svc.VerifyString("example.lthn")
 func (s *Service) VerifyString(name string) bool {
 	normalized, ok := canonicalizeName(name)
 	if !ok {
@@ -148,6 +150,8 @@ func (s *Service) VerifyString(name string) bool {
 }
 
 // VerifyBinary reports whether a .lthn name supplied as bytes is valid.
+//
+//	ok := svc.VerifyBinary([]byte("example.lthn"))
 func (s *Service) VerifyBinary(name []byte) bool {
 	normalized, ok := canonicalizeName(name)
 	if !ok {
@@ -161,6 +165,8 @@ func (s *Service) VerifyBinary(name []byte) bool {
 //
 // The lookup accepts the same inputs as Resolve and Verify, then returns the
 // matching reserved-name entry from the reference catalog when present.
+//
+//	item, ok := svc.GetReserved("reserved.lthn")
 func (s *Service) GetReserved(name any) (covenant.ReservedName, bool) {
 	hash, err := s.Resolve(name)
 	if err != nil {
@@ -191,11 +197,15 @@ func (s *Service) GetReservedName(name any) (covenant.ReservedName, bool) {
 // GetReservedString looks up a reserved name supplied as a string.
 //
 // The helper accepts either a raw catalog label or a canonical `.lthn` name.
+//
+//	item, ok := svc.GetReservedString("reserved")
 func (s *Service) GetReservedString(name string) (covenant.ReservedName, bool) {
 	return s.GetReservedName(name)
 }
 
 // GetReservedBinary looks up a reserved name supplied as bytes.
+//
+//	item, ok := svc.GetReservedBinary([]byte("reserved"))
 func (s *Service) GetReservedBinary(name []byte) (covenant.ReservedName, bool) {
 	return s.GetReservedName(name)
 }
@@ -204,18 +214,24 @@ func (s *Service) GetReservedBinary(name []byte) (covenant.ReservedName, bool) {
 //
 // This mirrors the covenant package lookup helper without exposing the hash
 // plumbing to service-level callers.
+//
+//	ok := svc.HasReserved("reserved.lthn")
 func (s *Service) HasReserved(name any) bool {
 	_, ok := s.GetReserved(name)
 	return ok
 }
 
 // HasReservedString reports whether a reserved name supplied as a string exists.
+//
+//	ok := svc.HasReservedString("reserved")
 func (s *Service) HasReservedString(name string) bool {
 	_, ok := s.GetReservedName(name)
 	return ok
 }
 
 // HasReservedBinary reports whether a reserved name supplied as bytes exists.
+//
+//	ok := svc.HasReservedBinary([]byte("reserved"))
 func (s *Service) HasReservedBinary(name []byte) bool {
 	_, ok := s.GetReservedName(name)
 	return ok
@@ -225,17 +241,23 @@ func (s *Service) HasReservedBinary(name []byte) bool {
 //
 // This keeps the service-level name lookup helpers consistent: callers can
 // pass either a raw catalog label or a canonical `.lthn` name.
+//
+//	item, ok := svc.GetReservedByName("reserved")
 func (s *Service) GetReservedByName(name any) (covenant.ReservedName, bool) {
 	return s.GetReservedName(name)
 }
 
 // HasReservedByName is an alias for HasReservedName.
+//
+//	ok := svc.HasReservedByName("reserved")
 func (s *Service) HasReservedByName(name any) bool {
 	return s.HasReservedName(name)
 }
 
 // HasReservedName reports whether a reserved name exists using the raw
 // catalog label.
+//
+//	ok := svc.HasReservedName("reserved")
 func (s *Service) HasReservedName(name any) bool {
 	_, ok := s.GetReservedName(name)
 	return ok
@@ -245,22 +267,31 @@ func (s *Service) HasReservedName(name any) bool {
 //
 // This mirrors the covenant package lookup helper for callers that already
 // have the hashed form available.
+//
+//	hash, _ := covenant.HashString("reserved")
+//	item, ok := svc.GetReservedHash(hash)
 func (s *Service) GetReservedHash(hash primitives.Hash) (covenant.ReservedName, bool) {
 	return covenant.GetReservedHash(hash)
 }
 
 // HasReservedHash reports whether a canonical hash is reserved.
+//
+//	ok := svc.HasReservedHash(hash)
 func (s *Service) HasReservedHash(hash primitives.Hash) bool {
 	_, ok := s.GetReservedHash(hash)
 	return ok
 }
 
 // GetReservedByHash is an alias for GetReservedHash.
+//
+//	item, ok := svc.GetReservedByHash(hash)
 func (s *Service) GetReservedByHash(hash primitives.Hash) (covenant.ReservedName, bool) {
 	return s.GetReservedHash(hash)
 }
 
 // HasReservedByHash is an alias for HasReservedHash.
+//
+//	ok := svc.HasReservedByHash(hash)
 func (s *Service) HasReservedByHash(hash primitives.Hash) bool {
 	return s.HasReservedHash(hash)
 }
@@ -269,6 +300,8 @@ func (s *Service) HasReservedByHash(hash primitives.Hash) bool {
 //
 // The lookup accepts the same inputs as Resolve and Verify, then returns the
 // matching locked-name entry from the reference catalog when present.
+//
+//	item, ok := svc.GetLocked("nec.lthn")
 func (s *Service) GetLocked(name any) (covenant.LockedName, bool) {
 	hash, err := s.Resolve(name)
 	if err != nil {
@@ -299,11 +332,15 @@ func (s *Service) GetLockedName(name any) (covenant.LockedName, bool) {
 // GetLockedString looks up a locked name supplied as a string.
 //
 // The helper accepts either a raw catalog label or a canonical `.lthn` name.
+//
+//	item, ok := svc.GetLockedString("nec")
 func (s *Service) GetLockedString(name string) (covenant.LockedName, bool) {
 	return s.GetLockedName(name)
 }
 
 // GetLockedBinary looks up a locked name supplied as bytes.
+//
+//	item, ok := svc.GetLockedBinary([]byte("nec"))
 func (s *Service) GetLockedBinary(name []byte) (covenant.LockedName, bool) {
 	return s.GetLockedName(name)
 }
@@ -312,18 +349,24 @@ func (s *Service) GetLockedBinary(name []byte) (covenant.LockedName, bool) {
 //
 // This mirrors the covenant package lookup helper without exposing the hash
 // plumbing to service-level callers.
+//
+//	ok := svc.HasLocked("nec.lthn")
 func (s *Service) HasLocked(name any) bool {
 	_, ok := s.GetLocked(name)
 	return ok
 }
 
 // HasLockedString reports whether a locked name supplied as a string exists.
+//
+//	ok := svc.HasLockedString("nec")
 func (s *Service) HasLockedString(name string) bool {
 	_, ok := s.GetLockedName(name)
 	return ok
 }
 
 // HasLockedBinary reports whether a locked name supplied as bytes exists.
+//
+//	ok := svc.HasLockedBinary([]byte("nec"))
 func (s *Service) HasLockedBinary(name []byte) bool {
 	_, ok := s.GetLockedName(name)
 	return ok
@@ -333,17 +376,23 @@ func (s *Service) HasLockedBinary(name []byte) bool {
 //
 // This keeps the service-level name lookup helpers consistent: callers can
 // pass either a raw catalog label or a canonical `.lthn` name.
+//
+//	item, ok := svc.GetLockedByName("nec")
 func (s *Service) GetLockedByName(name any) (covenant.LockedName, bool) {
 	return s.GetLockedName(name)
 }
 
 // HasLockedByName is an alias for HasLockedName.
+//
+//	ok := svc.HasLockedByName("nec")
 func (s *Service) HasLockedByName(name any) bool {
 	return s.HasLockedName(name)
 }
 
 // HasLockedName reports whether a locked name exists using the raw catalog
 // label.
+//
+//	ok := svc.HasLockedName("nec")
 func (s *Service) HasLockedName(name any) bool {
 	_, ok := s.GetLockedName(name)
 	return ok
@@ -353,22 +402,31 @@ func (s *Service) HasLockedName(name any) bool {
 //
 // This mirrors the covenant package lookup helper for callers that already
 // have the hashed form available.
+//
+//	hash, _ := covenant.HashString("nec")
+//	item, ok := svc.GetLockedHash(hash)
 func (s *Service) GetLockedHash(hash primitives.Hash) (covenant.LockedName, bool) {
 	return covenant.GetLockedHash(hash)
 }
 
 // HasLockedHash reports whether a canonical hash is locked.
+//
+//	ok := svc.HasLockedHash(hash)
 func (s *Service) HasLockedHash(hash primitives.Hash) bool {
 	_, ok := s.GetLockedHash(hash)
 	return ok
 }
 
 // GetLockedByHash is an alias for GetLockedHash.
+//
+//	item, ok := svc.GetLockedByHash(hash)
 func (s *Service) GetLockedByHash(hash primitives.Hash) (covenant.LockedName, bool) {
 	return s.GetLockedHash(hash)
 }
 
 // HasLockedByHash is an alias for HasLockedHash.
+//
+//	ok := svc.HasLockedByHash(hash)
 func (s *Service) HasLockedByHash(hash primitives.Hash) bool {
 	return s.HasLockedHash(hash)
 }
@@ -377,41 +435,58 @@ func (s *Service) HasLockedByHash(hash primitives.Hash) bool {
 //
 // The returned catalog provides deterministic iteration helpers so callers can
 // enumerate the reference set without reaching into the covenant package.
+//
+//	catalog := svc.ReservedCatalog()
+//	items := catalog.Entries()
 func (s *Service) ReservedCatalog() *covenant.ReservedCatalog {
 	return covenant.DefaultReservedCatalog()
 }
 
 // ReservedSize reports the number of reserved-name entries available to the service.
+//
+//	size := svc.ReservedSize()
 func (s *Service) ReservedSize() int {
 	return s.ReservedCatalog().Size()
 }
 
 // ReservedNameValue reports the base value used for reserved-name lookups.
+//
+//	base := svc.ReservedNameValue()
 func (s *Service) ReservedNameValue() uint64 {
 	return s.ReservedCatalog().NameValue()
 }
 
 // ReservedRootValue reports the root-name increment used for reserved-name lookups.
+//
+//	root := svc.ReservedRootValue()
 func (s *Service) ReservedRootValue() uint64 {
 	return s.ReservedCatalog().RootValue()
 }
 
 // ReservedTopValue reports the top-100 increment used for reserved-name lookups.
+//
+//	top := svc.ReservedTopValue()
 func (s *Service) ReservedTopValue() uint64 {
 	return s.ReservedCatalog().TopValue()
 }
 
 // ReservedEntries exposes the reserved-name catalog entries used by the service.
+//
+//	entries := svc.ReservedEntries()
 func (s *Service) ReservedEntries() []covenant.ReservedEntry {
 	return s.ReservedCatalog().Entries()
 }
 
 // ReservedKeys exposes the reserved-name hashes used by the service.
+//
+//	keys := svc.ReservedKeys()
 func (s *Service) ReservedKeys() []primitives.Hash {
 	return s.ReservedCatalog().Keys()
 }
 
 // ReservedValues exposes the reserved-name entries used by the service.
+//
+//	values := svc.ReservedValues()
 func (s *Service) ReservedValues() []covenant.ReservedName {
 	return s.ReservedCatalog().Values()
 }
@@ -420,38 +495,53 @@ func (s *Service) ReservedValues() []covenant.ReservedName {
 //
 // The returned catalog provides deterministic iteration helpers so callers can
 // enumerate the reference set without reaching into the covenant package.
+//
+//	catalog := svc.LockedCatalog()
+//	items := catalog.Entries()
 func (s *Service) LockedCatalog() *covenant.LockedCatalog {
 	return covenant.DefaultLockedCatalog()
 }
 
 // LockedSize reports the number of locked-name entries available to the service.
+//
+//	size := svc.LockedSize()
 func (s *Service) LockedSize() int {
 	return s.LockedCatalog().Size()
 }
 
 // LockedPrefixSize reports the byte offset where locked-name entries begin in
 // the reference table.
+//
+//	offset := svc.LockedPrefixSize()
 func (s *Service) LockedPrefixSize() int {
 	return s.LockedCatalog().PrefixSize()
 }
 
 // ReservedPrefixSize reports the byte offset where reserved-name entries begin in
 // the reference table.
+//
+//	offset := svc.ReservedPrefixSize()
 func (s *Service) ReservedPrefixSize() int {
 	return s.ReservedCatalog().PrefixSize()
 }
 
 // LockedEntries exposes the locked-name catalog entries used by the service.
+//
+//	entries := svc.LockedEntries()
 func (s *Service) LockedEntries() []covenant.LockedEntry {
 	return s.LockedCatalog().Entries()
 }
 
 // LockedKeys exposes the locked-name hashes used by the service.
+//
+//	keys := svc.LockedKeys()
 func (s *Service) LockedKeys() []primitives.Hash {
 	return s.LockedCatalog().Keys()
 }
 
 // LockedValues exposes the locked-name entries used by the service.
+//
+//	values := svc.LockedValues()
 func (s *Service) LockedValues() []covenant.LockedName {
 	return s.LockedCatalog().Values()
 }
