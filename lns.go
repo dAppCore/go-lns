@@ -14,6 +14,7 @@ package lns
 
 import (
 	core "dappco.re/go/core"
+	"dappco.re/go/lns/pkg/covenant"
 	"dappco.re/go/lns/pkg/dns"
 	"dappco.re/go/lns/pkg/primitives"
 )
@@ -67,4 +68,17 @@ func (s *Service) Verify(name any) bool {
 	}
 
 	return dns.NewService(opts...).Verify(name)
+}
+
+// GetReserved looks up a reserved .lthn name after canonicalisation.
+//
+// The lookup accepts the same inputs as Resolve and Verify, then returns the
+// matching reserved-name entry from the reference catalog when present.
+func (s *Service) GetReserved(name any) (covenant.ReservedName, bool) {
+	hash, err := s.Resolve(name)
+	if err != nil {
+		return covenant.ReservedName{}, false
+	}
+
+	return covenant.GetReservedHash(hash)
 }

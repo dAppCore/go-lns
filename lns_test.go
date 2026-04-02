@@ -5,6 +5,8 @@ package lns
 import (
 	"crypto/sha3"
 	"testing"
+
+	"dappco.re/go/lns/pkg/covenant"
 )
 
 func TestServiceResolve(t *testing.T) {
@@ -73,5 +75,39 @@ func TestServiceVerify(t *testing.T) {
 		if got := svc.Verify(tc.name); got != tc.ok {
 			t.Fatalf("Verify(%v) = %v, want %v", tc.name, got, tc.ok)
 		}
+	}
+}
+
+func TestServiceGetReserved(t *testing.T) {
+	svc := &Service{}
+
+	item, ok := svc.GetReserved("RESERVED.lthn")
+	if !ok {
+		t.Fatal("GetReserved should find the reserved reference entry")
+	}
+
+	if item.Name != "reserved" {
+		t.Fatalf("item.Name = %q, want %q", item.Name, "reserved")
+	}
+
+	if item.Target != "reserved.com." {
+		t.Fatalf("item.Target = %q, want %q", item.Target, "reserved.com.")
+	}
+
+	hash, err := covenant.HashString("reserved")
+	if err != nil {
+		t.Fatalf("HashString returned error: %v", err)
+	}
+
+	if item.Hash != hash {
+		t.Fatalf("item.Hash = %x, want %x", item.Hash, hash)
+	}
+
+	if _, ok := svc.GetReserved([]byte("reserved.lthn")); !ok {
+		t.Fatal("GetReserved([]byte) should find the reserved reference entry")
+	}
+
+	if _, ok := svc.GetReserved(123); ok {
+		t.Fatal("GetReserved should reject unsupported input types")
 	}
 }
