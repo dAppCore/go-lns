@@ -111,7 +111,7 @@ func resolveCanonicalName(method string, name any) (primitives.Hash, error) {
 			return primitives.Hash{}, core.E(method, "invalid name", nil)
 		}
 
-		return covenant.HashString(normalized)
+		return covenant.HashBinary([]byte(normalized))
 	default:
 		return primitives.Hash{}, core.E(method, "invalid name type", nil)
 	}
