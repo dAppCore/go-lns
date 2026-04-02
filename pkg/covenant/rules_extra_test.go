@@ -165,6 +165,21 @@ func TestHasSaneCovenants(t *testing.T) {
 	if HasSaneCovenants(coinbaseClaim) {
 		t.Fatal("HasSaneCovenants should reject coinbase claims without exactly one witness item")
 	}
+
+	unknown := primitives.Transaction{
+		Outputs: []primitives.Output{
+			{
+				Covenant: primitives.Covenant{
+					Type: 99,
+					Items: make([][]byte, 256),
+				},
+			},
+		},
+	}
+
+	if !HasSaneCovenants(unknown) {
+		t.Fatal("HasSaneCovenants should accept unknown covenants within the script stack limit")
+	}
 }
 
 type testCoinView struct {
