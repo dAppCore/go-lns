@@ -334,6 +334,13 @@ type NameFlags = covenant.NameFlags
 // NameRules mirrors the covenant rollout and lockup rule inputs.
 type NameRules = covenant.NameRules
 
+// CoinView mirrors the minimal UTXO lookup interface required by covenant
+// verification helpers.
+type CoinView = covenant.CoinView
+
+// Network mirrors the covenant verification network inputs.
+type Network = covenant.Network
+
 // Verification and size constants mirror pkg/covenant so callers can stay in
 // the top-level lns package for common rule metadata.
 const (
@@ -552,6 +559,16 @@ func RemoveNames(tx primitives.Transaction, set map[primitives.Hash]struct{}) {
 // HasSaneCovenants performs structural covenant validation on a transaction.
 func HasSaneCovenants(tx primitives.Transaction) bool {
 	return covenant.HasSaneCovenants(tx)
+}
+
+// VerifyCovenants performs contextual covenant validation on a transaction.
+func VerifyCovenants(tx primitives.Transaction, view CoinView, height uint32, network Network) int {
+	return covenant.VerifyCovenants(tx, view, height, network)
+}
+
+// GetVerifyCovenants is an alias for VerifyCovenants.
+func GetVerifyCovenants(tx primitives.Transaction, view CoinView, height uint32, network Network) int {
+	return VerifyCovenants(tx, view, height, network)
 }
 
 // ServiceName returns the registered name for the LNS service group.
@@ -832,6 +849,16 @@ func (s *Service) RemoveNames(tx primitives.Transaction, set map[primitives.Hash
 // HasSaneCovenants performs structural covenant validation on a transaction.
 func (s *Service) HasSaneCovenants(tx primitives.Transaction) bool {
 	return covenant.HasSaneCovenants(tx)
+}
+
+// VerifyCovenants performs contextual covenant validation on a transaction.
+func (s *Service) VerifyCovenants(tx primitives.Transaction, view CoinView, height uint32, network Network) int {
+	return covenant.VerifyCovenants(tx, view, height, network)
+}
+
+// GetVerifyCovenants is an alias for VerifyCovenants.
+func (s *Service) GetVerifyCovenants(tx primitives.Transaction, view CoinView, height uint32, network Network) int {
+	return s.VerifyCovenants(tx, view, height, network)
 }
 
 // Types mirrors the covenant type lookup table from pkg/covenant.

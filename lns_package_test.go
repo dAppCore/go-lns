@@ -406,6 +406,95 @@ func TestPackageRolloutHelpers(t *testing.T) {
 	}
 }
 
+type packageTestCoinView struct {
+	coins map[primitives.Outpoint]primitives.Output
+}
+
+func (v packageTestCoinView) GetOutput(prevout primitives.Outpoint) (primitives.Output, bool) {
+	coin, ok := v.coins[prevout]
+	return coin, ok
+}
+
+func TestPackageVerifyCovenants(t *testing.T) {
+	hash, err := covenant.HashString("example-name")
+	if err != nil {
+		t.Fatalf("HashString returned error: %v", err)
+	}
+
+	var prevHash primitives.Hash
+	prevHash[0] = 3
+
+	var finalHash primitives.Hash
+	finalHash[0] = 4
+	committedAddress := append([]byte(nil), finalHash[:]...)
+	outputAddress := append([]byte(nil), finalHash[:]...)
+
+	transferCovenant := primitives.Covenant{
+		Type: uint8(covenant.TypeTransfer),
+		Items: [][]byte{
+			hash[:],
+			make([]byte, 4),
+			[]byte{0},
+			committedAddress,
+		},
+	}
+	binary.LittleEndian.PutUint32(transferCovenant.Items[1], 100)
+
+	finalizeCovenant := primitives.Covenant{
+		Type: uint8(covenant.TypeFinalize),
+		Items: [][]byte{
+			hash[:],
+			make([]byte, 4),
+			[]byte("example-name"),
+			[]byte{0},
+			make([]byte, 4),
+			make([]byte, 4),
+			make([]byte, 32),
+		},
+	}
+	binary.LittleEndian.PutUint32(finalizeCovenant.Items[1], 100)
+	binary.LittleEndian.PutUint32(finalizeCovenant.Items[4], 1)
+	binary.LittleEndian.PutUint32(finalizeCovenant.Items[5], 2)
+
+	tx := primitives.Transaction{
+		Inputs: []primitives.Input{
+			{Prevout: primitives.Outpoint{TxHash: prevHash, Index: 0}},
+		},
+		Outputs: []primitives.Output{
+			{
+				Value: 1000,
+				Address: primitives.Address{
+					Version: 0,
+					Hash:    outputAddress,
+				},
+				Covenant: finalizeCovenant,
+			},
+		},
+	}
+
+	view := packageTestCoinView{
+		coins: map[primitives.Outpoint]primitives.Output{
+			primitives.Outpoint{TxHash: prevHash, Index: 0}: primitives.Output{
+				Value: 1000,
+				Address: primitives.Address{
+					Version: 0,
+					Hash:    []byte{9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9},
+				},
+				Covenant: transferCovenant,
+			},
+		},
+	}
+
+	if got := VerifyCovenants(tx, view, 100, covenant.Network{}); got != 0 {
+		t.Fatalf("VerifyCovenants returned %d, want 0", got)
+	}
+
+	tx.Outputs[0].Address.Hash[0] ^= 1
+	if got := GetVerifyCovenants(tx, view, 100, covenant.Network{}); got != -1 {
+		t.Fatalf("GetVerifyCovenants returned %d for an invalid finalize address, want -1", got)
+	}
+}
+
 func TestPackageTypeConstants(t *testing.T) {
 	cases := []struct {
 		name string

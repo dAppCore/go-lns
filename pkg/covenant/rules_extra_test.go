@@ -3,6 +3,7 @@
 package covenant
 
 import (
+	"encoding/binary"
 	"testing"
 
 	"dappco.re/go/lns/pkg/primitives"
@@ -131,5 +132,93 @@ func TestHasSaneCovenants(t *testing.T) {
 
 	if HasSaneCovenants(invalid) {
 		t.Fatal("HasSaneCovenants should reject non-zero open heights")
+	}
+}
+
+type testCoinView struct {
+	coins map[primitives.Outpoint]primitives.Output
+}
+
+func (v testCoinView) GetOutput(prevout primitives.Outpoint) (primitives.Output, bool) {
+	coin, ok := v.coins[prevout]
+	return coin, ok
+}
+
+func TestVerifyCovenants(t *testing.T) {
+	hash, err := HashString("example-name")
+	if err != nil {
+		t.Fatalf("HashString returned error: %v", err)
+	}
+
+	var prevHash primitives.Hash
+	prevHash[0] = 1
+
+	var finalHash primitives.Hash
+	finalHash[0] = 2
+	committedAddress := append([]byte(nil), finalHash[:]...)
+	outputAddress := append([]byte(nil), finalHash[:]...)
+
+	var transferCovenant primitives.Covenant
+	transferCovenant.Type = uint8(TypeTransfer)
+	transferCovenant.Items = [][]byte{
+		hash[:],
+		make([]byte, 4),
+		[]byte{0},
+		committedAddress,
+	}
+
+	var finalizeCovenant primitives.Covenant
+	finalizeCovenant.Type = uint8(TypeFinalize)
+	finalizeCovenant.Items = [][]byte{
+		hash[:],
+		make([]byte, 4),
+		[]byte("example-name"),
+		[]byte{0},
+		make([]byte, 4),
+		make([]byte, 4),
+		make([]byte, 32),
+	}
+
+	binary.LittleEndian.PutUint32(transferCovenant.Items[1], 100)
+	binary.LittleEndian.PutUint32(finalizeCovenant.Items[1], 100)
+	binary.LittleEndian.PutUint32(finalizeCovenant.Items[4], 1)
+	binary.LittleEndian.PutUint32(finalizeCovenant.Items[5], 2)
+
+	tx := primitives.Transaction{
+		Inputs: []primitives.Input{
+			{Prevout: primitives.Outpoint{TxHash: prevHash, Index: 0}},
+		},
+		Outputs: []primitives.Output{
+			{
+				Value: 1000,
+				Address: primitives.Address{
+					Version: 0,
+					Hash:    outputAddress,
+				},
+				Covenant: finalizeCovenant,
+			},
+		},
+	}
+
+	view := testCoinView{
+		coins: map[primitives.Outpoint]primitives.Output{
+			primitives.Outpoint{TxHash: prevHash, Index: 0}: primitives.Output{
+				Value: 1000,
+				Address: primitives.Address{
+					Version: 0,
+					Hash:    []byte{9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9},
+				},
+				Covenant: transferCovenant,
+			},
+		},
+	}
+
+	if got := VerifyCovenants(tx, view, 100, Network{}); got != 0 {
+		t.Fatalf("VerifyCovenants returned %d, want 0", got)
+	}
+
+	tx.Outputs[0].Address.Hash[0] ^= 1
+	if got := VerifyCovenants(tx, view, 100, Network{}); got != -1 {
+		t.Fatalf("VerifyCovenants returned %d for an invalid finalize address, want -1", got)
 	}
 }
