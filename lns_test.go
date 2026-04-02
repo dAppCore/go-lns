@@ -14,6 +14,18 @@ import (
 	"golang.org/x/crypto/blake2b"
 )
 
+func TestServiceLifecycleHooks(t *testing.T) {
+	svc := &Service{}
+
+	if got := svc.OnStartup(nil); !got.OK {
+		t.Fatalf("OnStartup returned %#v, want OK", got)
+	}
+
+	if got := svc.OnShutdown(nil); !got.OK {
+		t.Fatalf("OnShutdown returned %#v, want OK", got)
+	}
+}
+
 func TestServiceResolve(t *testing.T) {
 	svc := &Service{}
 

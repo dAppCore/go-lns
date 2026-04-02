@@ -13,6 +13,8 @@
 package lns
 
 import (
+	"context"
+
 	core "dappco.re/go/core"
 	"dappco.re/go/lns/internal/nameutil"
 	"dappco.re/go/lns/pkg/covenant"
@@ -30,6 +32,11 @@ const ServiceName = "lns"
 type Service struct {
 	*core.ServiceRuntime[serviceOptions]
 }
+
+var (
+	_ core.Startable = (*Service)(nil)
+	_ core.Stoppable = (*Service)(nil)
+)
 
 // serviceOptions holds configuration for the LNS service.
 type serviceOptions struct{}
@@ -90,6 +97,18 @@ func Register(c *core.Core) core.Result {
 //	name := lns.GetServiceName()
 func GetServiceName() string {
 	return ServiceName
+}
+
+// OnStartup satisfies core.Startable so LNS participates in Core lifecycle
+// discovery without requiring any explicit setup.
+func (s *Service) OnStartup(context.Context) core.Result {
+	return core.Result{OK: true}
+}
+
+// OnShutdown satisfies core.Stoppable so LNS participates in Core lifecycle
+// discovery without requiring any explicit teardown.
+func (s *Service) OnShutdown(context.Context) core.Result {
+	return core.Result{OK: true}
 }
 
 func canonicalizeName(name any) (string, bool) {
