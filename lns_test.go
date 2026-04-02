@@ -635,6 +635,22 @@ func TestNewService(t *testing.T) {
 	}
 }
 
+func TestNewServiceWithOptions(t *testing.T) {
+	c := core.New()
+	svc := NewServiceWithOptions(WithCore(c))
+	if svc == nil {
+		t.Fatal("NewServiceWithOptions should return a service instance")
+	}
+
+	if svc.Core() != c {
+		t.Fatal("WithCore should attach the provided Core instance")
+	}
+
+	if got := svc.ServiceName(); got != ServiceName {
+		t.Fatalf("NewServiceWithOptions ServiceName() = %q, want %q", got, ServiceName)
+	}
+}
+
 func TestServiceGetReserved(t *testing.T) {
 	svc := &Service{}
 
