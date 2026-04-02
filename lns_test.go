@@ -860,20 +860,40 @@ func TestServiceReservedCatalog(t *testing.T) {
 		t.Fatalf("ReservedSize() = %d, want %d", got, catalog.Size())
 	}
 
+	if got := svc.GetReservedSize(); got != catalog.Size() {
+		t.Fatalf("GetReservedSize() = %d, want %d", got, catalog.Size())
+	}
+
 	if got := svc.ReservedNameValue(); got != catalog.NameValue() {
 		t.Fatalf("ReservedNameValue() = %d, want %d", got, catalog.NameValue())
+	}
+
+	if got := svc.GetReservedNameValue(); got != catalog.NameValue() {
+		t.Fatalf("GetReservedNameValue() = %d, want %d", got, catalog.NameValue())
 	}
 
 	if got := svc.ReservedRootValue(); got != catalog.RootValue() {
 		t.Fatalf("ReservedRootValue() = %d, want %d", got, catalog.RootValue())
 	}
 
+	if got := svc.GetReservedRootValue(); got != catalog.RootValue() {
+		t.Fatalf("GetReservedRootValue() = %d, want %d", got, catalog.RootValue())
+	}
+
 	if got := svc.ReservedTopValue(); got != catalog.TopValue() {
 		t.Fatalf("ReservedTopValue() = %d, want %d", got, catalog.TopValue())
 	}
 
+	if got := svc.GetReservedTopValue(); got != catalog.TopValue() {
+		t.Fatalf("GetReservedTopValue() = %d, want %d", got, catalog.TopValue())
+	}
+
 	if got := svc.ReservedPrefixSize(); got != catalog.PrefixSize() {
 		t.Fatalf("ReservedPrefixSize() = %d, want %d", got, catalog.PrefixSize())
+	}
+
+	if got := svc.GetReservedPrefixSize(); got != catalog.PrefixSize() {
+		t.Fatalf("GetReservedPrefixSize() = %d, want %d", got, catalog.PrefixSize())
 	}
 
 	if !catalog.HasByName("RESERVED") {
@@ -900,12 +920,24 @@ func TestServiceReservedCatalog(t *testing.T) {
 		t.Fatal("ReservedEntries should expose catalog entries")
 	}
 
+	if len(svc.GetReservedEntries()) == 0 {
+		t.Fatal("GetReservedEntries should expose catalog entries")
+	}
+
 	if len(svc.ReservedKeys()) == 0 {
 		t.Fatal("ReservedKeys should expose catalog keys")
 	}
 
+	if len(svc.GetReservedKeys()) == 0 {
+		t.Fatal("GetReservedKeys should expose catalog keys")
+	}
+
 	if len(svc.ReservedValues()) == 0 {
 		t.Fatal("ReservedValues should expose catalog values")
+	}
+
+	if len(svc.GetReservedValues()) == 0 {
+		t.Fatal("GetReservedValues should expose catalog values")
 	}
 }
 
@@ -930,8 +962,16 @@ func TestServiceLockedCatalog(t *testing.T) {
 		t.Fatalf("LockedSize() = %d, want %d", got, catalog.Size())
 	}
 
+	if got := svc.GetLockedSize(); got != catalog.Size() {
+		t.Fatalf("GetLockedSize() = %d, want %d", got, catalog.Size())
+	}
+
 	if got := svc.LockedPrefixSize(); got != catalog.PrefixSize() {
 		t.Fatalf("LockedPrefixSize() = %d, want %d", got, catalog.PrefixSize())
+	}
+
+	if got := svc.GetLockedPrefixSize(); got != catalog.PrefixSize() {
+		t.Fatalf("GetLockedPrefixSize() = %d, want %d", got, catalog.PrefixSize())
 	}
 
 	if !catalog.HasByName("NEC") {
@@ -958,11 +998,23 @@ func TestServiceLockedCatalog(t *testing.T) {
 		t.Fatal("LockedEntries should expose catalog entries")
 	}
 
+	if len(svc.GetLockedEntries()) == 0 {
+		t.Fatal("GetLockedEntries should expose catalog entries")
+	}
+
 	if len(svc.LockedKeys()) == 0 {
 		t.Fatal("LockedKeys should expose catalog keys")
 	}
 
+	if len(svc.GetLockedKeys()) == 0 {
+		t.Fatal("GetLockedKeys should expose catalog keys")
+	}
+
 	if len(svc.LockedValues()) == 0 {
 		t.Fatal("LockedValues should expose catalog values")
+	}
+
+	if len(svc.GetLockedValues()) == 0 {
+		t.Fatal("GetLockedValues should expose catalog values")
 	}
 }

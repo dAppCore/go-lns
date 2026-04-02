@@ -597,11 +597,25 @@ func (s *Service) ReservedSize() int {
 	return s.ReservedCatalog().Size()
 }
 
+// GetReservedSize is an alias for ReservedSize.
+//
+//	size := svc.GetReservedSize()
+func (s *Service) GetReservedSize() int {
+	return s.ReservedSize()
+}
+
 // ReservedNameValue reports the base value used for reserved-name lookups.
 //
 //	base := svc.ReservedNameValue()
 func (s *Service) ReservedNameValue() uint64 {
 	return s.ReservedCatalog().NameValue()
+}
+
+// GetReservedNameValue is an alias for ReservedNameValue.
+//
+//	base := svc.GetReservedNameValue()
+func (s *Service) GetReservedNameValue() uint64 {
+	return s.ReservedNameValue()
 }
 
 // ReservedRootValue reports the root-name increment used for reserved-name lookups.
@@ -611,11 +625,25 @@ func (s *Service) ReservedRootValue() uint64 {
 	return s.ReservedCatalog().RootValue()
 }
 
+// GetReservedRootValue is an alias for ReservedRootValue.
+//
+//	root := svc.GetReservedRootValue()
+func (s *Service) GetReservedRootValue() uint64 {
+	return s.ReservedRootValue()
+}
+
 // ReservedTopValue reports the top-100 increment used for reserved-name lookups.
 //
 //	top := svc.ReservedTopValue()
 func (s *Service) ReservedTopValue() uint64 {
 	return s.ReservedCatalog().TopValue()
+}
+
+// GetReservedTopValue is an alias for ReservedTopValue.
+//
+//	top := svc.GetReservedTopValue()
+func (s *Service) GetReservedTopValue() uint64 {
+	return s.ReservedTopValue()
 }
 
 // ReservedEntries exposes the reserved-name catalog entries used by the service.
@@ -625,6 +653,13 @@ func (s *Service) ReservedEntries() []covenant.ReservedEntry {
 	return s.ReservedCatalog().Entries()
 }
 
+// GetReservedEntries is an alias for ReservedEntries.
+//
+//	entries := svc.GetReservedEntries()
+func (s *Service) GetReservedEntries() []covenant.ReservedEntry {
+	return s.ReservedEntries()
+}
+
 // ReservedKeys exposes the reserved-name hashes used by the service.
 //
 //	keys := svc.ReservedKeys()
@@ -632,11 +667,25 @@ func (s *Service) ReservedKeys() []primitives.Hash {
 	return s.ReservedCatalog().Keys()
 }
 
+// GetReservedKeys is an alias for ReservedKeys.
+//
+//	keys := svc.GetReservedKeys()
+func (s *Service) GetReservedKeys() []primitives.Hash {
+	return s.ReservedKeys()
+}
+
 // ReservedValues exposes the reserved-name entries used by the service.
 //
 //	values := svc.ReservedValues()
 func (s *Service) ReservedValues() []covenant.ReservedName {
 	return s.ReservedCatalog().Values()
+}
+
+// GetReservedValues is an alias for ReservedValues.
+//
+//	values := svc.GetReservedValues()
+func (s *Service) GetReservedValues() []covenant.ReservedName {
+	return s.ReservedValues()
 }
 
 // LockedCatalog exposes the locked-name catalog used by the service.
@@ -664,12 +713,26 @@ func (s *Service) LockedSize() int {
 	return s.LockedCatalog().Size()
 }
 
+// GetLockedSize is an alias for LockedSize.
+//
+//	size := svc.GetLockedSize()
+func (s *Service) GetLockedSize() int {
+	return s.LockedSize()
+}
+
 // LockedPrefixSize reports the byte offset where locked-name entries begin in
 // the reference table.
 //
 //	offset := svc.LockedPrefixSize()
 func (s *Service) LockedPrefixSize() int {
 	return s.LockedCatalog().PrefixSize()
+}
+
+// GetLockedPrefixSize is an alias for LockedPrefixSize.
+//
+//	offset := svc.GetLockedPrefixSize()
+func (s *Service) GetLockedPrefixSize() int {
+	return s.LockedPrefixSize()
 }
 
 // ReservedPrefixSize reports the byte offset where reserved-name entries begin in
@@ -680,11 +743,25 @@ func (s *Service) ReservedPrefixSize() int {
 	return s.ReservedCatalog().PrefixSize()
 }
 
+// GetReservedPrefixSize is an alias for ReservedPrefixSize.
+//
+//	offset := svc.GetReservedPrefixSize()
+func (s *Service) GetReservedPrefixSize() int {
+	return s.ReservedPrefixSize()
+}
+
 // LockedEntries exposes the locked-name catalog entries used by the service.
 //
 //	entries := svc.LockedEntries()
 func (s *Service) LockedEntries() []covenant.LockedEntry {
 	return s.LockedCatalog().Entries()
+}
+
+// GetLockedEntries is an alias for LockedEntries.
+//
+//	entries := svc.GetLockedEntries()
+func (s *Service) GetLockedEntries() []covenant.LockedEntry {
+	return s.LockedEntries()
 }
 
 // LockedKeys exposes the locked-name hashes used by the service.
@@ -694,11 +771,25 @@ func (s *Service) LockedKeys() []primitives.Hash {
 	return s.LockedCatalog().Keys()
 }
 
+// GetLockedKeys is an alias for LockedKeys.
+//
+//	keys := svc.GetLockedKeys()
+func (s *Service) GetLockedKeys() []primitives.Hash {
+	return s.LockedKeys()
+}
+
 // LockedValues exposes the locked-name entries used by the service.
 //
 //	values := svc.LockedValues()
 func (s *Service) LockedValues() []covenant.LockedName {
 	return s.LockedCatalog().Values()
+}
+
+// GetLockedValues is an alias for LockedValues.
+//
+//	values := svc.GetLockedValues()
+func (s *Service) GetLockedValues() []covenant.LockedName {
+	return s.LockedValues()
 }
 
 func catalogLabel(name any) (string, bool) {
