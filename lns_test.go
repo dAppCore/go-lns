@@ -156,6 +156,46 @@ func TestServiceResolveRejectsInvalidNames(t *testing.T) {
 	}
 }
 
+func TestHashOperationLabels(t *testing.T) {
+	if _, err := Hash(123); err == nil {
+		t.Fatal("Hash should reject unsupported input types")
+	} else if got := core.Operation(err); got != "lns.Hash" {
+		t.Fatalf("Hash error operation = %q, want %q", got, "lns.Hash")
+	}
+
+	if _, err := HashString("foo-"); err == nil {
+		t.Fatal("HashString should reject malformed names")
+	} else if got := core.Operation(err); got != "lns.HashString" {
+		t.Fatalf("HashString error operation = %q, want %q", got, "lns.HashString")
+	}
+
+	if _, err := HashBinary([]byte("foo-")); err == nil {
+		t.Fatal("HashBinary should reject malformed names")
+	} else if got := core.Operation(err); got != "lns.HashBinary" {
+		t.Fatalf("HashBinary error operation = %q, want %q", got, "lns.HashBinary")
+	}
+
+	svc := &Service{}
+
+	if _, err := svc.Hash(123); err == nil {
+		t.Fatal("Service.Hash should reject unsupported input types")
+	} else if got := core.Operation(err); got != "lns.Service.Hash" {
+		t.Fatalf("Service.Hash error operation = %q, want %q", got, "lns.Service.Hash")
+	}
+
+	if _, err := svc.HashString("foo-"); err == nil {
+		t.Fatal("Service.HashString should reject malformed names")
+	} else if got := core.Operation(err); got != "lns.Service.HashString" {
+		t.Fatalf("Service.HashString error operation = %q, want %q", got, "lns.Service.HashString")
+	}
+
+	if _, err := svc.HashBinary([]byte("foo-")); err == nil {
+		t.Fatal("Service.HashBinary should reject malformed names")
+	} else if got := core.Operation(err); got != "lns.Service.HashBinary" {
+		t.Fatalf("Service.HashBinary error operation = %q, want %q", got, "lns.Service.HashBinary")
+	}
+}
+
 func TestServiceVerify(t *testing.T) {
 	svc := &Service{}
 

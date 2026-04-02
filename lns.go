@@ -142,7 +142,11 @@ func resolveCanonicalName(method string, name any) (primitives.Hash, error) {
 			return primitives.Hash{}, core.E(method, "invalid name", nil)
 		}
 
-		return covenant.HashString(normalized)
+		if !covenant.VerifyString(normalized) {
+			return primitives.Hash{}, core.E(method, "invalid name", nil)
+		}
+
+		return primitives.Hash(sha3.Sum256([]byte(normalized))), nil
 	default:
 		return primitives.Hash{}, core.E(method, "invalid name type", nil)
 	}
@@ -206,7 +210,7 @@ func GetResolve(name any) (primitives.Hash, error) {
 //
 //	hash, err := lns.Hash("example.lthn")
 func Hash(name any) (primitives.Hash, error) {
-	return Resolve(name)
+	return resolveCanonicalName("lns.Hash", name)
 }
 
 // GetHash is an alias for Hash.
@@ -236,7 +240,7 @@ func GetVerify(name any) bool {
 //
 //	hash, err := lns.HashString("example.lthn")
 func HashString(name string) (primitives.Hash, error) {
-	return ResolveString(name)
+	return resolveCanonicalName("lns.HashString", name)
 }
 
 // GetHashString is an alias for HashString.
@@ -250,7 +254,7 @@ func GetHashString(name string) (primitives.Hash, error) {
 //
 //	hash, err := lns.HashBinary([]byte("example.lthn"))
 func HashBinary(name []byte) (primitives.Hash, error) {
-	return ResolveBinary(name)
+	return resolveCanonicalName("lns.HashBinary", name)
 }
 
 // GetHashBinary is an alias for HashBinary.
@@ -953,7 +957,7 @@ func (s *Service) GetResolve(name any) (primitives.Hash, error) {
 //	svc := c.Service("lns").(*lns.Service)
 //	hash, err := svc.Hash("example.lthn")
 func (s *Service) Hash(name any) (primitives.Hash, error) {
-	return s.Resolve(name)
+	return resolveCanonicalName("lns.Service.Hash", name)
 }
 
 // GetHash is an alias for Hash.
@@ -989,7 +993,7 @@ func (s *Service) GetVerify(name any) bool {
 //
 //	ok := svc.HashString("example.lthn")
 func (s *Service) HashString(name string) (primitives.Hash, error) {
-	return s.ResolveString(name)
+	return resolveCanonicalName("lns.Service.HashString", name)
 }
 
 // GetHashString is an alias for HashString.
@@ -1003,7 +1007,7 @@ func (s *Service) GetHashString(name string) (primitives.Hash, error) {
 //
 //	ok := svc.HashBinary([]byte("example.lthn"))
 func (s *Service) HashBinary(name []byte) (primitives.Hash, error) {
-	return s.ResolveBinary(name)
+	return resolveCanonicalName("lns.Service.HashBinary", name)
 }
 
 // GetHashBinary is an alias for HashBinary.
