@@ -183,6 +183,10 @@ func TestServiceGetReservedByName(t *testing.T) {
 		t.Fatal("GetReservedByName([]byte) should find the reserved reference entry")
 	}
 
+	if _, ok := svc.GetReservedByName("RESERVED.lthn"); !ok {
+		t.Fatal("GetReservedByName should also accept canonical reserved names")
+	}
+
 	if _, ok := svc.GetReservedByName(123); ok {
 		t.Fatal("GetReservedByName should reject unsupported input types")
 	}
@@ -197,6 +201,10 @@ func TestServiceHasReservedByName(t *testing.T) {
 
 	if !svc.HasReservedByName([]byte("reserved")) {
 		t.Fatal("HasReservedByName([]byte) should report reserved catalog labels")
+	}
+
+	if !svc.HasReservedByName("reserved.lthn") {
+		t.Fatal("HasReservedByName should report canonical reserved names")
 	}
 
 	if svc.HasReservedByName("not-reserved") {
@@ -355,6 +363,10 @@ func TestServiceGetLockedByName(t *testing.T) {
 		t.Fatal("GetLockedByName([]byte) should find the locked reference entry")
 	}
 
+	if _, ok := svc.GetLockedByName("NEC.lthn"); !ok {
+		t.Fatal("GetLockedByName should also accept canonical locked names")
+	}
+
 	if _, ok := svc.GetLockedByName(123); ok {
 		t.Fatal("GetLockedByName should reject unsupported input types")
 	}
@@ -369,6 +381,10 @@ func TestServiceHasLockedByName(t *testing.T) {
 
 	if !svc.HasLockedByName([]byte("nec")) {
 		t.Fatal("HasLockedByName([]byte) should report locked catalog labels")
+	}
+
+	if !svc.HasLockedByName("nec.lthn") {
+		t.Fatal("HasLockedByName should report canonical locked names")
 	}
 
 	if svc.HasLockedByName("not-locked") {

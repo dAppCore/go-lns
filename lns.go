@@ -135,23 +135,17 @@ func (s *Service) HasReserved(name any) bool {
 	return ok
 }
 
-// GetReservedByName looks up a reserved name using the raw catalog label.
+// GetReservedByName is an alias for GetReservedName.
 //
-// This mirrors the covenant package helper without requiring .lthn
-// canonicalisation first.
+// This keeps the service-level name lookup helpers consistent: callers can
+// pass either a raw catalog label or a canonical `.lthn` name.
 func (s *Service) GetReservedByName(name any) (covenant.ReservedName, bool) {
-	label, ok := catalogLabel(name)
-	if !ok {
-		return covenant.ReservedName{}, false
-	}
-
-	return covenant.GetReservedName(label)
+	return s.GetReservedName(name)
 }
 
-// HasReservedByName reports whether the raw catalog label is reserved.
+// HasReservedByName is an alias for HasReservedName.
 func (s *Service) HasReservedByName(name any) bool {
-	_, ok := s.GetReservedByName(name)
-	return ok
+	return s.HasReservedName(name)
 }
 
 // HasReservedName reports whether a reserved name exists using the raw
@@ -225,23 +219,17 @@ func (s *Service) HasLocked(name any) bool {
 	return ok
 }
 
-// GetLockedByName looks up a locked name using the raw catalog label.
+// GetLockedByName is an alias for GetLockedName.
 //
-// This mirrors the covenant package helper without requiring .lthn
-// canonicalisation first.
+// This keeps the service-level name lookup helpers consistent: callers can
+// pass either a raw catalog label or a canonical `.lthn` name.
 func (s *Service) GetLockedByName(name any) (covenant.LockedName, bool) {
-	label, ok := catalogLabel(name)
-	if !ok {
-		return covenant.LockedName{}, false
-	}
-
-	return covenant.GetLockedName(label)
+	return s.GetLockedName(name)
 }
 
-// HasLockedByName reports whether the raw catalog label is locked.
+// HasLockedByName is an alias for HasLockedName.
 func (s *Service) HasLockedByName(name any) bool {
-	_, ok := s.GetLockedByName(name)
-	return ok
+	return s.HasLockedName(name)
 }
 
 // HasLockedName reports whether a locked name exists using the raw catalog
