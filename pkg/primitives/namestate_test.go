@@ -425,6 +425,16 @@ func TestNameStateBinaryRoundTrip(t *testing.T) {
 	}
 }
 
+func TestNameStateMaxSize(t *testing.T) {
+	if MaxNameStateSize != 668 {
+		t.Fatalf("MaxNameStateSize = %d, want 668", MaxNameStateSize)
+	}
+
+	if NameStateMaxSize != MaxNameStateSize {
+		t.Fatalf("NameStateMaxSize = %d, want %d", NameStateMaxSize, MaxNameStateSize)
+	}
+}
+
 func TestNameStateBinaryZeroValue(t *testing.T) {
 	var original NameState
 

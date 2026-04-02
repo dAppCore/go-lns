@@ -7,6 +7,15 @@ import (
 	"fmt"
 )
 
+const (
+	// MaxNameStateSize is the maximum serialized size of a name state,
+	// mirroring the JS reference's `NameState.MAX_SIZE` constant.
+	MaxNameStateSize = 668
+
+	// NameStateMaxSize is an alias for MaxNameStateSize.
+	NameStateMaxSize = MaxNameStateSize
+)
+
 // GetSize returns the serialized size of the name state.
 func (ns NameState) GetSize() int {
 	size := 1 + len(ns.Name) + 2 + len(ns.Data) + 4 + 4 + 2
