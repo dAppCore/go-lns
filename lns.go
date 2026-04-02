@@ -241,6 +241,13 @@ var TypesByVal = covenant.TypesByVal
 // Blacklist mirrors the covenant blacklist used by the verifier.
 var Blacklist = covenant.Blacklist
 
+// GetBlacklist is an alias for Blacklist.
+//
+//	blacklist := lns.GetBlacklist()
+func GetBlacklist() map[string]struct{} {
+	return Blacklist
+}
+
 // CovenantType mirrors the covenant type enum from pkg/covenant.
 type CovenantType = covenant.CovenantType
 
@@ -276,6 +283,20 @@ const (
 	MaxCovenantSize              = covenant.MaxCovenantSize
 	CovenantMaxSize              = covenant.CovenantMaxSize
 )
+
+// GetTypes is an alias for Types.
+//
+//	types := lns.GetTypes()
+func GetTypes() map[string]covenant.CovenantType {
+	return Types
+}
+
+// GetTypesByVal is an alias for TypesByVal.
+//
+//	typesByVal := lns.GetTypesByVal()
+func GetTypesByVal() map[covenant.CovenantType]string {
+	return TypesByVal
+}
 
 // GetTypeName is an alias for TypeName.
 //

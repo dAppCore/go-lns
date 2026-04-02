@@ -156,6 +156,14 @@ func TestPackageTypeTables(t *testing.T) {
 		t.Fatal("type lookup tables should not be empty")
 	}
 
+	if len(GetTypes()) != len(Types) {
+		t.Fatal("GetTypes should alias Types")
+	}
+
+	if len(GetTypesByVal()) != len(TypesByVal) {
+		t.Fatal("GetTypesByVal should alias TypesByVal")
+	}
+
 	if got, ok := Types["BID"]; !ok || got != covenant.TypeBid {
 		t.Fatalf("Types[\"BID\"] = %d, want %d", got, covenant.TypeBid)
 	}
@@ -164,8 +172,30 @@ func TestPackageTypeTables(t *testing.T) {
 		t.Fatalf("TypesByVal[TypeBid] = %q, want %q", got, "BID")
 	}
 
+	if got, ok := GetTypes()["BID"]; !ok || got != covenant.TypeBid {
+		t.Fatalf("GetTypes()[\"BID\"] = %d, want %d", got, covenant.TypeBid)
+	}
+
+	if got, ok := GetTypesByVal()[covenant.TypeBid]; !ok || got != "BID" {
+		t.Fatalf("GetTypesByVal()[TypeBid] = %q, want %q", got, "BID")
+	}
+
 	if CovenantType(TypeBid) != covenant.TypeBid {
 		t.Fatalf("CovenantType(TypeBid) = %d, want %d", CovenantType(TypeBid), covenant.TypeBid)
+	}
+}
+
+func TestPackageBlacklistAlias(t *testing.T) {
+	if len(Blacklist) == 0 {
+		t.Fatal("Blacklist should not be empty")
+	}
+
+	if len(GetBlacklist()) != len(Blacklist) {
+		t.Fatal("GetBlacklist should alias Blacklist")
+	}
+
+	if _, ok := GetBlacklist()["test"]; !ok {
+		t.Fatal("GetBlacklist should expose the covenant verifier blacklist")
 	}
 }
 
