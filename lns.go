@@ -683,6 +683,16 @@ func (s *Service) GetReservedCatalog() *covenant.ReservedCatalog {
 	return s.ReservedCatalog()
 }
 
+// DefaultReservedCatalog exposes the reserved-name catalog used by LNS.
+//
+// This mirrors covenant.DefaultReservedCatalog for callers that stay within the
+// top-level lns package.
+//
+//	catalog := lns.DefaultReservedCatalog()
+func DefaultReservedCatalog() *covenant.ReservedCatalog {
+	return covenant.DefaultReservedCatalog()
+}
+
 // ReservedSize reports the number of reserved-name entries available to the service.
 //
 //	size := svc.ReservedSize()
@@ -797,6 +807,16 @@ func (s *Service) LockedCatalog() *covenant.LockedCatalog {
 //	catalog := svc.GetLockedCatalog()
 func (s *Service) GetLockedCatalog() *covenant.LockedCatalog {
 	return s.LockedCatalog()
+}
+
+// DefaultLockedCatalog exposes the locked-name catalog used by LNS.
+//
+// This mirrors covenant.DefaultLockedCatalog for callers that stay within the
+// top-level lns package.
+//
+//	catalog := lns.DefaultLockedCatalog()
+func DefaultLockedCatalog() *covenant.LockedCatalog {
+	return covenant.DefaultLockedCatalog()
 }
 
 // LockedSize reports the number of locked-name entries available to the service.
