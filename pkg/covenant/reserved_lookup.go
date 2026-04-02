@@ -19,6 +19,7 @@ import (
 )
 
 const reservedZeroHash = "0000000000000000000000000000000000000000000000000000000000000000"
+const reservedCatalogPrefixSize = 28
 
 // ReservedName describes a name entry from the JS reserved-name reference data.
 //
@@ -134,6 +135,11 @@ func (c *ReservedCatalog) TopValue() uint64 {
 	}
 
 	return c.topValue
+}
+
+// PrefixSize reports the byte offset where the reserved-name table entries begin.
+func (c *ReservedCatalog) PrefixSize() int {
+	return reservedCatalogPrefixSize
 }
 
 // Has reports whether the catalog contains the hash.

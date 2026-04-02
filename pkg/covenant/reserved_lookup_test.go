@@ -105,6 +105,10 @@ func TestReservedCatalogHelpers(t *testing.T) {
 		t.Fatal("catalog should expose the top-100 increment")
 	}
 
+	if catalog.PrefixSize() != reservedCatalogPrefixSize {
+		t.Fatalf("catalog.PrefixSize() = %d, want %d", catalog.PrefixSize(), reservedCatalogPrefixSize)
+	}
+
 	if !catalog.HasByName("RESERVED") {
 		t.Fatal("catalog should find names case-insensitively")
 	}

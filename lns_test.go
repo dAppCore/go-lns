@@ -460,6 +460,10 @@ func TestServiceReservedCatalog(t *testing.T) {
 		t.Fatalf("ReservedTopValue() = %d, want %d", got, catalog.TopValue())
 	}
 
+	if got := svc.ReservedPrefixSize(); got != catalog.PrefixSize() {
+		t.Fatalf("ReservedPrefixSize() = %d, want %d", got, catalog.PrefixSize())
+	}
+
 	if !catalog.HasByName("RESERVED") {
 		t.Fatal("ReservedCatalog should expose the reserved catalog helpers")
 	}

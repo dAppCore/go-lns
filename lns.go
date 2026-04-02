@@ -307,6 +307,12 @@ func (s *Service) LockedPrefixSize() int {
 	return s.LockedCatalog().PrefixSize()
 }
 
+// ReservedPrefixSize reports the byte offset where reserved-name entries begin in
+// the reference table.
+func (s *Service) ReservedPrefixSize() int {
+	return s.ReservedCatalog().PrefixSize()
+}
+
 // LockedEntries exposes the locked-name catalog entries used by the service.
 func (s *Service) LockedEntries() []covenant.LockedEntry {
 	return s.LockedCatalog().Entries()
