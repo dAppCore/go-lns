@@ -253,6 +253,20 @@ func (s *Service) GetReservedBinary(name []byte) (covenant.ReservedName, bool) {
 	return s.GetReservedName(name)
 }
 
+// GetReservedByString is an alias for GetReservedString.
+//
+//	item, ok := svc.GetReservedByString("reserved")
+func (s *Service) GetReservedByString(name string) (covenant.ReservedName, bool) {
+	return s.GetReservedString(name)
+}
+
+// GetReservedByBinary is an alias for GetReservedBinary.
+//
+//	item, ok := svc.GetReservedByBinary([]byte("reserved"))
+func (s *Service) GetReservedByBinary(name []byte) (covenant.ReservedName, bool) {
+	return s.GetReservedBinary(name)
+}
+
 // HasReserved reports whether a canonicalised .lthn name is reserved.
 //
 // This mirrors the covenant package lookup helper without exposing the hash
@@ -278,6 +292,20 @@ func (s *Service) HasReservedString(name string) bool {
 func (s *Service) HasReservedBinary(name []byte) bool {
 	_, ok := s.GetReservedName(name)
 	return ok
+}
+
+// HasReservedByString is an alias for HasReservedString.
+//
+//	ok := svc.HasReservedByString("reserved")
+func (s *Service) HasReservedByString(name string) bool {
+	return s.HasReservedString(name)
+}
+
+// HasReservedByBinary is an alias for HasReservedBinary.
+//
+//	ok := svc.HasReservedByBinary([]byte("reserved"))
+func (s *Service) HasReservedByBinary(name []byte) bool {
+	return s.HasReservedBinary(name)
 }
 
 // GetReservedByName is an alias for GetReservedName.
@@ -388,6 +416,20 @@ func (s *Service) GetLockedBinary(name []byte) (covenant.LockedName, bool) {
 	return s.GetLockedName(name)
 }
 
+// GetLockedByString is an alias for GetLockedString.
+//
+//	item, ok := svc.GetLockedByString("nec")
+func (s *Service) GetLockedByString(name string) (covenant.LockedName, bool) {
+	return s.GetLockedString(name)
+}
+
+// GetLockedByBinary is an alias for GetLockedBinary.
+//
+//	item, ok := svc.GetLockedByBinary([]byte("nec"))
+func (s *Service) GetLockedByBinary(name []byte) (covenant.LockedName, bool) {
+	return s.GetLockedBinary(name)
+}
+
 // HasLocked reports whether a canonicalised .lthn name is locked.
 //
 // This mirrors the covenant package lookup helper without exposing the hash
@@ -413,6 +455,20 @@ func (s *Service) HasLockedString(name string) bool {
 func (s *Service) HasLockedBinary(name []byte) bool {
 	_, ok := s.GetLockedName(name)
 	return ok
+}
+
+// HasLockedByString is an alias for HasLockedString.
+//
+//	ok := svc.HasLockedByString("nec")
+func (s *Service) HasLockedByString(name string) bool {
+	return s.HasLockedString(name)
+}
+
+// HasLockedByBinary is an alias for HasLockedBinary.
+//
+//	ok := svc.HasLockedByBinary([]byte("nec"))
+func (s *Service) HasLockedByBinary(name []byte) bool {
+	return s.HasLockedBinary(name)
 }
 
 // GetLockedByName is an alias for GetLockedName.

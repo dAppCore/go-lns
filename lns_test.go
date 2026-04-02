@@ -379,6 +379,36 @@ func TestServiceGetReservedStringAndBinary(t *testing.T) {
 	}
 }
 
+func TestServiceGetReservedByStringAndBinary(t *testing.T) {
+	svc := &Service{}
+
+	item, ok := svc.GetReservedByString("RESERVED")
+	if !ok {
+		t.Fatal("GetReservedByString should find the reserved catalog label")
+	}
+
+	if item.Name != "reserved" {
+		t.Fatalf("item.Name = %q, want %q", item.Name, "reserved")
+	}
+
+	item, ok = svc.GetReservedByBinary([]byte("reserved"))
+	if !ok {
+		t.Fatal("GetReservedByBinary should find the reserved catalog label")
+	}
+
+	if item.Name != "reserved" {
+		t.Fatalf("item.Name = %q, want %q", item.Name, "reserved")
+	}
+
+	if !svc.HasReservedByString("reserved") {
+		t.Fatal("HasReservedByString should report reserved catalog labels")
+	}
+
+	if !svc.HasReservedByBinary([]byte("RESERVED")) {
+		t.Fatal("HasReservedByBinary should report reserved catalog labels")
+	}
+}
+
 func TestServiceHasReservedByName(t *testing.T) {
 	svc := &Service{}
 
@@ -602,6 +632,36 @@ func TestServiceGetLockedStringAndBinary(t *testing.T) {
 
 	if !svc.HasLockedBinary([]byte("NEC.lthn")) {
 		t.Fatal("HasLockedBinary should report canonical locked names")
+	}
+}
+
+func TestServiceGetLockedByStringAndBinary(t *testing.T) {
+	svc := &Service{}
+
+	item, ok := svc.GetLockedByString("NEC")
+	if !ok {
+		t.Fatal("GetLockedByString should find the locked catalog label")
+	}
+
+	if item.Name != "nec" {
+		t.Fatalf("item.Name = %q, want %q", item.Name, "nec")
+	}
+
+	item, ok = svc.GetLockedByBinary([]byte("nec"))
+	if !ok {
+		t.Fatal("GetLockedByBinary should find the locked catalog label")
+	}
+
+	if item.Name != "nec" {
+		t.Fatalf("item.Name = %q, want %q", item.Name, "nec")
+	}
+
+	if !svc.HasLockedByString("nec") {
+		t.Fatal("HasLockedByString should report locked catalog labels")
+	}
+
+	if !svc.HasLockedByBinary([]byte("NEC")) {
+		t.Fatal("HasLockedByBinary should report locked catalog labels")
 	}
 }
 
