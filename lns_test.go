@@ -644,8 +644,16 @@ func TestServiceNilReceiverCatalogAccessors(t *testing.T) {
 		t.Fatal("ReservedCatalog should fall back to the package catalog on a nil receiver")
 	}
 
+	if svc.GetReservedCatalog() != Reserved {
+		t.Fatal("GetReservedCatalog should fall back to the package catalog on a nil receiver")
+	}
+
 	if svc.LockedCatalog() != Locked {
 		t.Fatal("LockedCatalog should fall back to the package catalog on a nil receiver")
+	}
+
+	if svc.GetLockedCatalog() != Locked {
+		t.Fatal("GetLockedCatalog should fall back to the package catalog on a nil receiver")
 	}
 
 	if svc.ReservedSize() != Reserved.Size() {

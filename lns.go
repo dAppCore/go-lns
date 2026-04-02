@@ -1326,11 +1326,19 @@ func (s *Service) Core() *core.Core {
 
 // reservedCatalog returns the package-backed reserved-name catalog.
 func (s *Service) reservedCatalog() *covenant.ReservedCatalog {
+	if s == nil {
+		return Reserved
+	}
+
 	return Reserved
 }
 
 // lockedCatalog returns the package-backed locked-name catalog.
 func (s *Service) lockedCatalog() *covenant.LockedCatalog {
+	if s == nil {
+		return Locked
+	}
+
 	return Locked
 }
 
@@ -1345,7 +1353,7 @@ func (s *Service) GetCore() *core.Core {
 //
 //	catalog := svc.GetReservedCatalog()
 func (s *Service) GetReservedCatalog() *covenant.ReservedCatalog {
-	return s.DefaultReservedCatalog()
+	return s.ReservedCatalog()
 }
 
 // DefaultReservedCatalog returns the reserved-name catalog used by the service.
@@ -1499,7 +1507,7 @@ func (s *Service) LockedCatalog() *covenant.LockedCatalog {
 //
 //	catalog := svc.GetLockedCatalog()
 func (s *Service) GetLockedCatalog() *covenant.LockedCatalog {
-	return s.DefaultLockedCatalog()
+	return s.LockedCatalog()
 }
 
 // DefaultLockedCatalog returns the locked-name catalog used by the service.
