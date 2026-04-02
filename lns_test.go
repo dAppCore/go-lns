@@ -468,6 +468,18 @@ func TestServiceReservedCatalog(t *testing.T) {
 		t.Fatal("ReservedCatalog should expose the reserved catalog helpers")
 	}
 
+	if len(catalog.Keys()) == 0 {
+		t.Fatal("ReservedCatalog should expose hash lookup aliases")
+	}
+
+	if !catalog.HasByHash(catalog.Keys()[0]) {
+		t.Fatal("ReservedCatalog should expose hash lookup aliases")
+	}
+
+	if _, ok := catalog.GetByHash(catalog.Keys()[0]); !ok {
+		t.Fatal("ReservedCatalog should expose hash lookup aliases")
+	}
+
 	if len(catalog.Entries()) == 0 {
 		t.Fatal("ReservedCatalog should expose catalog entries")
 	}
@@ -503,6 +515,18 @@ func TestServiceLockedCatalog(t *testing.T) {
 
 	if !catalog.HasByName("NEC") {
 		t.Fatal("LockedCatalog should expose the locked catalog helpers")
+	}
+
+	if len(catalog.Keys()) == 0 {
+		t.Fatal("LockedCatalog should expose hash lookup aliases")
+	}
+
+	if !catalog.HasByHash(catalog.Keys()[0]) {
+		t.Fatal("LockedCatalog should expose hash lookup aliases")
+	}
+
+	if _, ok := catalog.GetByHash(catalog.Keys()[0]); !ok {
+		t.Fatal("LockedCatalog should expose hash lookup aliases")
 	}
 
 	if len(catalog.Entries()) == 0 {

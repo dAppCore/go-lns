@@ -52,6 +52,28 @@ func TestReservedLookupByHash(t *testing.T) {
 	}
 }
 
+func TestReservedLookupByHashCatalogAlias(t *testing.T) {
+	hash, err := HashString("reserved")
+	if err != nil {
+		t.Fatalf("HashString returned error: %v", err)
+	}
+
+	catalog := DefaultReservedCatalog()
+
+	if !catalog.HasByHash(hash) {
+		t.Fatal("catalog.HasByHash should report the reserved hash as present")
+	}
+
+	item, ok := catalog.GetByHash(hash)
+	if !ok {
+		t.Fatal("catalog.GetByHash should find the reserved reference entry")
+	}
+
+	if item.Hash != hash {
+		t.Fatalf("item.Hash = %x, want %x", item.Hash, hash)
+	}
+}
+
 func TestReservedLookupByHashAlias(t *testing.T) {
 	hash, err := HashString("reserved")
 	if err != nil {

@@ -104,6 +104,11 @@ func (c *LockedCatalog) Has(hash primitives.Hash) bool {
 	return ok
 }
 
+// HasByHash is an alias for Has.
+func (c *LockedCatalog) HasByHash(hash primitives.Hash) bool {
+	return c.Has(hash)
+}
+
 // Get returns the locked-name entry for the hash.
 func (c *LockedCatalog) Get(hash primitives.Hash) (LockedName, bool) {
 	if c == nil {
@@ -112,6 +117,11 @@ func (c *LockedCatalog) Get(hash primitives.Hash) (LockedName, bool) {
 
 	item, ok := c.byHash[hash]
 	return item, ok
+}
+
+// GetByHash is an alias for Get.
+func (c *LockedCatalog) GetByHash(hash primitives.Hash) (LockedName, bool) {
+	return c.Get(hash)
 }
 
 // HasByName reports whether the catalog contains the provided label.
