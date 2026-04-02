@@ -108,8 +108,21 @@ func (s *Service) GetReserved(name any) (covenant.ReservedName, bool) {
 	return covenant.GetReservedHash(hash)
 }
 
-// GetReservedName is an alias for GetReserved.
+// GetReservedName looks up a reserved name using the raw catalog label.
+//
+// The helper accepts the bare label first, then falls back to canonical
+// `.lthn` resolution so existing callers can pass either form.
+//
+//	c := core.New(core.WithService(lns.Register))
+//	svc := c.Service("lns").(*lns.Service)
+//	item, ok := svc.GetReservedName("reserved")
 func (s *Service) GetReservedName(name any) (covenant.ReservedName, bool) {
+	if label, ok := catalogLabel(name); ok {
+		if item, ok := covenant.GetReservedName(label); ok {
+			return item, true
+		}
+	}
+
 	return s.GetReserved(name)
 }
 
@@ -141,9 +154,11 @@ func (s *Service) HasReservedByName(name any) bool {
 	return ok
 }
 
-// HasReservedName is an alias for HasReserved.
+// HasReservedName reports whether a reserved name exists using the raw
+// catalog label.
 func (s *Service) HasReservedName(name any) bool {
-	return s.HasReserved(name)
+	_, ok := s.GetReservedName(name)
+	return ok
 }
 
 // GetReservedHash looks up a reserved .lthn name by its canonical hash.
@@ -183,8 +198,21 @@ func (s *Service) GetLocked(name any) (covenant.LockedName, bool) {
 	return covenant.GetLockedHash(hash)
 }
 
-// GetLockedName is an alias for GetLocked.
+// GetLockedName looks up a locked name using the raw catalog label.
+//
+// The helper accepts the bare label first, then falls back to canonical
+// `.lthn` resolution so existing callers can pass either form.
+//
+//	c := core.New(core.WithService(lns.Register))
+//	svc := c.Service("lns").(*lns.Service)
+//	item, ok := svc.GetLockedName("nec")
 func (s *Service) GetLockedName(name any) (covenant.LockedName, bool) {
+	if label, ok := catalogLabel(name); ok {
+		if item, ok := covenant.GetLockedName(label); ok {
+			return item, true
+		}
+	}
+
 	return s.GetLocked(name)
 }
 
@@ -216,9 +244,11 @@ func (s *Service) HasLockedByName(name any) bool {
 	return ok
 }
 
-// HasLockedName is an alias for HasLocked.
+// HasLockedName reports whether a locked name exists using the raw catalog
+// label.
 func (s *Service) HasLockedName(name any) bool {
-	return s.HasLocked(name)
+	_, ok := s.GetLockedName(name)
+	return ok
 }
 
 // GetLockedHash looks up a locked .lthn name by its canonical hash.

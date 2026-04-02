@@ -211,13 +211,26 @@ func TestServiceHasReservedByName(t *testing.T) {
 func TestServiceReservedNameAliases(t *testing.T) {
 	svc := &Service{}
 
-	item, ok := svc.GetReservedName("RESERVED.lthn")
+	item, ok := svc.GetReservedName("RESERVED")
 	if !ok {
-		t.Fatal("GetReservedName should find the reserved reference entry")
+		t.Fatal("GetReservedName should find the reserved catalog label")
 	}
 
 	if item.Name != "reserved" {
 		t.Fatalf("item.Name = %q, want %q", item.Name, "reserved")
+	}
+
+	item, ok = svc.GetReservedName("RESERVED.lthn")
+	if !ok {
+		t.Fatal("GetReservedName should also accept canonical reserved names")
+	}
+
+	if item.Name != "reserved" {
+		t.Fatalf("item.Name = %q, want %q", item.Name, "reserved")
+	}
+
+	if !svc.HasReservedName("reserved") {
+		t.Fatal("HasReservedName should report reserved catalog labels")
 	}
 
 	if !svc.HasReservedName("reserved.lthn") {
@@ -370,13 +383,26 @@ func TestServiceHasLockedByName(t *testing.T) {
 func TestServiceLockedNameAliases(t *testing.T) {
 	svc := &Service{}
 
-	item, ok := svc.GetLockedName("NEC.lthn")
+	item, ok := svc.GetLockedName("NEC")
 	if !ok {
-		t.Fatal("GetLockedName should find the locked reference entry")
+		t.Fatal("GetLockedName should find the locked catalog label")
 	}
 
 	if item.Name != "nec" {
 		t.Fatalf("item.Name = %q, want %q", item.Name, "nec")
+	}
+
+	item, ok = svc.GetLockedName("NEC.lthn")
+	if !ok {
+		t.Fatal("GetLockedName should also accept canonical locked names")
+	}
+
+	if item.Name != "nec" {
+		t.Fatalf("item.Name = %q, want %q", item.Name, "nec")
+	}
+
+	if !svc.HasLockedName("nec") {
+		t.Fatal("HasLockedName should report locked catalog labels")
 	}
 
 	if !svc.HasLockedName("nec.lthn") {
