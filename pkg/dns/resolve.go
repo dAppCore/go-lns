@@ -90,12 +90,44 @@ func (s *Service) Verify(name any) bool {
 	return covenant.VerifyString(normalized)
 }
 
+// ResolveString returns the canonical hash for a .lthn name supplied as a string.
+//
+//	svc := dns.NewService()
+//	hash, err := svc.ResolveString("example.lthn")
+func (s *Service) ResolveString(name string) (primitives.Hash, error) {
+	return s.Resolve(name)
+}
+
+// ResolveBinary returns the canonical hash for a .lthn name supplied as bytes.
+//
+//	svc := dns.NewService()
+//	hash, err := svc.ResolveBinary([]byte("example.lthn"))
+func (s *Service) ResolveBinary(name []byte) (primitives.Hash, error) {
+	return s.Resolve(name)
+}
+
 // ResolveName is an alias for Resolve.
 //
 //	svc := dns.NewService()
 //	hash, err := svc.ResolveName("example.lthn")
 func (s *Service) ResolveName(name any) (primitives.Hash, error) {
 	return s.Resolve(name)
+}
+
+// VerifyString reports whether a .lthn name supplied as a string is valid.
+//
+//	svc := dns.NewService()
+//	ok := svc.VerifyString("example.lthn")
+func (s *Service) VerifyString(name string) bool {
+	return s.Verify(name)
+}
+
+// VerifyBinary reports whether a .lthn name supplied as bytes is valid.
+//
+//	svc := dns.NewService()
+//	ok := svc.VerifyBinary([]byte("example.lthn"))
+func (s *Service) VerifyBinary(name []byte) bool {
+	return s.Verify(name)
 }
 
 // VerifyName is an alias for Verify.
