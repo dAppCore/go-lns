@@ -350,6 +350,26 @@ func TestLookupCatalogNamePreservesDottedLabels(t *testing.T) {
 	}
 }
 
+func TestLookupCatalogNameNilCallbacks(t *testing.T) {
+	if got, ok := LookupCatalogName[string]("foo", nil, nil); ok || got != "" {
+		t.Fatalf("LookupCatalogName with nil callbacks = (%q, %v), want (\"\", false)", got, ok)
+	}
+
+	if got, ok := GetLookupCatalogName[string]("foo", nil, nil); ok || got != "" {
+		t.Fatalf("GetLookupCatalogName with nil callbacks = (%q, %v), want (\"\", false)", got, ok)
+	}
+
+	svc := NewService(nil)
+
+	if got, ok := svc.LookupCatalogName("foo", nil, nil); ok || got != nil {
+		t.Fatalf("svc.LookupCatalogName with nil callbacks = (%v, %v), want (nil, false)", got, ok)
+	}
+
+	if got, ok := svc.GetLookupCatalogName("foo", nil, nil); ok || got != nil {
+		t.Fatalf("svc.GetLookupCatalogName with nil callbacks = (%v, %v), want (nil, false)", got, ok)
+	}
+}
+
 func TestPackageTypeTables(t *testing.T) {
 	if len(Types) == 0 || len(TypesByVal) == 0 {
 		t.Fatal("type lookup tables should not be empty")
