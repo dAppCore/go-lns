@@ -394,6 +394,10 @@ func TestServiceCoreAccessors(t *testing.T) {
 	if svc.GetCore() != nil {
 		t.Fatal("GetCore should alias Core")
 	}
+
+	if got := svc.GetServiceName(); got != ServiceName {
+		t.Fatalf("GetServiceName() = %q, want %q", got, ServiceName)
+	}
 }
 
 func TestServiceGetReserved(t *testing.T) {
