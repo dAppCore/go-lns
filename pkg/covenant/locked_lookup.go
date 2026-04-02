@@ -7,7 +7,6 @@ import (
 	"crypto/sha3"
 	"encoding/hex"
 	"encoding/json"
-	"os"
 	"path/filepath"
 	"runtime"
 	"sort"
@@ -402,10 +401,11 @@ func decodeLockedHash(key string) (primitives.Hash, error) {
 
 func readLockedData() ([]byte, error) {
 	candidates := lockedDataPaths()
+	fs := core.Fs{}
 
 	for _, path := range candidates {
-		if data, err := os.ReadFile(path); err == nil {
-			return data, nil
+		if result := fs.Read(path); result.OK {
+			return []byte(result.Value.(string)), nil
 		}
 	}
 
