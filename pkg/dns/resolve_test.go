@@ -323,6 +323,17 @@ func TestCoreAccessors(t *testing.T) {
 	}
 }
 
+func TestNewServiceNilOptions(t *testing.T) {
+	svc := NewService(nil, WithCore(nil))
+	if svc == nil {
+		t.Fatal("NewService should return a service even when options are nil")
+	}
+
+	if svc.Core() != nil {
+		t.Fatal("NewService(nil, WithCore(nil)) should preserve a nil Core")
+	}
+}
+
 func TestServiceName(t *testing.T) {
 	svc := NewService()
 

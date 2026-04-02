@@ -35,7 +35,9 @@ type Service struct {
 func NewService(opts ...ServiceOption) *Service {
 	s := &Service{}
 	for _, opt := range opts {
-		opt(s)
+		if opt != nil {
+			opt(s)
+		}
 	}
 	return s
 }
