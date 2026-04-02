@@ -127,6 +127,16 @@ func (c *Covenant) Push(item []byte) *Covenant {
 	return c
 }
 
+// SetOpen configures the covenant as an OPEN operation.
+func (c *Covenant) SetOpen(nameHash Hash, rawName []byte) *Covenant {
+	c.Type = covenantTypeOpen
+	c.Items = nil
+	c.PushHash(nameHash)
+	c.PushU32(0)
+	c.Push(rawName)
+	return c
+}
+
 // GetU8 returns the item at the requested index as a uint8.
 func (c Covenant) GetU8(index int) (uint8, error) {
 	item, err := c.Get(index)

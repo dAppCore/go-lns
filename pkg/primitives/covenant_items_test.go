@@ -64,6 +64,46 @@ func TestCovenantItemHelpers(t *testing.T) {
 		t.Fatalf("GetVarSize() = %d, want 46", got)
 	}
 
+	cov.SetOpen(Hash{9, 8, 7}, []byte("bar"))
+
+	if got := cov.Type; got != covenantTypeOpen {
+		t.Fatalf("SetOpen() set type %d, want %d", got, covenantTypeOpen)
+	}
+
+	if got := cov.Len(); got != 3 {
+		t.Fatalf("SetOpen() len = %d, want 3", got)
+	}
+
+	hash, err = cov.GetHash(0)
+	if err != nil {
+		t.Fatalf("SetOpen() GetHash returned error: %v", err)
+	}
+	if hash[0] != 9 || hash[1] != 8 || hash[2] != 7 {
+		t.Fatalf("SetOpen() hash = %x, want 090807...", hash[:3])
+	}
+
+	height, err := cov.GetU32(1)
+	if err != nil {
+		t.Fatalf("SetOpen() GetU32 returned error: %v", err)
+	}
+	if height != 0 {
+		t.Fatalf("SetOpen() height = %d, want 0", height)
+	}
+
+	str, err = cov.GetString(2)
+	if err != nil {
+		t.Fatalf("SetOpen() GetString returned error: %v", err)
+	}
+	if str != "bar" {
+		t.Fatalf("SetOpen() GetString() = %q, want %q", str, "bar")
+	}
+
+	cov = Covenant{}
+	cov.PushU8(7).
+		PushU32(0x11223344).
+		PushHash(Hash{1, 2, 3}).
+		PushString("foo")
+
 	if err := cov.Set(-1, []byte("bar")); err != nil {
 		t.Fatalf("Set() returned error: %v", err)
 	}
