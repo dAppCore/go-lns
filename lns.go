@@ -626,6 +626,36 @@ func GetTypeName(ct covenant.CovenantType) string {
 	return TypeName(ct)
 }
 
+func lookupReserved(name any) (covenant.ReservedName, bool) {
+	if label, ok := nameutil.CatalogLabel(name); ok {
+		if item, ok := ReservedCatalog().GetByName(label); ok {
+			return item, true
+		}
+	}
+
+	hash, err := resolveCanonicalName("lns.GetReserved", name)
+	if err != nil {
+		return covenant.ReservedName{}, false
+	}
+
+	return ReservedCatalog().Get(hash)
+}
+
+func lookupLocked(name any) (covenant.LockedName, bool) {
+	if label, ok := nameutil.CatalogLabel(name); ok {
+		if item, ok := LockedCatalog().GetByName(label); ok {
+			return item, true
+		}
+	}
+
+	hash, err := resolveCanonicalName("lns.GetLocked", name)
+	if err != nil {
+		return covenant.LockedName{}, false
+	}
+
+	return LockedCatalog().Get(hash)
+}
+
 // MaxNameSize returns the maximum supported name size.
 func (s *Service) MaxNameSize() int {
 	return MaxNameSize
@@ -1294,12 +1324,7 @@ func (s *Service) GetVerificationFlagsByVal() map[covenant.NameFlags]string {
 //
 //	item, ok := svc.GetReserved("reserved.lthn")
 func (s *Service) GetReserved(name any) (covenant.ReservedName, bool) {
-	hash, err := s.Resolve(name)
-	if err != nil {
-		return covenant.ReservedName{}, false
-	}
-
-	return s.ReservedCatalog().Get(hash)
+	return lookupReserved(name)
 }
 
 // GetReservedName looks up a reserved name using the raw catalog label.
@@ -1311,13 +1336,7 @@ func (s *Service) GetReserved(name any) (covenant.ReservedName, bool) {
 //	svc := c.Service("lns").(*lns.Service)
 //	item, ok := svc.GetReservedName("reserved")
 func (s *Service) GetReservedName(name any) (covenant.ReservedName, bool) {
-	if label, ok := nameutil.CatalogLabel(name); ok {
-		if item, ok := s.ReservedCatalog().GetByName(label); ok {
-			return item, true
-		}
-	}
-
-	return s.GetReserved(name)
+	return lookupReserved(name)
 }
 
 // GetReservedString looks up a reserved name supplied as a string.
@@ -1326,22 +1345,14 @@ func (s *Service) GetReservedName(name any) (covenant.ReservedName, bool) {
 //
 //	item, ok := svc.GetReservedString("reserved")
 func (s *Service) GetReservedString(name string) (covenant.ReservedName, bool) {
-	if item, ok := s.ReservedCatalog().GetByName(name); ok {
-		return item, true
-	}
-
-	return s.GetReserved(name)
+	return lookupReserved(name)
 }
 
 // GetReservedBinary looks up a reserved name supplied as bytes.
 //
 //	item, ok := svc.GetReservedBinary([]byte("reserved"))
 func (s *Service) GetReservedBinary(name []byte) (covenant.ReservedName, bool) {
-	if item, ok := s.ReservedCatalog().GetByName(string(name)); ok {
-		return item, true
-	}
-
-	return s.GetReserved(name)
+	return lookupReserved(name)
 }
 
 // GetReservedByString is an alias for GetReservedString.
@@ -1373,22 +1384,16 @@ func (s *Service) HasReserved(name any) bool {
 //
 //	ok := svc.HasReservedString("reserved")
 func (s *Service) HasReservedString(name string) bool {
-	if s.ReservedCatalog().HasByName(name) {
-		return true
-	}
-
-	return s.HasReserved(name)
+	_, ok := lookupReserved(name)
+	return ok
 }
 
 // HasReservedBinary reports whether a reserved name supplied as bytes exists.
 //
 //	ok := svc.HasReservedBinary([]byte("reserved"))
 func (s *Service) HasReservedBinary(name []byte) bool {
-	if s.ReservedCatalog().HasByName(string(name)) {
-		return true
-	}
-
-	return s.HasReserved(name)
+	_, ok := lookupReserved(name)
+	return ok
 }
 
 // HasReservedByString is an alias for HasReservedString.
@@ -1412,14 +1417,15 @@ func (s *Service) HasReservedByBinary(name []byte) bool {
 //
 //	item, ok := svc.GetReservedByName("reserved")
 func (s *Service) GetReservedByName(name any) (covenant.ReservedName, bool) {
-	return s.GetReservedName(name)
+	return lookupReserved(name)
 }
 
 // HasReservedByName is an alias for HasReservedName.
 //
 //	ok := svc.HasReservedByName("reserved")
 func (s *Service) HasReservedByName(name any) bool {
-	return s.HasReservedName(name)
+	_, ok := lookupReserved(name)
+	return ok
 }
 
 // HasReservedName reports whether a reserved name exists using the raw
@@ -1427,7 +1433,7 @@ func (s *Service) HasReservedByName(name any) bool {
 //
 //	ok := svc.HasReservedName("reserved")
 func (s *Service) HasReservedName(name any) bool {
-	_, ok := s.GetReservedName(name)
+	_, ok := lookupReserved(name)
 	return ok
 }
 
@@ -1471,12 +1477,7 @@ func (s *Service) HasReservedByHash(hash primitives.Hash) bool {
 //
 //	item, ok := svc.GetLocked("nec.lthn")
 func (s *Service) GetLocked(name any) (covenant.LockedName, bool) {
-	hash, err := s.Resolve(name)
-	if err != nil {
-		return covenant.LockedName{}, false
-	}
-
-	return s.LockedCatalog().Get(hash)
+	return lookupLocked(name)
 }
 
 // GetLockedName looks up a locked name using the raw catalog label.
@@ -1488,13 +1489,7 @@ func (s *Service) GetLocked(name any) (covenant.LockedName, bool) {
 //	svc := c.Service("lns").(*lns.Service)
 //	item, ok := svc.GetLockedName("nec")
 func (s *Service) GetLockedName(name any) (covenant.LockedName, bool) {
-	if label, ok := nameutil.CatalogLabel(name); ok {
-		if item, ok := s.LockedCatalog().GetByName(label); ok {
-			return item, true
-		}
-	}
-
-	return s.GetLocked(name)
+	return lookupLocked(name)
 }
 
 // GetLockedString looks up a locked name supplied as a string.
@@ -1503,22 +1498,14 @@ func (s *Service) GetLockedName(name any) (covenant.LockedName, bool) {
 //
 //	item, ok := svc.GetLockedString("nec")
 func (s *Service) GetLockedString(name string) (covenant.LockedName, bool) {
-	if item, ok := s.LockedCatalog().GetByName(name); ok {
-		return item, true
-	}
-
-	return s.GetLocked(name)
+	return lookupLocked(name)
 }
 
 // GetLockedBinary looks up a locked name supplied as bytes.
 //
 //	item, ok := svc.GetLockedBinary([]byte("nec"))
 func (s *Service) GetLockedBinary(name []byte) (covenant.LockedName, bool) {
-	if item, ok := s.LockedCatalog().GetByName(string(name)); ok {
-		return item, true
-	}
-
-	return s.GetLocked(name)
+	return lookupLocked(name)
 }
 
 // GetLockedByString is an alias for GetLockedString.
@@ -1550,22 +1537,16 @@ func (s *Service) HasLocked(name any) bool {
 //
 //	ok := svc.HasLockedString("nec")
 func (s *Service) HasLockedString(name string) bool {
-	if s.LockedCatalog().HasByName(name) {
-		return true
-	}
-
-	return s.HasLocked(name)
+	_, ok := lookupLocked(name)
+	return ok
 }
 
 // HasLockedBinary reports whether a locked name supplied as bytes exists.
 //
 //	ok := svc.HasLockedBinary([]byte("nec"))
 func (s *Service) HasLockedBinary(name []byte) bool {
-	if s.LockedCatalog().HasByName(string(name)) {
-		return true
-	}
-
-	return s.HasLocked(name)
+	_, ok := lookupLocked(name)
+	return ok
 }
 
 // HasLockedByString is an alias for HasLockedString.
@@ -1589,14 +1570,15 @@ func (s *Service) HasLockedByBinary(name []byte) bool {
 //
 //	item, ok := svc.GetLockedByName("nec")
 func (s *Service) GetLockedByName(name any) (covenant.LockedName, bool) {
-	return s.GetLockedName(name)
+	return lookupLocked(name)
 }
 
 // HasLockedByName is an alias for HasLockedName.
 //
 //	ok := svc.HasLockedByName("nec")
 func (s *Service) HasLockedByName(name any) bool {
-	return s.HasLockedName(name)
+	_, ok := lookupLocked(name)
+	return ok
 }
 
 // HasLockedName reports whether a locked name exists using the raw catalog
@@ -1604,7 +1586,7 @@ func (s *Service) HasLockedByName(name any) bool {
 //
 //	ok := svc.HasLockedName("nec")
 func (s *Service) HasLockedName(name any) bool {
-	_, ok := s.GetLockedName(name)
+	_, ok := lookupLocked(name)
 	return ok
 }
 
@@ -2204,47 +2186,28 @@ func GetLockedValues() []covenant.LockedName {
 //
 //	item, ok := lns.GetReserved("reserved.lthn")
 func GetReserved(name any) (covenant.ReservedName, bool) {
-	hash, err := resolveCanonicalName("lns.GetReserved", name)
-	if err != nil {
-		return covenant.ReservedName{}, false
-	}
-
-	return ReservedCatalog().Get(hash)
+	return lookupReserved(name)
 }
 
 // GetReservedName looks up a reserved name using the raw catalog label.
 //
 //	item, ok := lns.GetReservedName("reserved")
 func GetReservedName(name any) (covenant.ReservedName, bool) {
-	if label, ok := nameutil.CatalogLabel(name); ok {
-		if item, ok := ReservedCatalog().GetByName(label); ok {
-			return item, true
-		}
-	}
-
-	return GetReserved(name)
+	return lookupReserved(name)
 }
 
 // GetReservedString looks up a reserved name supplied as a string.
 //
 //	item, ok := lns.GetReservedString("reserved")
 func GetReservedString(name string) (covenant.ReservedName, bool) {
-	if item, ok := ReservedCatalog().GetByName(name); ok {
-		return item, true
-	}
-
-	return GetReserved(name)
+	return lookupReserved(name)
 }
 
 // GetReservedBinary looks up a reserved name supplied as bytes.
 //
 //	item, ok := lns.GetReservedBinary([]byte("reserved"))
 func GetReservedBinary(name []byte) (covenant.ReservedName, bool) {
-	if item, ok := ReservedCatalog().GetByName(string(name)); ok {
-		return item, true
-	}
-
-	return GetReserved(name)
+	return lookupReserved(name)
 }
 
 // GetReservedByString is an alias for GetReservedString.
@@ -2273,22 +2236,16 @@ func HasReserved(name any) bool {
 //
 //	ok := lns.HasReservedString("reserved")
 func HasReservedString(name string) bool {
-	if ReservedCatalog().HasByName(name) {
-		return true
-	}
-
-	return HasReserved(name)
+	_, ok := lookupReserved(name)
+	return ok
 }
 
 // HasReservedBinary reports whether a reserved name supplied as bytes exists.
 //
 //	ok := lns.HasReservedBinary([]byte("reserved"))
 func HasReservedBinary(name []byte) bool {
-	if ReservedCatalog().HasByName(string(name)) {
-		return true
-	}
-
-	return HasReserved(name)
+	_, ok := lookupReserved(name)
+	return ok
 }
 
 // HasReservedByString is an alias for HasReservedString.
@@ -2309,21 +2266,22 @@ func HasReservedByBinary(name []byte) bool {
 //
 //	item, ok := lns.GetReservedByName("reserved")
 func GetReservedByName(name any) (covenant.ReservedName, bool) {
-	return GetReservedName(name)
+	return lookupReserved(name)
 }
 
 // HasReservedByName is an alias for HasReservedName.
 //
 //	ok := lns.HasReservedByName("reserved")
 func HasReservedByName(name any) bool {
-	return HasReservedName(name)
+	_, ok := lookupReserved(name)
+	return ok
 }
 
 // HasReservedName reports whether a reserved name exists using the raw catalog label.
 //
 //	ok := lns.HasReservedName("reserved")
 func HasReservedName(name any) bool {
-	_, ok := GetReservedName(name)
+	_, ok := lookupReserved(name)
 	return ok
 }
 
@@ -2361,47 +2319,28 @@ func HasReservedByHash(hash primitives.Hash) bool {
 //
 //	item, ok := lns.GetLocked("nec.lthn")
 func GetLocked(name any) (covenant.LockedName, bool) {
-	hash, err := resolveCanonicalName("lns.GetLocked", name)
-	if err != nil {
-		return covenant.LockedName{}, false
-	}
-
-	return LockedCatalog().Get(hash)
+	return lookupLocked(name)
 }
 
 // GetLockedName looks up a locked name using the raw catalog label.
 //
 //	item, ok := lns.GetLockedName("nec")
 func GetLockedName(name any) (covenant.LockedName, bool) {
-	if label, ok := nameutil.CatalogLabel(name); ok {
-		if item, ok := LockedCatalog().GetByName(label); ok {
-			return item, true
-		}
-	}
-
-	return GetLocked(name)
+	return lookupLocked(name)
 }
 
 // GetLockedString looks up a locked name supplied as a string.
 //
 //	item, ok := lns.GetLockedString("nec")
 func GetLockedString(name string) (covenant.LockedName, bool) {
-	if item, ok := LockedCatalog().GetByName(name); ok {
-		return item, true
-	}
-
-	return GetLocked(name)
+	return lookupLocked(name)
 }
 
 // GetLockedBinary looks up a locked name supplied as bytes.
 //
 //	item, ok := lns.GetLockedBinary([]byte("nec"))
 func GetLockedBinary(name []byte) (covenant.LockedName, bool) {
-	if item, ok := LockedCatalog().GetByName(string(name)); ok {
-		return item, true
-	}
-
-	return GetLocked(name)
+	return lookupLocked(name)
 }
 
 // GetLockedByString is an alias for GetLockedString.
@@ -2430,22 +2369,16 @@ func HasLocked(name any) bool {
 //
 //	ok := lns.HasLockedString("nec")
 func HasLockedString(name string) bool {
-	if LockedCatalog().HasByName(name) {
-		return true
-	}
-
-	return HasLocked(name)
+	_, ok := lookupLocked(name)
+	return ok
 }
 
 // HasLockedBinary reports whether a locked name supplied as bytes exists.
 //
 //	ok := lns.HasLockedBinary([]byte("nec"))
 func HasLockedBinary(name []byte) bool {
-	if LockedCatalog().HasByName(string(name)) {
-		return true
-	}
-
-	return HasLocked(name)
+	_, ok := lookupLocked(name)
+	return ok
 }
 
 // HasLockedByString is an alias for HasLockedString.
@@ -2466,21 +2399,22 @@ func HasLockedByBinary(name []byte) bool {
 //
 //	item, ok := lns.GetLockedByName("nec")
 func GetLockedByName(name any) (covenant.LockedName, bool) {
-	return GetLockedName(name)
+	return lookupLocked(name)
 }
 
 // HasLockedByName is an alias for HasLockedName.
 //
 //	ok := lns.HasLockedByName("nec")
 func HasLockedByName(name any) bool {
-	return HasLockedName(name)
+	_, ok := lookupLocked(name)
+	return ok
 }
 
 // HasLockedName reports whether a locked name exists using the raw catalog label.
 //
 //	ok := lns.HasLockedName("nec")
 func HasLockedName(name any) bool {
-	_, ok := GetLockedName(name)
+	_, ok := lookupLocked(name)
 	return ok
 }
 
