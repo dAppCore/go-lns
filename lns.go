@@ -50,24 +50,23 @@ func Register(c *core.Core) core.Result {
 // This mirrors the subpackage resolver while keeping the service-level API
 // ergonomic for callers that only have an lns.Service instance.
 func (s *Service) Resolve(name any) (primitives.Hash, error) {
-	opts := make([]dns.ServiceOption, 0, 1)
-	if s != nil && s.ServiceRuntime != nil {
-		opts = append(opts, dns.WithCore(s.Core()))
-	}
-
-	return dns.NewService(opts...).Resolve(name)
+	return s.dnsService().Resolve(name)
 }
 
 // Verify reports whether a .lthn name is valid after canonicalisation.
 //
 // This keeps the service-level API aligned with the DNS resolver helpers.
 func (s *Service) Verify(name any) bool {
+	return s.dnsService().Verify(name)
+}
+
+func (s *Service) dnsService() *dns.Service {
 	opts := make([]dns.ServiceOption, 0, 1)
 	if s != nil && s.ServiceRuntime != nil {
 		opts = append(opts, dns.WithCore(s.Core()))
 	}
 
-	return dns.NewService(opts...).Verify(name)
+	return dns.NewService(opts...)
 }
 
 // GetReserved looks up a reserved .lthn name after canonicalisation.
@@ -94,4 +93,20 @@ func (s *Service) GetLocked(name any) (covenant.LockedName, bool) {
 	}
 
 	return covenant.GetLockedHash(hash)
+}
+
+// ReservedCatalog exposes the reserved-name catalog used by the service.
+//
+// The returned catalog provides deterministic iteration helpers so callers can
+// enumerate the reference set without reaching into the covenant package.
+func (s *Service) ReservedCatalog() *covenant.ReservedCatalog {
+	return covenant.DefaultReservedCatalog()
+}
+
+// LockedCatalog exposes the locked-name catalog used by the service.
+//
+// The returned catalog provides deterministic iteration helpers so callers can
+// enumerate the reference set without reaching into the covenant package.
+func (s *Service) LockedCatalog() *covenant.LockedCatalog {
+	return covenant.DefaultLockedCatalog()
 }

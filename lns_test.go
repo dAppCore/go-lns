@@ -140,3 +140,37 @@ func TestServiceGetLocked(t *testing.T) {
 		t.Fatal("GetLocked should reject unsupported input types")
 	}
 }
+
+func TestServiceReservedCatalog(t *testing.T) {
+	svc := &Service{}
+	catalog := svc.ReservedCatalog()
+
+	if catalog == nil {
+		t.Fatal("ReservedCatalog should return a catalog")
+	}
+
+	if !catalog.HasByName("RESERVED") {
+		t.Fatal("ReservedCatalog should expose the reserved catalog helpers")
+	}
+
+	if len(catalog.Entries()) == 0 {
+		t.Fatal("ReservedCatalog should expose catalog entries")
+	}
+}
+
+func TestServiceLockedCatalog(t *testing.T) {
+	svc := &Service{}
+	catalog := svc.LockedCatalog()
+
+	if catalog == nil {
+		t.Fatal("LockedCatalog should return a catalog")
+	}
+
+	if !catalog.HasByName("NEC") {
+		t.Fatal("LockedCatalog should expose the locked catalog helpers")
+	}
+
+	if len(catalog.Entries()) == 0 {
+		t.Fatal("LockedCatalog should expose catalog entries")
+	}
+}
