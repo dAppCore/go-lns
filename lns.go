@@ -82,3 +82,16 @@ func (s *Service) GetReserved(name any) (covenant.ReservedName, bool) {
 
 	return covenant.GetReservedHash(hash)
 }
+
+// GetLocked looks up a locked .lthn name after canonicalisation.
+//
+// The lookup accepts the same inputs as Resolve and Verify, then returns the
+// matching locked-name entry from the reference catalog when present.
+func (s *Service) GetLocked(name any) (covenant.LockedName, bool) {
+	hash, err := s.Resolve(name)
+	if err != nil {
+		return covenant.LockedName{}, false
+	}
+
+	return covenant.GetLockedHash(hash)
+}

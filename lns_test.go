@@ -111,3 +111,32 @@ func TestServiceGetReserved(t *testing.T) {
 		t.Fatal("GetReserved should reject unsupported input types")
 	}
 }
+
+func TestServiceGetLocked(t *testing.T) {
+	svc := &Service{}
+
+	item, ok := svc.GetLocked("NEC.lthn")
+	if !ok {
+		t.Fatal("GetLocked should find the locked reference entry")
+	}
+
+	if item.Name != "nec" {
+		t.Fatalf("item.Name = %q, want %q", item.Name, "nec")
+	}
+
+	if item.Target != "nec." {
+		t.Fatalf("item.Target = %q, want %q", item.Target, "nec.")
+	}
+
+	if !item.Root || item.Custom {
+		t.Fatalf("unexpected flags on nec: %#v", item)
+	}
+
+	if _, ok := svc.GetLocked([]byte("nec.lthn")); !ok {
+		t.Fatal("GetLocked([]byte) should find the locked reference entry")
+	}
+
+	if _, ok := svc.GetLocked(123); ok {
+		t.Fatal("GetLocked should reject unsupported input types")
+	}
+}
