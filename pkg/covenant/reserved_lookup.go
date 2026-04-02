@@ -73,6 +73,16 @@ func HasReservedByName(name string) bool {
 	return HasReservedName(name)
 }
 
+// HasReservedString is an alias for HasReservedName.
+func HasReservedString(name string) bool {
+	return HasReservedName(name)
+}
+
+// HasReservedBinary is an alias for HasReservedName.
+func HasReservedBinary(name []byte) bool {
+	return HasReservedName(string(name))
+}
+
 // GetReservedName returns the reserved-name entry for the provided label.
 //
 // The input is lower-cased before hashing, matching the JS reference helper.
@@ -83,6 +93,36 @@ func GetReservedName(name string) (ReservedName, bool) {
 // GetReservedByName is an alias for GetReservedName.
 func GetReservedByName(name string) (ReservedName, bool) {
 	return GetReservedName(name)
+}
+
+// GetReservedString is an alias for GetReservedName.
+func GetReservedString(name string) (ReservedName, bool) {
+	return GetReservedName(name)
+}
+
+// GetReservedBinary is an alias for GetReservedName.
+func GetReservedBinary(name []byte) (ReservedName, bool) {
+	return GetReservedName(string(name))
+}
+
+// HasReservedByString is an alias for HasReservedString.
+func HasReservedByString(name string) bool {
+	return HasReservedString(name)
+}
+
+// HasReservedByBinary is an alias for HasReservedBinary.
+func HasReservedByBinary(name []byte) bool {
+	return HasReservedBinary(name)
+}
+
+// GetReservedByString is an alias for GetReservedString.
+func GetReservedByString(name string) (ReservedName, bool) {
+	return GetReservedString(name)
+}
+
+// GetReservedByBinary is an alias for GetReservedBinary.
+func GetReservedByBinary(name []byte) (ReservedName, bool) {
+	return GetReservedBinary(name)
 }
 
 // GetReservedHash returns the reserved-name entry for a precomputed hash.

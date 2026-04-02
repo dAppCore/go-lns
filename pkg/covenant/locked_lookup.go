@@ -54,6 +54,16 @@ func HasLockedByName(name string) bool {
 	return HasLockedName(name)
 }
 
+// HasLockedString is an alias for HasLockedName.
+func HasLockedString(name string) bool {
+	return HasLockedName(name)
+}
+
+// HasLockedBinary is an alias for HasLockedName.
+func HasLockedBinary(name []byte) bool {
+	return HasLockedName(string(name))
+}
+
 // GetLockedName returns the locked-name entry for the provided label.
 func GetLockedName(name string) (LockedName, bool) {
 	return DefaultLockedCatalog().GetByName(name)
@@ -62,6 +72,36 @@ func GetLockedName(name string) (LockedName, bool) {
 // GetLockedByName is an alias for GetLockedName.
 func GetLockedByName(name string) (LockedName, bool) {
 	return GetLockedName(name)
+}
+
+// GetLockedString is an alias for GetLockedName.
+func GetLockedString(name string) (LockedName, bool) {
+	return GetLockedName(name)
+}
+
+// GetLockedBinary is an alias for GetLockedName.
+func GetLockedBinary(name []byte) (LockedName, bool) {
+	return GetLockedName(string(name))
+}
+
+// HasLockedByString is an alias for HasLockedString.
+func HasLockedByString(name string) bool {
+	return HasLockedString(name)
+}
+
+// HasLockedByBinary is an alias for HasLockedBinary.
+func HasLockedByBinary(name []byte) bool {
+	return HasLockedBinary(name)
+}
+
+// GetLockedByString is an alias for GetLockedString.
+func GetLockedByString(name string) (LockedName, bool) {
+	return GetLockedString(name)
+}
+
+// GetLockedByBinary is an alias for GetLockedBinary.
+func GetLockedByBinary(name []byte) (LockedName, bool) {
+	return GetLockedBinary(name)
 }
 
 // GetLockedHash returns the locked-name entry for a precomputed hash.

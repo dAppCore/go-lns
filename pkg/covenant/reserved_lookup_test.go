@@ -90,6 +90,50 @@ func TestReservedLookupByHashAlias(t *testing.T) {
 	}
 }
 
+func TestReservedLookupStringAndBinaryAliases(t *testing.T) {
+	item, ok := GetReservedString("RESERVED")
+	if !ok {
+		t.Fatal("GetReservedString should find the reserved reference entry")
+	}
+
+	if item.Name != "reserved" {
+		t.Fatalf("item.Name = %q, want %q", item.Name, "reserved")
+	}
+
+	item, ok = GetReservedBinary([]byte("RESERVED"))
+	if !ok {
+		t.Fatal("GetReservedBinary should find the reserved reference entry")
+	}
+
+	if item.Name != "reserved" {
+		t.Fatalf("item.Name = %q, want %q", item.Name, "reserved")
+	}
+
+	if !HasReservedString("RESERVED") {
+		t.Fatal("HasReservedString should report reserved catalog labels")
+	}
+
+	if !HasReservedBinary([]byte("RESERVED")) {
+		t.Fatal("HasReservedBinary should report reserved catalog labels")
+	}
+
+	if _, ok := GetReservedByString("RESERVED"); !ok {
+		t.Fatal("GetReservedByString should find the reserved reference entry")
+	}
+
+	if _, ok := GetReservedByBinary([]byte("RESERVED")); !ok {
+		t.Fatal("GetReservedByBinary should find the reserved reference entry")
+	}
+
+	if !HasReservedByString("RESERVED") {
+		t.Fatal("HasReservedByString should report reserved catalog labels")
+	}
+
+	if !HasReservedByBinary([]byte("RESERVED")) {
+		t.Fatal("HasReservedByBinary should report reserved catalog labels")
+	}
+}
+
 func TestReservedLookupHasByHashAlias(t *testing.T) {
 	hash, err := HashString("reserved")
 	if err != nil {

@@ -86,6 +86,50 @@ func TestLockedLookupByHashAlias(t *testing.T) {
 	}
 }
 
+func TestLockedLookupStringAndBinaryAliases(t *testing.T) {
+	item, ok := GetLockedString("NEC")
+	if !ok {
+		t.Fatal("GetLockedString should find the locked reference entry")
+	}
+
+	if item.Name != "nec" {
+		t.Fatalf("item.Name = %q, want %q", item.Name, "nec")
+	}
+
+	item, ok = GetLockedBinary([]byte("NEC"))
+	if !ok {
+		t.Fatal("GetLockedBinary should find the locked reference entry")
+	}
+
+	if item.Name != "nec" {
+		t.Fatalf("item.Name = %q, want %q", item.Name, "nec")
+	}
+
+	if !HasLockedString("NEC") {
+		t.Fatal("HasLockedString should report locked catalog labels")
+	}
+
+	if !HasLockedBinary([]byte("NEC")) {
+		t.Fatal("HasLockedBinary should report locked catalog labels")
+	}
+
+	if _, ok := GetLockedByString("NEC"); !ok {
+		t.Fatal("GetLockedByString should find the locked reference entry")
+	}
+
+	if _, ok := GetLockedByBinary([]byte("NEC")); !ok {
+		t.Fatal("GetLockedByBinary should find the locked reference entry")
+	}
+
+	if !HasLockedByString("NEC") {
+		t.Fatal("HasLockedByString should report locked catalog labels")
+	}
+
+	if !HasLockedByBinary([]byte("NEC")) {
+		t.Fatal("HasLockedByBinary should report locked catalog labels")
+	}
+}
+
 func TestLockedLookupHasByHashAlias(t *testing.T) {
 	hash, err := HashString("nec")
 	if err != nil {
