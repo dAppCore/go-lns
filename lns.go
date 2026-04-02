@@ -1754,6 +1754,62 @@ func (s *Service) GetReservedTopValue() uint64 {
 	return s.ReservedTopValue()
 }
 
+// NameValue is an alias for ReservedNameValue.
+//
+//	base := svc.NameValue()
+func (s *Service) NameValue() uint64 {
+	return s.ReservedNameValue()
+}
+
+// GetNameValue is an alias for NameValue.
+//
+//	base := svc.GetNameValue()
+func (s *Service) GetNameValue() uint64 {
+	return s.NameValue()
+}
+
+// RootValue is an alias for ReservedRootValue.
+//
+//	root := svc.RootValue()
+func (s *Service) RootValue() uint64 {
+	return s.ReservedRootValue()
+}
+
+// GetRootValue is an alias for RootValue.
+//
+//	root := svc.GetRootValue()
+func (s *Service) GetRootValue() uint64 {
+	return s.RootValue()
+}
+
+// TopValue is an alias for ReservedTopValue.
+//
+//	top := svc.TopValue()
+func (s *Service) TopValue() uint64 {
+	return s.ReservedTopValue()
+}
+
+// GetTopValue is an alias for TopValue.
+//
+//	top := svc.GetTopValue()
+func (s *Service) GetTopValue() uint64 {
+	return s.TopValue()
+}
+
+// PrefixSize is an alias for ReservedPrefixSize.
+//
+//	offset := svc.PrefixSize()
+func (s *Service) PrefixSize() int {
+	return s.ReservedPrefixSize()
+}
+
+// GetPrefixSize is an alias for PrefixSize.
+//
+//	offset := svc.GetPrefixSize()
+func (s *Service) GetPrefixSize() int {
+	return s.PrefixSize()
+}
+
 // ReservedEntries exposes the reserved-name catalog entries used by the service.
 //
 //	entries := svc.ReservedEntries()
@@ -1930,6 +1986,62 @@ func ReservedTopValue() uint64 {
 //	top := lns.GetReservedTopValue()
 func GetReservedTopValue() uint64 {
 	return ReservedTopValue()
+}
+
+// NameValue is an alias for ReservedNameValue.
+//
+//	base := lns.NameValue()
+func NameValue() uint64 {
+	return ReservedNameValue()
+}
+
+// GetNameValue is an alias for NameValue.
+//
+//	base := lns.GetNameValue()
+func GetNameValue() uint64 {
+	return NameValue()
+}
+
+// RootValue is an alias for ReservedRootValue.
+//
+//	root := lns.RootValue()
+func RootValue() uint64 {
+	return ReservedRootValue()
+}
+
+// GetRootValue is an alias for RootValue.
+//
+//	root := lns.GetRootValue()
+func GetRootValue() uint64 {
+	return RootValue()
+}
+
+// TopValue is an alias for ReservedTopValue.
+//
+//	top := lns.TopValue()
+func TopValue() uint64 {
+	return ReservedTopValue()
+}
+
+// GetTopValue is an alias for TopValue.
+//
+//	top := lns.GetTopValue()
+func GetTopValue() uint64 {
+	return TopValue()
+}
+
+// PrefixSize is an alias for ReservedPrefixSize.
+//
+//	offset := lns.PrefixSize()
+func PrefixSize() int {
+	return ReservedPrefixSize()
+}
+
+// GetPrefixSize is an alias for PrefixSize.
+//
+//	offset := lns.GetPrefixSize()
+func GetPrefixSize() int {
+	return PrefixSize()
 }
 
 // ReservedPrefixSize reports the byte offset where reserved-name entries begin.

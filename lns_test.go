@@ -1404,6 +1404,38 @@ func TestServiceReservedCatalog(t *testing.T) {
 		t.Fatalf("GetReservedTopValue() = %d, want %d", got, catalog.TopValue())
 	}
 
+	if got := svc.NameValue(); got != catalog.NameValue() {
+		t.Fatalf("NameValue() = %d, want %d", got, catalog.NameValue())
+	}
+
+	if got := svc.GetNameValue(); got != catalog.NameValue() {
+		t.Fatalf("GetNameValue() = %d, want %d", got, catalog.NameValue())
+	}
+
+	if got := svc.RootValue(); got != catalog.RootValue() {
+		t.Fatalf("RootValue() = %d, want %d", got, catalog.RootValue())
+	}
+
+	if got := svc.GetRootValue(); got != catalog.RootValue() {
+		t.Fatalf("GetRootValue() = %d, want %d", got, catalog.RootValue())
+	}
+
+	if got := svc.TopValue(); got != catalog.TopValue() {
+		t.Fatalf("TopValue() = %d, want %d", got, catalog.TopValue())
+	}
+
+	if got := svc.GetTopValue(); got != catalog.TopValue() {
+		t.Fatalf("GetTopValue() = %d, want %d", got, catalog.TopValue())
+	}
+
+	if got := svc.PrefixSize(); got != catalog.PrefixSize() {
+		t.Fatalf("PrefixSize() = %d, want %d", got, catalog.PrefixSize())
+	}
+
+	if got := svc.GetPrefixSize(); got != catalog.PrefixSize() {
+		t.Fatalf("GetPrefixSize() = %d, want %d", got, catalog.PrefixSize())
+	}
+
 	if got := svc.ReservedPrefixSize(); got != catalog.PrefixSize() {
 		t.Fatalf("ReservedPrefixSize() = %d, want %d", got, catalog.PrefixSize())
 	}

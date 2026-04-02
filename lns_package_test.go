@@ -686,6 +686,22 @@ func TestPackageCatalogAliases(t *testing.T) {
 		t.Fatal("ReservedPrefixSize aliases should match the catalog prefix")
 	}
 
+	if NameValue() != reservedCatalog.NameValue() || GetNameValue() != reservedCatalog.NameValue() {
+		t.Fatal("NameValue aliases should match the catalog base value")
+	}
+
+	if RootValue() != reservedCatalog.RootValue() || GetRootValue() != reservedCatalog.RootValue() {
+		t.Fatal("RootValue aliases should match the catalog root value")
+	}
+
+	if TopValue() != reservedCatalog.TopValue() || GetTopValue() != reservedCatalog.TopValue() {
+		t.Fatal("TopValue aliases should match the catalog top value")
+	}
+
+	if PrefixSize() != reservedCatalog.PrefixSize() || GetPrefixSize() != reservedCatalog.PrefixSize() {
+		t.Fatal("PrefixSize aliases should match the reserved catalog prefix")
+	}
+
 	if LockedPrefixSize() != lockedCatalog.PrefixSize() || GetLockedPrefixSize() != lockedCatalog.PrefixSize() {
 		t.Fatal("LockedPrefixSize aliases should match the catalog prefix")
 	}
