@@ -58,6 +58,35 @@ func packageService() *Service {
 	return packageSvc
 }
 
+func canonicalizeName(name any) (string, bool) {
+	switch v := name.(type) {
+	case string:
+		return nameutil.Canonicalize(v)
+	case []byte:
+		return nameutil.Canonicalize(v)
+	default:
+		return "", false
+	}
+}
+
+func resolveCanonicalName(method string, name any) (primitives.Hash, error) {
+	normalized, ok := canonicalizeName(name)
+	if !ok {
+		return primitives.Hash{}, core.E(method, "invalid name", nil)
+	}
+
+	return covenant.HashBinary([]byte(normalized))
+}
+
+func verifyCanonicalName(name any) bool {
+	normalized, ok := canonicalizeName(name)
+	if !ok {
+		return false
+	}
+
+	return covenant.VerifyBinary([]byte(normalized))
+}
+
 // Resolve returns the canonical hash for a validated .lthn name.
 //
 // This is the package-level convenience wrapper around Service.Resolve.
@@ -328,14 +357,7 @@ func (s *Service) GetServiceName() string {
 //	svc := c.Service("lns").(*lns.Service)
 //	hash, err := svc.Resolve("example.lthn")
 func (s *Service) Resolve(name any) (primitives.Hash, error) {
-	switch v := name.(type) {
-	case string:
-		return s.ResolveString(v)
-	case []byte:
-		return s.ResolveBinary(v)
-	default:
-		return primitives.Hash{}, core.E("lns.Service.Resolve", "invalid name type", nil)
-	}
+	return resolveCanonicalName("lns.Service.Resolve", name)
 }
 
 // Hash returns the canonical hash for a validated .lthn name.
@@ -357,14 +379,7 @@ func (s *Service) Hash(name any) (primitives.Hash, error) {
 //	svc := c.Service("lns").(*lns.Service)
 //	ok := svc.Verify("example.lthn")
 func (s *Service) Verify(name any) bool {
-	switch v := name.(type) {
-	case string:
-		return s.VerifyString(v)
-	case []byte:
-		return s.VerifyBinary(v)
-	default:
-		return false
-	}
+	return verifyCanonicalName(name)
 }
 
 // HashString returns the canonical hash for a .lthn name supplied as a string.
@@ -413,24 +428,14 @@ func (s *Service) HashByBinary(name []byte) (primitives.Hash, error) {
 //
 //	hash, err := svc.ResolveString("example.lthn")
 func (s *Service) ResolveString(name string) (primitives.Hash, error) {
-	normalized, ok := nameutil.Canonicalize(name)
-	if !ok {
-		return primitives.Hash{}, core.E("lns.Service.ResolveString", "invalid name", nil)
-	}
-
-	return covenant.HashString(normalized)
+	return resolveCanonicalName("lns.Service.ResolveString", name)
 }
 
 // ResolveBinary returns the canonical hash for a .lthn name supplied as bytes.
 //
 //	hash, err := svc.ResolveBinary([]byte("example.lthn"))
 func (s *Service) ResolveBinary(name []byte) (primitives.Hash, error) {
-	normalized, ok := nameutil.Canonicalize(name)
-	if !ok {
-		return primitives.Hash{}, core.E("lns.Service.ResolveBinary", "invalid name", nil)
-	}
-
-	return covenant.HashBinary([]byte(normalized))
+	return resolveCanonicalName("lns.Service.ResolveBinary", name)
 }
 
 // ResolveName is an alias for Resolve.
@@ -491,24 +496,14 @@ func (s *Service) VerifyByName(name any) bool {
 //
 //	ok := svc.VerifyString("example.lthn")
 func (s *Service) VerifyString(name string) bool {
-	normalized, ok := nameutil.Canonicalize(name)
-	if !ok {
-		return false
-	}
-
-	return covenant.VerifyString(normalized)
+	return verifyCanonicalName(name)
 }
 
 // VerifyBinary reports whether a .lthn name supplied as bytes is valid.
 //
 //	ok := svc.VerifyBinary([]byte("example.lthn"))
 func (s *Service) VerifyBinary(name []byte) bool {
-	normalized, ok := nameutil.Canonicalize(name)
-	if !ok {
-		return false
-	}
-
-	return covenant.VerifyBinary([]byte(normalized))
+	return verifyCanonicalName(name)
 }
 
 // VerifyByString is an alias for VerifyString.
