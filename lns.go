@@ -559,6 +559,18 @@ type NameStateStats = primitives.NameStateStats
 // NameStateStatus mirrors the name phase enum from pkg/primitives.
 type NameStateStatus = primitives.NameStateStatus
 
+// ReservedName mirrors the reserved-name catalog entry type from pkg/covenant.
+type ReservedName = covenant.ReservedName
+
+// LockedName mirrors the locked-name catalog entry type from pkg/covenant.
+type LockedName = covenant.LockedName
+
+// ReservedEntry mirrors the reserved-name catalog entry pair from pkg/covenant.
+type ReservedEntry = covenant.ReservedEntry
+
+// LockedEntry mirrors the locked-name catalog entry pair from pkg/covenant.
+type LockedEntry = covenant.LockedEntry
+
 // Name state constants mirror pkg/primitives so callers can keep using the
 // top-level lns package for common domain objects.
 const (

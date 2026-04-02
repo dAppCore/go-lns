@@ -359,6 +359,21 @@ func TestPackageNameStateAliases(t *testing.T) {
 	}
 }
 
+func TestPackageCatalogTypeAliases(t *testing.T) {
+	var reserved ReservedName
+	var locked LockedName
+	var reservedEntry ReservedEntry
+	var lockedEntry LockedEntry
+
+	if reserved.Name != "" || locked.Name != "" {
+		t.Fatal("catalog name aliases should expose the covenant catalog entry types")
+	}
+
+	if reservedEntry.Value.Name != "" || lockedEntry.Value.Name != "" {
+		t.Fatal("catalog entry aliases should expose the covenant catalog entry pair types")
+	}
+}
+
 func TestPackageNameSetHelpers(t *testing.T) {
 	hash, err := HashString("example-name")
 	if err != nil {
