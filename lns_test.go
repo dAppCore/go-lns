@@ -1167,6 +1167,10 @@ func TestServiceReservedCatalog(t *testing.T) {
 		t.Fatal("GetReservedCatalog should return a catalog")
 	}
 
+	if catalog != Reserved {
+		t.Fatal("ReservedCatalog should return the exported Reserved instance")
+	}
+
 	if getCatalog != catalog {
 		t.Fatal("GetReservedCatalog should alias ReservedCatalog")
 	}
@@ -1277,6 +1281,10 @@ func TestServiceLockedCatalog(t *testing.T) {
 
 	if getCatalog == nil {
 		t.Fatal("GetLockedCatalog should return a catalog")
+	}
+
+	if catalog != Locked {
+		t.Fatal("LockedCatalog should return the exported Locked instance")
 	}
 
 	if getCatalog != catalog {
