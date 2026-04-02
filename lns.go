@@ -168,6 +168,8 @@ func lookupCatalogName[T any](
 		return zero, false
 	}
 
+	// Try the raw label first so dotted catalog labels remain addressable by
+	// their exact catalog name instead of forcing them through hash lookup.
 	if item, ok := byLabel(label); ok {
 		return item, true
 	}
