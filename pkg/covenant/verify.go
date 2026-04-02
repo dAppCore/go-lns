@@ -34,11 +34,11 @@ type Network struct {
 // intentionally conservative because the corresponding proof types live in the
 // wider blockchain stack, which is not part of this package.
 func VerifyCovenants(tx primitives.Transaction, view CoinView, height uint32, network Network) int {
-	if isCoinbaseTx(tx) {
-		if !HasSaneCovenants(tx) {
-			return -1
-		}
+	if !HasSaneCovenants(tx) {
+		return -1
+	}
 
+	if isCoinbaseTx(tx) {
 		return 0
 	}
 

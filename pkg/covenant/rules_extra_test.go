@@ -222,3 +222,43 @@ func TestVerifyCovenants(t *testing.T) {
 		t.Fatalf("VerifyCovenants returned %d for an invalid finalize address, want -1", got)
 	}
 }
+
+func TestVerifyCovenantsRejectsInvalidStructure(t *testing.T) {
+	hash, err := HashString("example-name")
+	if err != nil {
+		t.Fatalf("HashString returned error: %v", err)
+	}
+
+	var prevHash primitives.Hash
+	prevHash[0] = 3
+
+	tx := primitives.Transaction{
+		Inputs: []primitives.Input{
+			{Prevout: primitives.Outpoint{TxHash: prevHash, Index: 0}},
+		},
+		Outputs: []primitives.Output{
+			{
+				Covenant: primitives.Covenant{
+					Type: uint8(TypeOpen),
+					Items: [][]byte{
+						hash[:],
+						[]byte{1, 0, 0, 0},
+						[]byte("example-name"),
+					},
+				},
+			},
+		},
+	}
+
+	view := testCoinView{
+		coins: map[primitives.Outpoint]primitives.Output{
+			{TxHash: prevHash, Index: 0}: {
+				Covenant: primitives.Covenant{Type: uint8(TypeNone)},
+			},
+		},
+	}
+
+	if got := VerifyCovenants(tx, view, 100, Network{}); got != -1 {
+		t.Fatalf("VerifyCovenants returned %d for an invalid covenant structure, want -1", got)
+	}
+}
