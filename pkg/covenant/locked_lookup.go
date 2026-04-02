@@ -38,6 +38,8 @@ type LockedEntry struct {
 	Value LockedName
 }
 
+const lockedCatalogPrefixSize = 4
+
 var (
 	lockedCatalogOnce sync.Once
 	lockedCatalog     *LockedCatalog
@@ -85,6 +87,11 @@ func (c *LockedCatalog) Size() int {
 	}
 
 	return len(c.byHash)
+}
+
+// PrefixSize reports the byte offset where the locked-name table entries begin.
+func (c *LockedCatalog) PrefixSize() int {
+	return lockedCatalogPrefixSize
 }
 
 // Has reports whether the catalog contains the hash.

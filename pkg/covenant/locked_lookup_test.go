@@ -89,6 +89,10 @@ func TestLockedCatalogHelpers(t *testing.T) {
 		t.Fatal("catalog should report a non-zero size")
 	}
 
+	if catalog.PrefixSize() != lockedCatalogPrefixSize {
+		t.Fatalf("catalog.PrefixSize() = %d, want %d", catalog.PrefixSize(), lockedCatalogPrefixSize)
+	}
+
 	if !catalog.HasByName("NEC") {
 		t.Fatal("catalog should find names case-insensitively")
 	}

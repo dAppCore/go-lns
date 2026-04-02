@@ -493,6 +493,10 @@ func TestServiceLockedCatalog(t *testing.T) {
 		t.Fatalf("LockedSize() = %d, want %d", got, catalog.Size())
 	}
 
+	if got := svc.LockedPrefixSize(); got != catalog.PrefixSize() {
+		t.Fatalf("LockedPrefixSize() = %d, want %d", got, catalog.PrefixSize())
+	}
+
 	if !catalog.HasByName("NEC") {
 		t.Fatal("LockedCatalog should expose the locked catalog helpers")
 	}
