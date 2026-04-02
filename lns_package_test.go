@@ -570,6 +570,14 @@ func TestPackageCatalogAliases(t *testing.T) {
 		t.Fatal("LockedCatalog should return a catalog")
 	}
 
+	if Reserved != reservedCatalog {
+		t.Fatal("Reserved should alias ReservedCatalog")
+	}
+
+	if Locked != lockedCatalog {
+		t.Fatal("Locked should alias LockedCatalog")
+	}
+
 	if GetReservedCatalog() != reservedCatalog {
 		t.Fatal("GetReservedCatalog should alias ReservedCatalog")
 	}

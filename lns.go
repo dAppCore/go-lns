@@ -1454,6 +1454,16 @@ func GetLockedCatalog() *covenant.LockedCatalog {
 	return covenant.DefaultLockedCatalog()
 }
 
+// Reserved exposes the reserved-name catalog instance used by the package.
+//
+//	catalog := lns.Reserved
+var Reserved = DefaultReservedCatalog()
+
+// Locked exposes the locked-name catalog instance used by the package.
+//
+//	catalog := lns.Locked
+var Locked = DefaultLockedCatalog()
+
 // ReservedCatalog exposes the reserved-name catalog used by the package.
 //
 //	catalog := lns.ReservedCatalog()
