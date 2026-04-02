@@ -7,6 +7,7 @@ import (
 	"testing"
 
 	"dappco.re/go/lns/pkg/covenant"
+	"dappco.re/go/lns/pkg/primitives"
 )
 
 func TestServiceResolve(t *testing.T) {
@@ -132,6 +133,32 @@ func TestServiceHasReserved(t *testing.T) {
 	}
 }
 
+func TestServiceGetReservedHash(t *testing.T) {
+	svc := &Service{}
+
+	hash, err := covenant.HashString("reserved")
+	if err != nil {
+		t.Fatalf("HashString returned error: %v", err)
+	}
+
+	item, ok := svc.GetReservedHash(hash)
+	if !ok {
+		t.Fatal("GetReservedHash should find the reserved reference entry")
+	}
+
+	if item.Name != "reserved" {
+		t.Fatalf("item.Name = %q, want %q", item.Name, "reserved")
+	}
+
+	if !svc.HasReservedHash(hash) {
+		t.Fatal("HasReservedHash should report canonical reserved hashes")
+	}
+
+	if svc.HasReservedHash(primitives.Hash{}) {
+		t.Fatal("HasReservedHash should return false for unknown hashes")
+	}
+}
+
 func TestServiceGetLocked(t *testing.T) {
 	svc := &Service{}
 
@@ -178,6 +205,32 @@ func TestServiceHasLocked(t *testing.T) {
 
 	if svc.HasLocked(123) {
 		t.Fatal("HasLocked should reject unsupported input types")
+	}
+}
+
+func TestServiceGetLockedHash(t *testing.T) {
+	svc := &Service{}
+
+	hash, err := covenant.HashString("nec")
+	if err != nil {
+		t.Fatalf("HashString returned error: %v", err)
+	}
+
+	item, ok := svc.GetLockedHash(hash)
+	if !ok {
+		t.Fatal("GetLockedHash should find the locked reference entry")
+	}
+
+	if item.Name != "nec" {
+		t.Fatalf("item.Name = %q, want %q", item.Name, "nec")
+	}
+
+	if !svc.HasLockedHash(hash) {
+		t.Fatal("HasLockedHash should report canonical locked hashes")
+	}
+
+	if svc.HasLockedHash(primitives.Hash{}) {
+		t.Fatal("HasLockedHash should return false for unknown hashes")
 	}
 }
 

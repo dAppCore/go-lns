@@ -91,6 +91,20 @@ func (s *Service) HasReserved(name any) bool {
 	return ok
 }
 
+// GetReservedHash looks up a reserved .lthn name by its canonical hash.
+//
+// This mirrors the covenant package lookup helper for callers that already
+// have the hashed form available.
+func (s *Service) GetReservedHash(hash primitives.Hash) (covenant.ReservedName, bool) {
+	return covenant.GetReservedHash(hash)
+}
+
+// HasReservedHash reports whether a canonical hash is reserved.
+func (s *Service) HasReservedHash(hash primitives.Hash) bool {
+	_, ok := s.GetReservedHash(hash)
+	return ok
+}
+
 // GetLocked looks up a locked .lthn name after canonicalisation.
 //
 // The lookup accepts the same inputs as Resolve and Verify, then returns the
@@ -110,6 +124,20 @@ func (s *Service) GetLocked(name any) (covenant.LockedName, bool) {
 // plumbing to service-level callers.
 func (s *Service) HasLocked(name any) bool {
 	_, ok := s.GetLocked(name)
+	return ok
+}
+
+// GetLockedHash looks up a locked .lthn name by its canonical hash.
+//
+// This mirrors the covenant package lookup helper for callers that already
+// have the hashed form available.
+func (s *Service) GetLockedHash(hash primitives.Hash) (covenant.LockedName, bool) {
+	return covenant.GetLockedHash(hash)
+}
+
+// HasLockedHash reports whether a canonical hash is locked.
+func (s *Service) HasLockedHash(hash primitives.Hash) bool {
+	_, ok := s.GetLockedHash(hash)
 	return ok
 }
 
