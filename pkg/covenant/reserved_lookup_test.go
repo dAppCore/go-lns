@@ -65,6 +65,22 @@ func TestReservedLookupRejectsUnknownNames(t *testing.T) {
 func TestReservedCatalogHelpers(t *testing.T) {
 	catalog := DefaultReservedCatalog()
 
+	if catalog.Size() == 0 {
+		t.Fatal("catalog should report a non-zero size")
+	}
+
+	if catalog.NameValue() == 0 {
+		t.Fatal("catalog should expose the reserved base value")
+	}
+
+	if catalog.RootValue() == 0 {
+		t.Fatal("catalog should expose the root increment")
+	}
+
+	if catalog.TopValue() == 0 {
+		t.Fatal("catalog should expose the top-100 increment")
+	}
+
 	if !catalog.HasByName("RESERVED") {
 		t.Fatal("catalog should find names case-insensitively")
 	}

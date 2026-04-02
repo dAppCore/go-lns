@@ -63,6 +63,15 @@ func DefaultLockedCatalog() *LockedCatalog {
 	return defaultLockedCatalog()
 }
 
+// Size reports the number of locked-name entries in the catalog.
+func (c *LockedCatalog) Size() int {
+	if c == nil {
+		return 0
+	}
+
+	return len(c.byHash)
+}
+
 // Has reports whether the catalog contains the hash.
 func (c *LockedCatalog) Has(hash primitives.Hash) bool {
 	if c == nil {

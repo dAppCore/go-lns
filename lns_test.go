@@ -310,6 +310,22 @@ func TestServiceReservedCatalog(t *testing.T) {
 		t.Fatal("ReservedCatalog should return a catalog")
 	}
 
+	if got := svc.ReservedSize(); got != catalog.Size() {
+		t.Fatalf("ReservedSize() = %d, want %d", got, catalog.Size())
+	}
+
+	if got := svc.ReservedNameValue(); got != catalog.NameValue() {
+		t.Fatalf("ReservedNameValue() = %d, want %d", got, catalog.NameValue())
+	}
+
+	if got := svc.ReservedRootValue(); got != catalog.RootValue() {
+		t.Fatalf("ReservedRootValue() = %d, want %d", got, catalog.RootValue())
+	}
+
+	if got := svc.ReservedTopValue(); got != catalog.TopValue() {
+		t.Fatalf("ReservedTopValue() = %d, want %d", got, catalog.TopValue())
+	}
+
 	if !catalog.HasByName("RESERVED") {
 		t.Fatal("ReservedCatalog should expose the reserved catalog helpers")
 	}
@@ -337,6 +353,10 @@ func TestServiceLockedCatalog(t *testing.T) {
 
 	if catalog == nil {
 		t.Fatal("LockedCatalog should return a catalog")
+	}
+
+	if got := svc.LockedSize(); got != catalog.Size() {
+		t.Fatalf("LockedSize() = %d, want %d", got, catalog.Size())
 	}
 
 	if !catalog.HasByName("NEC") {

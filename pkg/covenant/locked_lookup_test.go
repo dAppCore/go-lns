@@ -61,6 +61,10 @@ func TestLockedLookupRejectsUnknownNames(t *testing.T) {
 func TestLockedCatalogHelpers(t *testing.T) {
 	catalog := DefaultLockedCatalog()
 
+	if catalog.Size() == 0 {
+		t.Fatal("catalog should report a non-zero size")
+	}
+
 	if !catalog.HasByName("NEC") {
 		t.Fatal("catalog should find names case-insensitively")
 	}

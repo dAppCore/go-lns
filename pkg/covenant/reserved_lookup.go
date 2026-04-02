@@ -37,7 +37,10 @@ type ReservedName struct {
 
 // ReservedCatalog exposes the reserved-name reference table.
 type ReservedCatalog struct {
-	byHash map[primitives.Hash]ReservedName
+	byHash    map[primitives.Hash]ReservedName
+	nameValue uint64
+	rootValue uint64
+	topValue  uint64
 }
 
 // ReservedEntry pairs a reserved-name hash with its catalog entry.
@@ -80,6 +83,42 @@ func GetReservedHash(hash primitives.Hash) (ReservedName, bool) {
 // DefaultReservedCatalog returns the lazily loaded reserved-name catalog.
 func DefaultReservedCatalog() *ReservedCatalog {
 	return defaultReservedCatalog()
+}
+
+// Size reports the number of reserved-name entries in the catalog.
+func (c *ReservedCatalog) Size() int {
+	if c == nil {
+		return 0
+	}
+
+	return len(c.byHash)
+}
+
+// NameValue reports the base value used for reserved-name lookups.
+func (c *ReservedCatalog) NameValue() uint64 {
+	if c == nil {
+		return 0
+	}
+
+	return c.nameValue
+}
+
+// RootValue reports the root-name increment used for reserved-name lookups.
+func (c *ReservedCatalog) RootValue() uint64 {
+	if c == nil {
+		return 0
+	}
+
+	return c.rootValue
+}
+
+// TopValue reports the top-100 increment used for reserved-name lookups.
+func (c *ReservedCatalog) TopValue() uint64 {
+	if c == nil {
+		return 0
+	}
+
+	return c.topValue
 }
 
 // Has reports whether the catalog contains the hash.
@@ -227,6 +266,10 @@ func loadReservedCatalog() (*ReservedCatalog, error) {
 	if err != nil {
 		return nil, err
 	}
+
+	catalog.nameValue = meta.nameValue
+	catalog.rootValue = meta.rootValue
+	catalog.topValue = meta.topValue
 
 	for key, value := range raw {
 		if key == reservedZeroHash {

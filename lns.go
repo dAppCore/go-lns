@@ -195,6 +195,26 @@ func (s *Service) ReservedCatalog() *covenant.ReservedCatalog {
 	return covenant.DefaultReservedCatalog()
 }
 
+// ReservedSize reports the number of reserved-name entries available to the service.
+func (s *Service) ReservedSize() int {
+	return s.ReservedCatalog().Size()
+}
+
+// ReservedNameValue reports the base value used for reserved-name lookups.
+func (s *Service) ReservedNameValue() uint64 {
+	return s.ReservedCatalog().NameValue()
+}
+
+// ReservedRootValue reports the root-name increment used for reserved-name lookups.
+func (s *Service) ReservedRootValue() uint64 {
+	return s.ReservedCatalog().RootValue()
+}
+
+// ReservedTopValue reports the top-100 increment used for reserved-name lookups.
+func (s *Service) ReservedTopValue() uint64 {
+	return s.ReservedCatalog().TopValue()
+}
+
 // ReservedEntries exposes the reserved-name catalog entries used by the service.
 func (s *Service) ReservedEntries() []covenant.ReservedEntry {
 	return s.ReservedCatalog().Entries()
@@ -216,6 +236,11 @@ func (s *Service) ReservedValues() []covenant.ReservedName {
 // enumerate the reference set without reaching into the covenant package.
 func (s *Service) LockedCatalog() *covenant.LockedCatalog {
 	return covenant.DefaultLockedCatalog()
+}
+
+// LockedSize reports the number of locked-name entries available to the service.
+func (s *Service) LockedSize() int {
+	return s.LockedCatalog().Size()
 }
 
 // LockedEntries exposes the locked-name catalog entries used by the service.
