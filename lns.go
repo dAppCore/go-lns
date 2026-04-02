@@ -126,6 +126,27 @@ func verifyCanonicalName(name any) bool {
 	return covenant.VerifyString(normalized)
 }
 
+func lookupCatalogName[T any](
+	name any,
+	method string,
+	byLabel func(string) (T, bool),
+	byHash func(primitives.Hash) (T, bool),
+) (T, bool) {
+	if label, ok := nameutil.CatalogLabel(name); ok {
+		if item, ok := byLabel(label); ok {
+			return item, true
+		}
+	}
+
+	hash, err := resolveCanonicalName(method, name)
+	if err != nil {
+		var zero T
+		return zero, false
+	}
+
+	return byHash(hash)
+}
+
 // Resolve returns the canonical hash for a validated .lthn name.
 //
 // This is the package-level convenience wrapper around Service.Resolve.
@@ -627,33 +648,21 @@ func GetTypeName(ct covenant.CovenantType) string {
 }
 
 func lookupReserved(name any) (covenant.ReservedName, bool) {
-	if label, ok := nameutil.CatalogLabel(name); ok {
-		if item, ok := ReservedCatalog().GetByName(label); ok {
-			return item, true
-		}
-	}
-
-	hash, err := resolveCanonicalName("lns.GetReserved", name)
-	if err != nil {
-		return covenant.ReservedName{}, false
-	}
-
-	return ReservedCatalog().Get(hash)
+	return lookupCatalogName(
+		name,
+		"lns.GetReserved",
+		ReservedCatalog().GetByName,
+		ReservedCatalog().Get,
+	)
 }
 
 func lookupLocked(name any) (covenant.LockedName, bool) {
-	if label, ok := nameutil.CatalogLabel(name); ok {
-		if item, ok := LockedCatalog().GetByName(label); ok {
-			return item, true
-		}
-	}
-
-	hash, err := resolveCanonicalName("lns.GetLocked", name)
-	if err != nil {
-		return covenant.LockedName{}, false
-	}
-
-	return LockedCatalog().Get(hash)
+	return lookupCatalogName(
+		name,
+		"lns.GetLocked",
+		LockedCatalog().GetByName,
+		LockedCatalog().Get,
+	)
 }
 
 // MaxNameSize returns the maximum supported name size.
