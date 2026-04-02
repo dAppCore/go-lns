@@ -210,7 +210,7 @@ func TestNameStateToStats(t *testing.T) {
 		RevealPeriod:    40,
 		RenewalWindow:   50,
 		AuctionMaturity: 25,
-		BlocksPerDay:    240,
+		BlocksPerDay:    250,
 		TransferLockup:  15,
 	}
 
@@ -224,8 +224,8 @@ func TestNameStateToStats(t *testing.T) {
 		t.Fatalf("unexpected opening stats: %+v", stats)
 	}
 
-	if stats.HoursUntilBidding != 1.1 {
-		t.Fatalf("unexpected opening hours: got %v, want 1.1", stats.HoursUntilBidding)
+	if stats.HoursUntilBidding != 1.06 {
+		t.Fatalf("unexpected opening hours: got %v, want 1.06", stats.HoursUntilBidding)
 	}
 
 	closed := NameState{
@@ -235,21 +235,25 @@ func TestNameStateToStats(t *testing.T) {
 		Transfer: 180,
 	}
 
-	stats = closed.ToStats(185, rules)
+	stats = closed.ToStats(188, rules)
 	if stats == nil {
 		t.Fatal("ToStats should return stats for a closed name")
 	}
 
-	if stats.RenewalPeriodStart != 150 || stats.RenewalPeriodEnd != 200 || stats.BlocksUntilExpire != 15 {
+	if stats.RenewalPeriodStart != 150 || stats.RenewalPeriodEnd != 200 || stats.BlocksUntilExpire != 12 {
 		t.Fatalf("unexpected closed stats: %+v", stats)
 	}
 
-	if math.Abs(stats.DaysUntilExpire-0.0625) > 1e-9 {
-		t.Fatalf("unexpected expire days: got %v, want 0.0625", stats.DaysUntilExpire)
+	if math.Abs(stats.DaysUntilExpire-0.05) > 1e-9 {
+		t.Fatalf("unexpected expire days: got %v, want 0.05", stats.DaysUntilExpire)
 	}
 
-	if stats.TransferLockupStart != 180 || stats.TransferLockupEnd != 195 || stats.BlocksUntilValidFinalize != 10 {
+	if stats.TransferLockupStart != 180 || stats.TransferLockupEnd != 195 || stats.BlocksUntilValidFinalize != 7 {
 		t.Fatalf("unexpected transfer stats: %+v", stats)
+	}
+
+	if math.Abs(stats.HoursUntilValidFinalize-0.67) > 1e-9 {
+		t.Fatalf("unexpected transfer hours: got %v, want 0.67", stats.HoursUntilValidFinalize)
 	}
 
 	expired := NameState{

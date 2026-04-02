@@ -2,6 +2,8 @@
 
 package primitives
 
+import "math"
+
 // NameStateStats describes the derived timing information for a name.
 //
 // The fields mirror the timing summary produced by the JS reference
@@ -43,7 +45,7 @@ func blocksToHours(blocks uint32, blocksPerHour float64) float64 {
 		return 0
 	}
 
-	return float64(blocks) / blocksPerHour
+	return math.Round((float64(blocks)/blocksPerHour)*100) / 100
 }
 
 func blocksToDays(blocks uint32, blocksPerDay float64) float64 {
@@ -51,7 +53,7 @@ func blocksToDays(blocks uint32, blocksPerDay float64) float64 {
 		return 0
 	}
 
-	return float64(blocks) / blocksPerDay
+	return math.Round((float64(blocks)/blocksPerDay)*100) / 100
 }
 
 func maxUint32(a, b uint32) uint32 {
@@ -65,6 +67,7 @@ func maxUint32(a, b uint32) uint32 {
 // ToStats returns a derived timing summary for the name at the provided height.
 //
 // The result mirrors the JS reference implementation's `toStats()` helper.
+// Hour and day estimates are rounded to two decimal places to match that API.
 // It returns nil when the name is expired and has no owner reference.
 func (ns NameState) ToStats(height uint32, rules NameStateRules) *NameStateStats {
 	if outpointIsNull(ns.Owner) && ns.IsExpired(height, rules) {
