@@ -509,6 +509,64 @@ func TestPackageRolloutHelpers(t *testing.T) {
 	}
 }
 
+func TestPackageCatalogLookupNormalization(t *testing.T) {
+	reservedCases := []struct {
+		name string
+		fn   func(any) (covenant.ReservedName, bool)
+	}{
+		{name: "GetReserved", fn: GetReserved},
+		{name: "GetReservedName", fn: GetReservedName},
+		{name: "GetReservedString", fn: func(name any) (covenant.ReservedName, bool) { return GetReservedString(name.(string)) }},
+		{name: "GetReservedBinary", fn: func(name any) (covenant.ReservedName, bool) { return GetReservedBinary(name.([]byte)) }},
+		{name: "GetReservedByString", fn: func(name any) (covenant.ReservedName, bool) { return GetReservedByString(name.(string)) }},
+		{name: "GetReservedByBinary", fn: func(name any) (covenant.ReservedName, bool) { return GetReservedByBinary(name.([]byte)) }},
+	}
+
+	for _, tc := range reservedCases {
+		input := any("reserved.lthn.")
+		if tc.name == "GetReservedBinary" || tc.name == "GetReservedByBinary" {
+			input = []byte("reserved.lthn.")
+		}
+
+		item, ok := tc.fn(input)
+		if !ok {
+			t.Fatalf("%s should resolve canonicalized reserved names", tc.name)
+		}
+
+		if item.Name != "reserved" {
+			t.Fatalf("%s returned %q, want %q", tc.name, item.Name, "reserved")
+		}
+	}
+
+	lockedCases := []struct {
+		name string
+		fn   func(any) (covenant.LockedName, bool)
+	}{
+		{name: "GetLocked", fn: GetLocked},
+		{name: "GetLockedName", fn: GetLockedName},
+		{name: "GetLockedString", fn: func(name any) (covenant.LockedName, bool) { return GetLockedString(name.(string)) }},
+		{name: "GetLockedBinary", fn: func(name any) (covenant.LockedName, bool) { return GetLockedBinary(name.([]byte)) }},
+		{name: "GetLockedByString", fn: func(name any) (covenant.LockedName, bool) { return GetLockedByString(name.(string)) }},
+		{name: "GetLockedByBinary", fn: func(name any) (covenant.LockedName, bool) { return GetLockedByBinary(name.([]byte)) }},
+	}
+
+	for _, tc := range lockedCases {
+		input := any("nec.lthn.")
+		if tc.name == "GetLockedBinary" || tc.name == "GetLockedByBinary" {
+			input = []byte("nec.lthn.")
+		}
+
+		item, ok := tc.fn(input)
+		if !ok {
+			t.Fatalf("%s should resolve canonicalized locked names", tc.name)
+		}
+
+		if item.Name != "nec" {
+			t.Fatalf("%s returned %q, want %q", tc.name, item.Name, "nec")
+		}
+	}
+}
+
 type packageTestCoinView struct {
 	coins map[primitives.Outpoint]primitives.Output
 }
