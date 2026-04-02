@@ -89,3 +89,65 @@ func TestNameStatePhasePredicates(t *testing.T) {
 		t.Fatal("IsRevoked should be false for a normal name")
 	}
 }
+
+func TestNameStateClaimableAndExpired(t *testing.T) {
+	rules := NameStateRules{
+		TreeInterval:    10,
+		LockupPeriod:    20,
+		BiddingPeriod:   30,
+		RevealPeriod:    40,
+		ClaimPeriod:     140,
+		RenewalWindow:   50,
+		AuctionMaturity: 25,
+	}
+
+	claimed := NameState{
+		Height:  100,
+		Renewal: 100,
+		Claimed: 1,
+	}
+
+	if !claimed.IsClaimable(130, rules) {
+		t.Fatal("IsClaimable should report claimed names before the claim cutoff")
+	}
+
+	rules.NoReserved = true
+	if claimed.IsClaimable(130, rules) {
+		t.Fatal("IsClaimable should be disabled when reserved names are not allowed")
+	}
+	rules.NoReserved = false
+
+	if claimed.IsExpired(130, rules) {
+		t.Fatal("IsExpired should stay false while the name is still within the claim window")
+	}
+
+	if claimed.IsExpired(140, rules) {
+		t.Fatal("IsExpired should stay false while the name is still within the renewal window")
+	}
+
+	if !claimed.IsExpired(160, rules) {
+		t.Fatal("IsExpired should become true after the renewal window elapses")
+	}
+
+	revoked := NameState{
+		Height:  100,
+		Revoked: 120,
+	}
+
+	if revoked.IsExpired(140, rules) {
+		t.Fatal("revoked names should stay pending until auction maturity")
+	}
+
+	if !revoked.IsExpired(150, rules) {
+		t.Fatal("revoked names should expire after auction maturity")
+	}
+
+	closedNoOwner := NameState{
+		Height:  100,
+		Renewal: 100,
+	}
+
+	if !closedNoOwner.IsExpired(190, rules) {
+		t.Fatal("closed names without an owner should expire once the renewal window ends")
+	}
+}

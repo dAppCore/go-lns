@@ -50,10 +50,14 @@ func (s NameStateStatus) String() string {
 // The structure keeps the logic independent from any larger network object,
 // while still matching the phase transitions from the JS reference.
 type NameStateRules struct {
-	TreeInterval  uint32
-	LockupPeriod  uint32
-	BiddingPeriod uint32
-	RevealPeriod  uint32
+	TreeInterval    uint32
+	LockupPeriod    uint32
+	BiddingPeriod   uint32
+	RevealPeriod    uint32
+	ClaimPeriod     uint32
+	RenewalWindow   uint32
+	AuctionMaturity uint32
+	NoReserved      bool
 }
 
 // State returns the current phase for the name at the provided height.
@@ -118,4 +122,38 @@ func (ns NameState) IsRevoked(height uint32, rules NameStateRules) bool {
 // IsRedeemable reports whether the name has reached the closed state.
 func (ns NameState) IsRedeemable(height uint32, rules NameStateRules) bool {
 	return ns.State(height, rules) >= NameStateClosed
+}
+
+// IsClaimable reports whether the name is still within the claim window.
+func (ns NameState) IsClaimable(height uint32, rules NameStateRules) bool {
+	if ns.Claimed == 0 || rules.NoReserved {
+		return false
+	}
+
+	return height < rules.ClaimPeriod
+}
+
+// IsExpired reports whether the name should be treated as expired.
+func (ns NameState) IsExpired(height uint32, rules NameStateRules) bool {
+	if ns.Revoked != 0 {
+		return height >= ns.Revoked+rules.AuctionMaturity
+	}
+
+	// A name can only expire after it has reached the closed state.
+	if !ns.IsClosed(height, rules) {
+		return false
+	}
+
+	// Claimed names can only expire once the claim period has ended.
+	if ns.IsClaimable(height, rules) {
+		return false
+	}
+
+	// If we have not been renewed in time, the name expires.
+	if height >= ns.Renewal+rules.RenewalWindow {
+		return true
+	}
+
+	// If nobody revealed their bids, restart the auction.
+	return ns.Owner.IsNull()
 }
