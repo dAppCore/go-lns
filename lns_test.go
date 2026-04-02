@@ -271,6 +271,42 @@ func TestServiceVerificationFlagTables(t *testing.T) {
 	}
 }
 
+func TestServiceConstantGetters(t *testing.T) {
+	svc := &Service{}
+
+	if svc.MaxNameSize() != MaxNameSize || svc.GetMaxNameSize() != MaxNameSize {
+		t.Fatalf("MaxNameSize getters = %d/%d, want %d", svc.MaxNameSize(), svc.GetMaxNameSize(), MaxNameSize)
+	}
+
+	if svc.MaxResourceSize() != MaxResourceSize || svc.GetMaxResourceSize() != MaxResourceSize {
+		t.Fatalf("MaxResourceSize getters = %d/%d, want %d", svc.MaxResourceSize(), svc.GetMaxResourceSize(), MaxResourceSize)
+	}
+
+	if svc.VerifyCovenantsNone() != VerifyCovenantsNone || svc.GetVerifyCovenantsNone() != VerifyCovenantsNone {
+		t.Fatalf("VerifyCovenantsNone getters = %d/%d, want %d", svc.VerifyCovenantsNone(), svc.GetVerifyCovenantsNone(), VerifyCovenantsNone)
+	}
+
+	if svc.VerifyCovenantsHardened() != VerifyCovenantsHardened || svc.GetVerifyCovenantsHardened() != VerifyCovenantsHardened {
+		t.Fatalf("VerifyCovenantsHardened getters = %d/%d, want %d", svc.VerifyCovenantsHardened(), svc.GetVerifyCovenantsHardened(), VerifyCovenantsHardened)
+	}
+
+	if svc.VerifyCovenantsLockup() != VerifyCovenantsLockup || svc.GetVerifyCovenantsLockup() != VerifyCovenantsLockup {
+		t.Fatalf("VerifyCovenantsLockup getters = %d/%d, want %d", svc.VerifyCovenantsLockup(), svc.GetVerifyCovenantsLockup(), VerifyCovenantsLockup)
+	}
+
+	if svc.MandatoryVerifyCovenantFlags() != MandatoryVerifyCovenantFlags || svc.GetMandatoryVerifyCovenantFlags() != MandatoryVerifyCovenantFlags {
+		t.Fatalf("MandatoryVerifyCovenantFlags getters = %d/%d, want %d", svc.MandatoryVerifyCovenantFlags(), svc.GetMandatoryVerifyCovenantFlags(), MandatoryVerifyCovenantFlags)
+	}
+
+	if svc.MaxCovenantSize() != MaxCovenantSize || svc.GetMaxCovenantSize() != MaxCovenantSize {
+		t.Fatalf("MaxCovenantSize getters = %d/%d, want %d", svc.MaxCovenantSize(), svc.GetMaxCovenantSize(), MaxCovenantSize)
+	}
+
+	if svc.CovenantMaxSize() != CovenantMaxSize || svc.GetCovenantMaxSize() != CovenantMaxSize {
+		t.Fatalf("CovenantMaxSize getters = %d/%d, want %d", svc.CovenantMaxSize(), svc.GetCovenantMaxSize(), CovenantMaxSize)
+	}
+}
+
 func TestServiceHashByStringAndBinaryAliases(t *testing.T) {
 	svc := &Service{}
 

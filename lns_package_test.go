@@ -225,6 +225,40 @@ func TestPackageVerificationFlagTables(t *testing.T) {
 	}
 }
 
+func TestPackageConstantGetters(t *testing.T) {
+	if GetMaxNameSize() != MaxNameSize {
+		t.Fatalf("GetMaxNameSize() = %d, want %d", GetMaxNameSize(), MaxNameSize)
+	}
+
+	if GetMaxResourceSize() != MaxResourceSize {
+		t.Fatalf("GetMaxResourceSize() = %d, want %d", GetMaxResourceSize(), MaxResourceSize)
+	}
+
+	if GetVerifyCovenantsNone() != VerifyCovenantsNone {
+		t.Fatalf("GetVerifyCovenantsNone() = %d, want %d", GetVerifyCovenantsNone(), VerifyCovenantsNone)
+	}
+
+	if GetVerifyCovenantsHardened() != VerifyCovenantsHardened {
+		t.Fatalf("GetVerifyCovenantsHardened() = %d, want %d", GetVerifyCovenantsHardened(), VerifyCovenantsHardened)
+	}
+
+	if GetVerifyCovenantsLockup() != VerifyCovenantsLockup {
+		t.Fatalf("GetVerifyCovenantsLockup() = %d, want %d", GetVerifyCovenantsLockup(), VerifyCovenantsLockup)
+	}
+
+	if GetMandatoryVerifyCovenantFlags() != MandatoryVerifyCovenantFlags {
+		t.Fatalf("GetMandatoryVerifyCovenantFlags() = %d, want %d", GetMandatoryVerifyCovenantFlags(), MandatoryVerifyCovenantFlags)
+	}
+
+	if GetMaxCovenantSize() != MaxCovenantSize {
+		t.Fatalf("GetMaxCovenantSize() = %d, want %d", GetMaxCovenantSize(), MaxCovenantSize)
+	}
+
+	if GetCovenantMaxSize() != CovenantMaxSize {
+		t.Fatalf("GetCovenantMaxSize() = %d, want %d", GetCovenantMaxSize(), CovenantMaxSize)
+	}
+}
+
 func TestPackageRolloutHelpers(t *testing.T) {
 	var hash primitives.Hash
 

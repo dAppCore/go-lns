@@ -347,6 +347,46 @@ const (
 	CovenantMaxSize              = covenant.CovenantMaxSize
 )
 
+// GetMaxNameSize returns the maximum supported name size.
+func GetMaxNameSize() int {
+	return MaxNameSize
+}
+
+// GetMaxResourceSize returns the maximum supported DNS resource size.
+func GetMaxResourceSize() int {
+	return MaxResourceSize
+}
+
+// GetVerifyCovenantsNone returns the disabled covenant verification mask.
+func GetVerifyCovenantsNone() NameFlags {
+	return VerifyCovenantsNone
+}
+
+// GetVerifyCovenantsHardened returns the hardened covenant verification mask.
+func GetVerifyCovenantsHardened() NameFlags {
+	return VerifyCovenantsHardened
+}
+
+// GetVerifyCovenantsLockup returns the lockup covenant verification mask.
+func GetVerifyCovenantsLockup() NameFlags {
+	return VerifyCovenantsLockup
+}
+
+// GetMandatoryVerifyCovenantFlags returns the default covenant verification mask.
+func GetMandatoryVerifyCovenantFlags() NameFlags {
+	return MandatoryVerifyCovenantFlags
+}
+
+// GetMaxCovenantSize returns the maximum covenant size.
+func GetMaxCovenantSize() int {
+	return MaxCovenantSize
+}
+
+// GetCovenantMaxSize returns the alias for the maximum covenant size.
+func GetCovenantMaxSize() int {
+	return CovenantMaxSize
+}
+
 // GetTypes is an alias for Types.
 //
 //	types := lns.GetTypes()
@@ -366,6 +406,86 @@ func GetTypesByVal() map[covenant.CovenantType]string {
 //	name := lns.GetTypeName(covenant.TypeBid)
 func GetTypeName(ct covenant.CovenantType) string {
 	return covenant.TypeName(ct)
+}
+
+// MaxNameSize returns the maximum supported name size.
+func (s *Service) MaxNameSize() int {
+	return MaxNameSize
+}
+
+// GetMaxNameSize is an alias for MaxNameSize.
+func (s *Service) GetMaxNameSize() int {
+	return s.MaxNameSize()
+}
+
+// MaxResourceSize returns the maximum supported DNS resource size.
+func (s *Service) MaxResourceSize() int {
+	return MaxResourceSize
+}
+
+// GetMaxResourceSize is an alias for MaxResourceSize.
+func (s *Service) GetMaxResourceSize() int {
+	return s.MaxResourceSize()
+}
+
+// VerifyCovenantsNone returns the disabled covenant verification mask.
+func (s *Service) VerifyCovenantsNone() NameFlags {
+	return VerifyCovenantsNone
+}
+
+// GetVerifyCovenantsNone is an alias for VerifyCovenantsNone.
+func (s *Service) GetVerifyCovenantsNone() NameFlags {
+	return s.VerifyCovenantsNone()
+}
+
+// VerifyCovenantsHardened returns the hardened covenant verification mask.
+func (s *Service) VerifyCovenantsHardened() NameFlags {
+	return VerifyCovenantsHardened
+}
+
+// GetVerifyCovenantsHardened is an alias for VerifyCovenantsHardened.
+func (s *Service) GetVerifyCovenantsHardened() NameFlags {
+	return s.VerifyCovenantsHardened()
+}
+
+// VerifyCovenantsLockup returns the lockup covenant verification mask.
+func (s *Service) VerifyCovenantsLockup() NameFlags {
+	return VerifyCovenantsLockup
+}
+
+// GetVerifyCovenantsLockup is an alias for VerifyCovenantsLockup.
+func (s *Service) GetVerifyCovenantsLockup() NameFlags {
+	return s.VerifyCovenantsLockup()
+}
+
+// MandatoryVerifyCovenantFlags returns the default covenant verification mask.
+func (s *Service) MandatoryVerifyCovenantFlags() NameFlags {
+	return MandatoryVerifyCovenantFlags
+}
+
+// GetMandatoryVerifyCovenantFlags is an alias for MandatoryVerifyCovenantFlags.
+func (s *Service) GetMandatoryVerifyCovenantFlags() NameFlags {
+	return s.MandatoryVerifyCovenantFlags()
+}
+
+// MaxCovenantSize returns the maximum covenant size.
+func (s *Service) MaxCovenantSize() int {
+	return MaxCovenantSize
+}
+
+// GetMaxCovenantSize is an alias for MaxCovenantSize.
+func (s *Service) GetMaxCovenantSize() int {
+	return s.MaxCovenantSize()
+}
+
+// CovenantMaxSize returns the alias for the maximum covenant size.
+func (s *Service) CovenantMaxSize() int {
+	return CovenantMaxSize
+}
+
+// GetCovenantMaxSize is an alias for CovenantMaxSize.
+func (s *Service) GetCovenantMaxSize() int {
+	return s.CovenantMaxSize()
 }
 
 // GetRollout returns the rollout start height and rollout week for a name hash.
