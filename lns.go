@@ -14,6 +14,7 @@ package lns
 
 import (
 	"context"
+	"crypto/sha3"
 
 	core "dappco.re/go/core"
 	"dappco.re/go/lns/internal/nameutil"
@@ -147,7 +148,6 @@ func verifyCanonicalName(name any) bool {
 
 func lookupCatalogName[T any](
 	name any,
-	method string,
 	byLabel func(string) (T, bool),
 	byHash func(primitives.Hash) (T, bool),
 ) (T, bool) {
@@ -167,12 +167,7 @@ func lookupCatalogName[T any](
 		return zero, false
 	}
 
-	hash, err := resolveCanonicalName(method, normalized)
-	if err != nil {
-		var zero T
-		return zero, false
-	}
-
+	hash := primitives.Hash(sha3.Sum256([]byte(normalized)))
 	return byHash(hash)
 }
 
@@ -733,7 +728,6 @@ func GetIsLinked(ct CovenantType) bool {
 func lookupReserved(name any) (covenant.ReservedName, bool) {
 	return lookupCatalogName(
 		name,
-		"lns.GetReserved",
 		ReservedCatalog().GetByName,
 		ReservedCatalog().Get,
 	)
@@ -742,7 +736,6 @@ func lookupReserved(name any) (covenant.ReservedName, bool) {
 func lookupLocked(name any) (covenant.LockedName, bool) {
 	return lookupCatalogName(
 		name,
-		"lns.GetLocked",
 		LockedCatalog().GetByName,
 		LockedCatalog().Get,
 	)

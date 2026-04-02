@@ -220,6 +220,47 @@ func TestPackageDefaultCatalogAliases(t *testing.T) {
 	}
 }
 
+func TestLookupCatalogNamePreservesDottedLabels(t *testing.T) {
+	hash := primitives.Hash(sha3.Sum256([]byte("foo.bar")))
+
+	byLabel := map[string]string{
+		"foo.bar": "label",
+	}
+	byHash := map[primitives.Hash]string{
+		hash: "hash",
+	}
+
+	got, ok := lookupCatalogName(
+		"foo.bar",
+		func(name string) (string, bool) {
+			item, ok := byLabel[name]
+			return item, ok
+		},
+		func(name primitives.Hash) (string, bool) {
+			item, ok := byHash[name]
+			return item, ok
+		},
+	)
+	if !ok || got != "label" {
+		t.Fatalf("lookupCatalogName should resolve dotted raw labels, got %q ok=%v", got, ok)
+	}
+
+	got, ok = lookupCatalogName(
+		"FOO.BAR.LTHN",
+		func(name string) (string, bool) {
+			item, ok := byLabel[name]
+			return item, ok
+		},
+		func(name primitives.Hash) (string, bool) {
+			item, ok := byHash[name]
+			return item, ok
+		},
+	)
+	if !ok || got != "hash" {
+		t.Fatalf("lookupCatalogName should fall back to hash lookup for canonical dotted names, got %q ok=%v", got, ok)
+	}
+}
+
 func TestPackageTypeTables(t *testing.T) {
 	if len(Types) == 0 || len(TypesByVal) == 0 {
 		t.Fatal("type lookup tables should not be empty")
