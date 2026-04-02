@@ -200,6 +200,10 @@ type ServiceOption func(*Service)
 //	svc := dns.NewService(dns.WithCore(c))
 func WithCore(c *core.Core) ServiceOption {
 	return func(s *Service) {
+		if s == nil || c == nil {
+			return
+		}
+
 		s.core = c
 	}
 }

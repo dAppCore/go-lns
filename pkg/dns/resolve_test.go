@@ -336,6 +336,12 @@ func TestNewServiceNilOptions(t *testing.T) {
 	}
 }
 
+func TestWithCoreNilSafety(t *testing.T) {
+	var svc *Service
+	WithCore(nil)(svc)
+	WithCore(&core.Core{})(nil)
+}
+
 func TestServiceName(t *testing.T) {
 	svc := NewService()
 
