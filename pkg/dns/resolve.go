@@ -70,6 +70,34 @@ func Verify(name any) bool {
 	return verifyCanonicalName(name)
 }
 
+// ResolveString is an alias for Resolve.
+//
+//	hash, err := dns.ResolveString("example.lthn")
+func ResolveString(name string) (primitives.Hash, error) {
+	return Resolve(name)
+}
+
+// ResolveBinary is an alias for Resolve.
+//
+//	hash, err := dns.ResolveBinary([]byte("example.lthn"))
+func ResolveBinary(name []byte) (primitives.Hash, error) {
+	return Resolve(name)
+}
+
+// HashString is an alias for ResolveString.
+//
+//	hash, err := dns.HashString("example.lthn")
+func HashString(name string) (primitives.Hash, error) {
+	return ResolveString(name)
+}
+
+// HashBinary is an alias for ResolveBinary.
+//
+//	hash, err := dns.HashBinary([]byte("example.lthn"))
+func HashBinary(name []byte) (primitives.Hash, error) {
+	return ResolveBinary(name)
+}
+
 // ResolveName is an alias for Resolve.
 func ResolveName(name any) (primitives.Hash, error) {
 	return Resolve(name)
@@ -83,6 +111,62 @@ func HashName(name any) (primitives.Hash, error) {
 // VerifyName is an alias for Verify.
 func VerifyName(name any) bool {
 	return Verify(name)
+}
+
+// ResolveByString is an alias for ResolveString.
+//
+//	hash, err := dns.ResolveByString("example.lthn")
+func ResolveByString(name string) (primitives.Hash, error) {
+	return ResolveString(name)
+}
+
+// ResolveByBinary is an alias for ResolveBinary.
+//
+//	hash, err := dns.ResolveByBinary([]byte("example.lthn"))
+func ResolveByBinary(name []byte) (primitives.Hash, error) {
+	return ResolveBinary(name)
+}
+
+// HashByString is an alias for HashString.
+//
+//	hash, err := dns.HashByString("example.lthn")
+func HashByString(name string) (primitives.Hash, error) {
+	return HashString(name)
+}
+
+// HashByBinary is an alias for HashBinary.
+//
+//	hash, err := dns.HashByBinary([]byte("example.lthn"))
+func HashByBinary(name []byte) (primitives.Hash, error) {
+	return HashBinary(name)
+}
+
+// VerifyString is an alias for Verify.
+//
+//	ok := dns.VerifyString("example.lthn")
+func VerifyString(name string) bool {
+	return Verify(name)
+}
+
+// VerifyBinary is an alias for Verify.
+//
+//	ok := dns.VerifyBinary([]byte("example.lthn"))
+func VerifyBinary(name []byte) bool {
+	return Verify(name)
+}
+
+// VerifyByString is an alias for VerifyString.
+//
+//	ok := dns.VerifyByString("example.lthn")
+func VerifyByString(name string) bool {
+	return VerifyString(name)
+}
+
+// VerifyByBinary is an alias for VerifyBinary.
+//
+//	ok := dns.VerifyByBinary([]byte("example.lthn"))
+func VerifyByBinary(name []byte) bool {
+	return VerifyBinary(name)
 }
 
 // Service handles DNS resolution for .lthn names against the LNS chain state.

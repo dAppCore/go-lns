@@ -365,10 +365,23 @@ func TestPackageLevelResolveAndVerifyAliases(t *testing.T) {
 		{name: "HashName", fn: HashName},
 		{name: "ResolveByName", fn: ResolveByName},
 		{name: "HashByName", fn: HashByName},
+		{name: "ResolveString", fn: func(name any) (primitives.Hash, error) { return ResolveString(name.(string)) }},
+		{name: "ResolveBinary", fn: func(name any) (primitives.Hash, error) { return ResolveBinary(name.([]byte)) }},
+		{name: "HashString", fn: func(name any) (primitives.Hash, error) { return HashString(name.(string)) }},
+		{name: "HashBinary", fn: func(name any) (primitives.Hash, error) { return HashBinary(name.([]byte)) }},
+		{name: "ResolveByString", fn: func(name any) (primitives.Hash, error) { return ResolveByString(name.(string)) }},
+		{name: "ResolveByBinary", fn: func(name any) (primitives.Hash, error) { return ResolveByBinary(name.([]byte)) }},
+		{name: "HashByString", fn: func(name any) (primitives.Hash, error) { return HashByString(name.(string)) }},
+		{name: "HashByBinary", fn: func(name any) (primitives.Hash, error) { return HashByBinary(name.([]byte)) }},
 	}
 
 	for _, tc := range resolveCases {
-		got, err := tc.fn("Foo-Bar.lthn")
+		input := any("Foo-Bar.lthn")
+		if tc.name == "ResolveBinary" || tc.name == "HashBinary" || tc.name == "ResolveByBinary" || tc.name == "HashByBinary" {
+			input = []byte("Foo-Bar.lthn")
+		}
+
+		got, err := tc.fn(input)
 		if err != nil {
 			t.Fatalf("%s returned error: %v", tc.name, err)
 		}
@@ -393,14 +406,29 @@ func TestPackageLevelResolveAndVerifyAliases(t *testing.T) {
 		{name: "Verify", fn: Verify},
 		{name: "VerifyName", fn: VerifyName},
 		{name: "VerifyByName", fn: VerifyByName},
+		{name: "VerifyString", fn: func(name any) bool { return VerifyString(name.(string)) }},
+		{name: "VerifyBinary", fn: func(name any) bool { return VerifyBinary(name.([]byte)) }},
+		{name: "VerifyByString", fn: func(name any) bool { return VerifyByString(name.(string)) }},
+		{name: "VerifyByBinary", fn: func(name any) bool { return VerifyByBinary(name.([]byte)) }},
 	}
 
 	for _, tc := range verifyCases {
-		if !tc.fn("Foo-Bar.lthn") {
+		input := any("Foo-Bar.lthn")
+		if tc.name == "VerifyBinary" || tc.name == "VerifyByBinary" {
+			input = []byte("Foo-Bar.lthn")
+		}
+
+		if !tc.fn(input) {
 			t.Fatalf("%s should accept canonical names", tc.name)
 		}
 
-		if tc.fn("foo.bar.lthn") {
+		if tc.name == "VerifyBinary" || tc.name == "VerifyByBinary" {
+			input = []byte("foo.bar.lthn")
+		} else {
+			input = "foo.bar.lthn"
+		}
+
+		if tc.fn(input) {
 			t.Fatalf("%s should reject malformed names", tc.name)
 		}
 	}
