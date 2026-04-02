@@ -54,3 +54,24 @@ func TestServiceResolveRejectsInvalidNames(t *testing.T) {
 		t.Fatal("Resolve should reject unsupported input types")
 	}
 }
+
+func TestServiceVerify(t *testing.T) {
+	svc := &Service{}
+
+	cases := []struct {
+		name any
+		ok   bool
+	}{
+		{name: "Foo-Bar.lthn", ok: true},
+		{name: []byte("Foo-Bar.lthn"), ok: true},
+		{name: "foo.bar.lthn", ok: false},
+		{name: "foo-", ok: false},
+		{name: 123, ok: false},
+	}
+
+	for _, tc := range cases {
+		if got := svc.Verify(tc.name); got != tc.ok {
+			t.Fatalf("Verify(%v) = %v, want %v", tc.name, got, tc.ok)
+		}
+	}
+}

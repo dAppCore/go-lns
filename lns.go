@@ -56,3 +56,15 @@ func (s *Service) Resolve(name any) (primitives.Hash, error) {
 
 	return dns.NewService(opts...).Resolve(name)
 }
+
+// Verify reports whether a .lthn name is valid after canonicalisation.
+//
+// This keeps the service-level API aligned with the DNS resolver helpers.
+func (s *Service) Verify(name any) bool {
+	opts := make([]dns.ServiceOption, 0, 1)
+	if s != nil && s.ServiceRuntime != nil {
+		opts = append(opts, dns.WithCore(s.Core()))
+	}
+
+	return dns.NewService(opts...).Verify(name)
+}

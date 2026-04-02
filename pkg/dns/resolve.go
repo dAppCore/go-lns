@@ -73,6 +73,19 @@ func (s *Service) Resolve(name any) (primitives.Hash, error) {
 	return covenant.HashString(normalized)
 }
 
+// Verify reports whether a .lthn name is valid after canonicalisation.
+//
+// This mirrors Resolve's input handling but returns a boolean so callers can
+// validate user input without allocating or hashing.
+func (s *Service) Verify(name any) bool {
+	normalized, ok := canonicalizeName(name)
+	if !ok {
+		return false
+	}
+
+	return covenant.VerifyString(normalized)
+}
+
 func canonicalizeName(name any) (string, bool) {
 	var value string
 
