@@ -4,10 +4,12 @@ package lns
 
 import (
 	"crypto/sha3"
+	"encoding/binary"
 	"testing"
 
 	"dappco.re/go/lns/pkg/covenant"
 	"dappco.re/go/lns/pkg/primitives"
+	"golang.org/x/crypto/blake2b"
 )
 
 func TestServiceResolve(t *testing.T) {
@@ -319,6 +321,41 @@ func TestServiceVerifyByNameAliases(t *testing.T) {
 
 	if svc.VerifyByName(123) {
 		t.Fatal("VerifyByName should reject unsupported input types")
+	}
+}
+
+func TestServiceBlind(t *testing.T) {
+	svc := &Service{}
+
+	var nonce primitives.Hash
+	for i := range nonce {
+		nonce[i] = byte(i)
+	}
+
+	got, err := svc.Blind(0x1122334455667788, nonce)
+	if err != nil {
+		t.Fatalf("Blind returned error: %v", err)
+	}
+
+	var input [40]byte
+	binary.LittleEndian.PutUint64(input[:8], 0x1122334455667788)
+	copy(input[8:], nonce[:])
+
+	want := blake2b.Sum256(input[:])
+	if got != want {
+		t.Fatalf("Blind returned %x, want %x", got, want)
+	}
+}
+
+func TestServiceTypeName(t *testing.T) {
+	svc := &Service{}
+
+	if got := svc.TypeName(covenant.TypeBid); got != "BID" {
+		t.Fatalf("TypeName(TypeBid) = %q, want %q", got, "BID")
+	}
+
+	if got := svc.TypeName(covenant.CovenantType(99)); got != "UNKNOWN" {
+		t.Fatalf("TypeName(99) = %q, want %q", got, "UNKNOWN")
 	}
 }
 

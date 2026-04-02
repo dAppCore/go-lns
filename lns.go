@@ -247,6 +247,20 @@ func (s *Service) VerifyByBinary(name []byte) bool {
 	return s.VerifyBinary(name)
 }
 
+// Blind returns the sealed-bid commitment for an amount and nonce.
+//
+//	bid, err := svc.Blind(1000, nonce)
+func (s *Service) Blind(value uint64, nonce primitives.Hash) (primitives.Hash, error) {
+	return covenant.Blind(value, nonce)
+}
+
+// TypeName returns the canonical string for a covenant type.
+//
+//	name := svc.TypeName(covenant.TypeBid)
+func (s *Service) TypeName(ct covenant.CovenantType) string {
+	return covenant.TypeName(ct)
+}
+
 // GetReserved looks up a reserved .lthn name after canonicalisation.
 //
 // The lookup accepts the same inputs as Resolve and Verify, then returns the
