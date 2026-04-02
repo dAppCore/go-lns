@@ -26,6 +26,14 @@ func TestServiceLifecycleHooks(t *testing.T) {
 	}
 }
 
+func TestServiceHandleIPCEvents(t *testing.T) {
+	svc := &Service{}
+
+	if got := svc.HandleIPCEvents(nil, nil); !got.OK {
+		t.Fatalf("HandleIPCEvents returned %#v, want OK", got)
+	}
+}
+
 func TestServiceResolve(t *testing.T) {
 	svc := &Service{}
 

@@ -37,6 +37,9 @@ type Service struct {
 var (
 	_ core.Startable = (*Service)(nil)
 	_ core.Stoppable = (*Service)(nil)
+	_ interface {
+		HandleIPCEvents(*core.Core, core.Message) core.Result
+	} = (*Service)(nil)
 )
 
 // serviceOptions holds configuration for the LNS service.
@@ -109,6 +112,14 @@ func (s *Service) OnStartup(context.Context) core.Result {
 // OnShutdown satisfies core.Stoppable so LNS participates in Core lifecycle
 // discovery without requiring any explicit teardown.
 func (s *Service) OnShutdown(context.Context) core.Result {
+	return core.Result{OK: true}
+}
+
+// HandleIPCEvents satisfies Core's IPC handler discovery.
+//
+//	core.New(core.WithService(lns.Register))
+//	// LNS registers a no-op IPC handler so it can join the bus cleanly.
+func (s *Service) HandleIPCEvents(*core.Core, core.Message) core.Result {
 	return core.Result{OK: true}
 }
 
