@@ -71,11 +71,18 @@ func (s *Service) GetCore() *core.Core {
 	return s.Core()
 }
 
-// GetServiceName returns the registered name for the DNS service group.
+// ServiceName returns the registered name for the DNS service group.
+//
+//	name := svc.ServiceName()
+func (s *Service) ServiceName() string {
+	return ServiceName
+}
+
+// GetServiceName is an alias for ServiceName.
 //
 //	name := svc.GetServiceName()
 func (s *Service) GetServiceName() string {
-	return ServiceName
+	return s.ServiceName()
 }
 
 // Resolve normalises a .lthn name and returns its canonical hash.

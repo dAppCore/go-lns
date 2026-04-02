@@ -45,11 +45,18 @@ func Register(c *core.Core) core.Result {
 	return core.Result{Value: svc, OK: true}
 }
 
-// GetServiceName returns the registered name for the LNS service group.
+// ServiceName returns the registered name for the LNS service group.
+//
+//	name := svc.ServiceName()
+func (s *Service) ServiceName() string {
+	return ServiceName
+}
+
+// GetServiceName is an alias for ServiceName.
 //
 //	name := svc.GetServiceName()
 func (s *Service) GetServiceName() string {
-	return ServiceName
+	return s.ServiceName()
 }
 
 // Resolve returns the canonical hash for a validated .lthn name.
