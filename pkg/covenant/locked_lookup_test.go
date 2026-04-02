@@ -128,6 +128,19 @@ func TestLockedLookupStringAndBinaryAliases(t *testing.T) {
 	if !HasLockedByBinary([]byte("NEC")) {
 		t.Fatal("HasLockedByBinary should report locked catalog labels")
 	}
+
+	item, ok = GetLockedName("nec.lthn")
+	if !ok {
+		t.Fatal("GetLockedName should accept canonical .lthn names")
+	}
+
+	if item.Name != "nec" {
+		t.Fatalf("item.Name = %q, want %q", item.Name, "nec")
+	}
+
+	if !HasLockedName("nec.lthn") {
+		t.Fatal("HasLockedName should accept canonical .lthn names")
+	}
 }
 
 func TestLockedLookupHasByHashAlias(t *testing.T) {

@@ -61,8 +61,8 @@ var (
 
 // HasReservedName reports whether the JS reserved-name table contains the name.
 //
-// Lookup is case-insensitive and matches the reference table's lower-casing
-// behaviour.
+// Lookup is case-insensitive and accepts a canonical `.lthn` suffix in
+// addition to bare labels.
 func HasReservedName(name string) bool {
 	return DefaultReservedCatalog().HasByName(name)
 }
@@ -84,7 +84,8 @@ func HasReservedBinary(name []byte) bool {
 
 // GetReservedName returns the reserved-name entry for the provided label.
 //
-// The input is lower-cased before hashing, matching the JS reference helper.
+// The input is lower-cased before hashing, and canonical `.lthn` suffixes are
+// stripped before lookup.
 func GetReservedName(name string) (ReservedName, bool) {
 	return DefaultReservedCatalog().GetByName(name)
 }
@@ -258,8 +259,8 @@ func (c *ReservedCatalog) HasByName(name string) bool {
 
 // GetByName returns the reserved-name entry for the provided label.
 //
-// The lookup lower-cases ASCII input and hashes it directly, matching the JS
-// reference helper's ASCII encoding behavior.
+// The lookup lower-cases ASCII input, strips canonical `.lthn` suffixes, and
+// hashes the normalized label directly.
 func (c *ReservedCatalog) GetByName(name string) (ReservedName, bool) {
 	name, ok := asciiLowerName(name)
 	if !ok {

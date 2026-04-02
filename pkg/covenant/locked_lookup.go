@@ -44,6 +44,9 @@ var (
 )
 
 // HasLockedName reports whether the JS lockup table contains the name.
+//
+// Lookup is case-insensitive and accepts a canonical `.lthn` suffix in
+// addition to bare labels.
 func HasLockedName(name string) bool {
 	return DefaultLockedCatalog().HasByName(name)
 }
@@ -64,6 +67,9 @@ func HasLockedBinary(name []byte) bool {
 }
 
 // GetLockedName returns the locked-name entry for the provided label.
+//
+// The input is lower-cased before hashing, and canonical `.lthn` suffixes are
+// stripped before lookup.
 func GetLockedName(name string) (LockedName, bool) {
 	return DefaultLockedCatalog().GetByName(name)
 }
@@ -195,8 +201,8 @@ func (c *LockedCatalog) HasByName(name string) bool {
 
 // GetByName returns the locked-name entry for the provided label.
 //
-// The lookup lower-cases ASCII input and hashes it directly, matching the JS
-// reference helper's ASCII encoding behavior.
+// The lookup lower-cases ASCII input, strips canonical `.lthn` suffixes, and
+// hashes the normalized label directly.
 func (c *LockedCatalog) GetByName(name string) (LockedName, bool) {
 	name, ok := asciiLowerName(name)
 	if !ok {
