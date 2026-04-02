@@ -455,6 +455,10 @@ type NameState struct {
 
 	// Weak indicates a weak claim (imported from ICANN without full proof).
 	Weak bool
+
+	// delta caches the in-memory state delta used by undo/redo flows.
+	// It is not part of the persistent name-state payload.
+	delta *NameDelta
 }
 
 // IsNull reports whether the outpoint is the null outpoint used by coinbase

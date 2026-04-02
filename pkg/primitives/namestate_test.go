@@ -93,4 +93,53 @@ func TestNameStateCloneAndInject(t *testing.T) {
 		injected.Weak != original.Weak {
 		t.Fatal("Inject should copy the full name state")
 	}
+
+	if injected.delta != nil {
+		t.Fatal("Inject should not copy cached delta state")
+	}
+}
+
+func TestNameStateDeltaHelpers(t *testing.T) {
+	var ns NameState
+
+	if got := ns.HasDelta(); got {
+		t.Fatal("zero name state should not report a delta")
+	}
+
+	delta := ns.Delta()
+	if delta == nil {
+		t.Fatal("Delta should allocate a delta on demand")
+	}
+
+	if got := ns.HasDelta(); got {
+		t.Fatal("empty delta should not count as a change")
+	}
+
+	height := uint32(42)
+	owner := Outpoint{TxHash: Hash{1, 2, 3}, Index: 7}
+	data := []byte("payload")
+	registered := true
+
+	delta.Height = &height
+	delta.Owner = &owner
+	delta.Data = &data
+	delta.Registered = &registered
+
+	if got := ns.HasDelta(); !got {
+		t.Fatal("populated delta should be reported")
+	}
+
+	ns.ApplyState(delta)
+
+	if ns.Height != 42 || ns.Owner != owner || string(ns.Data) != "payload" || !ns.Registered {
+		t.Fatal("ApplyState should merge populated delta fields")
+	}
+
+	if got := ns.Clear(); got != &ns {
+		t.Fatal("Clear should return the receiver")
+	}
+
+	if ns.delta != nil {
+		t.Fatal("Clear should discard the cached delta")
+	}
 }
