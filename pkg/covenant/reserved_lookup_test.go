@@ -60,6 +60,14 @@ func TestReservedLookupRejectsUnknownNames(t *testing.T) {
 	if _, ok := GetReservedName("does-not-exist"); ok {
 		t.Fatal("GetReservedName should return false for unknown names")
 	}
+
+	if HasReservedByName("does-not-exist") {
+		t.Fatal("unknown names should not be reported as reserved by name")
+	}
+
+	if _, ok := GetReservedByName("does-not-exist"); ok {
+		t.Fatal("GetReservedByName should return false for unknown names")
+	}
 }
 
 func TestReservedCatalogHelpers(t *testing.T) {

@@ -48,9 +48,19 @@ func HasLockedName(name string) bool {
 	return DefaultLockedCatalog().HasByName(name)
 }
 
+// HasLockedByName is an alias for HasLockedName.
+func HasLockedByName(name string) bool {
+	return HasLockedName(name)
+}
+
 // GetLockedName returns the locked-name entry for the provided label.
 func GetLockedName(name string) (LockedName, bool) {
 	return DefaultLockedCatalog().GetByName(name)
+}
+
+// GetLockedByName is an alias for GetLockedName.
+func GetLockedByName(name string) (LockedName, bool) {
+	return GetLockedName(name)
 }
 
 // GetLockedHash returns the locked-name entry for a precomputed hash.

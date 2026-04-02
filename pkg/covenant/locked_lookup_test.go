@@ -56,6 +56,14 @@ func TestLockedLookupRejectsUnknownNames(t *testing.T) {
 	if _, ok := GetLockedName("does-not-exist"); ok {
 		t.Fatal("GetLockedName should return false for unknown names")
 	}
+
+	if HasLockedByName("does-not-exist") {
+		t.Fatal("unknown names should not be reported as locked by name")
+	}
+
+	if _, ok := GetLockedByName("does-not-exist"); ok {
+		t.Fatal("GetLockedByName should return false for unknown names")
+	}
 }
 
 func TestLockedCatalogHelpers(t *testing.T) {

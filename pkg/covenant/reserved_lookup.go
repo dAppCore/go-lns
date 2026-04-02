@@ -68,11 +68,21 @@ func HasReservedName(name string) bool {
 	return DefaultReservedCatalog().HasByName(name)
 }
 
+// HasReservedByName is an alias for HasReservedName.
+func HasReservedByName(name string) bool {
+	return HasReservedName(name)
+}
+
 // GetReservedName returns the reserved-name entry for the provided label.
 //
 // The input is lower-cased before hashing, matching the JS reference helper.
 func GetReservedName(name string) (ReservedName, bool) {
 	return DefaultReservedCatalog().GetByName(name)
+}
+
+// GetReservedByName is an alias for GetReservedName.
+func GetReservedByName(name string) (ReservedName, bool) {
+	return GetReservedName(name)
 }
 
 // GetReservedHash returns the reserved-name entry for a precomputed hash.
