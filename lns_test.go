@@ -150,6 +150,60 @@ func TestServiceResolveNameAliases(t *testing.T) {
 	}
 }
 
+func TestServiceHashAliases(t *testing.T) {
+	svc := &Service{}
+
+	got, err := svc.Hash("Foo-Bar.lthn")
+	if err != nil {
+		t.Fatalf("Hash returned error: %v", err)
+	}
+
+	want := primitives.Hash(sha3.Sum256([]byte("foo-bar")))
+	if got != want {
+		t.Fatalf("Hash returned %x, want %x", got, want)
+	}
+
+	got, err = svc.HashString("Foo-Bar.lthn")
+	if err != nil {
+		t.Fatalf("HashString returned error: %v", err)
+	}
+
+	if got != want {
+		t.Fatalf("HashString returned %x, want %x", got, want)
+	}
+
+	got, err = svc.HashBinary([]byte("Foo-Bar.lthn"))
+	if err != nil {
+		t.Fatalf("HashBinary returned error: %v", err)
+	}
+
+	if got != want {
+		t.Fatalf("HashBinary returned %x, want %x", got, want)
+	}
+
+	got, err = svc.HashName("Foo-Bar.lthn")
+	if err != nil {
+		t.Fatalf("HashName returned error: %v", err)
+	}
+
+	if got != want {
+		t.Fatalf("HashName returned %x, want %x", got, want)
+	}
+
+	got, err = svc.HashByName([]byte("Foo-Bar.lthn"))
+	if err != nil {
+		t.Fatalf("HashByName returned error: %v", err)
+	}
+
+	if got != want {
+		t.Fatalf("HashByName returned %x, want %x", got, want)
+	}
+
+	if _, err := svc.Hash(123); err == nil {
+		t.Fatal("Hash should reject unsupported input types")
+	}
+}
+
 func TestServiceResolveByNameAliases(t *testing.T) {
 	svc := &Service{}
 

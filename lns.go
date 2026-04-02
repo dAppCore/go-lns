@@ -63,6 +63,17 @@ func (s *Service) Resolve(name any) (primitives.Hash, error) {
 	}
 }
 
+// Hash returns the canonical hash for a validated .lthn name.
+//
+// Hash is the direct service-level alias for Resolve.
+//
+//	c := core.New(core.WithService(lns.Register))
+//	svc := c.Service("lns").(*lns.Service)
+//	hash, err := svc.Hash("example.lthn")
+func (s *Service) Hash(name any) (primitives.Hash, error) {
+	return s.Resolve(name)
+}
+
 // Verify reports whether a .lthn name is valid after canonicalisation.
 //
 // This keeps the service-level API aligned with the DNS resolver helpers.
@@ -79,6 +90,20 @@ func (s *Service) Verify(name any) bool {
 	default:
 		return false
 	}
+}
+
+// HashString returns the canonical hash for a .lthn name supplied as a string.
+//
+//	ok := svc.HashString("example.lthn")
+func (s *Service) HashString(name string) (primitives.Hash, error) {
+	return s.ResolveString(name)
+}
+
+// HashBinary returns the canonical hash for a .lthn name supplied as bytes.
+//
+//	ok := svc.HashBinary([]byte("example.lthn"))
+func (s *Service) HashBinary(name []byte) (primitives.Hash, error) {
+	return s.ResolveBinary(name)
 }
 
 // ResolveString returns the canonical hash for a .lthn name supplied as a string.
@@ -110,6 +135,15 @@ func (s *Service) ResolveName(name any) (primitives.Hash, error) {
 	return s.Resolve(name)
 }
 
+// HashName is an alias for Hash.
+//
+//	c := core.New(core.WithService(lns.Register))
+//	svc := c.Service("lns").(*lns.Service)
+//	hash, err := svc.HashName("example.lthn")
+func (s *Service) HashName(name any) (primitives.Hash, error) {
+	return s.Hash(name)
+}
+
 // VerifyName is an alias for Verify.
 //
 //	c := core.New(core.WithService(lns.Register))
@@ -126,6 +160,15 @@ func (s *Service) VerifyName(name any) bool {
 //	hash, err := svc.ResolveByName("example.lthn")
 func (s *Service) ResolveByName(name any) (primitives.Hash, error) {
 	return s.ResolveName(name)
+}
+
+// HashByName is an alias for HashName.
+//
+//	c := core.New(core.WithService(lns.Register))
+//	svc := c.Service("lns").(*lns.Service)
+//	hash, err := svc.HashByName("example.lthn")
+func (s *Service) HashByName(name any) (primitives.Hash, error) {
+	return s.HashName(name)
 }
 
 // VerifyByName is an alias for VerifyName.

@@ -74,6 +74,13 @@ func (s *Service) Resolve(name any) (primitives.Hash, error) {
 	return covenant.HashString(normalized)
 }
 
+// Hash returns the canonical hash for a .lthn name.
+//
+// Hash is the direct service-level alias for Resolve.
+func (s *Service) Hash(name any) (primitives.Hash, error) {
+	return s.Resolve(name)
+}
+
 // Verify reports whether a .lthn name is valid after canonicalisation.
 //
 // This mirrors Resolve's input handling but returns a boolean so callers can
@@ -88,6 +95,16 @@ func (s *Service) Verify(name any) bool {
 	}
 
 	return covenant.VerifyString(normalized)
+}
+
+// HashString returns the canonical hash for a .lthn name supplied as a string.
+func (s *Service) HashString(name string) (primitives.Hash, error) {
+	return s.ResolveString(name)
+}
+
+// HashBinary returns the canonical hash for a .lthn name supplied as bytes.
+func (s *Service) HashBinary(name []byte) (primitives.Hash, error) {
+	return s.ResolveBinary(name)
 }
 
 // ResolveString returns the canonical hash for a .lthn name supplied as a string.
@@ -121,6 +138,11 @@ func (s *Service) ResolveBinary(name []byte) (primitives.Hash, error) {
 //	hash, err := svc.ResolveName("example.lthn")
 func (s *Service) ResolveName(name any) (primitives.Hash, error) {
 	return s.Resolve(name)
+}
+
+// HashName is an alias for Hash.
+func (s *Service) HashName(name any) (primitives.Hash, error) {
+	return s.Hash(name)
 }
 
 // VerifyString reports whether a .lthn name supplied as a string is valid.
@@ -158,6 +180,11 @@ func (s *Service) VerifyName(name any) bool {
 //	hash, err := svc.ResolveByName("example.lthn")
 func (s *Service) ResolveByName(name any) (primitives.Hash, error) {
 	return s.ResolveName(name)
+}
+
+// HashByName is an alias for HashName.
+func (s *Service) HashByName(name any) (primitives.Hash, error) {
+	return s.HashName(name)
 }
 
 // VerifyByName is an alias for VerifyName.
