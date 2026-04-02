@@ -78,6 +78,10 @@ func NewService(c *core.Core) *Service {
 //
 //	c := core.New(core.WithService(lns.Register))
 func Register(c *core.Core) core.Result {
+	if c == nil {
+		return core.Result{Value: core.E("lns.Register", "core is required", nil), OK: false}
+	}
+
 	return core.Result{Value: NewService(c), OK: true}
 }
 

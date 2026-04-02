@@ -824,6 +824,17 @@ func TestNewServiceWithNilCoreOption(t *testing.T) {
 	}
 }
 
+func TestRegisterRejectsNilCore(t *testing.T) {
+	res := Register(nil)
+	if res.OK {
+		t.Fatal("Register(nil) should fail")
+	}
+
+	if _, ok := res.Value.(error); !ok {
+		t.Fatalf("Register(nil) should return an error result, got %T", res.Value)
+	}
+}
+
 func TestServiceGetReserved(t *testing.T) {
 	svc := &Service{}
 
