@@ -143,6 +143,13 @@ func HasSaneCovenants(tx primitives.Transaction) bool {
 					return false
 				}
 
+				if i > 0 && i < len(tx.Inputs) {
+					input := tx.Inputs[i]
+					if len(input.Witness) != 1 {
+						return false
+					}
+				}
+
 			case TypeClaim:
 				if i == 0 || i >= len(tx.Inputs) {
 					return false
@@ -179,7 +186,7 @@ func HasSaneCovenants(tx primitives.Transaction) bool {
 		return true
 	}
 
-	for _, output := range tx.Outputs {
+	for i, output := range tx.Outputs {
 		cov := output.Covenant
 
 		switch CovenantType(cov.Type) {
@@ -192,6 +199,10 @@ func HasSaneCovenants(tx primitives.Transaction) bool {
 			return false
 
 		case TypeOpen:
+			if i >= len(tx.Inputs) {
+				return false
+			}
+
 			if cov.Len() != 3 || len(cov.Items[0]) != 32 || len(cov.Items[1]) != 4 || len(cov.Items[2]) == 0 || len(cov.Items[2]) > MaxNameSize {
 				return false
 			}
@@ -205,6 +216,10 @@ func HasSaneCovenants(tx primitives.Transaction) bool {
 			}
 
 		case TypeBid:
+			if i >= len(tx.Inputs) {
+				return false
+			}
+
 			if cov.Len() != 4 || len(cov.Items[0]) != 32 || len(cov.Items[1]) != 4 || len(cov.Items[2]) == 0 || len(cov.Items[2]) > MaxNameSize || len(cov.Items[3]) != 32 {
 				return false
 			}
@@ -214,31 +229,55 @@ func HasSaneCovenants(tx primitives.Transaction) bool {
 			}
 
 		case TypeReveal:
+			if i >= len(tx.Inputs) {
+				return false
+			}
+
 			if cov.Len() != 3 || len(cov.Items[0]) != 32 || len(cov.Items[1]) != 4 || len(cov.Items[2]) != 32 {
 				return false
 			}
 
 		case TypeRedeem:
+			if i >= len(tx.Inputs) {
+				return false
+			}
+
 			if cov.Len() != 2 || len(cov.Items[0]) != 32 || len(cov.Items[1]) != 4 {
 				return false
 			}
 
 		case TypeRegister:
+			if i >= len(tx.Inputs) {
+				return false
+			}
+
 			if cov.Len() != 4 || len(cov.Items[0]) != 32 || len(cov.Items[1]) != 4 || len(cov.Items[2]) > MaxResourceSize || len(cov.Items[3]) != 32 {
 				return false
 			}
 
 		case TypeUpdate:
+			if i >= len(tx.Inputs) {
+				return false
+			}
+
 			if cov.Len() != 3 || len(cov.Items[0]) != 32 || len(cov.Items[1]) != 4 || len(cov.Items[2]) > MaxResourceSize {
 				return false
 			}
 
 		case TypeRenew:
+			if i >= len(tx.Inputs) {
+				return false
+			}
+
 			if cov.Len() != 3 || len(cov.Items[0]) != 32 || len(cov.Items[1]) != 4 || len(cov.Items[2]) != 32 {
 				return false
 			}
 
 		case TypeTransfer:
+			if i >= len(tx.Inputs) {
+				return false
+			}
+
 			if cov.Len() != 4 || len(cov.Items[0]) != 32 || len(cov.Items[1]) != 4 || len(cov.Items[2]) != 1 {
 				return false
 			}
@@ -251,6 +290,10 @@ func HasSaneCovenants(tx primitives.Transaction) bool {
 			}
 
 		case TypeFinalize:
+			if i >= len(tx.Inputs) {
+				return false
+			}
+
 			if cov.Len() != 7 || len(cov.Items[0]) != 32 || len(cov.Items[1]) != 4 || len(cov.Items[2]) == 0 || len(cov.Items[2]) > MaxNameSize || len(cov.Items[3]) != 1 || len(cov.Items[4]) != 4 || len(cov.Items[5]) != 4 || len(cov.Items[6]) != 32 {
 				return false
 			}
@@ -260,6 +303,10 @@ func HasSaneCovenants(tx primitives.Transaction) bool {
 			}
 
 		case TypeRevoke:
+			if i >= len(tx.Inputs) {
+				return false
+			}
+
 			if cov.Len() != 2 || len(cov.Items[0]) != 32 || len(cov.Items[1]) != 4 {
 				return false
 			}

@@ -120,6 +120,10 @@ func TestHasSaneCovenants(t *testing.T) {
 	}
 
 	valid := primitives.Transaction{
+		Inputs: []primitives.Input{
+			{Prevout: primitives.Outpoint{TxHash: primitives.Hash{1}, Index: 0}},
+			{Prevout: primitives.Outpoint{TxHash: primitives.Hash{2}, Index: 0}},
+		},
 		Outputs: []primitives.Output{
 			{Covenant: primitives.Covenant{Type: uint8(TypeOpen), Items: [][]byte{hash[:], []byte{0, 0, 0, 0}, []byte("example-name")}}},
 			{Covenant: primitives.Covenant{Type: uint8(TypeRegister), Items: [][]byte{hash[:], []byte{1, 0, 0, 0}, []byte("record"), make([]byte, 32)}}},
