@@ -122,6 +122,25 @@ func (s *Service) HasReserved(name any) bool {
 	return ok
 }
 
+// GetReservedByName looks up a reserved name using the raw catalog label.
+//
+// This mirrors the covenant package helper without requiring .lthn
+// canonicalisation first.
+func (s *Service) GetReservedByName(name any) (covenant.ReservedName, bool) {
+	label, ok := catalogLabel(name)
+	if !ok {
+		return covenant.ReservedName{}, false
+	}
+
+	return covenant.GetReservedName(label)
+}
+
+// HasReservedByName reports whether the raw catalog label is reserved.
+func (s *Service) HasReservedByName(name any) bool {
+	_, ok := s.GetReservedByName(name)
+	return ok
+}
+
 // HasReservedName is an alias for HasReserved.
 func (s *Service) HasReservedName(name any) bool {
 	return s.HasReserved(name)
@@ -165,6 +184,25 @@ func (s *Service) GetLockedName(name any) (covenant.LockedName, bool) {
 // plumbing to service-level callers.
 func (s *Service) HasLocked(name any) bool {
 	_, ok := s.GetLocked(name)
+	return ok
+}
+
+// GetLockedByName looks up a locked name using the raw catalog label.
+//
+// This mirrors the covenant package helper without requiring .lthn
+// canonicalisation first.
+func (s *Service) GetLockedByName(name any) (covenant.LockedName, bool) {
+	label, ok := catalogLabel(name)
+	if !ok {
+		return covenant.LockedName{}, false
+	}
+
+	return covenant.GetLockedName(label)
+}
+
+// HasLockedByName reports whether the raw catalog label is locked.
+func (s *Service) HasLockedByName(name any) bool {
+	_, ok := s.GetLockedByName(name)
 	return ok
 }
 
@@ -256,4 +294,15 @@ func (s *Service) LockedKeys() []primitives.Hash {
 // LockedValues exposes the locked-name entries used by the service.
 func (s *Service) LockedValues() []covenant.LockedName {
 	return s.LockedCatalog().Values()
+}
+
+func catalogLabel(name any) (string, bool) {
+	switch v := name.(type) {
+	case string:
+		return v, true
+	case []byte:
+		return string(v), true
+	default:
+		return "", false
+	}
 }

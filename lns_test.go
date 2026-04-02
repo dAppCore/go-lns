@@ -167,6 +167,47 @@ func TestServiceHasReserved(t *testing.T) {
 	}
 }
 
+func TestServiceGetReservedByName(t *testing.T) {
+	svc := &Service{}
+
+	item, ok := svc.GetReservedByName("RESERVED")
+	if !ok {
+		t.Fatal("GetReservedByName should find the reserved reference entry")
+	}
+
+	if item.Name != "reserved" {
+		t.Fatalf("item.Name = %q, want %q", item.Name, "reserved")
+	}
+
+	if _, ok := svc.GetReservedByName([]byte("reserved")); !ok {
+		t.Fatal("GetReservedByName([]byte) should find the reserved reference entry")
+	}
+
+	if _, ok := svc.GetReservedByName(123); ok {
+		t.Fatal("GetReservedByName should reject unsupported input types")
+	}
+}
+
+func TestServiceHasReservedByName(t *testing.T) {
+	svc := &Service{}
+
+	if !svc.HasReservedByName("RESERVED") {
+		t.Fatal("HasReservedByName should report reserved catalog labels")
+	}
+
+	if !svc.HasReservedByName([]byte("reserved")) {
+		t.Fatal("HasReservedByName([]byte) should report reserved catalog labels")
+	}
+
+	if svc.HasReservedByName("not-reserved") {
+		t.Fatal("HasReservedByName should return false for unknown labels")
+	}
+
+	if svc.HasReservedByName(123) {
+		t.Fatal("HasReservedByName should reject unsupported input types")
+	}
+}
+
 func TestServiceReservedNameAliases(t *testing.T) {
 	svc := &Service{}
 
@@ -256,6 +297,47 @@ func TestServiceHasLocked(t *testing.T) {
 
 	if svc.HasLocked(123) {
 		t.Fatal("HasLocked should reject unsupported input types")
+	}
+}
+
+func TestServiceGetLockedByName(t *testing.T) {
+	svc := &Service{}
+
+	item, ok := svc.GetLockedByName("NEC")
+	if !ok {
+		t.Fatal("GetLockedByName should find the locked reference entry")
+	}
+
+	if item.Name != "nec" {
+		t.Fatalf("item.Name = %q, want %q", item.Name, "nec")
+	}
+
+	if _, ok := svc.GetLockedByName([]byte("nec")); !ok {
+		t.Fatal("GetLockedByName([]byte) should find the locked reference entry")
+	}
+
+	if _, ok := svc.GetLockedByName(123); ok {
+		t.Fatal("GetLockedByName should reject unsupported input types")
+	}
+}
+
+func TestServiceHasLockedByName(t *testing.T) {
+	svc := &Service{}
+
+	if !svc.HasLockedByName("NEC") {
+		t.Fatal("HasLockedByName should report locked catalog labels")
+	}
+
+	if !svc.HasLockedByName([]byte("nec")) {
+		t.Fatal("HasLockedByName([]byte) should report locked catalog labels")
+	}
+
+	if svc.HasLockedByName("not-locked") {
+		t.Fatal("HasLockedByName should return false for unknown labels")
+	}
+
+	if svc.HasLockedByName(123) {
+		t.Fatal("HasLockedByName should reject unsupported input types")
 	}
 }
 
