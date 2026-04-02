@@ -207,6 +207,42 @@ func TestServiceHashAliases(t *testing.T) {
 	}
 }
 
+func TestServiceRuleTables(t *testing.T) {
+	svc := &Service{}
+
+	if len(svc.Types()) == 0 || len(svc.TypesByVal()) == 0 {
+		t.Fatal("service rule tables should not be empty")
+	}
+
+	if len(svc.GetTypes()) != len(svc.Types()) {
+		t.Fatal("GetTypes should alias Types")
+	}
+
+	if len(svc.GetTypesByVal()) != len(svc.TypesByVal()) {
+		t.Fatal("GetTypesByVal should alias TypesByVal")
+	}
+
+	if _, ok := svc.Types()["BID"]; !ok {
+		t.Fatal("Types should expose BID")
+	}
+
+	if got, ok := svc.TypesByVal()[covenant.TypeBid]; !ok || got != "BID" {
+		t.Fatalf("TypesByVal[TypeBid] = %q, want %q", got, "BID")
+	}
+
+	if len(svc.Blacklist()) == 0 {
+		t.Fatal("Blacklist should not be empty")
+	}
+
+	if len(svc.GetBlacklist()) != len(svc.Blacklist()) {
+		t.Fatal("GetBlacklist should alias Blacklist")
+	}
+
+	if _, ok := svc.Blacklist()["test"]; !ok {
+		t.Fatal("Blacklist should expose test")
+	}
+}
+
 func TestServiceHashByStringAndBinaryAliases(t *testing.T) {
 	svc := &Service{}
 

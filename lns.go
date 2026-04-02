@@ -553,6 +553,36 @@ func (s *Service) GetTypeName(ct covenant.CovenantType) string {
 	return s.TypeName(ct)
 }
 
+// Types mirrors the covenant type lookup table from pkg/covenant.
+func (s *Service) Types() map[string]covenant.CovenantType {
+	return covenant.Types
+}
+
+// GetTypes is an alias for Types.
+func (s *Service) GetTypes() map[string]covenant.CovenantType {
+	return s.Types()
+}
+
+// TypesByVal mirrors the covenant reverse lookup table from pkg/covenant.
+func (s *Service) TypesByVal() map[covenant.CovenantType]string {
+	return covenant.TypesByVal
+}
+
+// GetTypesByVal is an alias for TypesByVal.
+func (s *Service) GetTypesByVal() map[covenant.CovenantType]string {
+	return s.TypesByVal()
+}
+
+// Blacklist mirrors the covenant verifier blacklist from pkg/covenant.
+func (s *Service) Blacklist() map[string]struct{} {
+	return covenant.Blacklist
+}
+
+// GetBlacklist is an alias for Blacklist.
+func (s *Service) GetBlacklist() map[string]struct{} {
+	return s.Blacklist()
+}
+
 // GetReserved looks up a reserved .lthn name after canonicalisation.
 //
 // The lookup accepts the same inputs as Resolve and Verify, then returns the
