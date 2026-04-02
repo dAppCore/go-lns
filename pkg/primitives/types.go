@@ -149,11 +149,54 @@ type Covenant struct {
 	Items [][]byte
 }
 
-const covenantTypeRevoke = 11 // Matches the JS covenant.TypeRevoke value.
+const (
+	covenantTypeNone     = 0
+	covenantTypeClaim    = 1
+	covenantTypeOpen     = 2
+	covenantTypeBid      = 3
+	covenantTypeReveal   = 4
+	covenantTypeRedeem   = 5
+	covenantTypeRegister = 6
+	covenantTypeUpdate   = 7
+	covenantTypeRenew    = 8
+	covenantTypeTransfer = 9
+	covenantTypeFinalize = 10
+	covenantTypeRevoke   = 11 // Matches the JS covenant.TypeRevoke value.
+)
 
 // IsUnspendable reports whether the covenant burns the output.
 func (c Covenant) IsUnspendable() bool {
 	return c.Type == covenantTypeRevoke
+}
+
+// IsName reports whether the covenant carries name-system semantics.
+func (c Covenant) IsName() bool {
+	return c.Type >= covenantTypeClaim && c.Type <= covenantTypeRevoke
+}
+
+// IsDustworthy reports whether the covenant is subject to dust policy.
+func (c Covenant) IsDustworthy() bool {
+	switch c.Type {
+	case covenantTypeNone, covenantTypeBid:
+		return true
+	default:
+		return c.Type > covenantTypeRevoke
+	}
+}
+
+// IsNonspendable reports whether the covenant should be treated as locked.
+func (c Covenant) IsNonspendable() bool {
+	switch c.Type {
+	case covenantTypeNone, covenantTypeOpen, covenantTypeRedeem:
+		return false
+	default:
+		return true
+	}
+}
+
+// IsLinked reports whether the covenant is part of the linked covenant set.
+func (c Covenant) IsLinked() bool {
+	return c.Type >= covenantTypeReveal && c.Type <= covenantTypeRevoke
 }
 
 // Transaction is a complete name-chain transaction containing inputs that

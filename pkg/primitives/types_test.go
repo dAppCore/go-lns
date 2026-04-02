@@ -50,6 +50,84 @@ func TestCovenantIsUnspendable(t *testing.T) {
 	}
 }
 
+func TestCovenantPredicates(t *testing.T) {
+	cases := []struct {
+		name           string
+		covenant       Covenant
+		isName         bool
+		isDustworthy   bool
+		isNonspendable bool
+		isLinked       bool
+	}{
+		{
+			name:           "none",
+			covenant:       Covenant{Type: covenantTypeNone},
+			isName:         false,
+			isDustworthy:   true,
+			isNonspendable: false,
+			isLinked:       false,
+		},
+		{
+			name:           "open",
+			covenant:       Covenant{Type: covenantTypeOpen},
+			isName:         true,
+			isDustworthy:   false,
+			isNonspendable: false,
+			isLinked:       false,
+		},
+		{
+			name:           "bid",
+			covenant:       Covenant{Type: covenantTypeBid},
+			isName:         true,
+			isDustworthy:   true,
+			isNonspendable: true,
+			isLinked:       false,
+		},
+		{
+			name:           "reveal",
+			covenant:       Covenant{Type: covenantTypeReveal},
+			isName:         true,
+			isDustworthy:   false,
+			isNonspendable: true,
+			isLinked:       true,
+		},
+		{
+			name:           "revoke",
+			covenant:       Covenant{Type: covenantTypeRevoke},
+			isName:         true,
+			isDustworthy:   false,
+			isNonspendable: true,
+			isLinked:       true,
+		},
+		{
+			name:           "unknown",
+			covenant:       Covenant{Type: 99},
+			isName:         false,
+			isDustworthy:   true,
+			isNonspendable: true,
+			isLinked:       false,
+		},
+	}
+
+	for _, tc := range cases {
+		if got := tc.covenant.IsName(); got != tc.isName {
+			t.Fatalf("%s: IsName() = %v, want %v", tc.name, got, tc.isName)
+		}
+
+		if got := tc.covenant.IsDustworthy(); got != tc.isDustworthy {
+			t.Fatalf("%s: IsDustworthy() = %v, want %v", tc.name, got, tc.isDustworthy)
+		}
+
+		if got := tc.covenant.IsNonspendable(); got != tc.isNonspendable {
+			t.Fatalf("%s: IsNonspendable() = %v, want %v", tc.name, got, tc.isNonspendable)
+		}
+
+		if got := tc.covenant.IsLinked(); got != tc.isLinked {
+			t.Fatalf("%s: IsLinked() = %v, want %v", tc.name, got, tc.isLinked)
+		}
+	}
+}
+
 func TestOutputIsUnspendable(t *testing.T) {
 	if got := (Output{}).IsUnspendable(); got {
 		t.Fatal("zero output should be spendable")
