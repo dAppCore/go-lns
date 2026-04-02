@@ -831,6 +831,26 @@ func lookupLocked(name any) (covenant.LockedName, bool) {
 	)
 }
 
+func (s *Service) lookupReserved(name any) (covenant.ReservedName, bool) {
+	catalog := s.reservedCatalog()
+
+	return lookupCatalogName(
+		name,
+		catalog.GetByName,
+		catalog.Get,
+	)
+}
+
+func (s *Service) lookupLocked(name any) (covenant.LockedName, bool) {
+	catalog := s.lockedCatalog()
+
+	return lookupCatalogName(
+		name,
+		catalog.GetByName,
+		catalog.Get,
+	)
+}
+
 // MaxNameSize returns the maximum supported name size.
 func (s *Service) MaxNameSize() int {
 	return MaxNameSize
@@ -1611,7 +1631,7 @@ func (s *Service) GetVerificationFlagsByVal() map[covenant.NameFlags]string {
 //
 //	item, ok := svc.GetReserved("reserved.lthn")
 func (s *Service) GetReserved(name any) (covenant.ReservedName, bool) {
-	return lookupReserved(name)
+	return s.lookupReserved(name)
 }
 
 // GetReservedName looks up a reserved name using the raw catalog label.
@@ -1760,7 +1780,7 @@ func (s *Service) HasReservedByHash(hash primitives.Hash) bool {
 //
 //	item, ok := svc.GetLocked("nec.lthn")
 func (s *Service) GetLocked(name any) (covenant.LockedName, bool) {
-	return lookupLocked(name)
+	return s.lookupLocked(name)
 }
 
 // GetLockedName looks up a locked name using the raw catalog label.
