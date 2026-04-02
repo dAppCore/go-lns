@@ -1347,7 +1347,7 @@ func DefaultReservedCatalog() *covenant.ReservedCatalog {
 //
 //	catalog := lns.GetReservedCatalog()
 func GetReservedCatalog() *covenant.ReservedCatalog {
-	return ReservedCatalog()
+	return DefaultReservedCatalog()
 }
 
 // ReservedSize reports the number of reserved-name entries available to the service.
@@ -1480,7 +1480,7 @@ func DefaultLockedCatalog() *covenant.LockedCatalog {
 //
 //	catalog := lns.GetLockedCatalog()
 func GetLockedCatalog() *covenant.LockedCatalog {
-	return LockedCatalog()
+	return DefaultLockedCatalog()
 }
 
 // Reserved exposes the reserved-name catalog instance used by the package.
