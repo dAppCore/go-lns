@@ -693,6 +693,13 @@ func DefaultReservedCatalog() *covenant.ReservedCatalog {
 	return covenant.DefaultReservedCatalog()
 }
 
+// GetReservedCatalog is an alias for DefaultReservedCatalog.
+//
+//	catalog := lns.GetReservedCatalog()
+func GetReservedCatalog() *covenant.ReservedCatalog {
+	return DefaultReservedCatalog()
+}
+
 // ReservedSize reports the number of reserved-name entries available to the service.
 //
 //	size := svc.ReservedSize()
@@ -817,6 +824,13 @@ func (s *Service) GetLockedCatalog() *covenant.LockedCatalog {
 //	catalog := lns.DefaultLockedCatalog()
 func DefaultLockedCatalog() *covenant.LockedCatalog {
 	return covenant.DefaultLockedCatalog()
+}
+
+// GetLockedCatalog is an alias for DefaultLockedCatalog.
+//
+//	catalog := lns.GetLockedCatalog()
+func GetLockedCatalog() *covenant.LockedCatalog {
+	return DefaultLockedCatalog()
 }
 
 // LockedSize reports the number of locked-name entries available to the service.

@@ -926,6 +926,7 @@ func TestServiceReservedCatalog(t *testing.T) {
 	catalog := svc.ReservedCatalog()
 	getCatalog := svc.GetReservedCatalog()
 	defaultCatalog := DefaultReservedCatalog()
+	packageGetCatalog := GetReservedCatalog()
 
 	if catalog == nil {
 		t.Fatal("ReservedCatalog should return a catalog")
@@ -941,6 +942,10 @@ func TestServiceReservedCatalog(t *testing.T) {
 
 	if defaultCatalog != catalog {
 		t.Fatal("DefaultReservedCatalog should alias the covenant default catalog")
+	}
+
+	if packageGetCatalog != catalog {
+		t.Fatal("GetReservedCatalog should alias DefaultReservedCatalog")
 	}
 
 	if got := svc.ReservedSize(); got != catalog.Size() {
@@ -1033,6 +1038,7 @@ func TestServiceLockedCatalog(t *testing.T) {
 	catalog := svc.LockedCatalog()
 	getCatalog := svc.GetLockedCatalog()
 	defaultCatalog := DefaultLockedCatalog()
+	packageGetCatalog := GetLockedCatalog()
 
 	if catalog == nil {
 		t.Fatal("LockedCatalog should return a catalog")
@@ -1048,6 +1054,10 @@ func TestServiceLockedCatalog(t *testing.T) {
 
 	if defaultCatalog != catalog {
 		t.Fatal("DefaultLockedCatalog should alias the covenant default catalog")
+	}
+
+	if packageGetCatalog != catalog {
+		t.Fatal("GetLockedCatalog should alias DefaultLockedCatalog")
 	}
 
 	if got := svc.LockedSize(); got != catalog.Size() {
