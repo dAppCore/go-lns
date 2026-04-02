@@ -174,6 +174,32 @@ func TestCovenantItemHelpers(t *testing.T) {
 		t.Fatalf("SetReveal() nonce = %x, want 0d0e0f...", nonce[:3])
 	}
 
+	cov.SetRedeem(Hash{22, 23, 24}, 123)
+
+	if got := cov.Type; got != covenantTypeRedeem {
+		t.Fatalf("SetRedeem() set type %d, want %d", got, covenantTypeRedeem)
+	}
+
+	if got := cov.Len(); got != 2 {
+		t.Fatalf("SetRedeem() len = %d, want 2", got)
+	}
+
+	hash, err = cov.GetHash(0)
+	if err != nil {
+		t.Fatalf("SetRedeem() GetHash returned error: %v", err)
+	}
+	if hash[0] != 22 || hash[1] != 23 || hash[2] != 24 {
+		t.Fatalf("SetRedeem() hash = %x, want 161718...", hash[:3])
+	}
+
+	height, err = cov.GetU32(1)
+	if err != nil {
+		t.Fatalf("SetRedeem() GetU32 returned error: %v", err)
+	}
+	if height != 123 {
+		t.Fatalf("SetRedeem() height = %d, want 123", height)
+	}
+
 	cov.SetClaim(Hash{16, 17, 18}, 88, []byte("claim"), 9, Hash{19, 20, 21}, 99)
 
 	if got := cov.Type; got != covenantTypeClaim {

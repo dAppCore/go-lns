@@ -158,6 +158,15 @@ func (c *Covenant) SetReveal(nameHash Hash, height uint32, nonce Hash) *Covenant
 	return c
 }
 
+// SetRedeem configures the covenant as a REDEEM operation.
+func (c *Covenant) SetRedeem(nameHash Hash, height uint32) *Covenant {
+	c.Type = covenantTypeRedeem
+	c.Items = nil
+	c.PushHash(nameHash)
+	c.PushU32(height)
+	return c
+}
+
 // SetClaim configures the covenant as a CLAIM operation.
 func (c *Covenant) SetClaim(nameHash Hash, height uint32, rawName []byte, flags uint8, commitHash Hash, commitHeight uint32) *Covenant {
 	c.Type = covenantTypeClaim
