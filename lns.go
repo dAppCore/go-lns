@@ -106,6 +106,34 @@ func (s *Service) HashBinary(name []byte) (primitives.Hash, error) {
 	return s.ResolveBinary(name)
 }
 
+// ResolveByString is an alias for ResolveString.
+//
+//	ok := svc.ResolveByString("example.lthn")
+func (s *Service) ResolveByString(name string) (primitives.Hash, error) {
+	return s.ResolveString(name)
+}
+
+// ResolveByBinary is an alias for ResolveBinary.
+//
+//	ok := svc.ResolveByBinary([]byte("example.lthn"))
+func (s *Service) ResolveByBinary(name []byte) (primitives.Hash, error) {
+	return s.ResolveBinary(name)
+}
+
+// HashByString is an alias for HashString.
+//
+//	ok := svc.HashByString("example.lthn")
+func (s *Service) HashByString(name string) (primitives.Hash, error) {
+	return s.HashString(name)
+}
+
+// HashByBinary is an alias for HashBinary.
+//
+//	ok := svc.HashByBinary([]byte("example.lthn"))
+func (s *Service) HashByBinary(name []byte) (primitives.Hash, error) {
+	return s.HashBinary(name)
+}
+
 // ResolveString returns the canonical hash for a .lthn name supplied as a string.
 func (s *Service) ResolveString(name string) (primitives.Hash, error) {
 	normalized, ok := canonicalizeName(name)
@@ -202,6 +230,20 @@ func (s *Service) VerifyBinary(name []byte) bool {
 	}
 
 	return covenant.VerifyBinary([]byte(normalized))
+}
+
+// VerifyByString is an alias for VerifyString.
+//
+//	ok := svc.VerifyByString("example.lthn")
+func (s *Service) VerifyByString(name string) bool {
+	return s.VerifyString(name)
+}
+
+// VerifyByBinary is an alias for VerifyBinary.
+//
+//	ok := svc.VerifyByBinary([]byte("example.lthn"))
+func (s *Service) VerifyByBinary(name []byte) bool {
+	return s.VerifyBinary(name)
 }
 
 // GetReserved looks up a reserved .lthn name after canonicalisation.
