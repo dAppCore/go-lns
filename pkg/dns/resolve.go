@@ -27,6 +27,64 @@ func GetServiceName() string {
 	return ServiceName
 }
 
+func resolveCanonicalName(method string, name any) (primitives.Hash, error) {
+	switch name.(type) {
+	case string, []byte:
+		normalized, ok := nameutil.Canonicalize(name)
+		if !ok {
+			return primitives.Hash{}, core.E(method, "invalid name", nil)
+		}
+
+		return covenant.HashBinary([]byte(normalized))
+	default:
+		return primitives.Hash{}, core.E(method, "invalid name type", nil)
+	}
+}
+
+func verifyCanonicalName(name any) bool {
+	normalized, ok := nameutil.Canonicalize(name)
+	if !ok {
+		return false
+	}
+
+	return covenant.VerifyString(normalized)
+}
+
+// Resolve normalises a .lthn name and returns its canonical hash.
+//
+// The package-level helper mirrors Service.Resolve for callers that do not
+// need to keep a service instance around.
+func Resolve(name any) (primitives.Hash, error) {
+	return resolveCanonicalName("dns.Resolve", name)
+}
+
+// Hash returns the canonical hash for a .lthn name.
+//
+// Hash is the direct package-level alias for Resolve.
+func Hash(name any) (primitives.Hash, error) {
+	return Resolve(name)
+}
+
+// Verify reports whether a .lthn name is valid after canonicalisation.
+func Verify(name any) bool {
+	return verifyCanonicalName(name)
+}
+
+// ResolveName is an alias for Resolve.
+func ResolveName(name any) (primitives.Hash, error) {
+	return Resolve(name)
+}
+
+// HashName is an alias for Hash.
+func HashName(name any) (primitives.Hash, error) {
+	return Hash(name)
+}
+
+// VerifyName is an alias for Verify.
+func VerifyName(name any) bool {
+	return Verify(name)
+}
+
 // Service handles DNS resolution for .lthn names against the LNS chain state.
 //
 //	svc := dns.NewService()
@@ -105,16 +163,7 @@ func (s *Service) GetServiceName() string {
 //	svc := dns.NewService()
 //	hash, err := svc.Resolve("example.lthn")
 func (s *Service) Resolve(name any) (primitives.Hash, error) {
-	normalized, ok := nameutil.Canonicalize(name)
-	if !ok {
-		return primitives.Hash{}, core.E("dns.Service.Resolve", "invalid name type", nil)
-	}
-
-	if !covenant.VerifyString(normalized) {
-		return primitives.Hash{}, core.E("dns.Service.Resolve", "invalid name", nil)
-	}
-
-	return covenant.HashString(normalized)
+	return resolveCanonicalName("dns.Service.Resolve", name)
 }
 
 // Hash returns the canonical hash for a .lthn name.
@@ -132,12 +181,7 @@ func (s *Service) Hash(name any) (primitives.Hash, error) {
 //	svc := dns.NewService()
 //	ok := svc.Verify("example.lthn")
 func (s *Service) Verify(name any) bool {
-	normalized, ok := nameutil.Canonicalize(name)
-	if !ok {
-		return false
-	}
-
-	return covenant.VerifyString(normalized)
+	return verifyCanonicalName(name)
 }
 
 // HashString returns the canonical hash for a .lthn name supplied as a string.
@@ -239,6 +283,21 @@ func (s *Service) VerifyBinary(name []byte) bool {
 //	ok := svc.VerifyName("example.lthn")
 func (s *Service) VerifyName(name any) bool {
 	return s.Verify(name)
+}
+
+// ResolveByName is an alias for ResolveName.
+func ResolveByName(name any) (primitives.Hash, error) {
+	return ResolveName(name)
+}
+
+// HashByName is an alias for HashName.
+func HashByName(name any) (primitives.Hash, error) {
+	return HashName(name)
+}
+
+// VerifyByName is an alias for VerifyName.
+func VerifyByName(name any) bool {
+	return VerifyName(name)
 }
 
 // VerifyByString is an alias for VerifyString.

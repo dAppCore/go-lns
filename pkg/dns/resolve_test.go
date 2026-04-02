@@ -4,9 +4,11 @@ package dns
 
 import (
 	"crypto/sha3"
+	"strings"
 	"testing"
 
 	core "dappco.re/go/core"
+	"dappco.re/go/lns/pkg/primitives"
 )
 
 func TestResolve(t *testing.T) {
@@ -347,5 +349,59 @@ func TestServiceName(t *testing.T) {
 
 	if got := GetServiceName(); got != ServiceName {
 		t.Fatalf("package GetServiceName() = %q, want %q", got, ServiceName)
+	}
+}
+
+func TestPackageLevelResolveAndVerifyAliases(t *testing.T) {
+	want := sha3.Sum256([]byte("foo-bar"))
+
+	resolveCases := []struct {
+		name string
+		fn   func(any) (primitives.Hash, error)
+	}{
+		{name: "Resolve", fn: Resolve},
+		{name: "Hash", fn: Hash},
+		{name: "ResolveName", fn: ResolveName},
+		{name: "HashName", fn: HashName},
+		{name: "ResolveByName", fn: ResolveByName},
+		{name: "HashByName", fn: HashByName},
+	}
+
+	for _, tc := range resolveCases {
+		got, err := tc.fn("Foo-Bar.lthn")
+		if err != nil {
+			t.Fatalf("%s returned error: %v", tc.name, err)
+		}
+
+		if got != want {
+			t.Fatalf("%s returned %x, want %x", tc.name, got, want)
+		}
+	}
+
+	if _, err := Resolve(123); err == nil || !strings.Contains(err.Error(), "invalid name type") {
+		t.Fatalf("Resolve should reject unsupported input types with an invalid name type error, got %v", err)
+	}
+
+	if _, err := Hash(123); err == nil || !strings.Contains(err.Error(), "invalid name type") {
+		t.Fatalf("Hash should reject unsupported input types with an invalid name type error, got %v", err)
+	}
+
+	verifyCases := []struct {
+		name string
+		fn   func(any) bool
+	}{
+		{name: "Verify", fn: Verify},
+		{name: "VerifyName", fn: VerifyName},
+		{name: "VerifyByName", fn: VerifyByName},
+	}
+
+	for _, tc := range verifyCases {
+		if !tc.fn("Foo-Bar.lthn") {
+			t.Fatalf("%s should accept canonical names", tc.name)
+		}
+
+		if tc.fn("foo.bar.lthn") {
+			t.Fatalf("%s should reject malformed names", tc.name)
+		}
 	}
 }
