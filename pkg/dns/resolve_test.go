@@ -344,4 +344,8 @@ func TestServiceName(t *testing.T) {
 	if got := svc.GetServiceName(); got != ServiceName {
 		t.Fatalf("GetServiceName() = %q, want %q", got, ServiceName)
 	}
+
+	if got := GetServiceName(); got != ServiceName {
+		t.Fatalf("package GetServiceName() = %q, want %q", got, ServiceName)
+	}
 }

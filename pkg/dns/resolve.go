@@ -20,6 +20,13 @@ import (
 // ServiceName is the registered name for the DNS service group.
 const ServiceName = "dns"
 
+// GetServiceName is an alias for ServiceName.
+//
+//	name := dns.GetServiceName()
+func GetServiceName() string {
+	return ServiceName
+}
+
 // Service handles DNS resolution for .lthn names against the LNS chain state.
 //
 //	svc := dns.NewService()
