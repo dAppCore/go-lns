@@ -22,7 +22,9 @@ func TestPackageResolveAndVerifyAliases(t *testing.T) {
 		fn   func(any) (primitives.Hash, error)
 	}{
 		{name: "Resolve", fn: Resolve},
+		{name: "GetResolve", fn: GetResolve},
 		{name: "Hash", fn: Hash},
+		{name: "GetHash", fn: GetHash},
 		{name: "ResolveName", fn: ResolveName},
 		{name: "HashName", fn: HashName},
 		{name: "ResolveByName", fn: ResolveByName},
@@ -77,6 +79,7 @@ func TestPackageResolveAndVerifyAliases(t *testing.T) {
 		fn   func(any) bool
 	}{
 		{name: "Verify", fn: Verify},
+		{name: "GetVerify", fn: GetVerify},
 		{name: "VerifyName", fn: VerifyName},
 		{name: "VerifyByName", fn: VerifyByName},
 	}

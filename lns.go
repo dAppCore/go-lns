@@ -131,6 +131,13 @@ func Resolve(name any) (primitives.Hash, error) {
 	return resolveCanonicalName("lns.Resolve", name)
 }
 
+// GetResolve is an alias for Resolve.
+//
+//	hash, err := lns.GetResolve("example.lthn")
+func GetResolve(name any) (primitives.Hash, error) {
+	return Resolve(name)
+}
+
 // Hash returns the canonical hash for a validated .lthn name.
 //
 // This is the package-level convenience wrapper around Service.Hash.
@@ -140,6 +147,13 @@ func Hash(name any) (primitives.Hash, error) {
 	return resolveCanonicalName("lns.Hash", name)
 }
 
+// GetHash is an alias for Hash.
+//
+//	hash, err := lns.GetHash("example.lthn")
+func GetHash(name any) (primitives.Hash, error) {
+	return Hash(name)
+}
+
 // Verify reports whether a .lthn name is valid after canonicalisation.
 //
 // This is the package-level convenience wrapper around Service.Verify.
@@ -147,6 +161,13 @@ func Hash(name any) (primitives.Hash, error) {
 //	ok := lns.Verify("example.lthn")
 func Verify(name any) bool {
 	return verifyCanonicalName(name)
+}
+
+// GetVerify is an alias for Verify.
+//
+//	ok := lns.GetVerify("example.lthn")
+func GetVerify(name any) bool {
+	return Verify(name)
 }
 
 // HashString returns the canonical hash for a .lthn name supplied as a string.
@@ -631,6 +652,15 @@ func (s *Service) Resolve(name any) (primitives.Hash, error) {
 	return resolveCanonicalName("lns.Service.Resolve", name)
 }
 
+// GetResolve is an alias for Resolve.
+//
+//	c := core.New(core.WithService(lns.Register))
+//	svc := c.Service("lns").(*lns.Service)
+//	hash, err := svc.GetResolve("example.lthn")
+func (s *Service) GetResolve(name any) (primitives.Hash, error) {
+	return s.Resolve(name)
+}
+
 // Hash returns the canonical hash for a validated .lthn name.
 //
 // Hash is the direct service-level alias for Resolve.
@@ -642,6 +672,15 @@ func (s *Service) Hash(name any) (primitives.Hash, error) {
 	return s.Resolve(name)
 }
 
+// GetHash is an alias for Hash.
+//
+//	c := core.New(core.WithService(lns.Register))
+//	svc := c.Service("lns").(*lns.Service)
+//	hash, err := svc.GetHash("example.lthn")
+func (s *Service) GetHash(name any) (primitives.Hash, error) {
+	return s.Hash(name)
+}
+
 // Verify reports whether a .lthn name is valid after canonicalisation.
 //
 // This keeps the service-level API aligned with the DNS resolver helpers.
@@ -651,6 +690,15 @@ func (s *Service) Hash(name any) (primitives.Hash, error) {
 //	ok := svc.Verify("example.lthn")
 func (s *Service) Verify(name any) bool {
 	return verifyCanonicalName(name)
+}
+
+// GetVerify is an alias for Verify.
+//
+//	c := core.New(core.WithService(lns.Register))
+//	svc := c.Service("lns").(*lns.Service)
+//	ok := svc.GetVerify("example.lthn")
+func (s *Service) GetVerify(name any) bool {
+	return s.Verify(name)
 }
 
 // HashString returns the canonical hash for a .lthn name supplied as a string.
