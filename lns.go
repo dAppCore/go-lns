@@ -12,7 +12,11 @@
 // and resolution logic used by the service.
 package lns
 
-import core "dappco.re/go/core"
+import (
+	core "dappco.re/go/core"
+	"dappco.re/go/lns/pkg/dns"
+	"dappco.re/go/lns/pkg/primitives"
+)
 
 // ServiceName is the registered name for the LNS service group.
 const ServiceName = "lns"
@@ -38,4 +42,17 @@ func Register(c *core.Core) core.Result {
 		ServiceRuntime: core.NewServiceRuntime(c, serviceOptions{}),
 	}
 	return core.Result{Value: svc, OK: true}
+}
+
+// Resolve returns the canonical hash for a validated .lthn name.
+//
+// This mirrors the subpackage resolver while keeping the service-level API
+// ergonomic for callers that only have an lns.Service instance.
+func (s *Service) Resolve(name string) (primitives.Hash, error) {
+	opts := make([]dns.ServiceOption, 0, 1)
+	if s != nil && s.ServiceRuntime != nil {
+		opts = append(opts, dns.WithCore(s.Core()))
+	}
+
+	return dns.NewService(opts...).Resolve(name)
 }
