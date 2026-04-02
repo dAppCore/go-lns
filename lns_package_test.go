@@ -661,6 +661,32 @@ func TestPackageTypeConstants(t *testing.T) {
 	}
 }
 
+func TestPackageCovenantTypePredicates(t *testing.T) {
+	if !IsName(TypeOpen) || !GetIsName(TypeOpen) {
+		t.Fatal("IsName should report open covenants")
+	}
+
+	if IsName(TypeNone) || GetIsName(TypeNone) {
+		t.Fatal("IsName should reject non-name covenants")
+	}
+
+	if !IsKnown(TypeBid) || !GetIsKnown(TypeBid) {
+		t.Fatal("IsKnown should report recognized covenants")
+	}
+
+	if IsKnown(covenant.CovenantType(99)) || GetIsKnown(covenant.CovenantType(99)) {
+		t.Fatal("IsKnown should reject unknown covenants")
+	}
+
+	if !IsLinked(TypeReveal) || !GetIsLinked(TypeReveal) {
+		t.Fatal("IsLinked should report linked covenants")
+	}
+
+	if IsLinked(TypeOpen) || GetIsLinked(TypeOpen) {
+		t.Fatal("IsLinked should reject unlinked covenants")
+	}
+}
+
 func TestPackageCatalogAliases(t *testing.T) {
 	reservedCatalog := ReservedCatalog()
 	lockedCatalog := LockedCatalog()

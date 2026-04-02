@@ -647,6 +647,48 @@ func GetTypeName(ct covenant.CovenantType) string {
 	return TypeName(ct)
 }
 
+// IsName reports whether a covenant type is a name operation.
+//
+//	ok := lns.IsName(covenant.TypeOpen)
+func IsName(ct CovenantType) bool {
+	return ct.IsName()
+}
+
+// GetIsName is an alias for IsName.
+//
+//	ok := lns.GetIsName(covenant.TypeOpen)
+func GetIsName(ct CovenantType) bool {
+	return IsName(ct)
+}
+
+// IsKnown reports whether a covenant type is recognized by the rules table.
+//
+//	ok := lns.IsKnown(covenant.TypeBid)
+func IsKnown(ct CovenantType) bool {
+	return ct.IsKnown()
+}
+
+// GetIsKnown is an alias for IsKnown.
+//
+//	ok := lns.GetIsKnown(covenant.TypeBid)
+func GetIsKnown(ct CovenantType) bool {
+	return IsKnown(ct)
+}
+
+// IsLinked reports whether a covenant type is a linked covenant.
+//
+//	ok := lns.IsLinked(covenant.TypeReveal)
+func IsLinked(ct CovenantType) bool {
+	return ct.IsLinked()
+}
+
+// GetIsLinked is an alias for IsLinked.
+//
+//	ok := lns.GetIsLinked(covenant.TypeReveal)
+func GetIsLinked(ct CovenantType) bool {
+	return IsLinked(ct)
+}
+
 func lookupReserved(name any) (covenant.ReservedName, bool) {
 	return lookupCatalogName(
 		name,
@@ -1198,6 +1240,48 @@ func (s *Service) TypeName(ct covenant.CovenantType) string {
 //	name := svc.GetTypeName(covenant.TypeBid)
 func (s *Service) GetTypeName(ct covenant.CovenantType) string {
 	return s.TypeName(ct)
+}
+
+// IsName reports whether a covenant type is a name operation.
+//
+//	ok := svc.IsName(covenant.TypeOpen)
+func (s *Service) IsName(ct CovenantType) bool {
+	return ct.IsName()
+}
+
+// GetIsName is an alias for IsName.
+//
+//	ok := svc.GetIsName(covenant.TypeOpen)
+func (s *Service) GetIsName(ct CovenantType) bool {
+	return s.IsName(ct)
+}
+
+// IsKnown reports whether a covenant type is recognized by the rules table.
+//
+//	ok := svc.IsKnown(covenant.TypeBid)
+func (s *Service) IsKnown(ct CovenantType) bool {
+	return ct.IsKnown()
+}
+
+// GetIsKnown is an alias for IsKnown.
+//
+//	ok := svc.GetIsKnown(covenant.TypeBid)
+func (s *Service) GetIsKnown(ct CovenantType) bool {
+	return s.IsKnown(ct)
+}
+
+// IsLinked reports whether a covenant type is a linked covenant.
+//
+//	ok := svc.IsLinked(covenant.TypeReveal)
+func (s *Service) IsLinked(ct CovenantType) bool {
+	return ct.IsLinked()
+}
+
+// GetIsLinked is an alias for IsLinked.
+//
+//	ok := svc.GetIsLinked(covenant.TypeReveal)
+func (s *Service) GetIsLinked(ct CovenantType) bool {
+	return s.IsLinked(ct)
 }
 
 // GetRollout returns the rollout start height and rollout week for a name hash.

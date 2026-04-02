@@ -586,6 +586,34 @@ func TestServiceTypeName(t *testing.T) {
 	}
 }
 
+func TestServiceCovenantTypePredicates(t *testing.T) {
+	svc := &Service{}
+
+	if !svc.IsName(covenant.TypeOpen) || !svc.GetIsName(covenant.TypeOpen) {
+		t.Fatal("IsName should report open covenants")
+	}
+
+	if svc.IsName(covenant.TypeNone) || svc.GetIsName(covenant.TypeNone) {
+		t.Fatal("IsName should reject non-name covenants")
+	}
+
+	if !svc.IsKnown(covenant.TypeBid) || !svc.GetIsKnown(covenant.TypeBid) {
+		t.Fatal("IsKnown should report recognized covenants")
+	}
+
+	if svc.IsKnown(covenant.CovenantType(99)) || svc.GetIsKnown(covenant.CovenantType(99)) {
+		t.Fatal("IsKnown should reject unknown covenants")
+	}
+
+	if !svc.IsLinked(covenant.TypeReveal) || !svc.GetIsLinked(covenant.TypeReveal) {
+		t.Fatal("IsLinked should report linked covenants")
+	}
+
+	if svc.IsLinked(covenant.TypeOpen) || svc.GetIsLinked(covenant.TypeOpen) {
+		t.Fatal("IsLinked should reject unlinked covenants")
+	}
+}
+
 func TestServiceRolloutHelpers(t *testing.T) {
 	svc := &Service{}
 
