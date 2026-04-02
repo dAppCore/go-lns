@@ -317,6 +317,18 @@ func TestServiceReservedCatalog(t *testing.T) {
 	if len(catalog.Entries()) == 0 {
 		t.Fatal("ReservedCatalog should expose catalog entries")
 	}
+
+	if len(svc.ReservedEntries()) == 0 {
+		t.Fatal("ReservedEntries should expose catalog entries")
+	}
+
+	if len(svc.ReservedKeys()) == 0 {
+		t.Fatal("ReservedKeys should expose catalog keys")
+	}
+
+	if len(svc.ReservedValues()) == 0 {
+		t.Fatal("ReservedValues should expose catalog values")
+	}
 }
 
 func TestServiceLockedCatalog(t *testing.T) {
@@ -333,5 +345,17 @@ func TestServiceLockedCatalog(t *testing.T) {
 
 	if len(catalog.Entries()) == 0 {
 		t.Fatal("LockedCatalog should expose catalog entries")
+	}
+
+	if len(svc.LockedEntries()) == 0 {
+		t.Fatal("LockedEntries should expose catalog entries")
+	}
+
+	if len(svc.LockedKeys()) == 0 {
+		t.Fatal("LockedKeys should expose catalog keys")
+	}
+
+	if len(svc.LockedValues()) == 0 {
+		t.Fatal("LockedValues should expose catalog values")
 	}
 }

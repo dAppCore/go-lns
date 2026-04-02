@@ -195,10 +195,40 @@ func (s *Service) ReservedCatalog() *covenant.ReservedCatalog {
 	return covenant.DefaultReservedCatalog()
 }
 
+// ReservedEntries exposes the reserved-name catalog entries used by the service.
+func (s *Service) ReservedEntries() []covenant.ReservedEntry {
+	return s.ReservedCatalog().Entries()
+}
+
+// ReservedKeys exposes the reserved-name hashes used by the service.
+func (s *Service) ReservedKeys() []primitives.Hash {
+	return s.ReservedCatalog().Keys()
+}
+
+// ReservedValues exposes the reserved-name entries used by the service.
+func (s *Service) ReservedValues() []covenant.ReservedName {
+	return s.ReservedCatalog().Values()
+}
+
 // LockedCatalog exposes the locked-name catalog used by the service.
 //
 // The returned catalog provides deterministic iteration helpers so callers can
 // enumerate the reference set without reaching into the covenant package.
 func (s *Service) LockedCatalog() *covenant.LockedCatalog {
 	return covenant.DefaultLockedCatalog()
+}
+
+// LockedEntries exposes the locked-name catalog entries used by the service.
+func (s *Service) LockedEntries() []covenant.LockedEntry {
+	return s.LockedCatalog().Entries()
+}
+
+// LockedKeys exposes the locked-name hashes used by the service.
+func (s *Service) LockedKeys() []primitives.Hash {
+	return s.LockedCatalog().Keys()
+}
+
+// LockedValues exposes the locked-name entries used by the service.
+func (s *Service) LockedValues() []covenant.LockedName {
+	return s.LockedCatalog().Values()
 }
