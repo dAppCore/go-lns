@@ -160,12 +160,20 @@ func TestPackageDefaultCatalogAliases(t *testing.T) {
 		t.Fatal("GetReservedCatalog should alias ReservedCatalog")
 	}
 
+	if GetDefaultReservedCatalog() != DefaultReservedCatalog() {
+		t.Fatal("GetDefaultReservedCatalog should alias DefaultReservedCatalog")
+	}
+
 	if DefaultLockedCatalog() != LockedCatalog() {
 		t.Fatal("DefaultLockedCatalog should alias LockedCatalog")
 	}
 
 	if GetLockedCatalog() != LockedCatalog() {
 		t.Fatal("GetLockedCatalog should alias LockedCatalog")
+	}
+
+	if GetDefaultLockedCatalog() != DefaultLockedCatalog() {
+		t.Fatal("GetDefaultLockedCatalog should alias DefaultLockedCatalog")
 	}
 }
 
@@ -613,6 +621,14 @@ func TestPackageCatalogAliases(t *testing.T) {
 
 	if DefaultLockedCatalog() != lockedCatalog {
 		t.Fatal("DefaultLockedCatalog should match LockedCatalog")
+	}
+
+	if GetDefaultReservedCatalog() != reservedCatalog {
+		t.Fatal("GetDefaultReservedCatalog should match ReservedCatalog")
+	}
+
+	if GetDefaultLockedCatalog() != lockedCatalog {
+		t.Fatal("GetDefaultLockedCatalog should match LockedCatalog")
 	}
 
 	if ReservedSize() != reservedCatalog.Size() || GetReservedSize() != reservedCatalog.Size() {
