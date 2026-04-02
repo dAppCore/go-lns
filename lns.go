@@ -2290,11 +2290,11 @@ func GetReserved(name any) (covenant.ReservedName, bool) {
 	return lookupReserved(name)
 }
 
-// GetReservedName looks up a reserved name using the raw catalog label.
+// GetReservedName looks up a reserved name after canonicalisation.
 //
 //	item, ok := lns.GetReservedName("reserved")
 func GetReservedName(name any) (covenant.ReservedName, bool) {
-	return GetReserved(name)
+	return lookupReserved(name)
 }
 
 // GetReservedString looks up a reserved name supplied as a string.
@@ -2419,11 +2419,11 @@ func GetLocked(name any) (covenant.LockedName, bool) {
 	return lookupLocked(name)
 }
 
-// GetLockedName looks up a locked name using the raw catalog label.
+// GetLockedName looks up a locked name after canonicalisation.
 //
 //	item, ok := lns.GetLockedName("nec")
 func GetLockedName(name any) (covenant.LockedName, bool) {
-	return GetLocked(name)
+	return lookupLocked(name)
 }
 
 // GetLockedString looks up a locked name supplied as a string.
