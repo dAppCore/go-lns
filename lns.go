@@ -132,6 +132,12 @@ func lookupCatalogName[T any](
 	byLabel func(string) (T, bool),
 	byHash func(primitives.Hash) (T, bool),
 ) (T, bool) {
+	if label, ok := nameutil.Canonicalize(name); ok {
+		if item, ok := byLabel(label); ok {
+			return item, true
+		}
+	}
+
 	if label, ok := nameutil.CatalogLabel(name); ok {
 		if item, ok := byLabel(label); ok {
 			return item, true
