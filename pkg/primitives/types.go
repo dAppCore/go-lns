@@ -37,6 +37,62 @@ type Address struct {
 	Hash []byte
 }
 
+// IsNull reports whether the address hash is entirely zero bytes.
+func (a Address) IsNull() bool {
+	for _, b := range a.Hash {
+		if b != 0 {
+			return false
+		}
+	}
+
+	return true
+}
+
+// IsPubkeyHash reports whether the address is a version 0 P2WPKH programme.
+func (a Address) IsPubkeyHash() bool {
+	return a.Version == 0 && len(a.Hash) == 20
+}
+
+// IsScripthash reports whether the address is a version 0 P2WSH programme.
+func (a Address) IsScripthash() bool {
+	return a.Version == 0 && len(a.Hash) == 32
+}
+
+// IsNulldata reports whether the address is an unspendable nulldata programme.
+func (a Address) IsNulldata() bool {
+	return a.Version == 31
+}
+
+// IsUnknown reports whether the address is a non-standard witness programme.
+func (a Address) IsUnknown() bool {
+	switch a.Version {
+	case 0:
+		return len(a.Hash) != 20 && len(a.Hash) != 32
+	case 31:
+		return false
+	default:
+		return true
+	}
+}
+
+// IsValid reports whether the address is a syntactically valid witness
+// programme.
+func (a Address) IsValid() bool {
+	if a.Version > 31 {
+		return false
+	}
+
+	if len(a.Hash) < 2 || len(a.Hash) > 40 {
+		return false
+	}
+
+	if a.Version == 0 {
+		return len(a.Hash) == 20 || len(a.Hash) == 32
+	}
+
+	return true
+}
+
 // Outpoint references a specific output from a previous transaction.
 // Used by transaction inputs to identify the coin being spent.
 //
