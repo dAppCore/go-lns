@@ -169,7 +169,7 @@ func GetResolve(name any) (primitives.Hash, error) {
 //
 //	hash, err := lns.Hash("example.lthn")
 func Hash(name any) (primitives.Hash, error) {
-	return resolveCanonicalName("lns.Hash", name)
+	return Resolve(name)
 }
 
 // GetHash is an alias for Hash.
@@ -199,7 +199,7 @@ func GetVerify(name any) bool {
 //
 //	hash, err := lns.HashString("example.lthn")
 func HashString(name string) (primitives.Hash, error) {
-	return resolveCanonicalName("lns.HashString", name)
+	return ResolveString(name)
 }
 
 // GetHashString is an alias for HashString.
@@ -213,7 +213,7 @@ func GetHashString(name string) (primitives.Hash, error) {
 //
 //	hash, err := lns.HashBinary([]byte("example.lthn"))
 func HashBinary(name []byte) (primitives.Hash, error) {
-	return resolveCanonicalName("lns.HashBinary", name)
+	return ResolveBinary(name)
 }
 
 // GetHashBinary is an alias for HashBinary.
