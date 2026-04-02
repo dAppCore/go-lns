@@ -241,6 +241,22 @@ func TestServiceRuleTables(t *testing.T) {
 	if _, ok := svc.Blacklist()["test"]; !ok {
 		t.Fatal("Blacklist should expose test")
 	}
+
+	if svc.DefaultReservedCatalog() != svc.ReservedCatalog() {
+		t.Fatal("DefaultReservedCatalog should alias ReservedCatalog")
+	}
+
+	if svc.GetDefaultReservedCatalog() != svc.ReservedCatalog() {
+		t.Fatal("GetDefaultReservedCatalog should alias ReservedCatalog")
+	}
+
+	if svc.DefaultLockedCatalog() != svc.LockedCatalog() {
+		t.Fatal("DefaultLockedCatalog should alias LockedCatalog")
+	}
+
+	if svc.GetDefaultLockedCatalog() != svc.LockedCatalog() {
+		t.Fatal("GetDefaultLockedCatalog should alias LockedCatalog")
+	}
 }
 
 func TestServiceVerificationFlagTables(t *testing.T) {

@@ -151,6 +151,24 @@ func TestPackageServiceNameAlias(t *testing.T) {
 	}
 }
 
+func TestPackageDefaultCatalogAliases(t *testing.T) {
+	if DefaultReservedCatalog() != ReservedCatalog() {
+		t.Fatal("DefaultReservedCatalog should alias ReservedCatalog")
+	}
+
+	if GetReservedCatalog() != ReservedCatalog() {
+		t.Fatal("GetReservedCatalog should alias ReservedCatalog")
+	}
+
+	if DefaultLockedCatalog() != LockedCatalog() {
+		t.Fatal("DefaultLockedCatalog should alias LockedCatalog")
+	}
+
+	if GetLockedCatalog() != LockedCatalog() {
+		t.Fatal("GetLockedCatalog should alias LockedCatalog")
+	}
+}
+
 func TestPackageTypeTables(t *testing.T) {
 	if len(Types) == 0 || len(TypesByVal) == 0 {
 		t.Fatal("type lookup tables should not be empty")

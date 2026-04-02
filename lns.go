@@ -1333,6 +1333,20 @@ func (s *Service) GetReservedCatalog() *covenant.ReservedCatalog {
 	return s.ReservedCatalog()
 }
 
+// DefaultReservedCatalog returns the reserved-name catalog used by the service.
+//
+//	catalog := svc.DefaultReservedCatalog()
+func (s *Service) DefaultReservedCatalog() *covenant.ReservedCatalog {
+	return s.ReservedCatalog()
+}
+
+// GetDefaultReservedCatalog is an alias for DefaultReservedCatalog.
+//
+//	catalog := svc.GetDefaultReservedCatalog()
+func (s *Service) GetDefaultReservedCatalog() *covenant.ReservedCatalog {
+	return s.DefaultReservedCatalog()
+}
+
 // DefaultReservedCatalog exposes the reserved-name catalog used by LNS.
 //
 // This returns the package-owned reserved catalog so callers stay within the
@@ -1464,6 +1478,20 @@ func (s *Service) LockedCatalog() *covenant.LockedCatalog {
 //	catalog := svc.GetLockedCatalog()
 func (s *Service) GetLockedCatalog() *covenant.LockedCatalog {
 	return s.LockedCatalog()
+}
+
+// DefaultLockedCatalog returns the locked-name catalog used by the service.
+//
+//	catalog := svc.DefaultLockedCatalog()
+func (s *Service) DefaultLockedCatalog() *covenant.LockedCatalog {
+	return s.LockedCatalog()
+}
+
+// GetDefaultLockedCatalog is an alias for DefaultLockedCatalog.
+//
+//	catalog := svc.GetDefaultLockedCatalog()
+func (s *Service) GetDefaultLockedCatalog() *covenant.LockedCatalog {
+	return s.DefaultLockedCatalog()
 }
 
 // DefaultLockedCatalog exposes the locked-name catalog used by LNS.
