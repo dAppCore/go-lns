@@ -107,6 +107,38 @@ func (s *Service) HashBinary(name []byte) (primitives.Hash, error) {
 	return s.ResolveBinary(name)
 }
 
+// ResolveByString is an alias for ResolveString.
+//
+//	svc := dns.NewService()
+//	hash, err := svc.ResolveByString("example.lthn")
+func (s *Service) ResolveByString(name string) (primitives.Hash, error) {
+	return s.ResolveString(name)
+}
+
+// ResolveByBinary is an alias for ResolveBinary.
+//
+//	svc := dns.NewService()
+//	hash, err := svc.ResolveByBinary([]byte("example.lthn"))
+func (s *Service) ResolveByBinary(name []byte) (primitives.Hash, error) {
+	return s.ResolveBinary(name)
+}
+
+// HashByString is an alias for HashString.
+//
+//	svc := dns.NewService()
+//	hash, err := svc.HashByString("example.lthn")
+func (s *Service) HashByString(name string) (primitives.Hash, error) {
+	return s.HashString(name)
+}
+
+// HashByBinary is an alias for HashBinary.
+//
+//	svc := dns.NewService()
+//	hash, err := svc.HashByBinary([]byte("example.lthn"))
+func (s *Service) HashByBinary(name []byte) (primitives.Hash, error) {
+	return s.HashBinary(name)
+}
+
 // ResolveString returns the canonical hash for a .lthn name supplied as a string.
 //
 //	svc := dns.NewService()
@@ -172,6 +204,22 @@ func (s *Service) VerifyBinary(name []byte) bool {
 //	ok := svc.VerifyName("example.lthn")
 func (s *Service) VerifyName(name any) bool {
 	return s.Verify(name)
+}
+
+// VerifyByString is an alias for VerifyString.
+//
+//	svc := dns.NewService()
+//	ok := svc.VerifyByString("example.lthn")
+func (s *Service) VerifyByString(name string) bool {
+	return s.VerifyString(name)
+}
+
+// VerifyByBinary is an alias for VerifyBinary.
+//
+//	svc := dns.NewService()
+//	ok := svc.VerifyByBinary([]byte("example.lthn"))
+func (s *Service) VerifyByBinary(name []byte) bool {
+	return s.VerifyBinary(name)
 }
 
 // ResolveByName is an alias for ResolveName.
