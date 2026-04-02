@@ -223,6 +223,15 @@ func TypeName(ct covenant.CovenantType) string {
 	return packageService().TypeName(ct)
 }
 
+// Types mirrors the covenant type lookup table from pkg/covenant.
+var Types = covenant.Types
+
+// TypesByVal mirrors the covenant reverse lookup table from pkg/covenant.
+var TypesByVal = covenant.TypesByVal
+
+// Blacklist mirrors the covenant blacklist used by the verifier.
+var Blacklist = covenant.Blacklist
+
 // GetTypeName is an alias for TypeName.
 //
 //	name := lns.GetTypeName(covenant.TypeBid)

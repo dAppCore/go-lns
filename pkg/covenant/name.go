@@ -25,6 +25,12 @@ var blacklist = map[string]struct{}{
 	"test":      {},
 }
 
+// Blacklist mirrors the JS rules.blacklist set.
+//
+// The map is exported so callers can inspect the reserved labels used by the
+// covenant verifier without duplicating the list.
+var Blacklist = blacklist
+
 // VerifyString reports whether a domain name meets the covenant rules.
 //
 //	ok := covenant.VerifyString("example")
@@ -54,7 +60,7 @@ func VerifyString(name string) bool {
 		}
 	}
 
-	_, blocked := blacklist[name]
+	_, blocked := Blacklist[name]
 	return !blocked
 }
 
@@ -87,7 +93,7 @@ func VerifyBinary(name []byte) bool {
 		}
 	}
 
-	_, blocked := blacklist[string(name)]
+	_, blocked := Blacklist[string(name)]
 	return !blocked
 }
 

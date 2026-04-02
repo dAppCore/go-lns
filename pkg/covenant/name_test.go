@@ -43,6 +43,30 @@ func TestNameFlags(t *testing.T) {
 	}
 }
 
+func TestTypeMaps(t *testing.T) {
+	if len(Types) != len(TypesByVal) {
+		t.Fatalf("Types and TypesByVal should expose the same number of entries: %d vs %d", len(Types), len(TypesByVal))
+	}
+
+	for label, typ := range Types {
+		if got, ok := TypesByVal[typ]; !ok || got != label {
+			t.Fatalf("TypesByVal[%d] = %q, want %q", typ, got, label)
+		}
+	}
+
+	if got, ok := Types["BID"]; !ok || got != TypeBid {
+		t.Fatalf("Types[\"BID\"] = %d, want %d", got, TypeBid)
+	}
+}
+
+func TestBlacklist(t *testing.T) {
+	for _, name := range []string{"example", "invalid", "local", "localhost", "test"} {
+		if _, ok := Blacklist[name]; !ok {
+			t.Fatalf("Blacklist should include %q", name)
+		}
+	}
+}
+
 func TestGetTypeName(t *testing.T) {
 	if got := GetTypeName(TypeBid); got != "BID" {
 		t.Fatalf("GetTypeName(TypeBid) = %q, want %q", got, "BID")

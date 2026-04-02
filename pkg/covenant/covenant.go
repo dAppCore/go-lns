@@ -58,8 +58,27 @@ const (
 	TypeRevoke CovenantType = 11
 )
 
-// typeNames maps covenant type values to their string representations.
-var typeNames = map[CovenantType]string{
+// Types mirrors the JS rules.types lookup table.
+//
+// The map is intentionally exported so callers can discover covenant types
+// without hard-coding the numeric values.
+var Types = map[string]CovenantType{
+	"NONE":     TypeNone,
+	"CLAIM":    TypeClaim,
+	"OPEN":     TypeOpen,
+	"BID":      TypeBid,
+	"REVEAL":   TypeReveal,
+	"REDEEM":   TypeRedeem,
+	"REGISTER": TypeRegister,
+	"UPDATE":   TypeUpdate,
+	"RENEW":    TypeRenew,
+	"TRANSFER": TypeTransfer,
+	"FINALIZE": TypeFinalize,
+	"REVOKE":   TypeRevoke,
+}
+
+// TypesByVal mirrors the JS rules.typesByVal lookup table.
+var TypesByVal = map[CovenantType]string{
 	TypeNone:     "NONE",
 	TypeClaim:    "CLAIM",
 	TypeOpen:     "OPEN",
@@ -81,7 +100,7 @@ var typeNames = map[CovenantType]string{
 //	covenant.TypeName(covenant.TypeRevoke) // "REVOKE"
 //	covenant.TypeName(99)                 // "UNKNOWN"
 func TypeName(ct CovenantType) string {
-	if name, ok := typeNames[ct]; ok {
+	if name, ok := TypesByVal[ct]; ok {
 		return name
 	}
 	return "UNKNOWN"

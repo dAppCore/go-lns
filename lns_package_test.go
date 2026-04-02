@@ -145,6 +145,24 @@ func TestPackageBlindAndTypeAliases(t *testing.T) {
 	}
 }
 
+func TestPackageTypeTables(t *testing.T) {
+	if len(Types) == 0 || len(TypesByVal) == 0 {
+		t.Fatal("type lookup tables should not be empty")
+	}
+
+	if got, ok := Types["BID"]; !ok || got != covenant.TypeBid {
+		t.Fatalf("Types[\"BID\"] = %d, want %d", got, covenant.TypeBid)
+	}
+
+	if got, ok := TypesByVal[covenant.TypeBid]; !ok || got != "BID" {
+		t.Fatalf("TypesByVal[TypeBid] = %q, want %q", got, "BID")
+	}
+
+	if _, ok := Blacklist["test"]; !ok {
+		t.Fatal("Blacklist should expose the covenant verifier blacklist")
+	}
+}
+
 func TestPackageCatalogAliases(t *testing.T) {
 	reservedCatalog := ReservedCatalog()
 	lockedCatalog := LockedCatalog()
