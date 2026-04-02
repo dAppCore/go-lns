@@ -63,6 +63,11 @@ func (a Address) IsNulldata() bool {
 	return a.Version == 31
 }
 
+// IsUnspendable reports whether the address cannot be spent.
+func (a Address) IsUnspendable() bool {
+	return a.IsNulldata()
+}
+
 // IsUnknown reports whether the address is a non-standard witness programme.
 func (a Address) IsUnknown() bool {
 	switch a.Version {
@@ -329,5 +334,5 @@ func (i Input) IsFinal() bool {
 
 // IsUnspendable reports whether the output cannot be spent.
 func (o Output) IsUnspendable() bool {
-	return o.Address.IsNulldata() || o.Covenant.IsUnspendable()
+	return o.Address.IsUnspendable() || o.Covenant.IsUnspendable()
 }
