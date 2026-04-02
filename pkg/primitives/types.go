@@ -204,3 +204,14 @@ type NameState struct {
 	// Weak indicates a weak claim (imported from ICANN without full proof).
 	Weak bool
 }
+
+// IsNull reports whether the outpoint is the null outpoint used by coinbase
+// inputs.
+func (o Outpoint) IsNull() bool {
+	return o.TxHash == (Hash{}) && o.Index == ^uint32(0)
+}
+
+// IsCoinbase reports whether the input spends the null outpoint.
+func (i Input) IsCoinbase() bool {
+	return i.Prevout.IsNull()
+}
