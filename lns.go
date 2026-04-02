@@ -952,6 +952,9 @@ func (s *Service) ReservedCatalog() *covenant.ReservedCatalog {
 
 // Core returns the Core instance this service is registered with.
 //
+// The accessor is nil-safe so zero-value services and nil receivers stay
+// usable in lightweight tests and helper code.
+//
 //	core := svc.Core()
 func (s *Service) Core() *core.Core {
 	if s == nil || s.ServiceRuntime == nil {

@@ -440,6 +440,22 @@ func TestServiceCoreAccessors(t *testing.T) {
 	}
 }
 
+func TestServiceCoreNilSafety(t *testing.T) {
+	var svc *Service
+
+	if svc.Core() != nil {
+		t.Fatal("Core should return nil for a nil receiver")
+	}
+
+	if svc.GetCore() != nil {
+		t.Fatal("GetCore should return nil for a nil receiver")
+	}
+
+	if got := (&Service{}).Core(); got != nil {
+		t.Fatal("Core should return nil for a zero-value service")
+	}
+}
+
 func TestNewService(t *testing.T) {
 	svc := NewService(nil)
 	if svc == nil {
