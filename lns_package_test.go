@@ -328,6 +328,32 @@ func TestPackageConstantGetters(t *testing.T) {
 	}
 }
 
+func TestPackageNameStateAliases(t *testing.T) {
+	var state NameState
+	var delta NameDelta
+
+	if state.Name != nil {
+		t.Fatal("NameState alias should expose the primitives name state type")
+	}
+
+	if !delta.IsNull() {
+		t.Fatal("NameDelta alias should expose the primitives name delta type")
+	}
+
+	if NameStateOpening != primitives.NameStateOpening ||
+		NameStateLocked != primitives.NameStateLocked ||
+		NameStateBidding != primitives.NameStateBidding ||
+		NameStateReveal != primitives.NameStateReveal ||
+		NameStateClosed != primitives.NameStateClosed ||
+		NameStateRevoked != primitives.NameStateRevoked {
+		t.Fatal("name state constants should mirror pkg/primitives")
+	}
+
+	if got := NameStateStatus(NameStateClosed).String(); got != "CLOSED" {
+		t.Fatalf("NameStateStatus.String() = %q, want %q", got, "CLOSED")
+	}
+}
+
 func TestPackageNameSetHelpers(t *testing.T) {
 	hash, err := HashString("example-name")
 	if err != nil {

@@ -515,6 +515,29 @@ type NameFlags = covenant.NameFlags
 // NameRules mirrors the covenant rollout and lockup rule inputs.
 type NameRules = covenant.NameRules
 
+// NameState mirrors the name-state record type from pkg/primitives.
+type NameState = primitives.NameState
+
+// NameDelta mirrors the sparse name-state delta type from pkg/primitives.
+type NameDelta = primitives.NameDelta
+
+// NameStateStats mirrors the derived timing summary type from pkg/primitives.
+type NameStateStats = primitives.NameStateStats
+
+// NameStateStatus mirrors the name phase enum from pkg/primitives.
+type NameStateStatus = primitives.NameStateStatus
+
+// Name state constants mirror pkg/primitives so callers can keep using the
+// top-level lns package for common domain objects.
+const (
+	NameStateOpening = primitives.NameStateOpening
+	NameStateLocked  = primitives.NameStateLocked
+	NameStateBidding = primitives.NameStateBidding
+	NameStateReveal  = primitives.NameStateReveal
+	NameStateClosed  = primitives.NameStateClosed
+	NameStateRevoked = primitives.NameStateRevoked
+)
+
 // CoinView mirrors the minimal UTXO lookup interface required by covenant
 // verification helpers.
 type CoinView = covenant.CoinView
