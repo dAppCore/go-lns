@@ -225,6 +225,44 @@ func TestPackageVerificationFlagTables(t *testing.T) {
 	}
 }
 
+func TestPackageRolloutHelpers(t *testing.T) {
+	var hash primitives.Hash
+
+	rules := NameRules{
+		AuctionStart:      100,
+		RolloutInterval:   7,
+		ClaimPeriod:       100,
+		AlexaLockupPeriod: 250,
+	}
+
+	start, week := GetRollout(hash, rules)
+	if start != 100 || week != 0 {
+		t.Fatalf("GetRollout(zero) = (%d, %d), want (100, 0)", start, week)
+	}
+
+	if !HasRollout(hash, 100, rules) {
+		t.Fatal("HasRollout should accept the rollout start height")
+	}
+
+	hash, err := covenant.HashString("reserved")
+	if err != nil {
+		t.Fatalf("HashString returned error: %v", err)
+	}
+
+	if !IsReserved(hash, 99, rules) {
+		t.Fatal("IsReserved should report reserved hashes before the claim period")
+	}
+
+	rootHash, err := covenant.HashString("nec")
+	if err != nil {
+		t.Fatalf("HashString returned error: %v", err)
+	}
+
+	if !IsLockedUp(rootHash, 100, rules) {
+		t.Fatal("IsLockedUp should keep root hashes locked after the claim period")
+	}
+}
+
 func TestPackageTypeConstants(t *testing.T) {
 	cases := []struct {
 		name string

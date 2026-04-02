@@ -424,6 +424,45 @@ func TestServiceTypeName(t *testing.T) {
 	}
 }
 
+func TestServiceRolloutHelpers(t *testing.T) {
+	svc := &Service{}
+
+	var hash primitives.Hash
+	rules := NameRules{
+		AuctionStart:      100,
+		RolloutInterval:   7,
+		ClaimPeriod:       100,
+		AlexaLockupPeriod: 250,
+	}
+
+	start, week := svc.GetRollout(hash, rules)
+	if start != 100 || week != 0 {
+		t.Fatalf("GetRollout(zero) = (%d, %d), want (100, 0)", start, week)
+	}
+
+	if !svc.HasRollout(hash, 100, rules) {
+		t.Fatal("HasRollout should accept the rollout start height")
+	}
+
+	reservedHash, err := covenant.HashString("reserved")
+	if err != nil {
+		t.Fatalf("HashString returned error: %v", err)
+	}
+
+	if !svc.IsReserved(reservedHash, 99, rules) {
+		t.Fatal("IsReserved should report reserved hashes before the claim period")
+	}
+
+	rootHash, err := covenant.HashString("nec")
+	if err != nil {
+		t.Fatalf("HashString returned error: %v", err)
+	}
+
+	if !svc.IsLockedUp(rootHash, 100, rules) {
+		t.Fatal("IsLockedUp should keep root hashes locked after the claim period")
+	}
+}
+
 func TestServiceGetBlindAndGetTypeNameAliases(t *testing.T) {
 	svc := &Service{}
 

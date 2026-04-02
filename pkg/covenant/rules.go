@@ -2,9 +2,25 @@
 
 package covenant
 
+import "dappco.re/go/lns/pkg/primitives"
+
 // NameFlags mirrors the covenant verification flags used by the JS reference
 // rules module.
 type NameFlags uint8
+
+// NameRules captures the network name-timing parameters used by the JS
+// covenant rules helpers.
+//
+// The structure keeps the rollout and lockup checks independent from any
+// broader network object while preserving the reference behaviour.
+type NameRules struct {
+	NoRollout         bool
+	RolloutInterval   uint32
+	AuctionStart      uint32
+	ClaimPeriod       uint32
+	NoReserved        bool
+	AlexaLockupPeriod uint32
+}
 
 const (
 	// VerifyCovenantsNone disables covenant verification flags.
@@ -54,4 +70,80 @@ func GetVerificationFlags() map[string]NameFlags {
 // GetVerificationFlagsByVal returns the reverse covenant verification table.
 func GetVerificationFlagsByVal() map[NameFlags]string {
 	return VerificationFlagsByVal
+}
+
+// GetRollout returns the rollout start height and rollout week for a name hash.
+//
+// When rollout gating is disabled, it returns zero values so HasRollout reports
+// true for any height.
+func GetRollout(nameHash primitives.Hash, rules NameRules) (uint32, uint32) {
+	if rules.NoRollout {
+		return 0, 0
+	}
+
+	week := modBuffer(nameHash[:], 52)
+	height := week * rules.RolloutInterval
+	return rules.AuctionStart + height, week
+}
+
+// HasRollout reports whether a name has passed its rollout start height.
+func HasRollout(nameHash primitives.Hash, height uint32, rules NameRules) bool {
+	start, _ := GetRollout(nameHash, rules)
+	return height >= start
+}
+
+// IsReserved reports whether a name is reserved at the provided height.
+//
+// Names are only reserved before the claim period and only when the network
+// has reserved-name protection enabled.
+func IsReserved(nameHash primitives.Hash, height uint32, rules NameRules) bool {
+	if rules.NoReserved {
+		return false
+	}
+
+	if height >= rules.ClaimPeriod {
+		return false
+	}
+
+	return HasReservedHash(nameHash)
+}
+
+// IsLockedUp reports whether a name is locked after the claim period.
+//
+// ICANN root names are always locked; non-root names remain locked until the
+// Alexa lockup threshold has elapsed.
+func IsLockedUp(nameHash primitives.Hash, height uint32, rules NameRules) bool {
+	if rules.NoReserved {
+		return false
+	}
+
+	if height < rules.ClaimPeriod {
+		return false
+	}
+
+	item, ok := GetLockedHash(nameHash)
+	if !ok {
+		return false
+	}
+
+	if item.Root {
+		return true
+	}
+
+	return height < rules.AlexaLockupPeriod
+}
+
+func modBuffer(buf []byte, num uint32) uint32 {
+	if num == 0 {
+		return 0
+	}
+
+	p := uint32(256 % num)
+	var acc uint32
+
+	for _, b := range buf {
+		acc = (p*acc + uint32(b)) % num
+	}
+
+	return acc
 }

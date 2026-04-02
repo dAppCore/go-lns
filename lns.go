@@ -331,6 +331,9 @@ const (
 // NameFlags mirrors the covenant verification flag type.
 type NameFlags = covenant.NameFlags
 
+// NameRules mirrors the covenant rollout and lockup rule inputs.
+type NameRules = covenant.NameRules
+
 // Verification and size constants mirror pkg/covenant so callers can stay in
 // the top-level lns package for common rule metadata.
 const (
@@ -363,6 +366,26 @@ func GetTypesByVal() map[covenant.CovenantType]string {
 //	name := lns.GetTypeName(covenant.TypeBid)
 func GetTypeName(ct covenant.CovenantType) string {
 	return covenant.TypeName(ct)
+}
+
+// GetRollout returns the rollout start height and rollout week for a name hash.
+func GetRollout(nameHash primitives.Hash, rules NameRules) (uint32, uint32) {
+	return covenant.GetRollout(nameHash, rules)
+}
+
+// HasRollout reports whether a name hash has reached its rollout height.
+func HasRollout(nameHash primitives.Hash, height uint32, rules NameRules) bool {
+	return covenant.HasRollout(nameHash, height, rules)
+}
+
+// IsReserved reports whether a name hash is reserved at the given height.
+func IsReserved(nameHash primitives.Hash, height uint32, rules NameRules) bool {
+	return covenant.IsReserved(nameHash, height, rules)
+}
+
+// IsLockedUp reports whether a name hash is locked at the given height.
+func IsLockedUp(nameHash primitives.Hash, height uint32, rules NameRules) bool {
+	return covenant.IsLockedUp(nameHash, height, rules)
 }
 
 // ServiceName returns the registered name for the LNS service group.
@@ -577,6 +600,26 @@ func (s *Service) TypeName(ct covenant.CovenantType) string {
 //	name := svc.GetTypeName(covenant.TypeBid)
 func (s *Service) GetTypeName(ct covenant.CovenantType) string {
 	return s.TypeName(ct)
+}
+
+// GetRollout returns the rollout start height and rollout week for a name hash.
+func (s *Service) GetRollout(nameHash primitives.Hash, rules NameRules) (uint32, uint32) {
+	return covenant.GetRollout(nameHash, rules)
+}
+
+// HasRollout reports whether a name hash has reached its rollout height.
+func (s *Service) HasRollout(nameHash primitives.Hash, height uint32, rules NameRules) bool {
+	return covenant.HasRollout(nameHash, height, rules)
+}
+
+// IsReserved reports whether a name hash is reserved at the given height.
+func (s *Service) IsReserved(nameHash primitives.Hash, height uint32, rules NameRules) bool {
+	return covenant.IsReserved(nameHash, height, rules)
+}
+
+// IsLockedUp reports whether a name hash is locked at the given height.
+func (s *Service) IsLockedUp(nameHash primitives.Hash, height uint32, rules NameRules) bool {
+	return covenant.IsLockedUp(nameHash, height, rules)
 }
 
 // Types mirrors the covenant type lookup table from pkg/covenant.
