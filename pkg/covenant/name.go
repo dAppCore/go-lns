@@ -26,6 +26,8 @@ var blacklist = map[string]struct{}{
 }
 
 // VerifyString reports whether a domain name meets the covenant rules.
+//
+//	ok := covenant.VerifyString("example")
 func VerifyString(name string) bool {
 	if len(name) == 0 || len(name) > maxNameSize {
 		return false
@@ -57,6 +59,8 @@ func VerifyString(name string) bool {
 }
 
 // VerifyBinary reports whether a binary domain name meets the covenant rules.
+//
+//	ok := covenant.VerifyBinary([]byte("example"))
 func VerifyBinary(name []byte) bool {
 	if len(name) == 0 || len(name) > maxNameSize {
 		return false
@@ -90,6 +94,8 @@ func VerifyBinary(name []byte) bool {
 // VerifyName reports whether a name meets the covenant rules.
 //
 // It accepts either a string or a byte slice to mirror the JS reference API.
+//
+//	ok := covenant.VerifyName("example")
 func VerifyName(name any) bool {
 	switch v := name.(type) {
 	case string:
@@ -102,21 +108,29 @@ func VerifyName(name any) bool {
 }
 
 // VerifyByName is an alias for VerifyName.
+//
+//	ok := covenant.VerifyByName("example")
 func VerifyByName(name any) bool {
 	return VerifyName(name)
 }
 
 // VerifyByString is an alias for VerifyString.
+//
+//	ok := covenant.VerifyByString("example")
 func VerifyByString(name string) bool {
 	return VerifyString(name)
 }
 
 // VerifyByBinary is an alias for VerifyBinary.
+//
+//	ok := covenant.VerifyByBinary([]byte("example"))
 func VerifyByBinary(name []byte) bool {
 	return VerifyBinary(name)
 }
 
 // HashString hashes a validated domain name.
+//
+//	hash, err := covenant.HashString("example")
 func HashString(name string) (primitives.Hash, error) {
 	if !VerifyString(name) {
 		return primitives.Hash{}, core.E("covenant.HashString", "invalid name", nil)
@@ -127,11 +141,15 @@ func HashString(name string) (primitives.Hash, error) {
 }
 
 // HashByString is an alias for HashString.
+//
+//	hash, err := covenant.HashByString("example")
 func HashByString(name string) (primitives.Hash, error) {
 	return HashString(name)
 }
 
 // HashBinary hashes a validated domain name.
+//
+//	hash, err := covenant.HashBinary([]byte("example"))
 func HashBinary(name []byte) (primitives.Hash, error) {
 	if !VerifyBinary(name) {
 		return primitives.Hash{}, core.E("covenant.HashBinary", "invalid name", nil)
@@ -142,6 +160,8 @@ func HashBinary(name []byte) (primitives.Hash, error) {
 }
 
 // HashByBinary is an alias for HashBinary.
+//
+//	hash, err := covenant.HashByBinary([]byte("example"))
 func HashByBinary(name []byte) (primitives.Hash, error) {
 	return HashBinary(name)
 }
@@ -149,6 +169,8 @@ func HashByBinary(name []byte) (primitives.Hash, error) {
 // HashName hashes a validated domain name.
 //
 // It accepts either a string or a byte slice to mirror the JS reference API.
+//
+//	hash, err := covenant.HashName("example")
 func HashName(name any) (primitives.Hash, error) {
 	switch v := name.(type) {
 	case string:
@@ -161,6 +183,8 @@ func HashName(name any) (primitives.Hash, error) {
 }
 
 // HashByName is an alias for HashName.
+//
+//	hash, err := covenant.HashByName("example")
 func HashByName(name any) (primitives.Hash, error) {
 	return HashName(name)
 }

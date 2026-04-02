@@ -19,6 +19,8 @@ import (
 //
 // The nonce is accepted as a fixed-size hash to keep the Go API aligned with
 // the rest of the name-system primitives.
+//
+//	bid, err := covenant.Blind(1000, nonce)
 func Blind(value uint64, nonce primitives.Hash) (primitives.Hash, error) {
 	var data [40]byte
 	binary.LittleEndian.PutUint64(data[:8], value)

@@ -143,6 +143,8 @@ func (s *Service) HashByBinary(name []byte) (primitives.Hash, error) {
 }
 
 // ResolveString returns the canonical hash for a .lthn name supplied as a string.
+//
+//	hash, err := svc.ResolveString("example.lthn")
 func (s *Service) ResolveString(name string) (primitives.Hash, error) {
 	normalized, ok := nameutil.Canonicalize(name)
 	if !ok {
@@ -153,6 +155,8 @@ func (s *Service) ResolveString(name string) (primitives.Hash, error) {
 }
 
 // ResolveBinary returns the canonical hash for a .lthn name supplied as bytes.
+//
+//	hash, err := svc.ResolveBinary([]byte("example.lthn"))
 func (s *Service) ResolveBinary(name []byte) (primitives.Hash, error) {
 	normalized, ok := nameutil.Canonicalize(name)
 	if !ok {

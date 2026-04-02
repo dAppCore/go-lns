@@ -115,11 +115,15 @@ func (s *Service) Verify(name any) bool {
 }
 
 // HashString returns the canonical hash for a .lthn name supplied as a string.
+//
+//	hash, err := svc.HashString("example.lthn")
 func (s *Service) HashString(name string) (primitives.Hash, error) {
 	return s.ResolveString(name)
 }
 
 // HashBinary returns the canonical hash for a .lthn name supplied as bytes.
+//
+//	hash, err := svc.HashBinary([]byte("example.lthn"))
 func (s *Service) HashBinary(name []byte) (primitives.Hash, error) {
 	return s.ResolveBinary(name)
 }
@@ -190,6 +194,8 @@ func (s *Service) ResolveName(name any) (primitives.Hash, error) {
 }
 
 // HashName is an alias for Hash.
+//
+//	hash, err := svc.HashName("example.lthn")
 func (s *Service) HashName(name any) (primitives.Hash, error) {
 	return s.Hash(name)
 }
