@@ -11,9 +11,17 @@ func TestNameStateIsNull(t *testing.T) {
 		t.Fatal("zero name state should be null")
 	}
 
-	ns := NameState{Name: []byte("foo")}
+	ns := NameState{
+		Name:     []byte("foo"),
+		NameHash: Hash{1, 2, 3},
+	}
+	if got := ns.IsNull(); !got {
+		t.Fatal("name metadata alone should not make the state non-null")
+	}
+
+	ns.Height = 1
 	if got := ns.IsNull(); got {
-		t.Fatal("name state with data should not be null")
+		t.Fatal("name state with chain data should not be null")
 	}
 }
 

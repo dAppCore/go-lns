@@ -15,9 +15,7 @@ func (ns NameState) Clone() NameState {
 
 // IsNull reports whether the name state carries any non-default data.
 func (ns NameState) IsNull() bool {
-	return len(ns.Name) == 0 &&
-		ns.NameHash == (Hash{}) &&
-		ns.Height == 0 &&
+	return ns.Height == 0 &&
 		ns.Renewal == 0 &&
 		(ns.Owner == (Outpoint{}) || ns.Owner.IsNull()) &&
 		ns.Value == 0 &&
