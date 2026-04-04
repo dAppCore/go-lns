@@ -158,11 +158,17 @@ func (NSRecord) Type() HSType { return HSTypeNS }
 // GetType is an alias for Type.
 func (r NSRecord) GetType() HSType { return r.Type() }
 
+// GetNS is an alias for the NS field accessor.
+func (r NSRecord) GetNS() string { return r.NS }
+
 // Type returns the DNS record type.
 func (GLUE4Record) Type() HSType { return HSTypeGLUE4 }
 
 // GetType is an alias for Type.
 func (r GLUE4Record) GetType() HSType { return r.Type() }
+
+// GetNS is an alias for the NS field accessor.
+func (r GLUE4Record) GetNS() string { return r.NS }
 
 // Type returns the DNS record type.
 func (GLUE6Record) Type() HSType { return HSTypeGLUE6 }
@@ -170,17 +176,26 @@ func (GLUE6Record) Type() HSType { return HSTypeGLUE6 }
 // GetType is an alias for Type.
 func (r GLUE6Record) GetType() HSType { return r.Type() }
 
+// GetNS is an alias for the NS field accessor.
+func (r GLUE6Record) GetNS() string { return r.NS }
+
 // Type returns the DNS record type.
 func (SYNTH4Record) Type() HSType { return HSTypeSYNTH4 }
 
 // GetType is an alias for Type.
 func (r SYNTH4Record) GetType() HSType { return r.Type() }
 
+// GetNS is an alias for NS.
+func (r SYNTH4Record) GetNS() string { return r.NS() }
+
 // Type returns the DNS record type.
 func (SYNTH6Record) Type() HSType { return HSTypeSYNTH6 }
 
 // GetType is an alias for Type.
 func (r SYNTH6Record) GetType() HSType { return r.Type() }
+
+// GetNS is an alias for NS.
+func (r SYNTH6Record) GetNS() string { return r.NS() }
 
 // Type returns the DNS record type.
 func (TXTRecord) Type() HSType { return HSTypeTXT }

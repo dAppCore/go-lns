@@ -83,6 +83,10 @@ func TestResourceEncodeDecodeRoundTrip(t *testing.T) {
 		t.Fatalf("SYNTH4 NS = %q, want %q", synth4.NS(), "_oopm828._synth.")
 	}
 
+	if synth4.GetNS() != synth4.NS() {
+		t.Fatalf("SYNTH4 GetNS = %q, want %q", synth4.GetNS(), synth4.NS())
+	}
+
 	synth6, ok := decoded.Records[5].(SYNTH6Record)
 	if !ok || synth6.Address.String() != "2001:db8::9" {
 		t.Fatalf("decoded SYNTH6 record = %#v, want 2001:db8::9", decoded.Records[5])
@@ -90,6 +94,10 @@ func TestResourceEncodeDecodeRoundTrip(t *testing.T) {
 
 	if synth6.NS() != "_400gre00000000000000000014._synth." {
 		t.Fatalf("SYNTH6 NS = %q, want %q", synth6.NS(), "_400gre00000000000000000014._synth.")
+	}
+
+	if synth6.GetNS() != synth6.NS() {
+		t.Fatalf("SYNTH6 GetNS = %q, want %q", synth6.GetNS(), synth6.NS())
 	}
 
 	txt, ok := decoded.Records[6].(TXTRecord)
@@ -286,6 +294,47 @@ func TestResourceRecordTypeAliases(t *testing.T) {
 		case TXTRecord:
 			if got := rr.GetType(); got != tc.want {
 				t.Fatalf("%s GetType() = %d, want %d", tc.name, got, tc.want)
+			}
+		default:
+			t.Fatalf("%s: unexpected record type %T", tc.name, tc.value)
+		}
+	}
+}
+
+func TestResourceRecordNSAliases(t *testing.T) {
+	cases := []struct {
+		name  string
+		value any
+		want  string
+	}{
+		{name: "ns", value: NSRecord{NS: "ns1.example."}, want: "ns1.example."},
+		{name: "glue4", value: GLUE4Record{NS: "ns1.example."}, want: "ns1.example."},
+		{name: "glue6", value: GLUE6Record{NS: "ns2.example."}, want: "ns2.example."},
+		{name: "synth4", value: SYNTH4Record{Address: netip.MustParseAddr("198.51.100.9")}, want: "_oopm828._synth."},
+		{name: "synth6", value: SYNTH6Record{Address: netip.MustParseAddr("2001:db8::9")}, want: "_400gre00000000000000000014._synth."},
+	}
+
+	for _, tc := range cases {
+		switch rr := tc.value.(type) {
+		case NSRecord:
+			if got := rr.GetNS(); got != tc.want {
+				t.Fatalf("%s GetNS() = %q, want %q", tc.name, got, tc.want)
+			}
+		case GLUE4Record:
+			if got := rr.GetNS(); got != tc.want {
+				t.Fatalf("%s GetNS() = %q, want %q", tc.name, got, tc.want)
+			}
+		case GLUE6Record:
+			if got := rr.GetNS(); got != tc.want {
+				t.Fatalf("%s GetNS() = %q, want %q", tc.name, got, tc.want)
+			}
+		case SYNTH4Record:
+			if got := rr.GetNS(); got != tc.want {
+				t.Fatalf("%s GetNS() = %q, want %q", tc.name, got, tc.want)
+			}
+		case SYNTH6Record:
+			if got := rr.GetNS(); got != tc.want {
+				t.Fatalf("%s GetNS() = %q, want %q", tc.name, got, tc.want)
 			}
 		default:
 			t.Fatalf("%s: unexpected record type %T", tc.name, tc.value)
