@@ -73,6 +73,13 @@ func GrindName(size int, height uint32, rules NameRules) (string, error) {
 	return "", core.E("covenant.GrindName", "could not find available name", nil)
 }
 
+// GetGrindName is an alias for GrindName.
+//
+//	name, err := covenant.GetGrindName(8, height, rules)
+func GetGrindName(size int, height uint32, rules NameRules) (string, error) {
+	return GrindName(size, height, rules)
+}
+
 // CountOpens counts OPEN covenants in the transaction outputs.
 func CountOpens(tx primitives.Transaction) int {
 	total := 0
@@ -84,6 +91,13 @@ func CountOpens(tx primitives.Transaction) int {
 	}
 
 	return total
+}
+
+// GetCountOpens is an alias for CountOpens.
+//
+//	count := covenant.GetCountOpens(tx)
+func GetCountOpens(tx primitives.Transaction) int {
+	return CountOpens(tx)
 }
 
 // CountUpdates counts UPDATE-style covenants in the transaction outputs.
@@ -100,6 +114,13 @@ func CountUpdates(tx primitives.Transaction) int {
 	return total
 }
 
+// GetCountUpdates is an alias for CountUpdates.
+//
+//	count := covenant.GetCountUpdates(tx)
+func GetCountUpdates(tx primitives.Transaction) int {
+	return CountUpdates(tx)
+}
+
 // CountRenewals counts REGISTER, RENEW, and FINALIZE covenants in the transaction outputs.
 func CountRenewals(tx primitives.Transaction) int {
 	total := 0
@@ -112,4 +133,11 @@ func CountRenewals(tx primitives.Transaction) int {
 	}
 
 	return total
+}
+
+// GetCountRenewals is an alias for CountRenewals.
+//
+//	count := covenant.GetCountRenewals(tx)
+func GetCountRenewals(tx primitives.Transaction) int {
+	return CountRenewals(tx)
 }

@@ -28,12 +28,24 @@ func TestCountHelpers(t *testing.T) {
 		t.Fatalf("CountOpens() = %d, want 1", got)
 	}
 
+	if got := GetCountOpens(tx); got != 1 {
+		t.Fatalf("GetCountOpens() = %d, want 1", got)
+	}
+
 	if got := CountUpdates(tx); got != 5 {
 		t.Fatalf("CountUpdates() = %d, want 5", got)
 	}
 
+	if got := GetCountUpdates(tx); got != 5 {
+		t.Fatalf("GetCountUpdates() = %d, want 5", got)
+	}
+
 	if got := CountRenewals(tx); got != 3 {
 		t.Fatalf("CountRenewals() = %d, want 3", got)
+	}
+
+	if got := GetCountRenewals(tx); got != 3 {
+		t.Fatalf("GetCountRenewals() = %d, want 3", got)
 	}
 }
 
@@ -78,6 +90,15 @@ func TestGrindName(t *testing.T) {
 	if _, err := GrindName(0, 100, rules); err == nil {
 		t.Fatal("GrindName should reject zero-length names")
 	}
+
+	alias, err := GetGrindName(8, 100, rules)
+	if err != nil {
+		t.Fatalf("GetGrindName returned error: %v", err)
+	}
+
+	if len(alias) != 8 {
+		t.Fatalf("GetGrindName returned %q with length %d, want 8", alias, len(alias))
+	}
 }
 
 func TestNameSetHelpers(t *testing.T) {
@@ -101,6 +122,10 @@ func TestNameSetHelpers(t *testing.T) {
 		t.Fatal("HasNames should report a matching name hash")
 	}
 
+	if !GetHasNames(tx, set) {
+		t.Fatal("GetHasNames should alias HasNames")
+	}
+
 	RemoveNames(tx, set)
 
 	if len(set) != 0 {
@@ -111,6 +136,18 @@ func TestNameSetHelpers(t *testing.T) {
 
 	if len(set) != 1 {
 		t.Fatalf("AddNames left %d entries, want 1", len(set))
+	}
+
+	GetRemoveNames(tx, set)
+
+	if len(set) != 0 {
+		t.Fatalf("GetRemoveNames left %d entries, want 0", len(set))
+	}
+
+	GetAddNames(tx, set)
+
+	if len(set) != 1 {
+		t.Fatalf("GetAddNames left %d entries, want 1", len(set))
 	}
 }
 
@@ -133,6 +170,10 @@ func TestHasSaneCovenants(t *testing.T) {
 
 	if !HasSaneCovenants(valid) {
 		t.Fatal("HasSaneCovenants should accept structurally valid covenants")
+	}
+
+	if !GetHasSaneCovenants(valid) {
+		t.Fatal("GetHasSaneCovenants should alias HasSaneCovenants")
 	}
 
 	invalid := primitives.Transaction{
@@ -265,9 +306,17 @@ func TestVerifyCovenants(t *testing.T) {
 		t.Fatalf("VerifyCovenants returned %d, want 0", got)
 	}
 
+	if got := GetVerifyCovenants(tx, view, 100, Network{}); got != 0 {
+		t.Fatalf("GetVerifyCovenants returned %d, want 0", got)
+	}
+
 	tx.Outputs[0].Address.Hash[0] ^= 1
 	if got := VerifyCovenants(tx, view, 100, Network{}); got != -1 {
 		t.Fatalf("VerifyCovenants returned %d for an invalid finalize address, want -1", got)
+	}
+
+	if got := GetVerifyCovenants(tx, view, 100, Network{}); got != -1 {
+		t.Fatalf("GetVerifyCovenants returned %d for an invalid finalize address, want -1", got)
 	}
 }
 

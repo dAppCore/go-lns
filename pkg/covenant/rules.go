@@ -115,6 +115,13 @@ func IsReserved(nameHash primitives.Hash, height uint32, rules NameRules) bool {
 	return HasReservedHash(nameHash)
 }
 
+// GetIsReserved is an alias for IsReserved.
+//
+//	ok := covenant.GetIsReserved(nameHash, height, rules)
+func GetIsReserved(nameHash primitives.Hash, height uint32, rules NameRules) bool {
+	return IsReserved(nameHash, height, rules)
+}
+
 // IsLockedUp reports whether a name is locked after the claim period.
 //
 // ICANN root names are always locked; non-root names remain locked until the
@@ -138,6 +145,13 @@ func IsLockedUp(nameHash primitives.Hash, height uint32, rules NameRules) bool {
 	}
 
 	return height < rules.AlexaLockupPeriod
+}
+
+// GetIsLockedUp is an alias for IsLockedUp.
+//
+//	ok := covenant.GetIsLockedUp(nameHash, height, rules)
+func GetIsLockedUp(nameHash primitives.Hash, height uint32, rules NameRules) bool {
+	return IsLockedUp(nameHash, height, rules)
 }
 
 func modBuffer(buf []byte, num uint32) uint32 {

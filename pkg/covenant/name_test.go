@@ -185,12 +185,36 @@ func TestVerifyAliases(t *testing.T) {
 		t.Fatal("VerifyByName should accept string inputs")
 	}
 
+	if !GetVerifyName("foo-bar") {
+		t.Fatal("GetVerifyName should accept string inputs")
+	}
+
 	if !VerifyByString("foo-bar") {
 		t.Fatal("VerifyByString should accept string inputs")
 	}
 
+	if !GetVerifyString("foo-bar") {
+		t.Fatal("GetVerifyString should accept string inputs")
+	}
+
 	if !VerifyByBinary([]byte("foo_bar")) {
 		t.Fatal("VerifyByBinary should accept byte-slice inputs")
+	}
+
+	if !GetVerifyBinary([]byte("foo_bar")) {
+		t.Fatal("GetVerifyBinary should accept byte-slice inputs")
+	}
+
+	if !GetVerifyByName("foo-bar") {
+		t.Fatal("GetVerifyByName should alias VerifyByName")
+	}
+
+	if !GetVerifyByString("foo-bar") {
+		t.Fatal("GetVerifyByString should alias VerifyByString")
+	}
+
+	if !GetVerifyByBinary([]byte("foo_bar")) {
+		t.Fatal("GetVerifyByBinary should alias VerifyByBinary")
 	}
 }
 
@@ -241,14 +265,25 @@ func TestHashName(t *testing.T) {
 }
 
 func TestHashAliases(t *testing.T) {
+	wantString := sha3.Sum256([]byte("foo-bar"))
+	wantBinary := sha3.Sum256([]byte("foo_bar"))
+
 	got, err := HashByName("foo-bar")
 	if err != nil {
 		t.Fatalf("HashByName(string) returned error: %v", err)
 	}
 
-	want := sha3.Sum256([]byte("foo-bar"))
-	if got != want {
-		t.Fatalf("HashByName(string) returned %x, want %x", got, want)
+	if got != wantString {
+		t.Fatalf("HashByName(string) returned %x, want %x", got, wantString)
+	}
+
+	got, err = GetHashName("foo-bar")
+	if err != nil {
+		t.Fatalf("GetHashName(string) returned error: %v", err)
+	}
+
+	if got != wantString {
+		t.Fatalf("GetHashName(string) returned %x, want %x", got, wantString)
 	}
 
 	got, err = HashByString("foo-bar")
@@ -256,8 +291,17 @@ func TestHashAliases(t *testing.T) {
 		t.Fatalf("HashByString returned error: %v", err)
 	}
 
-	if got != want {
-		t.Fatalf("HashByString returned %x, want %x", got, want)
+	if got != wantString {
+		t.Fatalf("HashByString returned %x, want %x", got, wantString)
+	}
+
+	got, err = GetHashString("foo-bar")
+	if err != nil {
+		t.Fatalf("GetHashString returned error: %v", err)
+	}
+
+	if got != wantString {
+		t.Fatalf("GetHashString returned %x, want %x", got, wantString)
 	}
 
 	got, err = HashByBinary([]byte("foo_bar"))
@@ -265,9 +309,44 @@ func TestHashAliases(t *testing.T) {
 		t.Fatalf("HashByBinary returned error: %v", err)
 	}
 
-	want = sha3.Sum256([]byte("foo_bar"))
-	if got != want {
-		t.Fatalf("HashByBinary returned %x, want %x", got, want)
+	if got != wantBinary {
+		t.Fatalf("HashByBinary returned %x, want %x", got, wantBinary)
+	}
+
+	got, err = GetHashBinary([]byte("foo_bar"))
+	if err != nil {
+		t.Fatalf("GetHashBinary returned error: %v", err)
+	}
+
+	if got != wantBinary {
+		t.Fatalf("GetHashBinary returned %x, want %x", got, wantBinary)
+	}
+
+	got, err = GetHashByName("foo-bar")
+	if err != nil {
+		t.Fatalf("GetHashByName(string) returned error: %v", err)
+	}
+
+	if got != wantString {
+		t.Fatalf("GetHashByName(string) returned %x, want %x", got, wantString)
+	}
+
+	got, err = GetHashByString("foo-bar")
+	if err != nil {
+		t.Fatalf("GetHashByString returned error: %v", err)
+	}
+
+	if got != wantString {
+		t.Fatalf("GetHashByString returned %x, want %x", got, wantString)
+	}
+
+	got, err = GetHashByBinary([]byte("foo_bar"))
+	if err != nil {
+		t.Fatalf("GetHashByBinary returned error: %v", err)
+	}
+
+	if got != wantBinary {
+		t.Fatalf("GetHashByBinary returned %x, want %x", got, wantBinary)
 	}
 }
 

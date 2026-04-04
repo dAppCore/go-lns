@@ -66,6 +66,10 @@ func TestIsReserved(t *testing.T) {
 		t.Fatal("IsReserved should reject reserved names at or after the claim period")
 	}
 
+	if !GetIsReserved(hash, 99, rules) {
+		t.Fatal("GetIsReserved should alias IsReserved")
+	}
+
 	rules.NoReserved = true
 	if IsReserved(hash, 99, rules) {
 		t.Fatal("IsReserved should be disabled when reserved-name protection is off")
@@ -102,6 +106,10 @@ func TestIsLockedUp(t *testing.T) {
 
 	if IsLockedUp(nonRootHash, 250, rules) {
 		t.Fatal("IsLockedUp should release non-root names after the Alexa threshold")
+	}
+
+	if !GetIsLockedUp(rootHash, 100, rules) {
+		t.Fatal("GetIsLockedUp should alias IsLockedUp")
 	}
 
 	rules.NoReserved = true

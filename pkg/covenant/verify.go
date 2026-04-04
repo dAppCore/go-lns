@@ -290,6 +290,13 @@ func VerifyCovenants(tx primitives.Transaction, view CoinView, height uint32, ne
 	return 0
 }
 
+// GetVerifyCovenants is an alias for VerifyCovenants.
+//
+//	status := covenant.GetVerifyCovenants(tx, view, height, network)
+func GetVerifyCovenants(tx primitives.Transaction, view CoinView, height uint32, network Network) int {
+	return VerifyCovenants(tx, view, height, network)
+}
+
 func covenantHashEquals(cov primitives.Covenant, index int, other primitives.Covenant) bool {
 	hash, err := cov.GetHash(index)
 	if err != nil {

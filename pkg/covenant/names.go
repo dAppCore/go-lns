@@ -62,6 +62,13 @@ func HasNames(tx primitives.Transaction, set map[primitives.Hash]struct{}) bool 
 	return false
 }
 
+// GetHasNames is an alias for HasNames.
+//
+//	ok := covenant.GetHasNames(tx, set)
+func GetHasNames(tx primitives.Transaction, set map[primitives.Hash]struct{}) bool {
+	return HasNames(tx, set)
+}
+
 // AddNames adds the transaction's name covenants to the set.
 func AddNames(tx primitives.Transaction, set map[primitives.Hash]struct{}) {
 	for _, output := range tx.Outputs {
@@ -81,6 +88,13 @@ func AddNames(tx primitives.Transaction, set map[primitives.Hash]struct{}) {
 	}
 }
 
+// GetAddNames is an alias for AddNames.
+//
+//	covenant.GetAddNames(tx, set)
+func GetAddNames(tx primitives.Transaction, set map[primitives.Hash]struct{}) {
+	AddNames(tx, set)
+}
+
 // RemoveNames removes the transaction's name covenants from the set.
 func RemoveNames(tx primitives.Transaction, set map[primitives.Hash]struct{}) {
 	for _, output := range tx.Outputs {
@@ -98,6 +112,13 @@ func RemoveNames(tx primitives.Transaction, set map[primitives.Hash]struct{}) {
 			nameSetDelete(set, hash)
 		}
 	}
+}
+
+// GetRemoveNames is an alias for RemoveNames.
+//
+//	covenant.GetRemoveNames(tx, set)
+func GetRemoveNames(tx primitives.Transaction, set map[primitives.Hash]struct{}) {
+	RemoveNames(tx, set)
 }
 
 func isCoinbaseTx(tx primitives.Transaction) bool {
@@ -329,4 +350,11 @@ func HasSaneCovenants(tx primitives.Transaction) bool {
 	}
 
 	return true
+}
+
+// GetHasSaneCovenants is an alias for HasSaneCovenants.
+//
+//	ok := covenant.GetHasSaneCovenants(tx)
+func GetHasSaneCovenants(tx primitives.Transaction) bool {
+	return HasSaneCovenants(tx)
 }
