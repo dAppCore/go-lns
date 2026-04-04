@@ -52,6 +52,14 @@ func TestClaimHelpers(t *testing.T) {
 		t.Fatalf("GetVirtualSize() = %d, want %d", got, claim.VirtualSize())
 	}
 
+	if got := claim.ToBlob(); string(got) != string(blob) {
+		t.Fatalf("ToBlob() = %q, want %q", got, blob)
+	}
+
+	if got := claim.GetToBlob(); string(got) != string(blob) {
+		t.Fatalf("GetToBlob() = %q, want %q", got, blob)
+	}
+
 	raw, err := claim.MarshalBinary()
 	if err != nil {
 		t.Fatalf("MarshalBinary returned error: %v", err)

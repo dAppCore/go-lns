@@ -134,6 +134,11 @@ func (c Claim) ToBlob() []byte {
 	return c.GetBlob()
 }
 
+// GetToBlob is an alias for ToBlob.
+func (c Claim) GetToBlob() []byte {
+	return c.ToBlob()
+}
+
 // GetBlob returns a copy of the raw claim blob.
 func (c Claim) GetBlob() []byte {
 	if len(c.Blob) == 0 {
