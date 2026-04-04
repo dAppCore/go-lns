@@ -272,6 +272,16 @@ func GetNewResource() *Resource {
 	return NewResource()
 }
 
+// DecodeResource decodes a raw DNS resource payload.
+func DecodeResource(raw []byte) (*Resource, error) {
+	return dnspkg.DecodeResource(raw)
+}
+
+// GetDecodeResource is an alias for DecodeResource.
+func GetDecodeResource(raw []byte) (*Resource, error) {
+	return DecodeResource(raw)
+}
+
 // Create constructs a reference NSEC record container.
 func Create(name, nextDomain string, typeBitmap []byte) NSECRecord {
 	return dnspkg.Create(name, nextDomain, typeBitmap)

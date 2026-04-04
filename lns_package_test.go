@@ -712,6 +712,30 @@ func TestPackageResourceAliases(t *testing.T) {
 	if resource.HasType(dnspkg.HSTypeTXT) == false {
 		t.Fatal("resource aliases should expose record type helpers from pkg/dns")
 	}
+
+	encoded, err := resource.Encode()
+	if err != nil {
+		t.Fatalf("Resource.Encode returned error: %v", err)
+	}
+
+	decoded, err := DecodeResource(encoded)
+	if err != nil {
+		t.Fatalf("DecodeResource returned error: %v", err)
+	}
+
+	if decoded.TTL != DEFAULT_TTL {
+		t.Fatalf("DecodeResource TTL = %d, want %d", decoded.TTL, DEFAULT_TTL)
+	}
+
+	if len(decoded.Records) != len(resource.Records) {
+		t.Fatalf("DecodeResource records = %d, want %d", len(decoded.Records), len(resource.Records))
+	}
+
+	if got, err := GetDecodeResource(encoded); err != nil {
+		t.Fatalf("GetDecodeResource returned error: %v", err)
+	} else if got.TTL != decoded.TTL || len(got.Records) != len(decoded.Records) {
+		t.Fatal("GetDecodeResource should alias DecodeResource")
+	}
 }
 
 func TestPackageNameStateAliases(t *testing.T) {
