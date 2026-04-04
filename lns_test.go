@@ -25,6 +25,16 @@ func TestServiceLifecycleHooks(t *testing.T) {
 	if got := svc.OnShutdown(nil); !got.OK {
 		t.Fatalf("OnShutdown returned %#v, want OK", got)
 	}
+
+	var nilSvc *Service
+
+	if got := nilSvc.OnStartup(nil); !got.OK {
+		t.Fatalf("nil OnStartup returned %#v, want OK", got)
+	}
+
+	if got := nilSvc.OnShutdown(nil); !got.OK {
+		t.Fatalf("nil OnShutdown returned %#v, want OK", got)
+	}
 }
 
 func TestServiceHandleIPCEvents(t *testing.T) {
@@ -32,6 +42,12 @@ func TestServiceHandleIPCEvents(t *testing.T) {
 
 	if got := svc.HandleIPCEvents(nil, nil); !got.OK {
 		t.Fatalf("HandleIPCEvents returned %#v, want OK", got)
+	}
+
+	var nilSvc *Service
+
+	if got := nilSvc.HandleIPCEvents(nil, nil); !got.OK {
+		t.Fatalf("nil HandleIPCEvents returned %#v, want OK", got)
 	}
 }
 

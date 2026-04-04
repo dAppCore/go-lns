@@ -123,6 +123,10 @@ var (
 	} = (*Service)(nil)
 )
 
+func okResult() core.Result {
+	return core.Result{OK: true}
+}
+
 // serviceOptions holds configuration for the LNS service.
 type serviceOptions struct{}
 
@@ -510,13 +514,13 @@ func (s *Service) GetDecodeResource(raw []byte) (*Resource, error) {
 // OnStartup satisfies core.Startable so LNS participates in Core lifecycle
 // discovery without requiring any explicit setup.
 func (s *Service) OnStartup(context.Context) core.Result {
-	return core.Result{OK: true}
+	return okResult()
 }
 
 // OnShutdown satisfies core.Stoppable so LNS participates in Core lifecycle
 // discovery without requiring any explicit teardown.
 func (s *Service) OnShutdown(context.Context) core.Result {
-	return core.Result{OK: true}
+	return okResult()
 }
 
 // HandleIPCEvents satisfies Core's IPC handler discovery.
@@ -524,7 +528,7 @@ func (s *Service) OnShutdown(context.Context) core.Result {
 //	core.New(core.WithService(lns.Register))
 //	// LNS registers a no-op IPC handler so it can join the bus cleanly.
 func (s *Service) HandleIPCEvents(*core.Core, core.Message) core.Result {
-	return core.Result{OK: true}
+	return okResult()
 }
 
 func canonicalizeName(name any) (string, bool) {
