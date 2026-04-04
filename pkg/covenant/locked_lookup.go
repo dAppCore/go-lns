@@ -1,5 +1,11 @@
 // SPDX-License-Identifier: EUPL-1.2
 
+// Package covenant in pkg/covenant/locked_lookup.go documents the locked-name
+// catalog path for the Lethean Name System.
+//
+// Look up a locked label:
+//
+//	name, ok := covenant.GetLockedName("example")
 package covenant
 
 import (

@@ -1,8 +1,10 @@
 // SPDX-License-Identifier: EUPL-1.2
 
-// Package covenant defines the covenant type constants for the Lethean Name System.
-// Covenants encode name-system operations (auctions, registrations, transfers)
-// as typed payloads attached to transaction outputs.
+// Package covenant documents the covenant type tables and rule helpers for
+// the Lethean Name System. The path matters: pkg/covenant/covenant.go defines
+// the enum and lookup tables, while pkg/covenant/reserved_lookup.go,
+// pkg/covenant/locked_lookup.go, and pkg/covenant/blind.go cover the catalogs
+// and sealed-bid helper.
 //
 // Check a covenant type:
 //
@@ -78,6 +80,8 @@ var Types = map[string]CovenantType{
 }
 
 // GetTypes returns the covenant type lookup table.
+//
+//	types := covenant.GetTypes()
 func GetTypes() map[string]CovenantType {
 	return Types
 }
@@ -99,6 +103,8 @@ var TypesByVal = map[CovenantType]string{
 }
 
 // GetTypesByVal returns the reverse covenant type lookup table.
+//
+//	typesByVal := covenant.GetTypesByVal()
 func GetTypesByVal() map[CovenantType]string {
 	return TypesByVal
 }
@@ -118,7 +124,7 @@ func TypeName(ct CovenantType) string {
 
 // GetTypeName is an alias for TypeName.
 //
-//	name := covenant.GetTypeName(covenant.TypeBid)
+//	name := covenant.TypeName(covenant.TypeBid)
 func GetTypeName(ct CovenantType) string {
 	return TypeName(ct)
 }

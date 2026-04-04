@@ -1,5 +1,11 @@
 // SPDX-License-Identifier: EUPL-1.2
 
+// Package covenant in pkg/covenant/reserved_lookup.go documents the reserved
+// name catalog path for the Lethean Name System.
+//
+// Look up a reserved label:
+//
+//	name, ok := covenant.GetReservedName("example")
 package covenant
 
 import (

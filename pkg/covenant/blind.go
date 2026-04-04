@@ -1,5 +1,11 @@
 // SPDX-License-Identifier: EUPL-1.2
 
+// Package covenant in pkg/covenant/blind.go documents the sealed-bid helper
+// used by the Lethean Name System covenant rules.
+//
+// Create a commitment from a bid value and nonce:
+//
+//	bid, err := covenant.Blind(1000, nonce)
 package covenant
 
 import (

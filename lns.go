@@ -129,7 +129,7 @@ func Register(c *core.Core) core.Result {
 
 // GetServiceName returns the registered name for the LNS service group.
 //
-//	name := lns.GetServiceName()
+//	name := lns.ServiceName
 func GetServiceName() string {
 	return ServiceName
 }
@@ -260,6 +260,8 @@ func (s *Service) LookupCatalogName(
 }
 
 // GetLookupCatalogName is an alias for LookupCatalogName.
+//
+//	item, ok := lns.LookupCatalogName(name, byLabel, byHash)
 func (s *Service) GetLookupCatalogName(
 	name any,
 	byLabel func(string) (any, bool),
@@ -279,7 +281,7 @@ func Resolve(name any) (primitives.Hash, error) {
 
 // GetResolve is an alias for Resolve.
 //
-//	hash, err := lns.GetResolve("example.lthn")
+//	hash, err := lns.Resolve("example.lthn")
 func GetResolve(name any) (primitives.Hash, error) {
 	return Resolve(name)
 }
@@ -295,7 +297,7 @@ func Hash(name any) (primitives.Hash, error) {
 
 // GetHash is an alias for Hash.
 //
-//	hash, err := lns.GetHash("example.lthn")
+//	hash, err := lns.Hash("example.lthn")
 func GetHash(name any) (primitives.Hash, error) {
 	return Hash(name)
 }
@@ -311,7 +313,7 @@ func Verify(name any) bool {
 
 // GetVerify is an alias for Verify.
 //
-//	ok := lns.GetVerify("example.lthn")
+//	ok := lns.Verify("example.lthn")
 func GetVerify(name any) bool {
 	return Verify(name)
 }
@@ -325,7 +327,7 @@ func HashString(name string) (primitives.Hash, error) {
 
 // GetHashString is an alias for HashString.
 //
-//	hash, err := lns.GetHashString("example.lthn")
+//	hash, err := lns.HashString("example.lthn")
 func GetHashString(name string) (primitives.Hash, error) {
 	return HashString(name)
 }
@@ -339,7 +341,7 @@ func HashBinary(name []byte) (primitives.Hash, error) {
 
 // GetHashBinary is an alias for HashBinary.
 //
-//	hash, err := lns.GetHashBinary([]byte("example.lthn"))
+//	hash, err := lns.HashBinary([]byte("example.lthn"))
 func GetHashBinary(name []byte) (primitives.Hash, error) {
 	return HashBinary(name)
 }
@@ -353,7 +355,7 @@ func ResolveByString(name string) (primitives.Hash, error) {
 
 // GetResolveByString is an alias for ResolveByString.
 //
-//	hash, err := lns.GetResolveByString("example.lthn")
+//	hash, err := lns.ResolveString("example.lthn")
 func GetResolveByString(name string) (primitives.Hash, error) {
 	return ResolveByString(name)
 }
@@ -367,7 +369,7 @@ func ResolveByBinary(name []byte) (primitives.Hash, error) {
 
 // GetResolveByBinary is an alias for ResolveByBinary.
 //
-//	hash, err := lns.GetResolveByBinary([]byte("example.lthn"))
+//	hash, err := lns.ResolveBinary([]byte("example.lthn"))
 func GetResolveByBinary(name []byte) (primitives.Hash, error) {
 	return ResolveByBinary(name)
 }
@@ -381,7 +383,7 @@ func HashByString(name string) (primitives.Hash, error) {
 
 // GetHashByString is an alias for HashByString.
 //
-//	hash, err := lns.GetHashByString("example.lthn")
+//	hash, err := lns.HashString("example.lthn")
 func GetHashByString(name string) (primitives.Hash, error) {
 	return HashByString(name)
 }
@@ -395,7 +397,7 @@ func HashByBinary(name []byte) (primitives.Hash, error) {
 
 // GetHashByBinary is an alias for HashByBinary.
 //
-//	hash, err := lns.GetHashByBinary([]byte("example.lthn"))
+//	hash, err := lns.HashBinary([]byte("example.lthn"))
 func GetHashByBinary(name []byte) (primitives.Hash, error) {
 	return HashByBinary(name)
 }
@@ -409,7 +411,7 @@ func ResolveString(name string) (primitives.Hash, error) {
 
 // GetResolveString is an alias for ResolveString.
 //
-//	hash, err := lns.GetResolveString("example.lthn")
+//	hash, err := lns.ResolveString("example.lthn")
 func GetResolveString(name string) (primitives.Hash, error) {
 	return ResolveString(name)
 }
@@ -423,7 +425,7 @@ func ResolveBinary(name []byte) (primitives.Hash, error) {
 
 // GetResolveBinary is an alias for ResolveBinary.
 //
-//	hash, err := lns.GetResolveBinary([]byte("example.lthn"))
+//	hash, err := lns.ResolveBinary([]byte("example.lthn"))
 func GetResolveBinary(name []byte) (primitives.Hash, error) {
 	return ResolveBinary(name)
 }
@@ -437,7 +439,7 @@ func ResolveName(name any) (primitives.Hash, error) {
 
 // GetResolveName is an alias for ResolveName.
 //
-//	hash, err := lns.GetResolveName("example.lthn")
+//	hash, err := lns.Resolve("example.lthn")
 func GetResolveName(name any) (primitives.Hash, error) {
 	return ResolveName(name)
 }
@@ -451,7 +453,7 @@ func HashName(name any) (primitives.Hash, error) {
 
 // GetHashName is an alias for HashName.
 //
-//	hash, err := lns.GetHashName("example.lthn")
+//	hash, err := lns.Hash("example.lthn")
 func GetHashName(name any) (primitives.Hash, error) {
 	return HashName(name)
 }
@@ -465,7 +467,7 @@ func VerifyName(name any) bool {
 
 // GetVerifyName is an alias for VerifyName.
 //
-//	ok := lns.GetVerifyName("example.lthn")
+//	ok := lns.Verify("example.lthn")
 func GetVerifyName(name any) bool {
 	return VerifyName(name)
 }
@@ -479,7 +481,7 @@ func ResolveByName(name any) (primitives.Hash, error) {
 
 // GetResolveByName is an alias for ResolveByName.
 //
-//	hash, err := lns.GetResolveByName("example.lthn")
+//	hash, err := lns.ResolveName("example.lthn")
 func GetResolveByName(name any) (primitives.Hash, error) {
 	return ResolveByName(name)
 }
@@ -493,7 +495,7 @@ func HashByName(name any) (primitives.Hash, error) {
 
 // GetHashByName is an alias for HashByName.
 //
-//	hash, err := lns.GetHashByName("example.lthn")
+//	hash, err := lns.HashName("example.lthn")
 func GetHashByName(name any) (primitives.Hash, error) {
 	return HashByName(name)
 }
@@ -507,7 +509,7 @@ func VerifyByName(name any) bool {
 
 // GetVerifyByName is an alias for VerifyByName.
 //
-//	ok := lns.GetVerifyByName("example.lthn")
+//	ok := lns.VerifyName("example.lthn")
 func GetVerifyByName(name any) bool {
 	return VerifyByName(name)
 }
@@ -521,7 +523,7 @@ func VerifyString(name string) bool {
 
 // GetVerifyString is an alias for VerifyString.
 //
-//	ok := lns.GetVerifyString("example.lthn")
+//	ok := lns.VerifyString("example.lthn")
 func GetVerifyString(name string) bool {
 	return VerifyString(name)
 }
@@ -535,7 +537,7 @@ func VerifyBinary(name []byte) bool {
 
 // GetVerifyBinary is an alias for VerifyBinary.
 //
-//	ok := lns.GetVerifyBinary([]byte("example.lthn"))
+//	ok := lns.VerifyBinary([]byte("example.lthn"))
 func GetVerifyBinary(name []byte) bool {
 	return VerifyBinary(name)
 }
@@ -549,7 +551,7 @@ func VerifyByString(name string) bool {
 
 // GetVerifyByString is an alias for VerifyByString.
 //
-//	ok := lns.GetVerifyByString("example.lthn")
+//	ok := lns.VerifyString("example.lthn")
 func GetVerifyByString(name string) bool {
 	return VerifyByString(name)
 }
@@ -563,7 +565,7 @@ func VerifyByBinary(name []byte) bool {
 
 // GetVerifyByBinary is an alias for VerifyByBinary.
 //
-//	ok := lns.GetVerifyByBinary([]byte("example.lthn"))
+//	ok := lns.VerifyBinary([]byte("example.lthn"))
 func GetVerifyByBinary(name []byte) bool {
 	return VerifyByBinary(name)
 }
@@ -577,7 +579,7 @@ func Blind(value uint64, nonce primitives.Hash) (primitives.Hash, error) {
 
 // GetBlind is an alias for Blind.
 //
-//	bid, err := lns.GetBlind(1000, nonce)
+//	bid, err := lns.Blind(1000, nonce)
 func GetBlind(value uint64, nonce primitives.Hash) (primitives.Hash, error) {
 	return Blind(value, nonce)
 }
@@ -616,21 +618,21 @@ var VerificationFlagsByVal = covenant.VerificationFlagsByVal
 
 // GetBlacklist is an alias for Blacklist.
 //
-//	blacklist := lns.GetBlacklist()
+//	blacklist := lns.Blacklist
 func GetBlacklist() map[string]struct{} {
 	return Blacklist
 }
 
 // GetVerificationFlags is an alias for VerificationFlags.
 //
-//	flags := lns.GetVerificationFlags()
+//	flags := lns.VerificationFlags
 func GetVerificationFlags() map[string]NameFlags {
 	return VerificationFlags
 }
 
 // GetVerificationFlagsByVal is an alias for VerificationFlagsByVal.
 //
-//	flags := lns.GetVerificationFlagsByVal()
+//	flagsByVal := lns.VerificationFlagsByVal
 func GetVerificationFlagsByVal() map[NameFlags]string {
 	return VerificationFlagsByVal
 }
@@ -761,21 +763,21 @@ func GetCovenantMaxSize() int {
 
 // GetTypes is an alias for Types.
 //
-//	types := lns.GetTypes()
+//	types := lns.Types
 func GetTypes() map[string]covenant.CovenantType {
 	return Types
 }
 
 // GetTypesByVal is an alias for TypesByVal.
 //
-//	typesByVal := lns.GetTypesByVal()
+//	typesByVal := lns.TypesByVal
 func GetTypesByVal() map[covenant.CovenantType]string {
 	return TypesByVal
 }
 
 // GetTypeName is an alias for TypeName.
 //
-//	name := lns.GetTypeName(covenant.TypeBid)
+//	name := lns.TypeName(covenant.TypeBid)
 func GetTypeName(ct covenant.CovenantType) string {
 	return TypeName(ct)
 }
@@ -789,7 +791,7 @@ func IsName(ct CovenantType) bool {
 
 // GetIsName is an alias for IsName.
 //
-//	ok := lns.GetIsName(covenant.TypeOpen)
+//	ok := lns.IsName(covenant.TypeOpen)
 func GetIsName(ct CovenantType) bool {
 	return IsName(ct)
 }
@@ -803,7 +805,7 @@ func IsKnown(ct CovenantType) bool {
 
 // GetIsKnown is an alias for IsKnown.
 //
-//	ok := lns.GetIsKnown(covenant.TypeBid)
+//	ok := lns.IsKnown(covenant.TypeBid)
 func GetIsKnown(ct CovenantType) bool {
 	return IsKnown(ct)
 }
@@ -817,7 +819,7 @@ func IsLinked(ct CovenantType) bool {
 
 // GetIsLinked is an alias for IsLinked.
 //
-//	ok := lns.GetIsLinked(covenant.TypeReveal)
+//	ok := lns.IsLinked(covenant.TypeReveal)
 func GetIsLinked(ct CovenantType) bool {
 	return IsLinked(ct)
 }
@@ -976,7 +978,7 @@ func GrindName(size int, height uint32, rules NameRules) (string, error) {
 
 // GetGrindName is an alias for GrindName.
 //
-//	name, err := lns.GetGrindName(8, height, rules)
+//	name, err := lns.GrindName(8, height, rules)
 func GetGrindName(size int, height uint32, rules NameRules) (string, error) {
 	return GrindName(size, height, rules)
 }
@@ -990,7 +992,7 @@ func CountOpens(tx primitives.Transaction) int {
 
 // GetCountOpens is an alias for CountOpens.
 //
-//	count := lns.GetCountOpens(tx)
+//	count := lns.CountOpens(tx)
 func GetCountOpens(tx primitives.Transaction) int {
 	return CountOpens(tx)
 }
@@ -1004,7 +1006,7 @@ func CountUpdates(tx primitives.Transaction) int {
 
 // GetCountUpdates is an alias for CountUpdates.
 //
-//	count := lns.GetCountUpdates(tx)
+//	count := lns.CountUpdates(tx)
 func GetCountUpdates(tx primitives.Transaction) int {
 	return CountUpdates(tx)
 }
@@ -1018,7 +1020,7 @@ func CountRenewals(tx primitives.Transaction) int {
 
 // GetCountRenewals is an alias for CountRenewals.
 //
-//	count := lns.GetCountRenewals(tx)
+//	count := lns.CountRenewals(tx)
 func GetCountRenewals(tx primitives.Transaction) int {
 	return CountRenewals(tx)
 }
@@ -1032,7 +1034,7 @@ func HasNames(tx primitives.Transaction, set map[primitives.Hash]struct{}) bool 
 
 // GetHasNames is an alias for HasNames.
 //
-//	ok := lns.GetHasNames(tx, set)
+//	ok := lns.HasNames(tx, set)
 func GetHasNames(tx primitives.Transaction, set map[primitives.Hash]struct{}) bool {
 	return HasNames(tx, set)
 }
@@ -1046,7 +1048,7 @@ func AddNames(tx primitives.Transaction, set map[primitives.Hash]struct{}) {
 
 // GetAddNames is an alias for AddNames.
 //
-//	lns.GetAddNames(tx, set)
+//	lns.AddNames(tx, set)
 func GetAddNames(tx primitives.Transaction, set map[primitives.Hash]struct{}) {
 	AddNames(tx, set)
 }
@@ -1060,7 +1062,7 @@ func RemoveNames(tx primitives.Transaction, set map[primitives.Hash]struct{}) {
 
 // GetRemoveNames is an alias for RemoveNames.
 //
-//	lns.GetRemoveNames(tx, set)
+//	lns.RemoveNames(tx, set)
 func GetRemoveNames(tx primitives.Transaction, set map[primitives.Hash]struct{}) {
 	RemoveNames(tx, set)
 }
@@ -1074,7 +1076,7 @@ func HasSaneCovenants(tx primitives.Transaction) bool {
 
 // GetHasSaneCovenants is an alias for HasSaneCovenants.
 //
-//	ok := lns.GetHasSaneCovenants(tx)
+//	ok := lns.HasSaneCovenants(tx)
 func GetHasSaneCovenants(tx primitives.Transaction) bool {
 	return HasSaneCovenants(tx)
 }
@@ -1088,7 +1090,7 @@ func VerifyCovenants(tx primitives.Transaction, view CoinView, height uint32, ne
 
 // GetVerifyCovenants is an alias for VerifyCovenants.
 //
-//	status := lns.GetVerifyCovenants(tx, view, height, network)
+//	status := lns.VerifyCovenants(tx, view, height, network)
 func GetVerifyCovenants(tx primitives.Transaction, view CoinView, height uint32, network Network) int {
 	return VerifyCovenants(tx, view, height, network)
 }
@@ -1102,7 +1104,7 @@ func (s *Service) ServiceName() string {
 
 // GetServiceName is an alias for ServiceName.
 //
-//	name := service.GetServiceName()
+//	name := service.ServiceName()
 func (s *Service) GetServiceName() string {
 	return s.ServiceName()
 }
@@ -1123,7 +1125,7 @@ func (s *Service) Resolve(name any) (primitives.Hash, error) {
 //
 //	c := core.New(core.WithService(lns.Register))
 //	svc := c.Service("lns").(*lns.Service)
-//	hash, err := svc.GetResolve("example.lthn")
+//	hash, err := svc.Resolve("example.lthn")
 func (s *Service) GetResolve(name any) (primitives.Hash, error) {
 	return s.Resolve(name)
 }
@@ -1143,7 +1145,7 @@ func (s *Service) Hash(name any) (primitives.Hash, error) {
 //
 //	c := core.New(core.WithService(lns.Register))
 //	svc := c.Service("lns").(*lns.Service)
-//	hash, err := svc.GetHash("example.lthn")
+//	hash, err := svc.Hash("example.lthn")
 func (s *Service) GetHash(name any) (primitives.Hash, error) {
 	return s.Hash(name)
 }
@@ -1163,7 +1165,7 @@ func (s *Service) Verify(name any) bool {
 //
 //	c := core.New(core.WithService(lns.Register))
 //	svc := c.Service("lns").(*lns.Service)
-//	ok := svc.GetVerify("example.lthn")
+//	ok := svc.Verify("example.lthn")
 func (s *Service) GetVerify(name any) bool {
 	return s.Verify(name)
 }
@@ -1177,7 +1179,7 @@ func (s *Service) HashString(name string) (primitives.Hash, error) {
 
 // GetHashString is an alias for HashString.
 //
-//	ok := svc.GetHashString("example.lthn")
+//	ok := svc.HashString("example.lthn")
 func (s *Service) GetHashString(name string) (primitives.Hash, error) {
 	return s.HashString(name)
 }
@@ -1191,7 +1193,7 @@ func (s *Service) HashBinary(name []byte) (primitives.Hash, error) {
 
 // GetHashBinary is an alias for HashBinary.
 //
-//	ok := svc.GetHashBinary([]byte("example.lthn"))
+//	ok := svc.HashBinary([]byte("example.lthn"))
 func (s *Service) GetHashBinary(name []byte) (primitives.Hash, error) {
 	return s.HashBinary(name)
 }
@@ -1205,7 +1207,7 @@ func (s *Service) ResolveByString(name string) (primitives.Hash, error) {
 
 // GetResolveByString is an alias for ResolveByString.
 //
-//	ok := svc.GetResolveByString("example.lthn")
+//	ok := svc.ResolveByString("example.lthn")
 func (s *Service) GetResolveByString(name string) (primitives.Hash, error) {
 	return s.ResolveByString(name)
 }
@@ -1219,7 +1221,7 @@ func (s *Service) ResolveByBinary(name []byte) (primitives.Hash, error) {
 
 // GetResolveByBinary is an alias for ResolveByBinary.
 //
-//	ok := svc.GetResolveByBinary([]byte("example.lthn"))
+//	ok := svc.ResolveByBinary([]byte("example.lthn"))
 func (s *Service) GetResolveByBinary(name []byte) (primitives.Hash, error) {
 	return s.ResolveByBinary(name)
 }
@@ -1233,7 +1235,7 @@ func (s *Service) HashByString(name string) (primitives.Hash, error) {
 
 // GetHashByString is an alias for HashByString.
 //
-//	ok := svc.GetHashByString("example.lthn")
+//	ok := svc.HashByString("example.lthn")
 func (s *Service) GetHashByString(name string) (primitives.Hash, error) {
 	return s.HashByString(name)
 }
@@ -1247,7 +1249,7 @@ func (s *Service) HashByBinary(name []byte) (primitives.Hash, error) {
 
 // GetHashByBinary is an alias for HashByBinary.
 //
-//	ok := svc.GetHashByBinary([]byte("example.lthn"))
+//	ok := svc.HashByBinary([]byte("example.lthn"))
 func (s *Service) GetHashByBinary(name []byte) (primitives.Hash, error) {
 	return s.HashByBinary(name)
 }
@@ -1261,7 +1263,7 @@ func (s *Service) ResolveString(name string) (primitives.Hash, error) {
 
 // GetResolveString is an alias for ResolveString.
 //
-//	hash, err := svc.GetResolveString("example.lthn")
+//	hash, err := svc.ResolveString("example.lthn")
 func (s *Service) GetResolveString(name string) (primitives.Hash, error) {
 	return s.ResolveString(name)
 }
@@ -1275,7 +1277,7 @@ func (s *Service) ResolveBinary(name []byte) (primitives.Hash, error) {
 
 // GetResolveBinary is an alias for ResolveBinary.
 //
-//	hash, err := svc.GetResolveBinary([]byte("example.lthn"))
+//	hash, err := svc.ResolveBinary([]byte("example.lthn"))
 func (s *Service) GetResolveBinary(name []byte) (primitives.Hash, error) {
 	return s.ResolveBinary(name)
 }
@@ -1293,7 +1295,7 @@ func (s *Service) ResolveName(name any) (primitives.Hash, error) {
 //
 //	c := core.New(core.WithService(lns.Register))
 //	svc := c.Service("lns").(*lns.Service)
-//	hash, err := svc.GetResolveName("example.lthn")
+//	hash, err := svc.ResolveName("example.lthn")
 func (s *Service) GetResolveName(name any) (primitives.Hash, error) {
 	return s.ResolveName(name)
 }
@@ -1311,7 +1313,7 @@ func (s *Service) HashName(name any) (primitives.Hash, error) {
 //
 //	c := core.New(core.WithService(lns.Register))
 //	svc := c.Service("lns").(*lns.Service)
-//	hash, err := svc.GetHashName("example.lthn")
+//	hash, err := svc.HashName("example.lthn")
 func (s *Service) GetHashName(name any) (primitives.Hash, error) {
 	return s.HashName(name)
 }
@@ -1329,7 +1331,7 @@ func (s *Service) VerifyName(name any) bool {
 //
 //	c := core.New(core.WithService(lns.Register))
 //	svc := c.Service("lns").(*lns.Service)
-//	ok := svc.GetVerifyName("example.lthn")
+//	ok := svc.VerifyName("example.lthn")
 func (s *Service) GetVerifyName(name any) bool {
 	return s.VerifyName(name)
 }
@@ -1347,7 +1349,7 @@ func (s *Service) ResolveByName(name any) (primitives.Hash, error) {
 //
 //	c := core.New(core.WithService(lns.Register))
 //	svc := c.Service("lns").(*lns.Service)
-//	hash, err := svc.GetResolveByName("example.lthn")
+//	hash, err := svc.ResolveByName("example.lthn")
 func (s *Service) GetResolveByName(name any) (primitives.Hash, error) {
 	return s.ResolveByName(name)
 }
@@ -1365,7 +1367,7 @@ func (s *Service) HashByName(name any) (primitives.Hash, error) {
 //
 //	c := core.New(core.WithService(lns.Register))
 //	svc := c.Service("lns").(*lns.Service)
-//	hash, err := svc.GetHashByName("example.lthn")
+//	hash, err := svc.HashByName("example.lthn")
 func (s *Service) GetHashByName(name any) (primitives.Hash, error) {
 	return s.HashByName(name)
 }
@@ -1383,7 +1385,7 @@ func (s *Service) VerifyByName(name any) bool {
 //
 //	c := core.New(core.WithService(lns.Register))
 //	svc := c.Service("lns").(*lns.Service)
-//	ok := svc.GetVerifyByName("example.lthn")
+//	ok := svc.VerifyByName("example.lthn")
 func (s *Service) GetVerifyByName(name any) bool {
 	return s.VerifyByName(name)
 }
@@ -1397,7 +1399,7 @@ func (s *Service) VerifyString(name string) bool {
 
 // GetVerifyString is an alias for VerifyString.
 //
-//	ok := svc.GetVerifyString("example.lthn")
+//	ok := svc.VerifyString("example.lthn")
 func (s *Service) GetVerifyString(name string) bool {
 	return s.VerifyString(name)
 }
@@ -1411,7 +1413,7 @@ func (s *Service) VerifyBinary(name []byte) bool {
 
 // GetVerifyBinary is an alias for VerifyBinary.
 //
-//	ok := svc.GetVerifyBinary([]byte("example.lthn"))
+//	ok := svc.VerifyBinary([]byte("example.lthn"))
 func (s *Service) GetVerifyBinary(name []byte) bool {
 	return s.VerifyBinary(name)
 }
@@ -1425,7 +1427,7 @@ func (s *Service) VerifyByString(name string) bool {
 
 // GetVerifyByString is an alias for VerifyByString.
 //
-//	ok := svc.GetVerifyByString("example.lthn")
+//	ok := svc.VerifyByString("example.lthn")
 func (s *Service) GetVerifyByString(name string) bool {
 	return s.VerifyByString(name)
 }
@@ -1439,7 +1441,7 @@ func (s *Service) VerifyByBinary(name []byte) bool {
 
 // GetVerifyByBinary is an alias for VerifyByBinary.
 //
-//	ok := svc.GetVerifyByBinary([]byte("example.lthn"))
+//	ok := svc.VerifyByBinary([]byte("example.lthn"))
 func (s *Service) GetVerifyByBinary(name []byte) bool {
 	return s.VerifyByBinary(name)
 }
@@ -1453,7 +1455,7 @@ func (s *Service) Blind(value uint64, nonce primitives.Hash) (primitives.Hash, e
 
 // GetBlind is an alias for Blind.
 //
-//	bid, err := svc.GetBlind(1000, nonce)
+//	bid, err := svc.Blind(1000, nonce)
 func (s *Service) GetBlind(value uint64, nonce primitives.Hash) (primitives.Hash, error) {
 	return s.Blind(value, nonce)
 }
@@ -1467,7 +1469,7 @@ func (s *Service) TypeName(ct covenant.CovenantType) string {
 
 // GetTypeName is an alias for TypeName.
 //
-//	name := svc.GetTypeName(covenant.TypeBid)
+//	name := svc.TypeName(covenant.TypeBid)
 func (s *Service) GetTypeName(ct covenant.CovenantType) string {
 	return s.TypeName(ct)
 }
@@ -1481,7 +1483,7 @@ func (s *Service) IsName(ct CovenantType) bool {
 
 // GetIsName is an alias for IsName.
 //
-//	ok := svc.GetIsName(covenant.TypeOpen)
+//	ok := svc.IsName(covenant.TypeOpen)
 func (s *Service) GetIsName(ct CovenantType) bool {
 	return s.IsName(ct)
 }
@@ -1495,7 +1497,7 @@ func (s *Service) IsKnown(ct CovenantType) bool {
 
 // GetIsKnown is an alias for IsKnown.
 //
-//	ok := svc.GetIsKnown(covenant.TypeBid)
+//	ok := svc.IsKnown(covenant.TypeBid)
 func (s *Service) GetIsKnown(ct CovenantType) bool {
 	return s.IsKnown(ct)
 }
@@ -1509,7 +1511,7 @@ func (s *Service) IsLinked(ct CovenantType) bool {
 
 // GetIsLinked is an alias for IsLinked.
 //
-//	ok := svc.GetIsLinked(covenant.TypeReveal)
+//	ok := svc.IsLinked(covenant.TypeReveal)
 func (s *Service) GetIsLinked(ct CovenantType) bool {
 	return s.IsLinked(ct)
 }
