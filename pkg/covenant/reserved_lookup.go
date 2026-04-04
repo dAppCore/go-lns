@@ -368,6 +368,13 @@ func (c *ReservedCatalog) HasByHash(hash primitives.Hash) bool {
 	return c.Has(hash)
 }
 
+// GetHasByHash is an alias for HasByHash.
+//
+//	ok := catalog.GetHasByHash(hash)
+func (c *ReservedCatalog) GetHasByHash(hash primitives.Hash) bool {
+	return c.HasByHash(hash)
+}
+
 // Get returns the reserved-name entry for the hash.
 //
 //	item, ok := catalog.Get(hash)
@@ -393,6 +400,13 @@ func (c *ReservedCatalog) GetByHash(hash primitives.Hash) (ReservedName, bool) {
 func (c *ReservedCatalog) HasByName(name string) bool {
 	_, ok := c.GetByName(name)
 	return ok
+}
+
+// GetHasByName is an alias for HasByName.
+//
+//	ok := catalog.GetHasByName("example")
+func (c *ReservedCatalog) GetHasByName(name string) bool {
+	return c.HasByName(name)
 }
 
 // GetByName returns the reserved-name entry for the provided label.

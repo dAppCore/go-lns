@@ -60,6 +60,10 @@ func TestLockedLookupByHashCatalogAlias(t *testing.T) {
 		t.Fatal("catalog.HasByHash should report the locked hash as present")
 	}
 
+	if !catalog.GetHasByHash(hash) {
+		t.Fatal("catalog.GetHasByHash should alias HasByHash")
+	}
+
 	item, ok := catalog.GetByHash(hash)
 	if !ok {
 		t.Fatal("catalog.GetByHash should find the locked reference entry")
@@ -67,6 +71,10 @@ func TestLockedLookupByHashCatalogAlias(t *testing.T) {
 
 	if item.Hash != hash {
 		t.Fatalf("item.Hash = %x, want %x", item.Hash, hash)
+	}
+
+	if !catalog.GetHasByName("NEC") {
+		t.Fatal("catalog.GetHasByName should alias HasByName")
 	}
 }
 
