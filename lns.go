@@ -361,6 +361,16 @@ func (s *Service) GetNewClaim() *Claim {
 	return s.NewClaim()
 }
 
+// NewNameView constructs an empty cached name-state view.
+func (s *Service) NewNameView() *NameView {
+	return primitives.NewNameView()
+}
+
+// GetNewNameView is an alias for NewNameView.
+func (s *Service) GetNewNameView() *NameView {
+	return s.NewNameView()
+}
+
 // Create constructs a reference NSEC record container.
 func (s *Service) Create(name, nextDomain string, typeBitmap []byte) NSECRecord {
 	return dnspkg.Create(name, nextDomain, typeBitmap)
@@ -1093,6 +1103,19 @@ type NameState = primitives.NameState
 // NameDelta mirrors the sparse name-state delta type from pkg/primitives.
 type NameDelta = primitives.NameDelta
 
+// NameStateGetter mirrors the minimal name-state lookup interface used by
+// NameView.
+type NameStateGetter = primitives.NameStateGetter
+
+// NameView mirrors the cached name-state view used during state processing.
+type NameView = primitives.NameView
+
+// NameUndo mirrors the sparse undo payload produced from a NameView.
+type NameUndo = primitives.NameUndo
+
+// NameUndoEntry mirrors a single undo entry pairing a hash with a delta.
+type NameUndoEntry = primitives.NameUndoEntry
+
 // Claim mirrors the raw ownership-proof claim wrapper from pkg/primitives.
 type Claim = primitives.Claim
 
@@ -1136,6 +1159,16 @@ func NewClaim() *Claim {
 // GetNewClaim is an alias for NewClaim.
 func GetNewClaim() *Claim {
 	return NewClaim()
+}
+
+// NewNameView constructs an empty cached name-state view.
+func NewNameView() *NameView {
+	return primitives.NewNameView()
+}
+
+// GetNewNameView is an alias for NewNameView.
+func GetNewNameView() *NameView {
+	return NewNameView()
 }
 
 // CoinView mirrors the minimal UTXO lookup interface required by covenant

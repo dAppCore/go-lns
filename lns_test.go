@@ -891,6 +891,16 @@ func TestServiceUtilityAliases(t *testing.T) {
 		t.Fatal("GetNewClaim should alias NewClaim")
 	}
 
+	if view := svc.NewNameView(); view == nil {
+		t.Fatal("NewNameView should return a cached name-state view")
+	} else if view.ToNameUndo().Names != nil {
+		t.Fatal("NewNameView should start with an empty undo payload")
+	}
+
+	if svc.GetNewNameView() == nil {
+		t.Fatal("GetNewNameView should alias NewNameView")
+	}
+
 	if got := svc.NextName("ExAmPle."); got != "example\x00." {
 		t.Fatalf("NextName returned %q", got)
 	}

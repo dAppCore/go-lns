@@ -260,6 +260,16 @@ func TestPackageClaimAlias(t *testing.T) {
 	if GetNewClaim() == nil {
 		t.Fatal("GetNewClaim should alias NewClaim")
 	}
+
+	if view := NewNameView(); view == nil {
+		t.Fatal("NewNameView should return a cached name-state view")
+	} else if view.ToNameUndo().Names != nil {
+		t.Fatal("NewNameView should start with an empty undo payload")
+	}
+
+	if GetNewNameView() == nil {
+		t.Fatal("GetNewNameView should alias NewNameView")
+	}
 }
 
 func TestPackageNSECAliases(t *testing.T) {
