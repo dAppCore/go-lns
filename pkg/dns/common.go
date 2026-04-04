@@ -2,8 +2,6 @@
 
 package dns
 
-import "encoding/hex"
-
 // DUMMY mirrors the JS zero-length buffer export used by the DNS reference
 // helpers.
 var DUMMY = []byte{}
@@ -23,12 +21,12 @@ func GetDefaultTTL() int {
 
 // Type map bitmaps mirror the JS DNS reference constants.
 var (
-	TYPE_MAP_ROOT  = mustHex("000722000000000380")
-	TYPE_MAP_EMPTY = mustHex("0006000000000003")
-	TYPE_MAP_NS    = mustHex("0006200000000003")
-	TYPE_MAP_TXT   = mustHex("0006000080000003")
-	TYPE_MAP_A     = mustHex("0006400000000003")
-	TYPE_MAP_AAAA  = mustHex("0006000000080003")
+	TYPE_MAP_ROOT  = []byte{0x00, 0x07, 0x22, 0x00, 0x00, 0x00, 0x00, 0x03, 0x80}
+	TYPE_MAP_EMPTY = []byte{0x00, 0x06, 0x00, 0x00, 0x00, 0x00, 0x00, 0x03}
+	TYPE_MAP_NS    = []byte{0x00, 0x06, 0x20, 0x00, 0x00, 0x00, 0x00, 0x03}
+	TYPE_MAP_TXT   = []byte{0x00, 0x06, 0x00, 0x00, 0x80, 0x00, 0x00, 0x03}
+	TYPE_MAP_A     = []byte{0x00, 0x06, 0x40, 0x00, 0x00, 0x00, 0x00, 0x03}
+	TYPE_MAP_AAAA  = []byte{0x00, 0x06, 0x00, 0x00, 0x00, 0x08, 0x00, 0x03}
 )
 
 // GetTypeMapRoot returns the reference type bitmap for the root zone.
@@ -111,13 +109,4 @@ func GetHSTypes() map[string]HSType {
 // GetHSTypesByVal returns the reverse DNS record-type lookup table.
 func GetHSTypesByVal() map[HSType]string {
 	return HSTypesByVal
-}
-
-func mustHex(s string) []byte {
-	buf, err := hex.DecodeString(s)
-	if err != nil {
-		panic(err)
-	}
-
-	return buf
 }

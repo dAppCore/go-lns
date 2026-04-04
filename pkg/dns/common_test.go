@@ -25,12 +25,12 @@ func TestCommonConstants(t *testing.T) {
 		got  []byte
 		want []byte
 	}{
-		{name: "TYPE_MAP_ROOT", got: TYPE_MAP_ROOT, want: mustHex("000722000000000380")},
-		{name: "TYPE_MAP_EMPTY", got: TYPE_MAP_EMPTY, want: mustHex("0006000000000003")},
-		{name: "TYPE_MAP_NS", got: TYPE_MAP_NS, want: mustHex("0006200000000003")},
-		{name: "TYPE_MAP_TXT", got: TYPE_MAP_TXT, want: mustHex("0006000080000003")},
-		{name: "TYPE_MAP_A", got: TYPE_MAP_A, want: mustHex("0006400000000003")},
-		{name: "TYPE_MAP_AAAA", got: TYPE_MAP_AAAA, want: mustHex("0006000000080003")},
+		{name: "TYPE_MAP_ROOT", got: TYPE_MAP_ROOT, want: []byte{0x00, 0x07, 0x22, 0x00, 0x00, 0x00, 0x00, 0x03, 0x80}},
+		{name: "TYPE_MAP_EMPTY", got: TYPE_MAP_EMPTY, want: []byte{0x00, 0x06, 0x00, 0x00, 0x00, 0x00, 0x00, 0x03}},
+		{name: "TYPE_MAP_NS", got: TYPE_MAP_NS, want: []byte{0x00, 0x06, 0x20, 0x00, 0x00, 0x00, 0x00, 0x03}},
+		{name: "TYPE_MAP_TXT", got: TYPE_MAP_TXT, want: []byte{0x00, 0x06, 0x00, 0x00, 0x80, 0x00, 0x00, 0x03}},
+		{name: "TYPE_MAP_A", got: TYPE_MAP_A, want: []byte{0x00, 0x06, 0x40, 0x00, 0x00, 0x00, 0x00, 0x03}},
+		{name: "TYPE_MAP_AAAA", got: TYPE_MAP_AAAA, want: []byte{0x00, 0x06, 0x00, 0x00, 0x00, 0x08, 0x00, 0x03}},
 	}
 
 	for _, tc := range cases {
