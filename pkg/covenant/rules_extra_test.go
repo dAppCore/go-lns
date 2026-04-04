@@ -707,3 +707,77 @@ func TestCoinbaseClaimWitnessValidation(t *testing.T) {
 		t.Fatalf("VerifyCovenants returned %d for an invalid coinbase claim witness wrapper, want -1", got)
 	}
 }
+
+func TestCoinbaseClaimConjureOverflow(t *testing.T) {
+	reservedHash, err := HashString("reserved")
+	if err != nil {
+		t.Fatalf("HashString returned error: %v", err)
+	}
+
+	var claimHash primitives.Hash
+	copy(claimHash[:], reservedHash[:])
+
+	blockHeight := make([]byte, 4)
+	binary.LittleEndian.PutUint32(blockHeight, 100)
+
+	tx := primitives.Transaction{
+		Inputs: []primitives.Input{
+			{Prevout: primitives.NewOutpoint()},
+			{
+				Prevout: primitives.Outpoint{TxHash: primitives.Hash{6}, Index: 0},
+				Witness: [][]byte{encodeTestClaim([]byte("proof-a"))},
+			},
+			{
+				Prevout: primitives.Outpoint{TxHash: primitives.Hash{7}, Index: 0},
+				Witness: [][]byte{encodeTestClaim([]byte("proof-b"))},
+			},
+		},
+		Outputs: []primitives.Output{
+			{Covenant: primitives.Covenant{Type: uint8(TypeNone)}},
+			{
+				Value: ^uint64(0),
+				Address: primitives.Address{
+					Version: 0,
+					Hash:    bytes.Repeat([]byte{0x24}, 20),
+				},
+				Covenant: primitives.Covenant{
+					Type: uint8(TypeClaim),
+					Items: [][]byte{
+						claimHash[:],
+						blockHeight,
+						[]byte("reserved"),
+						[]byte{0},
+						make([]byte, 32),
+						blockHeight,
+					},
+				},
+			},
+			{
+				Value: 1,
+				Address: primitives.Address{
+					Version: 0,
+					Hash:    bytes.Repeat([]byte{0x25}, 20),
+				},
+				Covenant: primitives.Covenant{
+					Type: uint8(TypeClaim),
+					Items: [][]byte{
+						claimHash[:],
+						blockHeight,
+						[]byte("reserved"),
+						[]byte{0},
+						make([]byte, 32),
+						blockHeight,
+					},
+				},
+			},
+		},
+	}
+
+	if got := HasSaneCovenants(tx); !got {
+		t.Fatal("HasSaneCovenants should accept the coinbase claim shape")
+	}
+
+	if got := VerifyCovenants(tx, testCoinView{coins: map[primitives.Outpoint]primitives.Output{}}, 100, Network{}); got != -1 {
+		t.Fatalf("VerifyCovenants returned %d for overflowing coinbase claim outputs, want -1", got)
+	}
+}

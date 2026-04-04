@@ -97,6 +97,12 @@ func VerifyCovenants(tx primitives.Transaction, view CoinView, height uint32, ne
 					return -1
 				}
 
+				if output.Value > ^uint64(0)-conjured {
+					return -1
+				}
+
+				conjured += output.Value
+
 			default:
 				return -1
 			}
