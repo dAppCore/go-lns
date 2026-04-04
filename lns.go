@@ -1,15 +1,16 @@
 // SPDX-License-Identifier: EUPL-1.2
 
-// Package lns is the Lethean Name System — a CoreGO native conversion of the
-// HSD (Handshake) JavaScript sidechain. It provides name auctions, DNS
-// resolution, and covenant-based name management for .lthn domains.
+// Package lns documents the top-level Lethean Name System API.
+// The file path is part of the API map: lns.go is the service entrypoint,
+// pkg/dns/resolve.go covers DNS-only lookups, and pkg/covenant exposes rule
+// tables and verifier helpers.
 //
 // Register LNS as a Core service:
 //
-//	c := core.New(core.WithService(lns.Register))
+//	app := core.New(core.WithService(lns.Register))
 //
-// Sub-packages (primitives, covenant, dns) provide the domain types
-// and resolution logic used by the service.
+// Sub-packages (`pkg/primitives`, `pkg/covenant`, `pkg/dns`) provide the
+// domain types and resolution logic used by the service.
 package lns
 
 import (
@@ -28,8 +29,8 @@ const ServiceName = "lns"
 // Service is the LNS service that manages .lthn name resolution,
 // covenant processing, and name-chain state queries.
 //
-//	c := core.New(core.WithService(lns.Register))
-//	svc := c.Service("lns")
+//	app := core.New(core.WithService(lns.Register))
+//	service := app.Service("lns")
 type Service struct {
 	*core.ServiceRuntime[serviceOptions]
 	reservedCatalogOverride *covenant.ReservedCatalog
@@ -52,7 +53,8 @@ type ServiceOption func(*Service)
 
 // WithCore sets the Core instance for an LNS service.
 //
-//	svc := lns.NewServiceWithOptions(lns.WithCore(c))
+//	app := core.New()
+//	service := lns.NewServiceWithOptions(lns.WithCore(app))
 func WithCore(c *core.Core) ServiceOption {
 	return func(s *Service) {
 		if s == nil || c == nil {
@@ -65,7 +67,7 @@ func WithCore(c *core.Core) ServiceOption {
 
 // WithReservedCatalog sets a reserved-name catalog override for an LNS service.
 //
-//	svc := lns.NewServiceWithOptions(lns.WithReservedCatalog(customReserved))
+//	service := lns.NewServiceWithOptions(lns.WithReservedCatalog(customReserved))
 func WithReservedCatalog(catalog *covenant.ReservedCatalog) ServiceOption {
 	return func(s *Service) {
 		if s == nil || catalog == nil {
@@ -78,7 +80,7 @@ func WithReservedCatalog(catalog *covenant.ReservedCatalog) ServiceOption {
 
 // WithLockedCatalog sets a locked-name catalog override for an LNS service.
 //
-//	svc := lns.NewServiceWithOptions(lns.WithLockedCatalog(customLocked))
+//	service := lns.NewServiceWithOptions(lns.WithLockedCatalog(customLocked))
 func WithLockedCatalog(catalog *covenant.LockedCatalog) ServiceOption {
 	return func(s *Service) {
 		if s == nil || catalog == nil {
@@ -91,7 +93,8 @@ func WithLockedCatalog(catalog *covenant.LockedCatalog) ServiceOption {
 
 // NewServiceWithOptions constructs an LNS Service from the provided options.
 //
-//	svc := lns.NewServiceWithOptions(lns.WithCore(c))
+//	app := core.New()
+//	service := lns.NewServiceWithOptions(lns.WithCore(app))
 func NewServiceWithOptions(opts ...ServiceOption) *Service {
 	svc := &Service{}
 
@@ -106,8 +109,8 @@ func NewServiceWithOptions(opts ...ServiceOption) *Service {
 
 // NewService constructs an LNS Service bound to the provided Core instance.
 //
-//	c := core.New()
-//	svc := lns.NewService(c)
+//	app := core.New()
+//	service := lns.NewService(app)
 func NewService(c *core.Core) *Service {
 	return NewServiceWithOptions(WithCore(c))
 }
@@ -115,7 +118,7 @@ func NewService(c *core.Core) *Service {
 // Register constructs an LNS Service bound to the provided Core instance.
 // Pass to core.WithService during Core construction:
 //
-//	c := core.New(core.WithService(lns.Register))
+//	app := core.New(core.WithService(lns.Register))
 func Register(c *core.Core) core.Result {
 	if c == nil {
 		return core.Result{Value: core.E("lns.Register", "core is required", nil), OK: false}
@@ -936,126 +939,170 @@ func (s *Service) GetCovenantMaxSize() int {
 }
 
 // GetRollout returns the rollout start height and rollout week for a name hash.
+//
+//	start, week := lns.GetRollout(nameHash, rules)
 func GetRollout(nameHash primitives.Hash, rules NameRules) (uint32, uint32) {
 	return covenant.GetRollout(nameHash, rules)
 }
 
 // HasRollout reports whether a name hash has reached its rollout height.
+//
+//	ok := lns.HasRollout(nameHash, height, rules)
 func HasRollout(nameHash primitives.Hash, height uint32, rules NameRules) bool {
 	return covenant.HasRollout(nameHash, height, rules)
 }
 
 // IsReserved reports whether a name hash is reserved at the given height.
+//
+//	ok := lns.IsReserved(nameHash, height, rules)
 func IsReserved(nameHash primitives.Hash, height uint32, rules NameRules) bool {
 	return covenant.IsReserved(nameHash, height, rules)
 }
 
 // IsLockedUp reports whether a name hash is locked at the given height.
+//
+//	ok := lns.IsLockedUp(nameHash, height, rules)
 func IsLockedUp(nameHash primitives.Hash, height uint32, rules NameRules) bool {
 	return covenant.IsLockedUp(nameHash, height, rules)
 }
 
 // GrindName searches for an available name that satisfies the current rollout
 // and reservation rules.
+//
+//	name, err := lns.GrindName(8, height, rules)
 func GrindName(size int, height uint32, rules NameRules) (string, error) {
 	return covenant.GrindName(size, height, rules)
 }
 
 // GetGrindName is an alias for GrindName.
+//
+//	name, err := lns.GetGrindName(8, height, rules)
 func GetGrindName(size int, height uint32, rules NameRules) (string, error) {
 	return GrindName(size, height, rules)
 }
 
 // CountOpens counts OPEN covenants in a transaction.
+//
+//	count := lns.CountOpens(tx)
 func CountOpens(tx primitives.Transaction) int {
 	return covenant.CountOpens(tx)
 }
 
 // GetCountOpens is an alias for CountOpens.
+//
+//	count := lns.GetCountOpens(tx)
 func GetCountOpens(tx primitives.Transaction) int {
 	return CountOpens(tx)
 }
 
 // CountUpdates counts update-style covenants in a transaction.
+//
+//	count := lns.CountUpdates(tx)
 func CountUpdates(tx primitives.Transaction) int {
 	return covenant.CountUpdates(tx)
 }
 
 // GetCountUpdates is an alias for CountUpdates.
+//
+//	count := lns.GetCountUpdates(tx)
 func GetCountUpdates(tx primitives.Transaction) int {
 	return CountUpdates(tx)
 }
 
 // CountRenewals counts REGISTER, RENEW, and FINALIZE covenants in a transaction.
+//
+//	count := lns.CountRenewals(tx)
 func CountRenewals(tx primitives.Transaction) int {
 	return covenant.CountRenewals(tx)
 }
 
 // GetCountRenewals is an alias for CountRenewals.
+//
+//	count := lns.GetCountRenewals(tx)
 func GetCountRenewals(tx primitives.Transaction) int {
 	return CountRenewals(tx)
 }
 
 // HasNames reports whether any name covenant in the transaction matches the set.
+//
+//	ok := lns.HasNames(tx, set)
 func HasNames(tx primitives.Transaction, set map[primitives.Hash]struct{}) bool {
 	return covenant.HasNames(tx, set)
 }
 
 // GetHasNames is an alias for HasNames.
+//
+//	ok := lns.GetHasNames(tx, set)
 func GetHasNames(tx primitives.Transaction, set map[primitives.Hash]struct{}) bool {
 	return HasNames(tx, set)
 }
 
 // AddNames adds the transaction's name covenants to the set.
+//
+//	lns.AddNames(tx, set)
 func AddNames(tx primitives.Transaction, set map[primitives.Hash]struct{}) {
 	covenant.AddNames(tx, set)
 }
 
 // GetAddNames is an alias for AddNames.
+//
+//	lns.GetAddNames(tx, set)
 func GetAddNames(tx primitives.Transaction, set map[primitives.Hash]struct{}) {
 	AddNames(tx, set)
 }
 
 // RemoveNames removes the transaction's name covenants from the set.
+//
+//	lns.RemoveNames(tx, set)
 func RemoveNames(tx primitives.Transaction, set map[primitives.Hash]struct{}) {
 	covenant.RemoveNames(tx, set)
 }
 
 // GetRemoveNames is an alias for RemoveNames.
+//
+//	lns.GetRemoveNames(tx, set)
 func GetRemoveNames(tx primitives.Transaction, set map[primitives.Hash]struct{}) {
 	RemoveNames(tx, set)
 }
 
 // HasSaneCovenants performs structural covenant validation on a transaction.
+//
+//	ok := lns.HasSaneCovenants(tx)
 func HasSaneCovenants(tx primitives.Transaction) bool {
 	return covenant.HasSaneCovenants(tx)
 }
 
 // GetHasSaneCovenants is an alias for HasSaneCovenants.
+//
+//	ok := lns.GetHasSaneCovenants(tx)
 func GetHasSaneCovenants(tx primitives.Transaction) bool {
 	return HasSaneCovenants(tx)
 }
 
 // VerifyCovenants performs contextual covenant validation on a transaction.
+//
+//	status := lns.VerifyCovenants(tx, view, height, network)
 func VerifyCovenants(tx primitives.Transaction, view CoinView, height uint32, network Network) int {
 	return covenant.VerifyCovenants(tx, view, height, network)
 }
 
 // GetVerifyCovenants is an alias for VerifyCovenants.
+//
+//	status := lns.GetVerifyCovenants(tx, view, height, network)
 func GetVerifyCovenants(tx primitives.Transaction, view CoinView, height uint32, network Network) int {
 	return VerifyCovenants(tx, view, height, network)
 }
 
 // ServiceName returns the registered name for the LNS service group.
 //
-//	name := svc.ServiceName()
+//	name := service.ServiceName()
 func (s *Service) ServiceName() string {
 	return ServiceName
 }
 
 // GetServiceName is an alias for ServiceName.
 //
-//	name := svc.GetServiceName()
+//	name := service.GetServiceName()
 func (s *Service) GetServiceName() string {
 	return s.ServiceName()
 }
@@ -1942,7 +1989,7 @@ func (s *Service) ReservedCatalog() *covenant.ReservedCatalog {
 // The accessor is nil-safe so zero-value services and nil receivers stay
 // usable in lightweight tests and helper code.
 //
-//	core := svc.Core()
+//	core := service.Core()
 func (s *Service) Core() *core.Core {
 	if s == nil || s.ServiceRuntime == nil {
 		return nil
@@ -1971,7 +2018,7 @@ func (s *Service) lockedCatalog() *covenant.LockedCatalog {
 
 // GetCore is an alias for Core.
 //
-//	core := svc.GetCore()
+//	core := service.GetCore()
 func (s *Service) GetCore() *core.Core {
 	return s.Core()
 }

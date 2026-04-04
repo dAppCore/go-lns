@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: EUPL-1.2
 
-// Package dns provides name resolution for the Lethean Name System.
-// It resolves .lthn names to their registered DNS resource records by
-// querying the name-chain state tree.
+// Package dns documents the DNS-only resolver path for the Lethean Name System.
+// The path matters: pkg/dns/resolve.go covers name hashing and verification,
+// while lns.go re-exports the broader service surface.
 //
 // Create a resolver and look up a name:
 //
-//	svc := dns.NewService()
-//	hash, err := svc.Resolve("example.lthn")
+//	service := dns.NewService()
+//	hash, err := service.Resolve("example.lthn")
 package dns
 
 import (
@@ -54,6 +54,8 @@ func verifyCanonicalName(name any) bool {
 //
 // The package-level helper mirrors Service.Resolve for callers that do not
 // need to keep a service instance around.
+//
+//	hash, err := dns.Resolve("example.lthn")
 func Resolve(name any) (primitives.Hash, error) {
 	return resolveCanonicalName("dns.Resolve", name)
 }
@@ -65,22 +67,28 @@ func GetResolve(name any) (primitives.Hash, error) {
 
 // Hash returns the canonical hash for a .lthn name.
 //
-// Hash returns the canonical hash for a .lthn name.
+//	hash, err := dns.Hash("example.lthn")
 func Hash(name any) (primitives.Hash, error) {
 	return resolveCanonicalName("dns.Hash", name)
 }
 
 // GetHash is an alias for Hash.
+//
+//	hash, err := dns.GetHash("example.lthn")
 func GetHash(name any) (primitives.Hash, error) {
 	return Hash(name)
 }
 
 // Verify reports whether a .lthn name is valid after canonicalisation.
+//
+//	ok := dns.Verify("example.lthn")
 func Verify(name any) bool {
 	return verifyCanonicalName(name)
 }
 
 // GetVerify is an alias for Verify.
+//
+//	ok := dns.GetVerify("example.lthn")
 func GetVerify(name any) bool {
 	return Verify(name)
 }
