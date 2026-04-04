@@ -205,6 +205,26 @@ func Register(c *core.Core) core.Result {
 	return core.Result{Value: NewService(c), OK: true}
 }
 
+// RegisterWithOptions constructs an LNS Service factory with extra service options.
+//
+// This keeps the Core registration path ergonomic when callers want to inject
+// reserved or locked catalog overrides without building the service manually.
+//
+//	app := core.New(core.WithService(lns.RegisterWithOptions(
+//	    lns.WithReservedCatalog(customReserved),
+//	    lns.WithLockedCatalog(customLocked),
+//	)))
+func RegisterWithOptions(opts ...ServiceOption) func(*core.Core) core.Result {
+	return func(c *core.Core) core.Result {
+		if c == nil {
+			return core.Result{Value: core.E("lns.RegisterWithOptions", "core is required", nil), OK: false}
+		}
+
+		serviceOpts := append(append([]ServiceOption{}, opts...), WithCore(c))
+		return core.Result{Value: NewServiceWithOptions(serviceOpts...), OK: true}
+	}
+}
+
 // GetServiceName returns the registered name for the LNS service group.
 //
 //	name := lns.ServiceName

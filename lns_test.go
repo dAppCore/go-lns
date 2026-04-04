@@ -1056,6 +1056,39 @@ func TestRegisterRejectsNilCore(t *testing.T) {
 	}
 }
 
+func TestRegisterWithOptions(t *testing.T) {
+	reserved := &covenant.ReservedCatalog{}
+	locked := &covenant.LockedCatalog{}
+
+	app := core.New(
+		core.WithService(RegisterWithOptions(
+			WithReservedCatalog(reserved),
+			WithLockedCatalog(locked),
+		)),
+	)
+
+	svc, ok := core.ServiceFor[*Service](app, ServiceName)
+	if !ok {
+		t.Fatal("RegisterWithOptions should register the LNS service")
+	}
+
+	if svc == nil {
+		t.Fatal("RegisterWithOptions should return a service instance")
+	}
+
+	if svc.ReservedCatalog() != reserved {
+		t.Fatal("RegisterWithOptions should apply the reserved catalog override")
+	}
+
+	if svc.LockedCatalog() != locked {
+		t.Fatal("RegisterWithOptions should apply the locked catalog override")
+	}
+
+	if svc.Core() != app {
+		t.Fatal("RegisterWithOptions should attach the Core instance")
+	}
+}
+
 func TestServiceGetReserved(t *testing.T) {
 	svc := &Service{}
 
