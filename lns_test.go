@@ -246,6 +246,34 @@ func TestServiceVerifyStringAndBinary(t *testing.T) {
 	}
 }
 
+func TestServiceHasAliasMirrors(t *testing.T) {
+	svc := &Service{}
+
+	if !svc.GetHasReserved("RESERVED.lthn") {
+		t.Fatal("GetHasReserved should report reserved canonical names")
+	}
+
+	if !svc.GetHasReservedString("reserved") {
+		t.Fatal("GetHasReservedString should report reserved catalog labels")
+	}
+
+	if !svc.GetHasReservedHash(primitives.Hash(sha3.Sum256([]byte("reserved")))) {
+		t.Fatal("GetHasReservedHash should report reserved canonical hashes")
+	}
+
+	if !svc.GetHasLocked("NEC.lthn") {
+		t.Fatal("GetHasLocked should report locked canonical names")
+	}
+
+	if !svc.GetHasLockedString("nec") {
+		t.Fatal("GetHasLockedString should report locked catalog labels")
+	}
+
+	if !svc.GetHasLockedHash(primitives.Hash(sha3.Sum256([]byte("nec")))) {
+		t.Fatal("GetHasLockedHash should report locked canonical hashes")
+	}
+}
+
 func TestServiceRolloutAlias(t *testing.T) {
 	svc := &Service{}
 	var hash primitives.Hash

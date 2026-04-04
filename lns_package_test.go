@@ -167,6 +167,48 @@ func TestPackageResolveAndVerifyAliases(t *testing.T) {
 	if !VerifyByBinary([]byte("Foo-Bar.lthn")) {
 		t.Fatal("VerifyByBinary should accept canonical names")
 	}
+
+	if !GetHasReserved("RESERVED.lthn") {
+		t.Fatal("GetHasReserved should report reserved canonical names")
+	}
+
+	if !GetHasReservedString("reserved") {
+		t.Fatal("GetHasReservedString should report reserved catalog labels")
+	}
+
+	if !GetHasReservedBinary([]byte("reserved")) {
+		t.Fatal("GetHasReservedBinary should report reserved catalog labels")
+	}
+
+	if !GetHasLocked("NEC.lthn") {
+		t.Fatal("GetHasLocked should report locked canonical names")
+	}
+
+	if !GetHasLockedString("nec") {
+		t.Fatal("GetHasLockedString should report locked catalog labels")
+	}
+
+	if !GetHasLockedBinary([]byte("nec")) {
+		t.Fatal("GetHasLockedBinary should report locked catalog labels")
+	}
+
+	reservedHash, err := covenant.HashString("reserved")
+	if err != nil {
+		t.Fatalf("HashString returned error: %v", err)
+	}
+
+	if !GetHasReservedHash(reservedHash) {
+		t.Fatal("GetHasReservedHash should report reserved canonical hashes")
+	}
+
+	lockedHash, err := covenant.HashString("nec")
+	if err != nil {
+		t.Fatalf("HashString returned error: %v", err)
+	}
+
+	if !GetHasLockedHash(lockedHash) {
+		t.Fatal("GetHasLockedHash should report locked canonical hashes")
+	}
 }
 
 func TestPackageBlindAndTypeAliases(t *testing.T) {

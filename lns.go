@@ -2634,11 +2634,39 @@ func HasReserved(name any) bool {
 	return ok
 }
 
+// GetHasReserved is an alias for HasReserved.
+//
+//	ok := lns.GetHasReserved("reserved.lthn")
+func GetHasReserved(name any) bool {
+	return HasReserved(name)
+}
+
+// GetHasReserved reports whether a canonicalised .lthn name is reserved.
+//
+//	ok := svc.GetHasReserved("reserved.lthn")
+func (s *Service) GetHasReserved(name any) bool {
+	return s.HasReserved(name)
+}
+
 // HasReservedString reports whether a reserved name supplied as a string exists.
 //
 //	ok := lns.HasReservedString("reserved")
 func HasReservedString(name string) bool {
 	return HasReservedName(name)
+}
+
+// GetHasReservedString is an alias for HasReservedString.
+//
+//	ok := lns.GetHasReservedString("reserved")
+func GetHasReservedString(name string) bool {
+	return HasReservedString(name)
+}
+
+// GetHasReservedString reports whether a reserved name supplied as a string exists.
+//
+//	ok := svc.GetHasReservedString("reserved")
+func (s *Service) GetHasReservedString(name string) bool {
+	return s.HasReservedString(name)
 }
 
 // HasReservedBinary reports whether a reserved name supplied as bytes exists.
@@ -2648,6 +2676,20 @@ func HasReservedBinary(name []byte) bool {
 	return HasReservedName(name)
 }
 
+// GetHasReservedBinary is an alias for HasReservedBinary.
+//
+//	ok := lns.GetHasReservedBinary([]byte("reserved"))
+func GetHasReservedBinary(name []byte) bool {
+	return HasReservedBinary(name)
+}
+
+// GetHasReservedBinary reports whether a reserved name supplied as bytes exists.
+//
+//	ok := svc.GetHasReservedBinary([]byte("reserved"))
+func (s *Service) GetHasReservedBinary(name []byte) bool {
+	return s.HasReservedBinary(name)
+}
+
 // HasReservedByString is an alias for HasReservedString.
 //
 //	ok := lns.HasReservedByString("reserved")
@@ -2655,11 +2697,39 @@ func HasReservedByString(name string) bool {
 	return HasReservedString(name)
 }
 
+// GetHasReservedByString is an alias for HasReservedByString.
+//
+//	ok := lns.GetHasReservedByString("reserved")
+func GetHasReservedByString(name string) bool {
+	return HasReservedByString(name)
+}
+
+// GetHasReservedByString is an alias for HasReservedByString.
+//
+//	ok := svc.GetHasReservedByString("reserved")
+func (s *Service) GetHasReservedByString(name string) bool {
+	return s.HasReservedByString(name)
+}
+
 // HasReservedByBinary is an alias for HasReservedBinary.
 //
 //	ok := lns.HasReservedByBinary([]byte("reserved"))
 func HasReservedByBinary(name []byte) bool {
 	return HasReservedBinary(name)
+}
+
+// GetHasReservedByBinary is an alias for HasReservedByBinary.
+//
+//	ok := lns.GetHasReservedByBinary([]byte("reserved"))
+func GetHasReservedByBinary(name []byte) bool {
+	return HasReservedByBinary(name)
+}
+
+// GetHasReservedByBinary is an alias for HasReservedByBinary.
+//
+//	ok := svc.GetHasReservedByBinary([]byte("reserved"))
+func (s *Service) GetHasReservedByBinary(name []byte) bool {
+	return s.HasReservedByBinary(name)
 }
 
 // GetReservedByName is an alias for GetReservedName.
@@ -2676,12 +2746,40 @@ func HasReservedByName(name any) bool {
 	return HasReservedName(name)
 }
 
+// GetHasReservedByName is an alias for HasReservedByName.
+//
+//	ok := lns.GetHasReservedByName("reserved")
+func GetHasReservedByName(name any) bool {
+	return HasReservedByName(name)
+}
+
+// GetHasReservedByName is an alias for HasReservedByName.
+//
+//	ok := svc.GetHasReservedByName("reserved")
+func (s *Service) GetHasReservedByName(name any) bool {
+	return s.HasReservedByName(name)
+}
+
 // HasReservedName reports whether a reserved name exists using the raw catalog
 // label.
 //
 //	ok := lns.HasReservedName("reserved")
 func HasReservedName(name any) bool {
 	return HasReserved(name)
+}
+
+// GetHasReservedName is an alias for HasReservedName.
+//
+//	ok := lns.GetHasReservedName("reserved")
+func GetHasReservedName(name any) bool {
+	return HasReservedName(name)
+}
+
+// GetHasReservedName is an alias for HasReservedName.
+//
+//	ok := svc.GetHasReservedName("reserved")
+func (s *Service) GetHasReservedName(name any) bool {
+	return s.HasReservedName(name)
 }
 
 // GetReservedHash looks up a reserved .lthn name by its canonical hash.
@@ -2700,6 +2798,20 @@ func HasReservedHash(hash primitives.Hash) bool {
 	return ok
 }
 
+// GetHasReservedHash is an alias for HasReservedHash.
+//
+//	ok := lns.GetHasReservedHash(hash)
+func GetHasReservedHash(hash primitives.Hash) bool {
+	return HasReservedHash(hash)
+}
+
+// GetHasReservedHash is an alias for HasReservedHash.
+//
+//	ok := svc.GetHasReservedHash(hash)
+func (s *Service) GetHasReservedHash(hash primitives.Hash) bool {
+	return s.HasReservedHash(hash)
+}
+
 // GetReservedByHash is an alias for GetReservedHash.
 //
 //	item, ok := lns.GetReservedByHash(hash)
@@ -2712,6 +2824,20 @@ func GetReservedByHash(hash primitives.Hash) (covenant.ReservedName, bool) {
 //	ok := lns.HasReservedByHash(hash)
 func HasReservedByHash(hash primitives.Hash) bool {
 	return HasReservedHash(hash)
+}
+
+// GetHasReservedByHash is an alias for HasReservedByHash.
+//
+//	ok := lns.GetHasReservedByHash(hash)
+func GetHasReservedByHash(hash primitives.Hash) bool {
+	return HasReservedByHash(hash)
+}
+
+// GetHasReservedByHash is an alias for HasReservedByHash.
+//
+//	ok := svc.GetHasReservedByHash(hash)
+func (s *Service) GetHasReservedByHash(hash primitives.Hash) bool {
+	return s.HasReservedByHash(hash)
 }
 
 // GetLocked looks up a locked .lthn name after canonicalisation.
@@ -2767,11 +2893,39 @@ func HasLocked(name any) bool {
 	return ok
 }
 
+// GetHasLocked is an alias for HasLocked.
+//
+//	ok := lns.GetHasLocked("nec.lthn")
+func GetHasLocked(name any) bool {
+	return HasLocked(name)
+}
+
+// GetHasLocked reports whether a canonicalised .lthn name is locked.
+//
+//	ok := svc.GetHasLocked("nec.lthn")
+func (s *Service) GetHasLocked(name any) bool {
+	return s.HasLocked(name)
+}
+
 // HasLockedString reports whether a locked name supplied as a string exists.
 //
 //	ok := lns.HasLockedString("nec")
 func HasLockedString(name string) bool {
 	return HasLockedName(name)
+}
+
+// GetHasLockedString is an alias for HasLockedString.
+//
+//	ok := lns.GetHasLockedString("nec")
+func GetHasLockedString(name string) bool {
+	return HasLockedString(name)
+}
+
+// GetHasLockedString reports whether a locked name supplied as a string exists.
+//
+//	ok := svc.GetHasLockedString("nec")
+func (s *Service) GetHasLockedString(name string) bool {
+	return s.HasLockedString(name)
 }
 
 // HasLockedBinary reports whether a locked name supplied as bytes exists.
@@ -2781,6 +2935,20 @@ func HasLockedBinary(name []byte) bool {
 	return HasLockedName(name)
 }
 
+// GetHasLockedBinary is an alias for HasLockedBinary.
+//
+//	ok := lns.GetHasLockedBinary([]byte("nec"))
+func GetHasLockedBinary(name []byte) bool {
+	return HasLockedBinary(name)
+}
+
+// GetHasLockedBinary reports whether a locked name supplied as bytes exists.
+//
+//	ok := svc.GetHasLockedBinary([]byte("nec"))
+func (s *Service) GetHasLockedBinary(name []byte) bool {
+	return s.HasLockedBinary(name)
+}
+
 // HasLockedByString is an alias for HasLockedString.
 //
 //	ok := lns.HasLockedByString("nec")
@@ -2788,11 +2956,39 @@ func HasLockedByString(name string) bool {
 	return HasLockedString(name)
 }
 
+// GetHasLockedByString is an alias for HasLockedByString.
+//
+//	ok := lns.GetHasLockedByString("nec")
+func GetHasLockedByString(name string) bool {
+	return HasLockedByString(name)
+}
+
+// GetHasLockedByString is an alias for HasLockedByString.
+//
+//	ok := svc.GetHasLockedByString("nec")
+func (s *Service) GetHasLockedByString(name string) bool {
+	return s.HasLockedByString(name)
+}
+
 // HasLockedByBinary is an alias for HasLockedBinary.
 //
 //	ok := lns.HasLockedByBinary([]byte("nec"))
 func HasLockedByBinary(name []byte) bool {
 	return HasLockedBinary(name)
+}
+
+// GetHasLockedByBinary is an alias for HasLockedByBinary.
+//
+//	ok := lns.GetHasLockedByBinary([]byte("nec"))
+func GetHasLockedByBinary(name []byte) bool {
+	return HasLockedByBinary(name)
+}
+
+// GetHasLockedByBinary is an alias for HasLockedByBinary.
+//
+//	ok := svc.GetHasLockedByBinary([]byte("nec"))
+func (s *Service) GetHasLockedByBinary(name []byte) bool {
+	return s.HasLockedByBinary(name)
 }
 
 // GetLockedByName is an alias for GetLockedName.
@@ -2809,12 +3005,40 @@ func HasLockedByName(name any) bool {
 	return HasLockedName(name)
 }
 
+// GetHasLockedByName is an alias for HasLockedByName.
+//
+//	ok := lns.GetHasLockedByName("nec")
+func GetHasLockedByName(name any) bool {
+	return HasLockedByName(name)
+}
+
+// GetHasLockedByName is an alias for HasLockedByName.
+//
+//	ok := svc.GetHasLockedByName("nec")
+func (s *Service) GetHasLockedByName(name any) bool {
+	return s.HasLockedByName(name)
+}
+
 // HasLockedName reports whether a locked name exists using the raw catalog
 // label.
 //
 //	ok := lns.HasLockedName("nec")
 func HasLockedName(name any) bool {
 	return HasLocked(name)
+}
+
+// GetHasLockedName is an alias for HasLockedName.
+//
+//	ok := lns.GetHasLockedName("nec")
+func GetHasLockedName(name any) bool {
+	return HasLockedName(name)
+}
+
+// GetHasLockedName is an alias for HasLockedName.
+//
+//	ok := svc.GetHasLockedName("nec")
+func (s *Service) GetHasLockedName(name any) bool {
+	return s.HasLockedName(name)
 }
 
 // GetLockedHash looks up a locked .lthn name by its canonical hash.
@@ -2833,6 +3057,20 @@ func HasLockedHash(hash primitives.Hash) bool {
 	return ok
 }
 
+// GetHasLockedHash is an alias for HasLockedHash.
+//
+//	ok := lns.GetHasLockedHash(hash)
+func GetHasLockedHash(hash primitives.Hash) bool {
+	return HasLockedHash(hash)
+}
+
+// GetHasLockedHash is an alias for HasLockedHash.
+//
+//	ok := svc.GetHasLockedHash(hash)
+func (s *Service) GetHasLockedHash(hash primitives.Hash) bool {
+	return s.HasLockedHash(hash)
+}
+
 // GetLockedByHash is an alias for GetLockedHash.
 //
 //	item, ok := lns.GetLockedByHash(hash)
@@ -2845,6 +3083,20 @@ func GetLockedByHash(hash primitives.Hash) (covenant.LockedName, bool) {
 //	ok := lns.HasLockedByHash(hash)
 func HasLockedByHash(hash primitives.Hash) bool {
 	return HasLockedHash(hash)
+}
+
+// GetHasLockedByHash is an alias for HasLockedByHash.
+//
+//	ok := lns.GetHasLockedByHash(hash)
+func GetHasLockedByHash(hash primitives.Hash) bool {
+	return HasLockedByHash(hash)
+}
+
+// GetHasLockedByHash is an alias for HasLockedByHash.
+//
+//	ok := svc.GetHasLockedByHash(hash)
+func (s *Service) GetHasLockedByHash(hash primitives.Hash) bool {
+	return s.HasLockedByHash(hash)
 }
 
 // LockedSize reports the number of locked-name entries available to the service.
