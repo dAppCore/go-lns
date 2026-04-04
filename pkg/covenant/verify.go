@@ -87,6 +87,11 @@ func VerifyCovenants(tx primitives.Transaction, view CoinView, height uint32, ne
 				conjured += value
 
 			case uint8(TypeClaim):
+				var claim primitives.Claim
+				if err := claim.UnmarshalBinary(input.Witness[0]); err != nil {
+					return -1
+				}
+
 				blockHeight, err := cov.GetU32(1)
 				if err != nil || blockHeight != height {
 					return -1

@@ -484,7 +484,7 @@ func TestVerifyCovenantsCoinbaseLinkedOutputs(t *testing.T) {
 				{Prevout: primitives.NewOutpoint()},
 				{
 					Prevout: primitives.Outpoint{TxHash: primitives.Hash{1}, Index: 0},
-					Witness: [][]byte{[]byte("proof")},
+					Witness: [][]byte{encodeTestClaim([]byte("proof"))},
 				},
 			},
 			Outputs: []primitives.Output{
@@ -504,7 +504,7 @@ func TestVerifyCovenantsCoinbaseLinkedOutputs(t *testing.T) {
 				{Prevout: primitives.NewOutpoint()},
 				{
 					Prevout: primitives.Outpoint{TxHash: primitives.Hash{2}, Index: 0},
-					Witness: [][]byte{[]byte("proof")},
+					Witness: [][]byte{encodeTestClaim([]byte("proof"))},
 				},
 			},
 			Outputs: []primitives.Output{
@@ -593,6 +593,16 @@ func appendTestVarBytes(dst, src []byte) []byte {
 	return append(dst, src...)
 }
 
+func encodeTestClaim(blob []byte) []byte {
+	claim := primitives.Claim{Blob: append([]byte(nil), blob...)}
+	raw, err := claim.MarshalBinary()
+	if err != nil {
+		panic(err)
+	}
+
+	return raw
+}
+
 func TestCoinbaseAirdropProofValidation(t *testing.T) {
 	address := bytes.Repeat([]byte{0x42}, 20)
 	key := encodeTestAirdropKey(0, address, 1000, false)
@@ -632,5 +642,68 @@ func TestCoinbaseAirdropProofValidation(t *testing.T) {
 
 	if got := VerifyCovenants(badTx, testCoinView{coins: map[primitives.Outpoint]primitives.Output{}}, 100, Network{}); got != -1 {
 		t.Fatalf("VerifyCovenants returned %d for a mismatched coinbase airdrop value, want -1", got)
+	}
+}
+
+func TestCoinbaseClaimWitnessValidation(t *testing.T) {
+	reservedHash, err := HashString("reserved")
+	if err != nil {
+		t.Fatalf("HashString returned error: %v", err)
+	}
+
+	var claimHash primitives.Hash
+	copy(claimHash[:], reservedHash[:])
+
+	blockHeight := make([]byte, 4)
+	binary.LittleEndian.PutUint32(blockHeight, 100)
+
+	tx := primitives.Transaction{
+		Inputs: []primitives.Input{
+			{Prevout: primitives.NewOutpoint()},
+			{
+				Prevout: primitives.Outpoint{TxHash: primitives.Hash{5}, Index: 0},
+				Witness: [][]byte{encodeTestClaim([]byte("proof"))},
+			},
+		},
+		Outputs: []primitives.Output{
+			{Covenant: primitives.Covenant{Type: uint8(TypeNone)}},
+			{
+				Value: 0,
+				Address: primitives.Address{
+					Version: 0,
+					Hash:    bytes.Repeat([]byte{0x24}, 20),
+				},
+				Covenant: primitives.Covenant{
+					Type: uint8(TypeClaim),
+					Items: [][]byte{
+						claimHash[:],
+						blockHeight,
+						[]byte("reserved"),
+						[]byte{0},
+						make([]byte, 32),
+						blockHeight,
+					},
+				},
+			},
+		},
+	}
+
+	if got := HasSaneCovenants(tx); !got {
+		t.Fatal("HasSaneCovenants should accept a valid coinbase claim witness wrapper")
+	}
+
+	if got := VerifyCovenants(tx, testCoinView{coins: map[primitives.Outpoint]primitives.Output{}}, 100, Network{}); got != 0 {
+		t.Fatalf("VerifyCovenants returned %d for a valid coinbase claim witness wrapper, want 0", got)
+	}
+
+	badTx := tx
+	badTx.Inputs[1].Witness = [][]byte{[]byte("proof")}
+
+	if got := HasSaneCovenants(badTx); got {
+		t.Fatal("HasSaneCovenants should reject an invalid coinbase claim witness wrapper")
+	}
+
+	if got := VerifyCovenants(badTx, testCoinView{coins: map[primitives.Outpoint]primitives.Output{}}, 100, Network{}); got != -1 {
+		t.Fatalf("VerifyCovenants returned %d for an invalid coinbase claim witness wrapper, want -1", got)
 	}
 }

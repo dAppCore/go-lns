@@ -198,6 +198,11 @@ func HasSaneCovenants(tx primitives.Transaction) bool {
 					return false
 				}
 
+				var claim primitives.Claim
+				if err := claim.UnmarshalBinary(input.Witness[0]); err != nil {
+					return false
+				}
+
 				var hash primitives.Hash
 				copy(hash[:], cov.Items[0])
 
