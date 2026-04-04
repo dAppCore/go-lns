@@ -242,6 +242,57 @@ func TestResourceTypeHelpers(t *testing.T) {
 	}
 }
 
+func TestResourceRecordTypeAliases(t *testing.T) {
+	cases := []struct {
+		name  string
+		value ResourceRecord
+		want  HSType
+	}{
+		{name: "ds", value: DSRecord{}, want: HSTypeDS},
+		{name: "ns", value: NSRecord{}, want: HSTypeNS},
+		{name: "glue4", value: GLUE4Record{}, want: HSTypeGLUE4},
+		{name: "glue6", value: GLUE6Record{}, want: HSTypeGLUE6},
+		{name: "synth4", value: SYNTH4Record{}, want: HSTypeSYNTH4},
+		{name: "synth6", value: SYNTH6Record{}, want: HSTypeSYNTH6},
+		{name: "txt", value: TXTRecord{}, want: HSTypeTXT},
+	}
+
+	for _, tc := range cases {
+		switch rr := tc.value.(type) {
+		case DSRecord:
+			if got := rr.GetType(); got != tc.want {
+				t.Fatalf("%s GetType() = %d, want %d", tc.name, got, tc.want)
+			}
+		case NSRecord:
+			if got := rr.GetType(); got != tc.want {
+				t.Fatalf("%s GetType() = %d, want %d", tc.name, got, tc.want)
+			}
+		case GLUE4Record:
+			if got := rr.GetType(); got != tc.want {
+				t.Fatalf("%s GetType() = %d, want %d", tc.name, got, tc.want)
+			}
+		case GLUE6Record:
+			if got := rr.GetType(); got != tc.want {
+				t.Fatalf("%s GetType() = %d, want %d", tc.name, got, tc.want)
+			}
+		case SYNTH4Record:
+			if got := rr.GetType(); got != tc.want {
+				t.Fatalf("%s GetType() = %d, want %d", tc.name, got, tc.want)
+			}
+		case SYNTH6Record:
+			if got := rr.GetType(); got != tc.want {
+				t.Fatalf("%s GetType() = %d, want %d", tc.name, got, tc.want)
+			}
+		case TXTRecord:
+			if got := rr.GetType(); got != tc.want {
+				t.Fatalf("%s GetType() = %d, want %d", tc.name, got, tc.want)
+			}
+		default:
+			t.Fatalf("%s: unexpected record type %T", tc.name, tc.value)
+		}
+	}
+}
+
 func TestResourceToNSEC(t *testing.T) {
 	cases := []struct {
 		name   string

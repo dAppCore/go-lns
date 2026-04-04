@@ -149,23 +149,44 @@ func GetNewResource() *Resource {
 // Type returns the DNS record type.
 func (DSRecord) Type() HSType { return HSTypeDS }
 
+// GetType is an alias for Type.
+func (r DSRecord) GetType() HSType { return r.Type() }
+
 // Type returns the DNS record type.
 func (NSRecord) Type() HSType { return HSTypeNS }
+
+// GetType is an alias for Type.
+func (r NSRecord) GetType() HSType { return r.Type() }
 
 // Type returns the DNS record type.
 func (GLUE4Record) Type() HSType { return HSTypeGLUE4 }
 
+// GetType is an alias for Type.
+func (r GLUE4Record) GetType() HSType { return r.Type() }
+
 // Type returns the DNS record type.
 func (GLUE6Record) Type() HSType { return HSTypeGLUE6 }
+
+// GetType is an alias for Type.
+func (r GLUE6Record) GetType() HSType { return r.Type() }
 
 // Type returns the DNS record type.
 func (SYNTH4Record) Type() HSType { return HSTypeSYNTH4 }
 
+// GetType is an alias for Type.
+func (r SYNTH4Record) GetType() HSType { return r.Type() }
+
 // Type returns the DNS record type.
 func (SYNTH6Record) Type() HSType { return HSTypeSYNTH6 }
 
+// GetType is an alias for Type.
+func (r SYNTH6Record) GetType() HSType { return r.Type() }
+
 // Type returns the DNS record type.
 func (TXTRecord) Type() HSType { return HSTypeTXT }
+
+// GetType is an alias for Type.
+func (r TXTRecord) GetType() HSType { return r.Type() }
 
 // NS returns the synthesized target host for a SYNTH4 record.
 func (r SYNTH4Record) NS() string {
