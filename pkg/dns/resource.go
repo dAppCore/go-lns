@@ -6,6 +6,8 @@ import (
 	"bytes"
 	"encoding/base32"
 	"encoding/binary"
+	"encoding/hex"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"net/netip"
@@ -28,6 +30,11 @@ type Resource struct {
 	Records []ResourceRecord
 }
 
+// ResourceJSON represents the JSON form of a DNS resource.
+type ResourceJSON struct {
+	Records []json.RawMessage `json:"records"`
+}
+
 // DSRecord mirrors the JS DS payload entry.
 type DSRecord struct {
 	KeyTag     uint16
@@ -36,9 +43,24 @@ type DSRecord struct {
 	Digest     []byte
 }
 
+// DSRecordJSON represents the JSON form of a DS record.
+type DSRecordJSON struct {
+	Type       string `json:"type"`
+	KeyTag     uint16 `json:"keyTag"`
+	Algorithm  uint8  `json:"algorithm"`
+	DigestType uint8  `json:"digestType"`
+	Digest     string `json:"digest"`
+}
+
 // NSRecord mirrors the JS NS payload entry.
 type NSRecord struct {
 	NS string
+}
+
+// NSRecordJSON represents the JSON form of an NS record.
+type NSRecordJSON struct {
+	Type string `json:"type"`
+	NS   string `json:"ns"`
 }
 
 // GLUE4Record mirrors the JS IPv4 glue payload entry.
@@ -47,10 +69,24 @@ type GLUE4Record struct {
 	Address netip.Addr
 }
 
+// GLUE4RecordJSON represents the JSON form of a GLUE4 record.
+type GLUE4RecordJSON struct {
+	Type    string `json:"type"`
+	NS      string `json:"ns"`
+	Address string `json:"address"`
+}
+
 // GLUE6Record mirrors the JS IPv6 glue payload entry.
 type GLUE6Record struct {
 	NS      string
 	Address netip.Addr
+}
+
+// GLUE6RecordJSON represents the JSON form of a GLUE6 record.
+type GLUE6RecordJSON struct {
+	Type    string `json:"type"`
+	NS      string `json:"ns"`
+	Address string `json:"address"`
 }
 
 // SYNTH4Record mirrors the JS synthesized IPv4 payload entry.
@@ -58,14 +94,32 @@ type SYNTH4Record struct {
 	Address netip.Addr
 }
 
+// SYNTH4RecordJSON represents the JSON form of a SYNTH4 record.
+type SYNTH4RecordJSON struct {
+	Type    string `json:"type"`
+	Address string `json:"address"`
+}
+
 // SYNTH6Record mirrors the JS synthesized IPv6 payload entry.
 type SYNTH6Record struct {
 	Address netip.Addr
 }
 
+// SYNTH6RecordJSON represents the JSON form of a SYNTH6 record.
+type SYNTH6RecordJSON struct {
+	Type    string `json:"type"`
+	Address string `json:"address"`
+}
+
 // TXTRecord mirrors the JS TXT payload entry.
 type TXTRecord struct {
 	Entries []string
+}
+
+// TXTRecordJSON represents the JSON form of a TXT record.
+type TXTRecordJSON struct {
+	Type    string   `json:"type"`
+	Entries []string `json:"txt"`
 }
 
 // NewResource constructs a resource with the reference default TTL.
@@ -257,6 +311,53 @@ func (r *Resource) GetDecode(raw []byte) error {
 	return r.Decode(raw)
 }
 
+// GetJSON converts the resource into its JSON representation.
+func (r *Resource) GetJSON() ResourceJSON {
+	if r == nil {
+		return ResourceJSON{}
+	}
+
+	jsonView := ResourceJSON{
+		Records: make([]json.RawMessage, 0, len(r.Records)),
+	}
+
+	for _, record := range r.Records {
+		if record == nil {
+			continue
+		}
+
+		raw, err := json.Marshal(resourceRecordJSON(record))
+		if err != nil {
+			continue
+		}
+
+		jsonView.Records = append(jsonView.Records, raw)
+	}
+
+	return jsonView
+}
+
+// FromJSON populates the resource from its JSON representation.
+func (r *Resource) FromJSON(jsonView ResourceJSON) error {
+	if r == nil {
+		return core.E("dns.Resource.FromJSON", "resource is required", nil)
+	}
+
+	r.TTL = DEFAULT_TTL
+	r.Records = r.Records[:0]
+
+	for _, raw := range jsonView.Records {
+		record, err := resourceRecordFromJSON(raw)
+		if err != nil {
+			return err
+		}
+
+		r.Records = append(r.Records, record)
+	}
+
+	return nil
+}
+
 // DecodeResource decodes a raw DNS resource payload.
 func DecodeResource(raw []byte) (*Resource, error) {
 	resource := NewResource()
@@ -270,6 +371,288 @@ func DecodeResource(raw []byte) (*Resource, error) {
 // GetDecodeResource is an alias for DecodeResource.
 func GetDecodeResource(raw []byte) (*Resource, error) {
 	return DecodeResource(raw)
+}
+
+func resourceRecordJSON(record ResourceRecord) any {
+	switch rr := record.(type) {
+	case DSRecord:
+		return rr.GetJSON()
+	case *DSRecord:
+		return rr.GetJSON()
+	case NSRecord:
+		return rr.GetJSON()
+	case *NSRecord:
+		return rr.GetJSON()
+	case GLUE4Record:
+		return rr.GetJSON()
+	case *GLUE4Record:
+		return rr.GetJSON()
+	case GLUE6Record:
+		return rr.GetJSON()
+	case *GLUE6Record:
+		return rr.GetJSON()
+	case SYNTH4Record:
+		return rr.GetJSON()
+	case *SYNTH4Record:
+		return rr.GetJSON()
+	case SYNTH6Record:
+		return rr.GetJSON()
+	case *SYNTH6Record:
+		return rr.GetJSON()
+	case TXTRecord:
+		return rr.GetJSON()
+	case *TXTRecord:
+		return rr.GetJSON()
+	default:
+		return map[string]any{"type": "UNKNOWN"}
+	}
+}
+
+type resourceRecordProbe struct {
+	Type string `json:"type"`
+}
+
+func resourceRecordFromJSON(raw json.RawMessage) (ResourceRecord, error) {
+	var probe resourceRecordProbe
+	if err := json.Unmarshal(raw, &probe); err != nil {
+		return nil, core.E("dns.Resource.FromJSON", "invalid record encoding", err)
+	}
+
+	switch probe.Type {
+	case "DS":
+		var jsonRecord DSRecordJSON
+		if err := json.Unmarshal(raw, &jsonRecord); err != nil {
+			return nil, core.E("dns.Resource.FromJSON", "invalid DS record", err)
+		}
+		var record DSRecord
+		if err := record.FromJSON(jsonRecord); err != nil {
+			return nil, err
+		}
+		return record, nil
+	case "NS":
+		var jsonRecord NSRecordJSON
+		if err := json.Unmarshal(raw, &jsonRecord); err != nil {
+			return nil, core.E("dns.Resource.FromJSON", "invalid NS record", err)
+		}
+		var record NSRecord
+		if err := record.FromJSON(jsonRecord); err != nil {
+			return nil, err
+		}
+		return record, nil
+	case "GLUE4":
+		var jsonRecord GLUE4RecordJSON
+		if err := json.Unmarshal(raw, &jsonRecord); err != nil {
+			return nil, core.E("dns.Resource.FromJSON", "invalid GLUE4 record", err)
+		}
+		var record GLUE4Record
+		if err := record.FromJSON(jsonRecord); err != nil {
+			return nil, err
+		}
+		return record, nil
+	case "GLUE6":
+		var jsonRecord GLUE6RecordJSON
+		if err := json.Unmarshal(raw, &jsonRecord); err != nil {
+			return nil, core.E("dns.Resource.FromJSON", "invalid GLUE6 record", err)
+		}
+		var record GLUE6Record
+		if err := record.FromJSON(jsonRecord); err != nil {
+			return nil, err
+		}
+		return record, nil
+	case "SYNTH4":
+		var jsonRecord SYNTH4RecordJSON
+		if err := json.Unmarshal(raw, &jsonRecord); err != nil {
+			return nil, core.E("dns.Resource.FromJSON", "invalid SYNTH4 record", err)
+		}
+		var record SYNTH4Record
+		if err := record.FromJSON(jsonRecord); err != nil {
+			return nil, err
+		}
+		return record, nil
+	case "SYNTH6":
+		var jsonRecord SYNTH6RecordJSON
+		if err := json.Unmarshal(raw, &jsonRecord); err != nil {
+			return nil, core.E("dns.Resource.FromJSON", "invalid SYNTH6 record", err)
+		}
+		var record SYNTH6Record
+		if err := record.FromJSON(jsonRecord); err != nil {
+			return nil, err
+		}
+		return record, nil
+	case "TXT":
+		var jsonRecord TXTRecordJSON
+		if err := json.Unmarshal(raw, &jsonRecord); err != nil {
+			return nil, core.E("dns.Resource.FromJSON", "invalid TXT record", err)
+		}
+		var record TXTRecord
+		if err := record.FromJSON(jsonRecord); err != nil {
+			return nil, err
+		}
+		return record, nil
+	default:
+		return nil, core.E("dns.Resource.FromJSON", "unknown record type", nil)
+	}
+}
+
+// GetJSON converts the DS record into its JSON representation.
+func (r DSRecord) GetJSON() DSRecordJSON {
+	return DSRecordJSON{
+		Type:       "DS",
+		KeyTag:     r.KeyTag,
+		Algorithm:  r.Algorithm,
+		DigestType: r.DigestType,
+		Digest:     fmt.Sprintf("%x", r.Digest),
+	}
+}
+
+// FromJSON populates the DS record from its JSON representation.
+func (r *DSRecord) FromJSON(jsonView DSRecordJSON) error {
+	if jsonView.Type != "DS" {
+		return core.E("dns.DSRecord.FromJSON", "invalid DS record type", nil)
+	}
+
+	raw, err := hex.DecodeString(jsonView.Digest)
+	if err != nil {
+		return core.E("dns.DSRecord.FromJSON", "invalid digest encoding", err)
+	}
+
+	r.KeyTag = jsonView.KeyTag
+	r.Algorithm = jsonView.Algorithm
+	r.DigestType = jsonView.DigestType
+	r.Digest = append(r.Digest[:0], raw...)
+	return nil
+}
+
+// GetJSON converts the NS record into its JSON representation.
+func (r NSRecord) GetJSON() NSRecordJSON {
+	return NSRecordJSON{
+		Type: "NS",
+		NS:   r.NS,
+	}
+}
+
+// FromJSON populates the NS record from its JSON representation.
+func (r *NSRecord) FromJSON(jsonView NSRecordJSON) error {
+	if jsonView.Type != "NS" {
+		return core.E("dns.NSRecord.FromJSON", "invalid NS record type", nil)
+	}
+
+	r.NS = jsonView.NS
+	return nil
+}
+
+// GetJSON converts the GLUE4 record into its JSON representation.
+func (r GLUE4Record) GetJSON() GLUE4RecordJSON {
+	return GLUE4RecordJSON{
+		Type:    "GLUE4",
+		NS:      r.NS,
+		Address: r.Address.String(),
+	}
+}
+
+// FromJSON populates the GLUE4 record from its JSON representation.
+func (r *GLUE4Record) FromJSON(jsonView GLUE4RecordJSON) error {
+	if jsonView.Type != "GLUE4" {
+		return core.E("dns.GLUE4Record.FromJSON", "invalid GLUE4 record type", nil)
+	}
+
+	addr, err := netip.ParseAddr(jsonView.Address)
+	if err != nil || !addr.Is4() {
+		return core.E("dns.GLUE4Record.FromJSON", "invalid IPv4 address", err)
+	}
+
+	r.NS = jsonView.NS
+	r.Address = addr
+	return nil
+}
+
+// GetJSON converts the GLUE6 record into its JSON representation.
+func (r GLUE6Record) GetJSON() GLUE6RecordJSON {
+	return GLUE6RecordJSON{
+		Type:    "GLUE6",
+		NS:      r.NS,
+		Address: r.Address.String(),
+	}
+}
+
+// FromJSON populates the GLUE6 record from its JSON representation.
+func (r *GLUE6Record) FromJSON(jsonView GLUE6RecordJSON) error {
+	if jsonView.Type != "GLUE6" {
+		return core.E("dns.GLUE6Record.FromJSON", "invalid GLUE6 record type", nil)
+	}
+
+	addr, err := netip.ParseAddr(jsonView.Address)
+	if err != nil || !addr.Is6() {
+		return core.E("dns.GLUE6Record.FromJSON", "invalid IPv6 address", err)
+	}
+
+	r.NS = jsonView.NS
+	r.Address = addr
+	return nil
+}
+
+// GetJSON converts the SYNTH4 record into its JSON representation.
+func (r SYNTH4Record) GetJSON() SYNTH4RecordJSON {
+	return SYNTH4RecordJSON{
+		Type:    "SYNTH4",
+		Address: r.Address.String(),
+	}
+}
+
+// FromJSON populates the SYNTH4 record from its JSON representation.
+func (r *SYNTH4Record) FromJSON(jsonView SYNTH4RecordJSON) error {
+	if jsonView.Type != "SYNTH4" {
+		return core.E("dns.SYNTH4Record.FromJSON", "invalid SYNTH4 record type", nil)
+	}
+
+	addr, err := netip.ParseAddr(jsonView.Address)
+	if err != nil || !addr.Is4() {
+		return core.E("dns.SYNTH4Record.FromJSON", "invalid IPv4 address", err)
+	}
+
+	r.Address = addr
+	return nil
+}
+
+// GetJSON converts the SYNTH6 record into its JSON representation.
+func (r SYNTH6Record) GetJSON() SYNTH6RecordJSON {
+	return SYNTH6RecordJSON{
+		Type:    "SYNTH6",
+		Address: r.Address.String(),
+	}
+}
+
+// FromJSON populates the SYNTH6 record from its JSON representation.
+func (r *SYNTH6Record) FromJSON(jsonView SYNTH6RecordJSON) error {
+	if jsonView.Type != "SYNTH6" {
+		return core.E("dns.SYNTH6Record.FromJSON", "invalid SYNTH6 record type", nil)
+	}
+
+	addr, err := netip.ParseAddr(jsonView.Address)
+	if err != nil || !addr.Is6() {
+		return core.E("dns.SYNTH6Record.FromJSON", "invalid IPv6 address", err)
+	}
+
+	r.Address = addr
+	return nil
+}
+
+// GetJSON converts the TXT record into its JSON representation.
+func (r TXTRecord) GetJSON() TXTRecordJSON {
+	return TXTRecordJSON{
+		Type:    "TXT",
+		Entries: append([]string(nil), r.Entries...),
+	}
+}
+
+// FromJSON populates the TXT record from its JSON representation.
+func (r *TXTRecord) FromJSON(jsonView TXTRecordJSON) error {
+	if jsonView.Type != "TXT" {
+		return core.E("dns.TXTRecord.FromJSON", "invalid TXT record type", nil)
+	}
+
+	r.Entries = append(r.Entries[:0], jsonView.Entries...)
+	return nil
 }
 
 func encodeRecord(buf *bytes.Buffer, record ResourceRecord) error {

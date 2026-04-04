@@ -98,6 +98,70 @@ func TestResourceEncodeDecodeRoundTrip(t *testing.T) {
 	}
 }
 
+func TestResourceJSONRoundTrip(t *testing.T) {
+	resource := NewResource()
+	resource.Records = []ResourceRecord{
+		DSRecord{
+			KeyTag:     1,
+			Algorithm:  2,
+			DigestType: 3,
+			Digest:     []byte{0xaa, 0xbb, 0xcc},
+		},
+		NSRecord{NS: "ns1.example."},
+		GLUE4Record{NS: "ns1.example.", Address: netip.MustParseAddr("192.0.2.1")},
+		GLUE6Record{NS: "ns2.example.", Address: netip.MustParseAddr("2001:db8::1")},
+		SYNTH4Record{Address: netip.MustParseAddr("198.51.100.9")},
+		SYNTH6Record{Address: netip.MustParseAddr("2001:db8::9")},
+		TXTRecord{Entries: []string{"hello", "world"}},
+	}
+
+	jsonView := resource.GetJSON()
+	if len(jsonView.Records) != len(resource.Records) {
+		t.Fatalf("GetJSON returned %d records, want %d", len(jsonView.Records), len(resource.Records))
+	}
+
+	var decoded Resource
+	if err := decoded.FromJSON(jsonView); err != nil {
+		t.Fatalf("FromJSON returned error: %v", err)
+	}
+
+	if decoded.TTL != DEFAULT_TTL {
+		t.Fatalf("decoded TTL = %d, want %d", decoded.TTL, DEFAULT_TTL)
+	}
+
+	if len(decoded.Records) != len(resource.Records) {
+		t.Fatalf("decoded %d records, want %d", len(decoded.Records), len(resource.Records))
+	}
+
+	if ds, ok := decoded.Records[0].(DSRecord); !ok || ds.KeyTag != 1 || ds.Algorithm != 2 || ds.DigestType != 3 || !bytes.Equal(ds.Digest, []byte{0xaa, 0xbb, 0xcc}) {
+		t.Fatalf("decoded DS record = %#v, want keyTag=1 algorithm=2 digestType=3 digest=aabbcc", decoded.Records[0])
+	}
+
+	if ns, ok := decoded.Records[1].(NSRecord); !ok || ns.NS != "ns1.example." {
+		t.Fatalf("decoded NS record = %#v, want ns1.example.", decoded.Records[1])
+	}
+
+	if glue4, ok := decoded.Records[2].(GLUE4Record); !ok || glue4.NS != "ns1.example." || glue4.Address.String() != "192.0.2.1" {
+		t.Fatalf("decoded GLUE4 record = %#v, want ns1.example./192.0.2.1", decoded.Records[2])
+	}
+
+	if glue6, ok := decoded.Records[3].(GLUE6Record); !ok || glue6.NS != "ns2.example." || glue6.Address.String() != "2001:db8::1" {
+		t.Fatalf("decoded GLUE6 record = %#v, want ns2.example./2001:db8::1", decoded.Records[3])
+	}
+
+	if synth4, ok := decoded.Records[4].(SYNTH4Record); !ok || synth4.Address.String() != "198.51.100.9" {
+		t.Fatalf("decoded SYNTH4 record = %#v, want 198.51.100.9", decoded.Records[4])
+	}
+
+	if synth6, ok := decoded.Records[5].(SYNTH6Record); !ok || synth6.Address.String() != "2001:db8::9" {
+		t.Fatalf("decoded SYNTH6 record = %#v, want 2001:db8::9", decoded.Records[5])
+	}
+
+	if txt, ok := decoded.Records[6].(TXTRecord); !ok || len(txt.Entries) != 2 || txt.Entries[0] != "hello" || txt.Entries[1] != "world" {
+		t.Fatalf("decoded TXT record = %#v, want [hello world]", decoded.Records[6])
+	}
+}
+
 func TestResourceTypeHelpers(t *testing.T) {
 	resource := NewResource()
 	resource.Records = []ResourceRecord{
