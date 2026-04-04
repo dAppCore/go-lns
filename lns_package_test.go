@@ -249,6 +249,16 @@ func TestPackageBlindAndTypeAliases(t *testing.T) {
 	}
 }
 
+func TestPackageClaimAlias(t *testing.T) {
+	if NewClaim() == nil {
+		t.Fatal("NewClaim should return a claim wrapper")
+	}
+
+	if GetNewClaim() == nil {
+		t.Fatal("GetNewClaim should alias NewClaim")
+	}
+}
+
 func TestPackageRolloutAlias(t *testing.T) {
 	var hash primitives.Hash
 

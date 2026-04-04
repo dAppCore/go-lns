@@ -670,6 +670,9 @@ type NameState = primitives.NameState
 // NameDelta mirrors the sparse name-state delta type from pkg/primitives.
 type NameDelta = primitives.NameDelta
 
+// Claim mirrors the raw ownership-proof claim wrapper from pkg/primitives.
+type Claim = primitives.Claim
+
 // NameStateRules mirrors the phase-timing rule set from pkg/primitives.
 type NameStateRules = primitives.NameStateRules
 
@@ -701,6 +704,16 @@ const (
 	NameStateClosed  = primitives.NameStateClosed
 	NameStateRevoked = primitives.NameStateRevoked
 )
+
+// NewClaim constructs an empty claim wrapper.
+func NewClaim() *Claim {
+	return primitives.NewClaim()
+}
+
+// GetNewClaim is an alias for NewClaim.
+func GetNewClaim() *Claim {
+	return NewClaim()
+}
 
 // CoinView mirrors the minimal UTXO lookup interface required by covenant
 // verification helpers.
