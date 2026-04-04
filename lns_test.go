@@ -4,6 +4,7 @@ package lns
 
 import (
 	"bytes"
+	"context"
 	"crypto/sha3"
 	"encoding/binary"
 	"strings"
@@ -22,8 +23,16 @@ func TestServiceLifecycleHooks(t *testing.T) {
 		t.Fatalf("OnStartup returned %#v, want OK", got)
 	}
 
+	if got := svc.GetOnStartup(context.Background()); !got.OK {
+		t.Fatalf("GetOnStartup returned %#v, want OK", got)
+	}
+
 	if got := svc.OnShutdown(nil); !got.OK {
 		t.Fatalf("OnShutdown returned %#v, want OK", got)
+	}
+
+	if got := svc.GetOnShutdown(context.Background()); !got.OK {
+		t.Fatalf("GetOnShutdown returned %#v, want OK", got)
 	}
 
 	var nilSvc *Service
@@ -32,8 +41,16 @@ func TestServiceLifecycleHooks(t *testing.T) {
 		t.Fatalf("nil OnStartup returned %#v, want OK", got)
 	}
 
+	if got := nilSvc.GetOnStartup(context.Background()); !got.OK {
+		t.Fatalf("nil GetOnStartup returned %#v, want OK", got)
+	}
+
 	if got := nilSvc.OnShutdown(nil); !got.OK {
 		t.Fatalf("nil OnShutdown returned %#v, want OK", got)
+	}
+
+	if got := nilSvc.GetOnShutdown(context.Background()); !got.OK {
+		t.Fatalf("nil GetOnShutdown returned %#v, want OK", got)
 	}
 }
 
@@ -44,10 +61,18 @@ func TestServiceHandleIPCEvents(t *testing.T) {
 		t.Fatalf("HandleIPCEvents returned %#v, want OK", got)
 	}
 
+	if got := svc.GetHandleIPCEvents(nil, nil); !got.OK {
+		t.Fatalf("GetHandleIPCEvents returned %#v, want OK", got)
+	}
+
 	var nilSvc *Service
 
 	if got := nilSvc.HandleIPCEvents(nil, nil); !got.OK {
 		t.Fatalf("nil HandleIPCEvents returned %#v, want OK", got)
+	}
+
+	if got := nilSvc.GetHandleIPCEvents(nil, nil); !got.OK {
+		t.Fatalf("nil GetHandleIPCEvents returned %#v, want OK", got)
 	}
 }
 

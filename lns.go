@@ -565,10 +565,24 @@ func (s *Service) OnStartup(context.Context) core.Result {
 	return okResult()
 }
 
+// GetOnStartup is an alias for OnStartup.
+//
+//	svc.GetOnStartup(context.Background())
+func (s *Service) GetOnStartup(ctx context.Context) core.Result {
+	return s.OnStartup(ctx)
+}
+
 // OnShutdown satisfies core.Stoppable so LNS participates in Core lifecycle
 // discovery without requiring any explicit teardown.
 func (s *Service) OnShutdown(context.Context) core.Result {
 	return okResult()
+}
+
+// GetOnShutdown is an alias for OnShutdown.
+//
+//	svc.GetOnShutdown(context.Background())
+func (s *Service) GetOnShutdown(ctx context.Context) core.Result {
+	return s.OnShutdown(ctx)
 }
 
 // HandleIPCEvents satisfies Core's IPC handler discovery.
@@ -577,6 +591,13 @@ func (s *Service) OnShutdown(context.Context) core.Result {
 //	// LNS registers a no-op IPC handler so it can join the bus cleanly.
 func (s *Service) HandleIPCEvents(*core.Core, core.Message) core.Result {
 	return okResult()
+}
+
+// GetHandleIPCEvents is an alias for HandleIPCEvents.
+//
+//	svc.GetHandleIPCEvents(core.New(), nil)
+func (s *Service) GetHandleIPCEvents(c *core.Core, msg core.Message) core.Result {
+	return s.HandleIPCEvents(c, msg)
 }
 
 func canonicalizeName(name any) (string, bool) {
