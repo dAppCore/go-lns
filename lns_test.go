@@ -996,6 +996,40 @@ func TestNewServiceWithCatalogOverrides(t *testing.T) {
 	}
 }
 
+func TestServiceDefaultCatalogIgnoresOverrides(t *testing.T) {
+	reserved := &covenant.ReservedCatalog{}
+	locked := &covenant.LockedCatalog{}
+
+	svc := NewServiceWithOptions(
+		WithReservedCatalog(reserved),
+		WithLockedCatalog(locked),
+	)
+
+	if svc.ReservedCatalog() != reserved {
+		t.Fatal("ReservedCatalog should return the service override")
+	}
+
+	if svc.DefaultReservedCatalog() != DefaultReservedCatalog() {
+		t.Fatal("DefaultReservedCatalog should return the package default catalog")
+	}
+
+	if svc.DefaultReservedCatalog() == svc.ReservedCatalog() {
+		t.Fatal("DefaultReservedCatalog should ignore the service override")
+	}
+
+	if svc.LockedCatalog() != locked {
+		t.Fatal("LockedCatalog should return the service override")
+	}
+
+	if svc.DefaultLockedCatalog() != DefaultLockedCatalog() {
+		t.Fatal("DefaultLockedCatalog should return the package default catalog")
+	}
+
+	if svc.DefaultLockedCatalog() == svc.LockedCatalog() {
+		t.Fatal("DefaultLockedCatalog should ignore the service override")
+	}
+}
+
 func TestCatalogOptionIgnoresNilCatalogs(t *testing.T) {
 	svc := NewServiceWithOptions(
 		WithReservedCatalog(nil),

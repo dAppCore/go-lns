@@ -2071,11 +2071,14 @@ func (s *Service) GetReservedCatalog() *covenant.ReservedCatalog {
 	return s.ReservedCatalog()
 }
 
-// DefaultReservedCatalog returns the reserved-name catalog used by the service.
+// DefaultReservedCatalog returns the package default reserved-name catalog.
+//
+// This ignores any service-specific override so callers can always recover
+// the canonical backing table when they need to compare or reset state.
 //
 //	catalog := svc.DefaultReservedCatalog()
 func (s *Service) DefaultReservedCatalog() *covenant.ReservedCatalog {
-	return s.ReservedCatalog()
+	return DefaultReservedCatalog()
 }
 
 // GetDefaultReservedCatalog is an alias for DefaultReservedCatalog.
@@ -2281,11 +2284,14 @@ func (s *Service) GetLockedCatalog() *covenant.LockedCatalog {
 	return s.LockedCatalog()
 }
 
-// DefaultLockedCatalog returns the locked-name catalog used by the service.
+// DefaultLockedCatalog returns the package default locked-name catalog.
+//
+// This ignores any service-specific override so callers can always recover
+// the canonical backing table when they need to compare or reset state.
 //
 //	catalog := svc.DefaultLockedCatalog()
 func (s *Service) DefaultLockedCatalog() *covenant.LockedCatalog {
-	return s.LockedCatalog()
+	return DefaultLockedCatalog()
 }
 
 // GetDefaultLockedCatalog is an alias for DefaultLockedCatalog.
