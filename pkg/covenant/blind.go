@@ -1,7 +1,9 @@
 // SPDX-License-Identifier: EUPL-1.2
 
-// Package covenant in pkg/covenant/blind.go documents the sealed-bid helper
-// used by the Lethean Name System covenant rules.
+// Package covenant documents the sealed-bid helper used by the Lethean Name
+// System covenant rules. Path as documentation: pkg/covenant/blind.go covers
+// bid commitments, while covenant.go and the lookup files cover rule metadata
+// and reference catalogs.
 //
 // Create a commitment from a bid value and nonce:
 //

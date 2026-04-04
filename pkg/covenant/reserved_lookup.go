@@ -1,7 +1,8 @@
 // SPDX-License-Identifier: EUPL-1.2
 
-// Package covenant in pkg/covenant/reserved_lookup.go documents the reserved
-// name catalog path for the Lethean Name System.
+// Package covenant documents the reserved-name catalog path for the Lethean
+// Name System. Path as documentation: pkg/covenant/reserved_lookup.go covers
+// the reserved reference table, while locked_lookup.go covers the locked one.
 //
 // Look up a reserved label:
 //
@@ -41,6 +42,8 @@ type ReservedName struct {
 }
 
 // ReservedCatalog exposes the reserved-name reference table.
+//
+//	catalog := covenant.DefaultReservedCatalog()
 type ReservedCatalog struct {
 	byHash    map[primitives.Hash]ReservedName
 	nameValue uint64
@@ -69,21 +72,29 @@ var (
 //
 // Lookup is case-insensitive and accepts a canonical `.lthn` suffix in
 // addition to bare labels.
+//
+//	ok := covenant.HasReservedName("example")
 func HasReservedName(name string) bool {
 	return DefaultReservedCatalog().HasByName(name)
 }
 
 // HasReservedByName is an alias for HasReservedName.
+//
+//	ok := covenant.HasReservedByName("example")
 func HasReservedByName(name string) bool {
 	return HasReservedName(name)
 }
 
 // HasReservedString is an alias for HasReservedName.
+//
+//	ok := covenant.HasReservedString("example")
 func HasReservedString(name string) bool {
 	return HasReservedName(name)
 }
 
 // HasReservedBinary is an alias for HasReservedName.
+//
+//	ok := covenant.HasReservedBinary([]byte("example"))
 func HasReservedBinary(name []byte) bool {
 	return HasReservedName(string(name))
 }
@@ -92,81 +103,113 @@ func HasReservedBinary(name []byte) bool {
 //
 // The input is lower-cased before hashing, and canonical `.lthn` suffixes are
 // stripped before lookup.
+//
+//	item, ok := covenant.GetReservedName("example")
 func GetReservedName(name string) (ReservedName, bool) {
 	return DefaultReservedCatalog().GetByName(name)
 }
 
 // GetReservedByName is an alias for GetReservedName.
+//
+//	item, ok := covenant.GetReservedByName("example")
 func GetReservedByName(name string) (ReservedName, bool) {
 	return GetReservedName(name)
 }
 
 // GetReservedString is an alias for GetReservedName.
+//
+//	item, ok := covenant.GetReservedString("example")
 func GetReservedString(name string) (ReservedName, bool) {
 	return GetReservedName(name)
 }
 
 // GetReservedBinary is an alias for GetReservedName.
+//
+//	item, ok := covenant.GetReservedBinary([]byte("example"))
 func GetReservedBinary(name []byte) (ReservedName, bool) {
 	return GetReservedName(string(name))
 }
 
 // HasReservedByString is an alias for HasReservedString.
+//
+//	ok := covenant.HasReservedByString("example")
 func HasReservedByString(name string) bool {
 	return HasReservedString(name)
 }
 
 // HasReservedByBinary is an alias for HasReservedBinary.
+//
+//	ok := covenant.HasReservedByBinary([]byte("example"))
 func HasReservedByBinary(name []byte) bool {
 	return HasReservedBinary(name)
 }
 
 // GetReservedByString is an alias for GetReservedString.
+//
+//	item, ok := covenant.GetReservedByString("example")
 func GetReservedByString(name string) (ReservedName, bool) {
 	return GetReservedString(name)
 }
 
 // GetReservedByBinary is an alias for GetReservedBinary.
+//
+//	item, ok := covenant.GetReservedByBinary([]byte("example"))
 func GetReservedByBinary(name []byte) (ReservedName, bool) {
 	return GetReservedBinary(name)
 }
 
 // GetReservedHash returns the reserved-name entry for a precomputed hash.
+//
+//	item, ok := covenant.GetReservedHash(hash)
 func GetReservedHash(hash primitives.Hash) (ReservedName, bool) {
 	return defaultReservedCatalog().Get(hash)
 }
 
 // HasReservedHash reports whether a precomputed hash is present in the catalog.
+//
+//	ok := covenant.HasReservedHash(hash)
 func HasReservedHash(hash primitives.Hash) bool {
 	return DefaultReservedCatalog().Has(hash)
 }
 
 // GetReservedByHash is an alias for GetReservedHash.
+//
+//	item, ok := covenant.GetReservedByHash(hash)
 func GetReservedByHash(hash primitives.Hash) (ReservedName, bool) {
 	return GetReservedHash(hash)
 }
 
 // HasReservedByHash is an alias for HasReservedHash.
+//
+//	ok := covenant.HasReservedByHash(hash)
 func HasReservedByHash(hash primitives.Hash) bool {
 	return HasReservedHash(hash)
 }
 
 // DefaultReservedCatalog returns the lazily loaded reserved-name catalog.
+//
+//	catalog := covenant.DefaultReservedCatalog()
 func DefaultReservedCatalog() *ReservedCatalog {
 	return defaultReservedCatalog()
 }
 
 // GetReservedCatalog is an alias for DefaultReservedCatalog.
+//
+//	catalog := covenant.GetReservedCatalog()
 func GetReservedCatalog() *ReservedCatalog {
 	return DefaultReservedCatalog()
 }
 
 // GetDefaultReservedCatalog is an alias for DefaultReservedCatalog.
+//
+//	catalog := covenant.GetDefaultReservedCatalog()
 func GetDefaultReservedCatalog() *ReservedCatalog {
 	return DefaultReservedCatalog()
 }
 
 // Size reports the number of reserved-name entries in the catalog.
+//
+//	size := catalog.Size()
 func (c *ReservedCatalog) Size() int {
 	if c == nil {
 		return 0
@@ -176,11 +219,15 @@ func (c *ReservedCatalog) Size() int {
 }
 
 // GetSize is an alias for Size.
+//
+//	size := catalog.GetSize()
 func (c *ReservedCatalog) GetSize() int {
 	return c.Size()
 }
 
 // NameValue reports the base value used for reserved-name lookups.
+//
+//	base := catalog.NameValue()
 func (c *ReservedCatalog) NameValue() uint64 {
 	if c == nil {
 		return 0
@@ -190,11 +237,15 @@ func (c *ReservedCatalog) NameValue() uint64 {
 }
 
 // GetNameValue is an alias for NameValue.
+//
+//	base := catalog.GetNameValue()
 func (c *ReservedCatalog) GetNameValue() uint64 {
 	return c.NameValue()
 }
 
 // RootValue reports the root-name increment used for reserved-name lookups.
+//
+//	root := catalog.RootValue()
 func (c *ReservedCatalog) RootValue() uint64 {
 	if c == nil {
 		return 0
@@ -204,11 +255,15 @@ func (c *ReservedCatalog) RootValue() uint64 {
 }
 
 // GetRootValue is an alias for RootValue.
+//
+//	root := catalog.GetRootValue()
 func (c *ReservedCatalog) GetRootValue() uint64 {
 	return c.RootValue()
 }
 
 // TopValue reports the top-100 increment used for reserved-name lookups.
+//
+//	top := catalog.TopValue()
 func (c *ReservedCatalog) TopValue() uint64 {
 	if c == nil {
 		return 0
@@ -218,21 +273,29 @@ func (c *ReservedCatalog) TopValue() uint64 {
 }
 
 // GetTopValue is an alias for TopValue.
+//
+//	top := catalog.GetTopValue()
 func (c *ReservedCatalog) GetTopValue() uint64 {
 	return c.TopValue()
 }
 
 // PrefixSize reports the byte offset where the reserved-name table entries begin.
+//
+//	offset := catalog.PrefixSize()
 func (c *ReservedCatalog) PrefixSize() int {
 	return reservedCatalogPrefixSize
 }
 
 // GetPrefixSize is an alias for PrefixSize.
+//
+//	offset := catalog.GetPrefixSize()
 func (c *ReservedCatalog) GetPrefixSize() int {
 	return c.PrefixSize()
 }
 
 // Has reports whether the catalog contains the hash.
+//
+//	ok := catalog.Has(hash)
 func (c *ReservedCatalog) Has(hash primitives.Hash) bool {
 	if c == nil {
 		return false
@@ -243,11 +306,15 @@ func (c *ReservedCatalog) Has(hash primitives.Hash) bool {
 }
 
 // HasByHash is an alias for Has.
+//
+//	ok := catalog.HasByHash(hash)
 func (c *ReservedCatalog) HasByHash(hash primitives.Hash) bool {
 	return c.Has(hash)
 }
 
 // Get returns the reserved-name entry for the hash.
+//
+//	item, ok := catalog.Get(hash)
 func (c *ReservedCatalog) Get(hash primitives.Hash) (ReservedName, bool) {
 	if c == nil {
 		return ReservedName{}, false
@@ -258,11 +325,15 @@ func (c *ReservedCatalog) Get(hash primitives.Hash) (ReservedName, bool) {
 }
 
 // GetByHash is an alias for Get.
+//
+//	item, ok := catalog.GetByHash(hash)
 func (c *ReservedCatalog) GetByHash(hash primitives.Hash) (ReservedName, bool) {
 	return c.Get(hash)
 }
 
 // HasByName reports whether the catalog contains the provided label.
+//
+//	ok := catalog.HasByName("example")
 func (c *ReservedCatalog) HasByName(name string) bool {
 	_, ok := c.GetByName(name)
 	return ok
@@ -272,6 +343,8 @@ func (c *ReservedCatalog) HasByName(name string) bool {
 //
 // The lookup lower-cases ASCII input, strips canonical `.lthn` suffixes, and
 // hashes the normalized label directly.
+//
+//	item, ok := catalog.GetByName("example")
 func (c *ReservedCatalog) GetByName(name string) (ReservedName, bool) {
 	name, ok := asciiLowerName(name)
 	if !ok {
@@ -283,6 +356,8 @@ func (c *ReservedCatalog) GetByName(name string) (ReservedName, bool) {
 }
 
 // Entries returns the catalog contents as hash/item pairs.
+//
+//	entries := catalog.Entries()
 func (c *ReservedCatalog) Entries() []ReservedEntry {
 	if c == nil || len(c.byHash) == 0 {
 		return nil
@@ -304,11 +379,15 @@ func (c *ReservedCatalog) Entries() []ReservedEntry {
 }
 
 // GetEntries is an alias for Entries.
+//
+//	entries := catalog.GetEntries()
 func (c *ReservedCatalog) GetEntries() []ReservedEntry {
 	return c.Entries()
 }
 
 // Keys returns the reserved-name hashes in deterministic order.
+//
+//	keys := catalog.Keys()
 func (c *ReservedCatalog) Keys() []primitives.Hash {
 	if c == nil || len(c.byHash) == 0 {
 		return nil
@@ -321,11 +400,15 @@ func (c *ReservedCatalog) Keys() []primitives.Hash {
 }
 
 // GetKeys is an alias for Keys.
+//
+//	keys := catalog.GetKeys()
 func (c *ReservedCatalog) GetKeys() []primitives.Hash {
 	return c.Keys()
 }
 
 // Values returns the reserved-name entries in deterministic order.
+//
+//	values := catalog.Values()
 func (c *ReservedCatalog) Values() []ReservedName {
 	if c == nil || len(c.byHash) == 0 {
 		return nil
@@ -347,6 +430,8 @@ func (c *ReservedCatalog) Values() []ReservedName {
 }
 
 // GetValues is an alias for Values.
+//
+//	values := catalog.GetValues()
 func (c *ReservedCatalog) GetValues() []ReservedName {
 	return c.Values()
 }

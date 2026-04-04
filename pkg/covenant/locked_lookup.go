@@ -1,7 +1,8 @@
 // SPDX-License-Identifier: EUPL-1.2
 
-// Package covenant in pkg/covenant/locked_lookup.go documents the locked-name
-// catalog path for the Lethean Name System.
+// Package covenant documents the locked-name catalog path for the Lethean Name
+// System. Path as documentation: pkg/covenant/locked_lookup.go covers the
+// locked reference table, while reserved_lookup.go covers the reserved table.
 //
 // Look up a locked label:
 //
@@ -32,6 +33,8 @@ type LockedName struct {
 }
 
 // LockedCatalog exposes the locked-name reference table.
+//
+//	catalog := covenant.DefaultLockedCatalog()
 type LockedCatalog struct {
 	byHash map[primitives.Hash]LockedName
 }
@@ -53,21 +56,29 @@ var (
 //
 // Lookup is case-insensitive and accepts a canonical `.lthn` suffix in
 // addition to bare labels.
+//
+//	ok := covenant.HasLockedName("example")
 func HasLockedName(name string) bool {
 	return DefaultLockedCatalog().HasByName(name)
 }
 
 // HasLockedByName is an alias for HasLockedName.
+//
+//	ok := covenant.HasLockedByName("example")
 func HasLockedByName(name string) bool {
 	return HasLockedName(name)
 }
 
 // HasLockedString is an alias for HasLockedName.
+//
+//	ok := covenant.HasLockedString("example")
 func HasLockedString(name string) bool {
 	return HasLockedName(name)
 }
 
 // HasLockedBinary is an alias for HasLockedName.
+//
+//	ok := covenant.HasLockedBinary([]byte("example"))
 func HasLockedBinary(name []byte) bool {
 	return HasLockedName(string(name))
 }
@@ -76,81 +87,113 @@ func HasLockedBinary(name []byte) bool {
 //
 // The input is lower-cased before hashing, and canonical `.lthn` suffixes are
 // stripped before lookup.
+//
+//	item, ok := covenant.GetLockedName("example")
 func GetLockedName(name string) (LockedName, bool) {
 	return DefaultLockedCatalog().GetByName(name)
 }
 
 // GetLockedByName is an alias for GetLockedName.
+//
+//	item, ok := covenant.GetLockedByName("example")
 func GetLockedByName(name string) (LockedName, bool) {
 	return GetLockedName(name)
 }
 
 // GetLockedString is an alias for GetLockedName.
+//
+//	item, ok := covenant.GetLockedString("example")
 func GetLockedString(name string) (LockedName, bool) {
 	return GetLockedName(name)
 }
 
 // GetLockedBinary is an alias for GetLockedName.
+//
+//	item, ok := covenant.GetLockedBinary([]byte("example"))
 func GetLockedBinary(name []byte) (LockedName, bool) {
 	return GetLockedName(string(name))
 }
 
 // HasLockedByString is an alias for HasLockedString.
+//
+//	ok := covenant.HasLockedByString("example")
 func HasLockedByString(name string) bool {
 	return HasLockedString(name)
 }
 
 // HasLockedByBinary is an alias for HasLockedBinary.
+//
+//	ok := covenant.HasLockedByBinary([]byte("example"))
 func HasLockedByBinary(name []byte) bool {
 	return HasLockedBinary(name)
 }
 
 // GetLockedByString is an alias for GetLockedString.
+//
+//	item, ok := covenant.GetLockedByString("example")
 func GetLockedByString(name string) (LockedName, bool) {
 	return GetLockedString(name)
 }
 
 // GetLockedByBinary is an alias for GetLockedBinary.
+//
+//	item, ok := covenant.GetLockedByBinary([]byte("example"))
 func GetLockedByBinary(name []byte) (LockedName, bool) {
 	return GetLockedBinary(name)
 }
 
 // GetLockedHash returns the locked-name entry for a precomputed hash.
+//
+//	item, ok := covenant.GetLockedHash(hash)
 func GetLockedHash(hash primitives.Hash) (LockedName, bool) {
 	return defaultLockedCatalog().Get(hash)
 }
 
 // HasLockedHash reports whether a precomputed hash is present in the catalog.
+//
+//	ok := covenant.HasLockedHash(hash)
 func HasLockedHash(hash primitives.Hash) bool {
 	return DefaultLockedCatalog().Has(hash)
 }
 
 // GetLockedByHash is an alias for GetLockedHash.
+//
+//	item, ok := covenant.GetLockedByHash(hash)
 func GetLockedByHash(hash primitives.Hash) (LockedName, bool) {
 	return GetLockedHash(hash)
 }
 
 // HasLockedByHash is an alias for HasLockedHash.
+//
+//	ok := covenant.HasLockedByHash(hash)
 func HasLockedByHash(hash primitives.Hash) bool {
 	return HasLockedHash(hash)
 }
 
 // DefaultLockedCatalog returns the lazily loaded locked-name catalog.
+//
+//	catalog := covenant.DefaultLockedCatalog()
 func DefaultLockedCatalog() *LockedCatalog {
 	return defaultLockedCatalog()
 }
 
 // GetLockedCatalog is an alias for DefaultLockedCatalog.
+//
+//	catalog := covenant.GetLockedCatalog()
 func GetLockedCatalog() *LockedCatalog {
 	return DefaultLockedCatalog()
 }
 
 // GetDefaultLockedCatalog is an alias for DefaultLockedCatalog.
+//
+//	catalog := covenant.GetDefaultLockedCatalog()
 func GetDefaultLockedCatalog() *LockedCatalog {
 	return DefaultLockedCatalog()
 }
 
 // Size reports the number of locked-name entries in the catalog.
+//
+//	size := catalog.Size()
 func (c *LockedCatalog) Size() int {
 	if c == nil {
 		return 0
@@ -160,21 +203,29 @@ func (c *LockedCatalog) Size() int {
 }
 
 // GetSize is an alias for Size.
+//
+//	size := catalog.GetSize()
 func (c *LockedCatalog) GetSize() int {
 	return c.Size()
 }
 
 // PrefixSize reports the byte offset where the locked-name table entries begin.
+//
+//	offset := catalog.PrefixSize()
 func (c *LockedCatalog) PrefixSize() int {
 	return lockedCatalogPrefixSize
 }
 
 // GetPrefixSize is an alias for PrefixSize.
+//
+//	offset := catalog.GetPrefixSize()
 func (c *LockedCatalog) GetPrefixSize() int {
 	return c.PrefixSize()
 }
 
 // Has reports whether the catalog contains the hash.
+//
+//	ok := catalog.Has(hash)
 func (c *LockedCatalog) Has(hash primitives.Hash) bool {
 	if c == nil {
 		return false
@@ -185,11 +236,15 @@ func (c *LockedCatalog) Has(hash primitives.Hash) bool {
 }
 
 // HasByHash is an alias for Has.
+//
+//	ok := catalog.HasByHash(hash)
 func (c *LockedCatalog) HasByHash(hash primitives.Hash) bool {
 	return c.Has(hash)
 }
 
 // Get returns the locked-name entry for the hash.
+//
+//	item, ok := catalog.Get(hash)
 func (c *LockedCatalog) Get(hash primitives.Hash) (LockedName, bool) {
 	if c == nil {
 		return LockedName{}, false
@@ -200,11 +255,15 @@ func (c *LockedCatalog) Get(hash primitives.Hash) (LockedName, bool) {
 }
 
 // GetByHash is an alias for Get.
+//
+//	item, ok := catalog.GetByHash(hash)
 func (c *LockedCatalog) GetByHash(hash primitives.Hash) (LockedName, bool) {
 	return c.Get(hash)
 }
 
 // HasByName reports whether the catalog contains the provided label.
+//
+//	ok := catalog.HasByName("example")
 func (c *LockedCatalog) HasByName(name string) bool {
 	_, ok := c.GetByName(name)
 	return ok
@@ -214,6 +273,8 @@ func (c *LockedCatalog) HasByName(name string) bool {
 //
 // The lookup lower-cases ASCII input, strips canonical `.lthn` suffixes, and
 // hashes the normalized label directly.
+//
+//	item, ok := catalog.GetByName("example")
 func (c *LockedCatalog) GetByName(name string) (LockedName, bool) {
 	name, ok := asciiLowerName(name)
 	if !ok {
@@ -225,6 +286,8 @@ func (c *LockedCatalog) GetByName(name string) (LockedName, bool) {
 }
 
 // Entries returns the catalog contents as hash/item pairs.
+//
+//	entries := catalog.Entries()
 func (c *LockedCatalog) Entries() []LockedEntry {
 	if c == nil || len(c.byHash) == 0 {
 		return nil
@@ -246,11 +309,15 @@ func (c *LockedCatalog) Entries() []LockedEntry {
 }
 
 // GetEntries is an alias for Entries.
+//
+//	entries := catalog.GetEntries()
 func (c *LockedCatalog) GetEntries() []LockedEntry {
 	return c.Entries()
 }
 
 // Keys returns the locked-name hashes in deterministic order.
+//
+//	keys := catalog.Keys()
 func (c *LockedCatalog) Keys() []primitives.Hash {
 	if c == nil || len(c.byHash) == 0 {
 		return nil
@@ -263,11 +330,15 @@ func (c *LockedCatalog) Keys() []primitives.Hash {
 }
 
 // GetKeys is an alias for Keys.
+//
+//	keys := catalog.GetKeys()
 func (c *LockedCatalog) GetKeys() []primitives.Hash {
 	return c.Keys()
 }
 
 // Values returns the locked-name entries in deterministic order.
+//
+//	values := catalog.Values()
 func (c *LockedCatalog) Values() []LockedName {
 	if c == nil || len(c.byHash) == 0 {
 		return nil
@@ -289,6 +360,8 @@ func (c *LockedCatalog) Values() []LockedName {
 }
 
 // GetValues is an alias for Values.
+//
+//	values := catalog.GetValues()
 func (c *LockedCatalog) GetValues() []LockedName {
 	return c.Values()
 }

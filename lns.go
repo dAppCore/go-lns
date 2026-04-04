@@ -248,9 +248,10 @@ func lookupCatalogName[T any](
 // LookupCatalogName resolves a raw or canonical catalog label with service-scoped
 // dispatch semantics that match the package-level helper.
 //
-//	The helper first checks the raw label path, then falls back to canonical
-//
+// The helper first checks the raw label path, then falls back to canonical
 // name hashing and hash callback resolution.
+//
+//	item, ok := svc.LookupCatalogName(name, byLabel, byHash)
 func (s *Service) LookupCatalogName(
 	name any,
 	byLabel func(string) (any, bool),
@@ -2549,7 +2550,10 @@ func GetReserved(name any) (covenant.ReservedName, bool) {
 	return lookupReserved(name)
 }
 
-// GetReservedName looks up a reserved name after canonicalisation.
+// GetReservedName looks up a reserved name using the raw catalog label first.
+//
+// The helper accepts the bare label first, then falls back to canonical
+// `.lthn` resolution so existing callers can pass either form.
 //
 //	item, ok := lns.GetReservedName("reserved")
 func GetReservedName(name any) (covenant.ReservedName, bool) {
@@ -2634,7 +2638,8 @@ func HasReservedByName(name any) bool {
 	return HasReservedName(name)
 }
 
-// HasReservedName reports whether a reserved name exists using the raw catalog label.
+// HasReservedName reports whether a reserved name exists using the raw catalog
+// label.
 //
 //	ok := lns.HasReservedName("reserved")
 func HasReservedName(name any) bool {
@@ -2678,7 +2683,10 @@ func GetLocked(name any) (covenant.LockedName, bool) {
 	return lookupLocked(name)
 }
 
-// GetLockedName looks up a locked name after canonicalisation.
+// GetLockedName looks up a locked name using the raw catalog label first.
+//
+// The helper accepts the bare label first, then falls back to canonical
+// `.lthn` resolution so existing callers can pass either form.
 //
 //	item, ok := lns.GetLockedName("nec")
 func GetLockedName(name any) (covenant.LockedName, bool) {
@@ -2763,7 +2771,8 @@ func HasLockedByName(name any) bool {
 	return HasLockedName(name)
 }
 
-// HasLockedName reports whether a locked name exists using the raw catalog label.
+// HasLockedName reports whether a locked name exists using the raw catalog
+// label.
 //
 //	ok := lns.HasLockedName("nec")
 func HasLockedName(name any) bool {
