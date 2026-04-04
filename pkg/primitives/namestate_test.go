@@ -6,6 +6,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"math"
+	"reflect"
 	"testing"
 )
 
@@ -144,6 +145,102 @@ func TestNameStateDeltaHelpers(t *testing.T) {
 
 	if ns.delta != nil {
 		t.Fatal("Clear should discard the cached delta")
+	}
+}
+
+func TestNameStateGetAliases(t *testing.T) {
+	rules := NameStateRules{
+		TreeInterval:    10,
+		LockupPeriod:    20,
+		BiddingPeriod:   30,
+		RevealPeriod:    40,
+		ClaimPeriod:     140,
+		RenewalWindow:   50,
+		AuctionMaturity: 25,
+		BlocksPerDay:    250,
+		TransferLockup:  15,
+	}
+
+	ns := NameState{
+		Name:       []byte("example"),
+		NameHash:   Hash{1, 2, 3, 4},
+		Height:     100,
+		Renewal:    150,
+		Owner:      Outpoint{TxHash: Hash{5, 6, 7, 8}, Index: 9},
+		Value:      10,
+		Highest:    11,
+		Data:       []byte{0xaa, 0xbb},
+		Transfer:   180,
+		Claimed:    1,
+		Renewals:   12,
+		Registered: true,
+		Weak:       true,
+	}
+
+	if ns.GetDelta() == nil {
+		t.Fatal("GetDelta should allocate a delta on demand")
+	}
+
+	if ns.GetHasDelta() {
+		t.Fatal("GetHasDelta should stay false until the delta carries changes")
+	}
+
+	ns.GetDelta().Height = new(uint32)
+	if !ns.GetHasDelta() {
+		t.Fatal("GetHasDelta should report a populated delta")
+	}
+
+	if got := ns.GetClone(); got.NameHash != ns.NameHash || got.Renewal != ns.Renewal {
+		t.Fatalf("GetClone returned %+v, want %+v", got, ns)
+	}
+
+	if got := new(NameState).GetInject(ns); got == nil || got.NameHash != ns.NameHash {
+		t.Fatalf("GetInject returned %+v, want %+v", got, ns)
+	}
+
+	if got := new(NameState).GetSet([]byte("alias"), 200); got == nil || got.Height != 200 || string(got.Name) != "alias" {
+		t.Fatalf("GetSet returned %+v", got)
+	}
+
+	if got := new(NameState).GetReset(200); got == nil || got.Height != 200 || got.Renewal != 200 {
+		t.Fatalf("GetReset returned %+v", got)
+	}
+
+	if got := new(NameState).GetClear(); got == nil {
+		t.Fatal("GetClear should return the receiver")
+	}
+
+	if got := (NameState{}).GetIsNull(); !got {
+		t.Fatal("GetIsNull should report the zero-value state shape")
+	}
+
+	if ns.GetIsNull() {
+		t.Fatal("GetIsNull should reject populated states")
+	}
+
+	if got := ns.GetState(100, rules); got != NameStateLocked {
+		t.Fatalf("GetState returned %s, want LOCKED", got)
+	}
+
+	if !ns.GetIsLocked(100, rules) || !ns.GetIsClaimable(120, rules) {
+		t.Fatal("phase predicate aliases should match the underlying helpers")
+	}
+
+	if ns.GetIsOpening(100, rules) || ns.GetIsBidding(140, rules) || ns.GetIsReveal(170, rules) {
+		t.Fatal("phase predicate aliases should reflect the current state")
+	}
+
+	if !ns.GetIsClosed(200, rules) || ns.GetIsRevoked(200, rules) || !ns.GetIsRedeemable(200, rules) {
+		t.Fatal("state aliases should report closed names correctly")
+	}
+
+	expired := ns.GetClone()
+	if !expired.GetMaybeExpire(220, rules) {
+		t.Fatal("GetMaybeExpire should expire the closed name after the renewal window")
+	}
+
+	if stats := ns.GetClone().GetToStats(188, rules); stats == nil || stats.RenewalPeriodStart != 150 {
+		t.Fatalf("GetToStats returned %+v", stats)
 	}
 }
 
@@ -326,6 +423,10 @@ func TestNameStateJSONRoundTrip(t *testing.T) {
 		t.Fatalf("GetJSON should expose stats, got %+v", jsonView.Stats)
 	}
 
+	if alias := original.GetFormat(188, rules); !reflect.DeepEqual(alias, jsonView) {
+		t.Fatalf("GetFormat returned %+v, want %+v", alias, jsonView)
+	}
+
 	raw, err := json.Marshal(jsonView)
 	if err != nil {
 		t.Fatalf("json.Marshal returned error: %v", err)
@@ -337,8 +438,8 @@ func TestNameStateJSONRoundTrip(t *testing.T) {
 	}
 
 	var roundTripped NameState
-	if err := roundTripped.FromJSON(decoded); err != nil {
-		t.Fatalf("FromJSON returned error: %v", err)
+	if err := roundTripped.GetFromJSON(decoded); err != nil {
+		t.Fatalf("GetFromJSON returned error: %v", err)
 	}
 
 	if !bytes.Equal(roundTripped.Name, original.Name) {

@@ -91,9 +91,19 @@ func (ns NameState) State(height uint32, rules NameStateRules) NameStateStatus {
 	return NameStateClosed
 }
 
+// GetState is an alias for State.
+func (ns NameState) GetState(height uint32, rules NameStateRules) NameStateStatus {
+	return ns.State(height, rules)
+}
+
 // IsOpening reports whether the name is currently in the opening phase.
 func (ns NameState) IsOpening(height uint32, rules NameStateRules) bool {
 	return ns.State(height, rules) == NameStateOpening
+}
+
+// GetIsOpening is an alias for IsOpening.
+func (ns NameState) GetIsOpening(height uint32, rules NameStateRules) bool {
+	return ns.IsOpening(height, rules)
 }
 
 // IsLocked reports whether the name is currently in the claim lockup phase.
@@ -101,9 +111,19 @@ func (ns NameState) IsLocked(height uint32, rules NameStateRules) bool {
 	return ns.State(height, rules) == NameStateLocked
 }
 
+// GetIsLocked is an alias for IsLocked.
+func (ns NameState) GetIsLocked(height uint32, rules NameStateRules) bool {
+	return ns.IsLocked(height, rules)
+}
+
 // IsBidding reports whether the name is currently in the bidding phase.
 func (ns NameState) IsBidding(height uint32, rules NameStateRules) bool {
 	return ns.State(height, rules) == NameStateBidding
+}
+
+// GetIsBidding is an alias for IsBidding.
+func (ns NameState) GetIsBidding(height uint32, rules NameStateRules) bool {
+	return ns.IsBidding(height, rules)
 }
 
 // IsReveal reports whether the name is currently in the reveal phase.
@@ -111,9 +131,19 @@ func (ns NameState) IsReveal(height uint32, rules NameStateRules) bool {
 	return ns.State(height, rules) == NameStateReveal
 }
 
+// GetIsReveal is an alias for IsReveal.
+func (ns NameState) GetIsReveal(height uint32, rules NameStateRules) bool {
+	return ns.IsReveal(height, rules)
+}
+
 // IsClosed reports whether the name is currently in the closed phase.
 func (ns NameState) IsClosed(height uint32, rules NameStateRules) bool {
 	return ns.State(height, rules) == NameStateClosed
+}
+
+// GetIsClosed is an alias for IsClosed.
+func (ns NameState) GetIsClosed(height uint32, rules NameStateRules) bool {
+	return ns.IsClosed(height, rules)
 }
 
 // IsRevoked reports whether the name has been revoked.
@@ -121,9 +151,19 @@ func (ns NameState) IsRevoked(height uint32, rules NameStateRules) bool {
 	return ns.State(height, rules) == NameStateRevoked
 }
 
+// GetIsRevoked is an alias for IsRevoked.
+func (ns NameState) GetIsRevoked(height uint32, rules NameStateRules) bool {
+	return ns.IsRevoked(height, rules)
+}
+
 // IsRedeemable reports whether the name has reached the closed state.
 func (ns NameState) IsRedeemable(height uint32, rules NameStateRules) bool {
 	return ns.State(height, rules) >= NameStateClosed
+}
+
+// GetIsRedeemable is an alias for IsRedeemable.
+func (ns NameState) GetIsRedeemable(height uint32, rules NameStateRules) bool {
+	return ns.IsRedeemable(height, rules)
 }
 
 // IsClaimable reports whether the name is still within the claim window.
@@ -133,6 +173,11 @@ func (ns NameState) IsClaimable(height uint32, rules NameStateRules) bool {
 	}
 
 	return height < rules.ClaimPeriod
+}
+
+// GetIsClaimable is an alias for IsClaimable.
+func (ns NameState) GetIsClaimable(height uint32, rules NameStateRules) bool {
+	return ns.IsClaimable(height, rules)
 }
 
 // IsExpired reports whether the name should be treated as expired.
@@ -158,4 +203,9 @@ func (ns NameState) IsExpired(height uint32, rules NameStateRules) bool {
 
 	// If nobody revealed their bids, restart the auction.
 	return ns.Owner.IsNull()
+}
+
+// GetIsExpired is an alias for IsExpired.
+func (ns NameState) GetIsExpired(height uint32, rules NameStateRules) bool {
+	return ns.IsExpired(height, rules)
 }

@@ -13,6 +13,11 @@ func (ns *NameState) Delta() *NameDelta {
 	return ns.delta
 }
 
+// GetDelta is an alias for Delta.
+func (ns *NameState) GetDelta() *NameDelta {
+	return ns.Delta()
+}
+
 // Inject copies another name state into this one.
 func (ns *NameState) Inject(other NameState) *NameState {
 	ns.Name = other.Name
@@ -31,6 +36,11 @@ func (ns *NameState) Inject(other NameState) *NameState {
 	ns.Expired = other.Expired
 	ns.Weak = other.Weak
 	return ns
+}
+
+// GetInject is an alias for Inject.
+func (ns *NameState) GetInject(other NameState) *NameState {
+	return ns.Inject(other)
 }
 
 // Clone returns a shallow copy of the name state.
@@ -54,15 +64,30 @@ func (ns NameState) Clone() NameState {
 	}
 }
 
+// GetClone is an alias for Clone.
+func (ns NameState) GetClone() NameState {
+	return ns.Clone()
+}
+
 // Clear discards any cached delta and returns the receiver.
 func (ns *NameState) Clear() *NameState {
 	ns.delta = nil
 	return ns
 }
 
+// GetClear is an alias for Clear.
+func (ns *NameState) GetClear() *NameState {
+	return ns.Clear()
+}
+
 // HasDelta reports whether a cached delta exists and records changes.
 func (ns NameState) HasDelta() bool {
 	return ns.delta != nil && !ns.delta.IsNull()
+}
+
+// GetHasDelta is an alias for HasDelta.
+func (ns NameState) GetHasDelta() bool {
+	return ns.HasDelta()
 }
 
 func (ns *NameState) setHeight(height uint32) *NameState {
@@ -291,11 +316,21 @@ func (ns *NameState) Reset(height uint32) *NameState {
 	return ns
 }
 
+// GetReset is an alias for Reset.
+func (ns *NameState) GetReset(height uint32) *NameState {
+	return ns.Reset(height)
+}
+
 // Set assigns the raw name and resets the mutable chain state.
 func (ns *NameState) Set(name []byte, height uint32) *NameState {
 	ns.Name = name
 	ns.Reset(height)
 	return ns
+}
+
+// GetSet is an alias for Set.
+func (ns *NameState) GetSet(name []byte, height uint32) *NameState {
+	return ns.Set(name, height)
 }
 
 // MaybeExpire resets the state if it has expired, preserving the current data.
@@ -310,6 +345,11 @@ func (ns *NameState) MaybeExpire(height uint32, rules NameStateRules) bool {
 	ns.setData(data)
 
 	return true
+}
+
+// GetMaybeExpire is an alias for MaybeExpire.
+func (ns *NameState) GetMaybeExpire(height uint32, rules NameStateRules) bool {
+	return ns.MaybeExpire(height, rules)
 }
 
 // ApplyState merges a sparse delta into the name state.
@@ -373,6 +413,11 @@ func (ns *NameState) ApplyState(delta *NameDelta) *NameState {
 	return ns
 }
 
+// GetApplyState is an alias for ApplyState.
+func (ns *NameState) GetApplyState(delta *NameDelta) *NameState {
+	return ns.ApplyState(delta)
+}
+
 // IsNull reports whether the name state carries any non-default data.
 func (ns NameState) IsNull() bool {
 	return ns.Height == 0 &&
@@ -388,4 +433,9 @@ func (ns NameState) IsNull() bool {
 		!ns.Registered &&
 		!ns.Expired &&
 		!ns.Weak
+}
+
+// GetIsNull is an alias for IsNull.
+func (ns NameState) GetIsNull() bool {
+	return ns.IsNull()
 }

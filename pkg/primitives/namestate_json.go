@@ -62,6 +62,11 @@ func (ns NameState) Format(height uint32, rules NameStateRules) NameStateJSON {
 	}
 }
 
+// GetFormat is an alias for Format.
+func (ns NameState) GetFormat(height uint32, rules NameStateRules) NameStateJSON {
+	return ns.Format(height, rules)
+}
+
 // FromJSON populates the name state from its JSON representation.
 func (ns *NameState) FromJSON(json NameStateJSON) error {
 	if len(json.Name) > nameStateJSONMaxSize {
@@ -102,4 +107,9 @@ func (ns *NameState) FromJSON(json NameStateJSON) error {
 	ns.Weak = json.Weak
 	ns.delta = nil
 	return nil
+}
+
+// GetFromJSON is an alias for FromJSON.
+func (ns *NameState) GetFromJSON(json NameStateJSON) error {
+	return ns.FromJSON(json)
 }

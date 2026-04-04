@@ -163,3 +163,8 @@ func (ns NameState) ToStats(height uint32, rules NameStateRules) *NameStateStats
 
 	return stats
 }
+
+// GetToStats is an alias for ToStats.
+func (ns NameState) GetToStats(height uint32, rules NameStateRules) *NameStateStats {
+	return ns.ToStats(height, rules)
+}
