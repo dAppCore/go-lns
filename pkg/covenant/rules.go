@@ -92,6 +92,13 @@ func HasRollout(nameHash primitives.Hash, height uint32, rules NameRules) bool {
 	return height >= start
 }
 
+// GetHasRollout is an alias for HasRollout.
+//
+//	ok := covenant.GetHasRollout(nameHash, height, rules)
+func GetHasRollout(nameHash primitives.Hash, height uint32, rules NameRules) bool {
+	return HasRollout(nameHash, height, rules)
+}
+
 // IsReserved reports whether a name is reserved at the provided height.
 //
 // Names are only reserved before the claim period and only when the network

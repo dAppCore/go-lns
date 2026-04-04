@@ -207,6 +207,23 @@ func TestPackageBlindAndTypeAliases(t *testing.T) {
 	}
 }
 
+func TestPackageRolloutAlias(t *testing.T) {
+	var hash primitives.Hash
+
+	rules := NameRules{
+		AuctionStart:    100,
+		RolloutInterval: 7,
+	}
+
+	if !HasRollout(hash, 100, rules) {
+		t.Fatal("HasRollout should accept the rollout start height")
+	}
+
+	if !GetHasRollout(hash, 100, rules) {
+		t.Fatal("GetHasRollout should alias HasRollout")
+	}
+}
+
 func TestPackageServiceNameAlias(t *testing.T) {
 	if got := GetServiceName(); got != ServiceName {
 		t.Fatalf("GetServiceName() = %q, want %q", got, ServiceName)

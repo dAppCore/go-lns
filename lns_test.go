@@ -246,6 +246,24 @@ func TestServiceVerifyStringAndBinary(t *testing.T) {
 	}
 }
 
+func TestServiceRolloutAlias(t *testing.T) {
+	svc := &Service{}
+	var hash primitives.Hash
+
+	rules := NameRules{
+		AuctionStart:    100,
+		RolloutInterval: 7,
+	}
+
+	if !svc.HasRollout(hash, 100, rules) {
+		t.Fatal("HasRollout should accept the rollout start height")
+	}
+
+	if !svc.GetHasRollout(hash, 100, rules) {
+		t.Fatal("GetHasRollout should alias HasRollout")
+	}
+}
+
 func TestServiceGetVerifyAliases(t *testing.T) {
 	svc := &Service{}
 

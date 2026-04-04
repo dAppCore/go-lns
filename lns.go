@@ -955,6 +955,13 @@ func HasRollout(nameHash primitives.Hash, height uint32, rules NameRules) bool {
 	return covenant.HasRollout(nameHash, height, rules)
 }
 
+// GetHasRollout is an alias for HasRollout.
+//
+//	ok := lns.GetHasRollout(nameHash, height, rules)
+func GetHasRollout(nameHash primitives.Hash, height uint32, rules NameRules) bool {
+	return HasRollout(nameHash, height, rules)
+}
+
 // IsReserved reports whether a name hash is reserved at the given height.
 //
 //	ok := lns.IsReserved(nameHash, height, rules)
@@ -1525,6 +1532,13 @@ func (s *Service) GetRollout(nameHash primitives.Hash, rules NameRules) (uint32,
 // HasRollout reports whether a name hash has reached its rollout height.
 func (s *Service) HasRollout(nameHash primitives.Hash, height uint32, rules NameRules) bool {
 	return covenant.HasRollout(nameHash, height, rules)
+}
+
+// GetHasRollout is an alias for HasRollout.
+//
+//	ok := svc.GetHasRollout(nameHash, height, rules)
+func (s *Service) GetHasRollout(nameHash primitives.Hash, height uint32, rules NameRules) bool {
+	return s.HasRollout(nameHash, height, rules)
 }
 
 // IsReserved reports whether a name hash is reserved at the given height.

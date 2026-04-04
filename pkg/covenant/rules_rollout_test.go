@@ -25,6 +25,10 @@ func TestGetRolloutAndHasRollout(t *testing.T) {
 		t.Fatal("HasRollout should accept the rollout start height")
 	}
 
+	if !GetHasRollout(hash, 100, rules) {
+		t.Fatal("GetHasRollout should alias HasRollout")
+	}
+
 	if HasRollout(hash, 99, rules) {
 		t.Fatal("HasRollout should reject heights before rollout")
 	}
@@ -37,6 +41,10 @@ func TestGetRolloutAndHasRollout(t *testing.T) {
 
 	if !HasRollout(hash, 0, rules) {
 		t.Fatal("HasRollout should be disabled when rollout gating is off")
+	}
+
+	if !GetHasRollout(hash, 0, rules) {
+		t.Fatal("GetHasRollout should alias HasRollout when rollout gating is off")
 	}
 }
 
