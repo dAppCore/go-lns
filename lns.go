@@ -223,6 +223,13 @@ func Register(c *core.Core) core.Result {
 	return core.Result{Value: NewService(c), OK: true}
 }
 
+// GetRegister is an alias for Register.
+//
+//	app := core.New(core.WithService(lns.GetRegister))
+func GetRegister(c *core.Core) core.Result {
+	return Register(c)
+}
+
 // RegisterWithOptions constructs an LNS Service factory with extra service options.
 //
 // This keeps the Core registration path ergonomic when callers want to inject
@@ -242,6 +249,15 @@ func RegisterWithOptions(opts ...ServiceOption) func(*core.Core) core.Result {
 		serviceOpts := append([]ServiceOption{WithCore(c)}, opts...)
 		return core.Result{Value: NewServiceWithOptions(serviceOpts...), OK: true}
 	}
+}
+
+// GetRegisterWithOptions is an alias for RegisterWithOptions.
+//
+//	app := core.New(core.WithService(lns.GetRegisterWithOptions(
+//	    lns.WithReservedCatalog(customReserved),
+//	)))
+func GetRegisterWithOptions(opts ...ServiceOption) func(*core.Core) core.Result {
+	return RegisterWithOptions(opts...)
 }
 
 // GetServiceName returns the registered name for the LNS service group.

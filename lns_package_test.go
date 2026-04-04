@@ -360,6 +360,42 @@ func TestPackageServiceConstructorAliases(t *testing.T) {
 	}
 }
 
+func TestPackageRegisterAliases(t *testing.T) {
+	if res := GetRegister(nil); res.OK {
+		t.Fatal("GetRegister(nil) should fail")
+	}
+
+	c := core.New()
+	if res := GetRegister(c); !res.OK {
+		t.Fatal("GetRegister should register a service for a valid Core")
+	} else if svc, ok := res.Value.(*Service); !ok || svc == nil {
+		t.Fatalf("GetRegister returned %T, want *Service", res.Value)
+	}
+
+	reserved := &covenant.ReservedCatalog{}
+	locked := &covenant.LockedCatalog{}
+
+	app := core.New(
+		core.WithService(GetRegisterWithOptions(
+			WithReservedCatalog(reserved),
+			WithLockedCatalog(locked),
+		)),
+	)
+
+	svc, ok := core.ServiceFor[*Service](app, ServiceName)
+	if !ok {
+		t.Fatal("GetRegisterWithOptions should register the LNS service")
+	}
+
+	if svc.ReservedCatalog() != reserved {
+		t.Fatal("GetRegisterWithOptions should apply the reserved catalog override")
+	}
+
+	if svc.LockedCatalog() != locked {
+		t.Fatal("GetRegisterWithOptions should apply the locked catalog override")
+	}
+}
+
 func TestPackageDefaultCatalogAliases(t *testing.T) {
 	if DefaultReservedCatalog() != ReservedCatalog() {
 		t.Fatal("DefaultReservedCatalog should alias ReservedCatalog")
