@@ -101,6 +101,9 @@ type TXTRecord = dnspkg.TXTRecord
 // TXTRecordJSON mirrors the DNS TXT JSON representation.
 type TXTRecordJSON = dnspkg.TXTRecordJSON
 
+// NSECRecord mirrors the DNS NSEC helper output.
+type NSECRecord = dnspkg.NSECRecord
+
 // Service is the LNS service that manages .lthn name resolution,
 // covenant processing, and name-chain state queries.
 //
@@ -267,6 +270,36 @@ func NewResource() *Resource {
 // GetNewResource is an alias for NewResource.
 func GetNewResource() *Resource {
 	return NewResource()
+}
+
+// Create constructs a reference NSEC record container.
+func Create(name, nextDomain string, typeBitmap []byte) NSECRecord {
+	return dnspkg.Create(name, nextDomain, typeBitmap)
+}
+
+// GetCreate is an alias for Create.
+func GetCreate(name, nextDomain string, typeBitmap []byte) NSECRecord {
+	return Create(name, nextDomain, typeBitmap)
+}
+
+// NextName returns the canonical successor for a top-level domain name.
+func NextName(tld string) string {
+	return dnspkg.NextName(tld)
+}
+
+// GetNextName is an alias for NextName.
+func GetNextName(tld string) string {
+	return NextName(tld)
+}
+
+// PrevName returns the canonical predecessor for a top-level domain name.
+func PrevName(tld string) string {
+	return dnspkg.PrevName(tld)
+}
+
+// GetPrevName is an alias for PrevName.
+func GetPrevName(tld string) string {
+	return PrevName(tld)
 }
 
 // OnStartup satisfies core.Startable so LNS participates in Core lifecycle

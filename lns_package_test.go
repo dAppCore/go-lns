@@ -261,6 +261,55 @@ func TestPackageClaimAlias(t *testing.T) {
 	}
 }
 
+func TestPackageNSECAliases(t *testing.T) {
+	if got := NextName("ExAmPle."); got != "example\x00." {
+		t.Fatalf("NextName returned %q", got)
+	}
+
+	if got := GetNextName("ExAmPle."); got != "example\x00." {
+		t.Fatalf("GetNextName returned %q", got)
+	}
+
+	if got := PrevName("ExAmPle."); got != "exampld\xff." {
+		t.Fatalf("PrevName returned %q", got)
+	}
+
+	if got := GetPrevName("ExAmPle."); got != "exampld\xff." {
+		t.Fatalf("GetPrevName returned %q", got)
+	}
+
+	record := Create(".", NextName("."), TYPE_MAP_ROOT)
+	if record.Name != "." {
+		t.Fatalf("Create Name = %q, want %q", record.Name, ".")
+	}
+
+	if record.NextDomain != "\x00." {
+		t.Fatalf("Create NextDomain = %q, want %q", record.NextDomain, "\x00.")
+	}
+
+	if record.TTL != DEFAULT_TTL {
+		t.Fatalf("Create TTL = %d, want %d", record.TTL, DEFAULT_TTL)
+	}
+
+	if !bytes.Equal(record.TypeBitmap, TYPE_MAP_ROOT) {
+		t.Fatalf("Create TypeBitmap = %x, want %x", record.TypeBitmap, TYPE_MAP_ROOT)
+	}
+
+	record.TypeBitmap[0] ^= 0xff
+	if bytes.Equal(record.TypeBitmap, TYPE_MAP_ROOT) {
+		t.Fatal("Create should copy the type bitmap")
+	}
+
+	alias := GetCreate("foo", "bar", TYPE_MAP_NS)
+	if alias.Name != "foo." || alias.NextDomain != "bar." || alias.TTL != DEFAULT_TTL {
+		t.Fatalf("GetCreate returned %+v", alias)
+	}
+
+	if !bytes.Equal(alias.TypeBitmap, TYPE_MAP_NS) {
+		t.Fatalf("GetCreate TypeBitmap = %x, want %x", alias.TypeBitmap, TYPE_MAP_NS)
+	}
+}
+
 func TestPackageRolloutAlias(t *testing.T) {
 	var hash primitives.Hash
 
