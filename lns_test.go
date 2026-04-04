@@ -3,6 +3,7 @@
 package lns
 
 import (
+	"bytes"
 	"crypto/sha3"
 	"encoding/binary"
 	"strings"
@@ -860,6 +861,89 @@ func TestServiceGetBlindAndGetTypeNameAliases(t *testing.T) {
 
 	if got := svc.GetTypeName(covenant.TypeBid); got != "BID" {
 		t.Fatalf("GetTypeName(TypeBid) = %q, want %q", got, "BID")
+	}
+}
+
+func TestServiceUtilityAliases(t *testing.T) {
+	svc := &Service{}
+
+	if svc.NewClaim() == nil {
+		t.Fatal("NewClaim should return a claim wrapper")
+	}
+
+	if svc.GetNewClaim() == nil {
+		t.Fatal("GetNewClaim should alias NewClaim")
+	}
+
+	if got := svc.NextName("ExAmPle."); got != "example\x00." {
+		t.Fatalf("NextName returned %q", got)
+	}
+
+	if got := svc.GetNextName("ExAmPle."); got != "example\x00." {
+		t.Fatalf("GetNextName returned %q", got)
+	}
+
+	if got := svc.PrevName("ExAmPle."); got != "exampld\xff." {
+		t.Fatalf("PrevName returned %q", got)
+	}
+
+	if got := svc.GetPrevName("ExAmPle."); got != "exampld\xff." {
+		t.Fatalf("GetPrevName returned %q", got)
+	}
+
+	record := svc.Create(".", svc.NextName("."), TYPE_MAP_ROOT)
+	if record.Name != "." {
+		t.Fatalf("Create Name = %q, want %q", record.Name, ".")
+	}
+
+	if record.NextDomain != "\x00." {
+		t.Fatalf("Create NextDomain = %q, want %q", record.NextDomain, "\x00.")
+	}
+
+	if record.TTL != DEFAULT_TTL {
+		t.Fatalf("Create TTL = %d, want %d", record.TTL, DEFAULT_TTL)
+	}
+
+	if !bytes.Equal(record.TypeBitmap, TYPE_MAP_ROOT) {
+		t.Fatalf("Create TypeBitmap = %x, want %x", record.TypeBitmap, TYPE_MAP_ROOT)
+	}
+
+	if svc.GetCreate("foo", "bar", TYPE_MAP_NS).TTL != DEFAULT_TTL {
+		t.Fatal("GetCreate should alias Create")
+	}
+
+	resource := svc.NewResource()
+	if resource == nil {
+		t.Fatal("NewResource should return a resource")
+	}
+
+	if resource.TTL != DEFAULT_TTL {
+		t.Fatalf("NewResource TTL = %d, want %d", resource.TTL, DEFAULT_TTL)
+	}
+
+	if svc.GetNewResource() == nil {
+		t.Fatal("GetNewResource should return a resource")
+	}
+
+	resource.Records = []ResourceRecord{TXTRecord{Entries: []string{"hello"}}}
+	encoded, err := resource.Encode()
+	if err != nil {
+		t.Fatalf("Resource.Encode returned error: %v", err)
+	}
+
+	decoded, err := svc.DecodeResource(encoded)
+	if err != nil {
+		t.Fatalf("DecodeResource returned error: %v", err)
+	}
+
+	if len(decoded.Records) != len(resource.Records) {
+		t.Fatalf("DecodeResource records = %d, want %d", len(decoded.Records), len(resource.Records))
+	}
+
+	if got, err := svc.GetDecodeResource(encoded); err != nil {
+		t.Fatalf("GetDecodeResource returned error: %v", err)
+	} else if got.TTL != decoded.TTL || len(got.Records) != len(decoded.Records) {
+		t.Fatal("GetDecodeResource should alias DecodeResource")
 	}
 }
 

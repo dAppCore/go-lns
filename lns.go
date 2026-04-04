@@ -332,6 +332,66 @@ func GetPrevName(tld string) string {
 	return PrevName(tld)
 }
 
+// NewClaim constructs an empty claim wrapper.
+func (s *Service) NewClaim() *Claim {
+	return primitives.NewClaim()
+}
+
+// GetNewClaim is an alias for NewClaim.
+func (s *Service) GetNewClaim() *Claim {
+	return s.NewClaim()
+}
+
+// Create constructs a reference NSEC record container.
+func (s *Service) Create(name, nextDomain string, typeBitmap []byte) NSECRecord {
+	return dnspkg.Create(name, nextDomain, typeBitmap)
+}
+
+// GetCreate is an alias for Create.
+func (s *Service) GetCreate(name, nextDomain string, typeBitmap []byte) NSECRecord {
+	return s.Create(name, nextDomain, typeBitmap)
+}
+
+// NextName returns the canonical successor for a top-level domain name.
+func (s *Service) NextName(tld string) string {
+	return dnspkg.NextName(tld)
+}
+
+// GetNextName is an alias for NextName.
+func (s *Service) GetNextName(tld string) string {
+	return s.NextName(tld)
+}
+
+// PrevName returns the canonical predecessor for a top-level domain name.
+func (s *Service) PrevName(tld string) string {
+	return dnspkg.PrevName(tld)
+}
+
+// GetPrevName is an alias for PrevName.
+func (s *Service) GetPrevName(tld string) string {
+	return s.PrevName(tld)
+}
+
+// NewResource constructs a DNS resource with the reference default TTL.
+func (s *Service) NewResource() *Resource {
+	return dnspkg.NewResource()
+}
+
+// GetNewResource is an alias for NewResource.
+func (s *Service) GetNewResource() *Resource {
+	return s.NewResource()
+}
+
+// DecodeResource decodes a raw DNS resource payload.
+func (s *Service) DecodeResource(raw []byte) (*Resource, error) {
+	return dnspkg.DecodeResource(raw)
+}
+
+// GetDecodeResource is an alias for DecodeResource.
+func (s *Service) GetDecodeResource(raw []byte) (*Resource, error) {
+	return s.DecodeResource(raw)
+}
+
 // OnStartup satisfies core.Startable so LNS participates in Core lifecycle
 // discovery without requiring any explicit setup.
 func (s *Service) OnStartup(context.Context) core.Result {
