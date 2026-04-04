@@ -352,6 +352,106 @@ func (s *Service) GetCreate(name, nextDomain string, typeBitmap []byte) NSECReco
 	return s.Create(name, nextDomain, typeBitmap)
 }
 
+// DefaultTTL returns the reference DNS TTL used for synthesized records.
+func (s *Service) DefaultTTL() int {
+	return DEFAULT_TTL
+}
+
+// GetDefaultTTL is an alias for DefaultTTL.
+func (s *Service) GetDefaultTTL() int {
+	return s.DefaultTTL()
+}
+
+// Dummy returns the zero-length DNS reference buffer.
+func (s *Service) Dummy() []byte {
+	return DUMMY
+}
+
+// GetDummy is an alias for Dummy.
+func (s *Service) GetDummy() []byte {
+	return s.Dummy()
+}
+
+// TypeMapRoot returns the reference type bitmap for the root zone.
+func (s *Service) TypeMapRoot() []byte {
+	return TYPE_MAP_ROOT
+}
+
+// GetTypeMapRoot is an alias for TypeMapRoot.
+func (s *Service) GetTypeMapRoot() []byte {
+	return s.TypeMapRoot()
+}
+
+// TypeMapEmpty returns the reference type bitmap for an empty response.
+func (s *Service) TypeMapEmpty() []byte {
+	return TYPE_MAP_EMPTY
+}
+
+// GetTypeMapEmpty is an alias for TypeMapEmpty.
+func (s *Service) GetTypeMapEmpty() []byte {
+	return s.TypeMapEmpty()
+}
+
+// TypeMapNS returns the reference type bitmap for NS responses.
+func (s *Service) TypeMapNS() []byte {
+	return TYPE_MAP_NS
+}
+
+// GetTypeMapNS is an alias for TypeMapNS.
+func (s *Service) GetTypeMapNS() []byte {
+	return s.TypeMapNS()
+}
+
+// TypeMapTXT returns the reference type bitmap for TXT responses.
+func (s *Service) TypeMapTXT() []byte {
+	return TYPE_MAP_TXT
+}
+
+// GetTypeMapTXT is an alias for TypeMapTXT.
+func (s *Service) GetTypeMapTXT() []byte {
+	return s.TypeMapTXT()
+}
+
+// TypeMapA returns the reference type bitmap for A responses.
+func (s *Service) TypeMapA() []byte {
+	return TYPE_MAP_A
+}
+
+// GetTypeMapA is an alias for TypeMapA.
+func (s *Service) GetTypeMapA() []byte {
+	return s.TypeMapA()
+}
+
+// TypeMapAAAA returns the reference type bitmap for AAAA responses.
+func (s *Service) TypeMapAAAA() []byte {
+	return TYPE_MAP_AAAA
+}
+
+// GetTypeMapAAAA is an alias for TypeMapAAAA.
+func (s *Service) GetTypeMapAAAA() []byte {
+	return s.TypeMapAAAA()
+}
+
+// HSTypes returns the DNS record-type lookup table.
+func (s *Service) HSTypes() map[string]dnspkg.HSType {
+	return HSTypes
+}
+
+// GetHSTypes is an alias for HSTypes.
+func (s *Service) GetHSTypes() map[string]dnspkg.HSType {
+	return s.HSTypes()
+}
+
+// HSTypesByVal returns the reverse DNS record-type lookup table.
+func (s *Service) HSTypesByVal() map[dnspkg.HSType]string {
+	return HSTypesByVal
+}
+
+// GetHSTypesByVal is an alias for HSTypesByVal.
+func (s *Service) GetHSTypesByVal() map[dnspkg.HSType]string {
+	return s.HSTypesByVal()
+}
+
 // NextName returns the canonical successor for a top-level domain name.
 func (s *Service) NextName(tld string) string {
 	return dnspkg.NextName(tld)

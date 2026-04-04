@@ -891,6 +891,46 @@ func TestServiceUtilityAliases(t *testing.T) {
 		t.Fatalf("GetPrevName returned %q", got)
 	}
 
+	if svc.DefaultTTL() != DEFAULT_TTL || svc.GetDefaultTTL() != DEFAULT_TTL {
+		t.Fatalf("DefaultTTL getters = %d/%d, want %d", svc.DefaultTTL(), svc.GetDefaultTTL(), DEFAULT_TTL)
+	}
+
+	if len(svc.Dummy()) != 0 || len(svc.GetDummy()) != 0 {
+		t.Fatal("Dummy getters should return the zero-length DNS reference buffer")
+	}
+
+	if !bytes.Equal(svc.TypeMapRoot(), TYPE_MAP_ROOT) || !bytes.Equal(svc.GetTypeMapRoot(), TYPE_MAP_ROOT) {
+		t.Fatal("TypeMapRoot getters should alias the reference bitmap")
+	}
+
+	if !bytes.Equal(svc.TypeMapEmpty(), TYPE_MAP_EMPTY) || !bytes.Equal(svc.GetTypeMapEmpty(), TYPE_MAP_EMPTY) {
+		t.Fatal("TypeMapEmpty getters should alias the reference bitmap")
+	}
+
+	if !bytes.Equal(svc.TypeMapNS(), TYPE_MAP_NS) || !bytes.Equal(svc.GetTypeMapNS(), TYPE_MAP_NS) {
+		t.Fatal("TypeMapNS getters should alias the reference bitmap")
+	}
+
+	if !bytes.Equal(svc.TypeMapTXT(), TYPE_MAP_TXT) || !bytes.Equal(svc.GetTypeMapTXT(), TYPE_MAP_TXT) {
+		t.Fatal("TypeMapTXT getters should alias the reference bitmap")
+	}
+
+	if !bytes.Equal(svc.TypeMapA(), TYPE_MAP_A) || !bytes.Equal(svc.GetTypeMapA(), TYPE_MAP_A) {
+		t.Fatal("TypeMapA getters should alias the reference bitmap")
+	}
+
+	if !bytes.Equal(svc.TypeMapAAAA(), TYPE_MAP_AAAA) || !bytes.Equal(svc.GetTypeMapAAAA(), TYPE_MAP_AAAA) {
+		t.Fatal("TypeMapAAAA getters should alias the reference bitmap")
+	}
+
+	if len(svc.HSTypes()) != len(HSTypes) || len(svc.GetHSTypes()) != len(HSTypes) {
+		t.Fatal("HSTypes getters should alias the reference table")
+	}
+
+	if len(svc.HSTypesByVal()) != len(HSTypesByVal) || len(svc.GetHSTypesByVal()) != len(HSTypesByVal) {
+		t.Fatal("HSTypesByVal getters should alias the reference table")
+	}
+
 	record := svc.Create(".", svc.NextName("."), TYPE_MAP_ROOT)
 	if record.Name != "." {
 		t.Fatalf("Create Name = %q, want %q", record.Name, ".")
