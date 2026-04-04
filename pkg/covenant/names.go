@@ -148,6 +148,11 @@ func HasSaneCovenants(tx primitives.Transaction) bool {
 					if len(input.Witness) != 1 {
 						return false
 					}
+
+					proof, err := decodeAirdropProof(input.Witness[0])
+					if err != nil || !proof.isSane() {
+						return false
+					}
 				}
 
 			case TypeClaim:

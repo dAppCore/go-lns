@@ -3,6 +3,7 @@
 package covenant
 
 import (
+	"bytes"
 	"encoding/binary"
 	"testing"
 
@@ -170,7 +171,7 @@ func TestHasSaneCovenants(t *testing.T) {
 		Outputs: []primitives.Output{
 			{
 				Covenant: primitives.Covenant{
-					Type: 99,
+					Type:  99,
 					Items: make([][]byte, 256),
 				},
 			},
@@ -486,4 +487,101 @@ func TestVerifyCovenantsCoinbaseLinkedOutputs(t *testing.T) {
 			t.Fatalf("VerifyCovenants returned %d for a coinbase-linked output without a witness, want -1", got)
 		}
 	})
+}
+
+func encodeTestVarint(n uint64) []byte {
+	switch {
+	case n < 0xfd:
+		return []byte{byte(n)}
+	case n <= 0xffff:
+		return []byte{0xfd, byte(n), byte(n >> 8)}
+	case n <= 0xffffffff:
+		return []byte{0xfe, byte(n), byte(n >> 8), byte(n >> 16), byte(n >> 24)}
+	default:
+		return []byte{
+			0xff,
+			byte(n), byte(n >> 8), byte(n >> 16), byte(n >> 24),
+			byte(n >> 32), byte(n >> 40), byte(n >> 48), byte(n >> 56),
+		}
+	}
+}
+
+func encodeTestAirdropKey(version uint8, address []byte, value uint64, sponsor bool) []byte {
+	key := []byte{4, version, byte(len(address))}
+	key = append(key, address...)
+
+	var tmp [8]byte
+	binary.LittleEndian.PutUint64(tmp[:], value)
+	key = append(key, tmp[:]...)
+	if sponsor {
+		key = append(key, 1)
+	} else {
+		key = append(key, 0)
+	}
+
+	return key
+}
+
+func encodeTestAirdropProof(key, address []byte, fee uint64) []byte {
+	var out []byte
+	var index [4]byte
+	binary.LittleEndian.PutUint32(index[:], 3)
+	out = append(out, index[:]...)
+	out = append(out, 0) // proof length
+	out = append(out, 0) // subindex
+	out = append(out, 0) // subproof length
+	out = appendTestVarBytes(out, key)
+	out = append(out, 0) // version
+	out = append(out, byte(len(address)))
+	out = append(out, address...)
+	out = append(out, encodeTestVarint(fee)...)
+	out = appendTestVarBytes(out, nil)
+	return out
+}
+
+func appendTestVarBytes(dst, src []byte) []byte {
+	dst = append(dst, encodeTestVarint(uint64(len(src)))...)
+	return append(dst, src...)
+}
+
+func TestCoinbaseAirdropProofValidation(t *testing.T) {
+	address := bytes.Repeat([]byte{0x42}, 20)
+	key := encodeTestAirdropKey(0, address, 1000, false)
+	proof := encodeTestAirdropProof(key, address, 10)
+
+	tx := primitives.Transaction{
+		Inputs: []primitives.Input{
+			{Prevout: primitives.NewOutpoint()},
+			{
+				Prevout: primitives.Outpoint{TxHash: primitives.Hash{4}, Index: 0},
+				Witness: [][]byte{proof},
+			},
+		},
+		Outputs: []primitives.Output{
+			{Covenant: primitives.Covenant{Type: uint8(TypeNone)}},
+			{
+				Value: 990,
+				Address: primitives.Address{
+					Version: 0,
+					Hash:    append([]byte(nil), address...),
+				},
+				Covenant: primitives.Covenant{Type: uint8(TypeNone)},
+			},
+		},
+	}
+
+	if !HasSaneCovenants(tx) {
+		t.Fatal("HasSaneCovenants should accept a valid coinbase airdrop proof")
+	}
+
+	if got := VerifyCovenants(tx, testCoinView{coins: map[primitives.Outpoint]primitives.Output{}}, 100, Network{}); got != 0 {
+		t.Fatalf("VerifyCovenants returned %d for a valid coinbase airdrop proof, want 0", got)
+	}
+
+	badTx := tx
+	badTx.Outputs[1].Value = 991
+
+	if got := VerifyCovenants(badTx, testCoinView{coins: map[primitives.Outpoint]primitives.Output{}}, 100, Network{}); got != -1 {
+		t.Fatalf("VerifyCovenants returned %d for a mismatched coinbase airdrop value, want -1", got)
+	}
 }

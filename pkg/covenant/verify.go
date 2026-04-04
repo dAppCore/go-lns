@@ -33,15 +33,16 @@ type Network struct {
 //
 // The function mirrors the JS reference return convention: 0 on success and
 // -1 on failure. The Go port covers the covenant transitions that depend only
-// on the transaction and coin view, and it conservatively validates the
-// coinbase-linked covenant shape without decoding the higher-level proof
-// formats that live in the wider blockchain stack.
+// on the transaction and coin view, and it decodes the coinbase airdrop proof
+// shape needed for the wire-level sanity checks implemented here.
 func VerifyCovenants(tx primitives.Transaction, view CoinView, height uint32, network Network) int {
 	if !HasSaneCovenants(tx) {
 		return -1
 	}
 
 	if isCoinbaseTx(tx) {
+		var conjured uint64
+
 		for i := 1; i < len(tx.Inputs); i++ {
 			if i >= len(tx.Outputs) {
 				return -1
@@ -57,7 +58,33 @@ func VerifyCovenants(tx primitives.Transaction, view CoinView, height uint32, ne
 
 			switch cov.Type {
 			case uint8(TypeNone):
-				continue
+				proof, err := decodeAirdropProof(input.Witness[0])
+				if err != nil || !proof.isSane() {
+					return -1
+				}
+
+				value := proof.getValue()
+				if value < proof.fee {
+					return -1
+				}
+
+				if output.Value != value-proof.fee {
+					return -1
+				}
+
+				if output.Address.Version != proof.version {
+					return -1
+				}
+
+				if !bytes.Equal(output.Address.Hash, proof.address) {
+					return -1
+				}
+
+				if value > ^uint64(0)-conjured {
+					return -1
+				}
+
+				conjured += value
 
 			case uint8(TypeClaim):
 				blockHeight, err := cov.GetU32(1)
