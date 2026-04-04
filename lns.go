@@ -969,11 +969,25 @@ func IsReserved(nameHash primitives.Hash, height uint32, rules NameRules) bool {
 	return covenant.IsReserved(nameHash, height, rules)
 }
 
+// GetIsReserved is an alias for IsReserved.
+//
+//	ok := lns.GetIsReserved(nameHash, height, rules)
+func GetIsReserved(nameHash primitives.Hash, height uint32, rules NameRules) bool {
+	return IsReserved(nameHash, height, rules)
+}
+
 // IsLockedUp reports whether a name hash is locked at the given height.
 //
 //	ok := lns.IsLockedUp(nameHash, height, rules)
 func IsLockedUp(nameHash primitives.Hash, height uint32, rules NameRules) bool {
 	return covenant.IsLockedUp(nameHash, height, rules)
+}
+
+// GetIsLockedUp is an alias for IsLockedUp.
+//
+//	ok := lns.GetIsLockedUp(nameHash, height, rules)
+func GetIsLockedUp(nameHash primitives.Hash, height uint32, rules NameRules) bool {
+	return IsLockedUp(nameHash, height, rules)
 }
 
 // GrindName searches for an available name that satisfies the current rollout
@@ -1546,9 +1560,19 @@ func (s *Service) IsReserved(nameHash primitives.Hash, height uint32, rules Name
 	return covenant.IsReserved(nameHash, height, rules)
 }
 
+// GetIsReserved is an alias for IsReserved.
+func (s *Service) GetIsReserved(nameHash primitives.Hash, height uint32, rules NameRules) bool {
+	return s.IsReserved(nameHash, height, rules)
+}
+
 // IsLockedUp reports whether a name hash is locked at the given height.
 func (s *Service) IsLockedUp(nameHash primitives.Hash, height uint32, rules NameRules) bool {
 	return covenant.IsLockedUp(nameHash, height, rules)
+}
+
+// GetIsLockedUp is an alias for IsLockedUp.
+func (s *Service) GetIsLockedUp(nameHash primitives.Hash, height uint32, rules NameRules) bool {
+	return s.IsLockedUp(nameHash, height, rules)
 }
 
 // GrindName searches for an available name that satisfies the current rollout

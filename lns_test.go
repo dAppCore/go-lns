@@ -721,6 +721,10 @@ func TestServiceRolloutHelpers(t *testing.T) {
 		t.Fatal("IsReserved should report reserved hashes before the claim period")
 	}
 
+	if !svc.GetIsReserved(reservedHash, 99, rules) {
+		t.Fatal("GetIsReserved should alias IsReserved")
+	}
+
 	rootHash, err := covenant.HashString("nec")
 	if err != nil {
 		t.Fatalf("HashString returned error: %v", err)
@@ -728,6 +732,10 @@ func TestServiceRolloutHelpers(t *testing.T) {
 
 	if !svc.IsLockedUp(rootHash, 100, rules) {
 		t.Fatal("IsLockedUp should keep root hashes locked after the claim period")
+	}
+
+	if !svc.GetIsLockedUp(rootHash, 100, rules) {
+		t.Fatal("GetIsLockedUp should alias IsLockedUp")
 	}
 }
 

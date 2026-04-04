@@ -703,6 +703,10 @@ func TestPackageRolloutHelpers(t *testing.T) {
 		t.Fatal("IsReserved should report reserved hashes before the claim period")
 	}
 
+	if !GetIsReserved(hash, 99, rules) {
+		t.Fatal("GetIsReserved should alias IsReserved")
+	}
+
 	rootHash, err := covenant.HashString("nec")
 	if err != nil {
 		t.Fatalf("HashString returned error: %v", err)
@@ -710,6 +714,10 @@ func TestPackageRolloutHelpers(t *testing.T) {
 
 	if !IsLockedUp(rootHash, 100, rules) {
 		t.Fatal("IsLockedUp should keep root hashes locked after the claim period")
+	}
+
+	if !GetIsLockedUp(rootHash, 100, rules) {
+		t.Fatal("GetIsLockedUp should alias IsLockedUp")
 	}
 }
 
