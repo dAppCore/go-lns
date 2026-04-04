@@ -220,7 +220,8 @@ func RegisterWithOptions(opts ...ServiceOption) func(*core.Core) core.Result {
 			return core.Result{Value: core.E("lns.RegisterWithOptions", "core is required", nil), OK: false}
 		}
 
-		serviceOpts := append(append([]ServiceOption{}, opts...), WithCore(c))
+		// Bind Core first so any later service options can rely on it being present.
+		serviceOpts := append([]ServiceOption{WithCore(c)}, opts...)
 		return core.Result{Value: NewServiceWithOptions(serviceOpts...), OK: true}
 	}
 }
