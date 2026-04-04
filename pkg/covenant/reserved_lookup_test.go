@@ -113,6 +113,22 @@ func TestReservedLookupStringAndBinaryAliases(t *testing.T) {
 		t.Fatal("HasReservedString should report reserved catalog labels")
 	}
 
+	if !GetHasReservedName("reserved.lthn") {
+		t.Fatal("GetHasReservedName should accept canonical .lthn names")
+	}
+
+	if !GetHasReservedByName("RESERVED") {
+		t.Fatal("GetHasReservedByName should report reserved catalog labels")
+	}
+
+	if !GetHasReservedString("RESERVED") {
+		t.Fatal("GetHasReservedString should report reserved catalog labels")
+	}
+
+	if !GetHasReservedBinary([]byte("RESERVED")) {
+		t.Fatal("GetHasReservedBinary should report reserved catalog labels")
+	}
+
 	if !HasReservedBinary([]byte("RESERVED")) {
 		t.Fatal("HasReservedBinary should report reserved catalog labels")
 	}
@@ -129,8 +145,16 @@ func TestReservedLookupStringAndBinaryAliases(t *testing.T) {
 		t.Fatal("HasReservedByString should report reserved catalog labels")
 	}
 
+	if !GetHasReservedByString("RESERVED") {
+		t.Fatal("GetHasReservedByString should report reserved catalog labels")
+	}
+
 	if !HasReservedByBinary([]byte("RESERVED")) {
 		t.Fatal("HasReservedByBinary should report reserved catalog labels")
+	}
+
+	if !GetHasReservedByBinary([]byte("RESERVED")) {
+		t.Fatal("GetHasReservedByBinary should report reserved catalog labels")
 	}
 
 	item, ok = GetReservedName("reserved.lthn")
@@ -159,6 +183,10 @@ func TestReservedLookupHasByHashAlias(t *testing.T) {
 
 	if !GetHasReservedHash(hash) {
 		t.Fatal("GetHasReservedHash should alias HasReservedHash")
+	}
+
+	if !GetHasReservedByHash(hash) {
+		t.Fatal("GetHasReservedByHash should alias HasReservedByHash")
 	}
 
 	if !HasReservedByHash(hash) {

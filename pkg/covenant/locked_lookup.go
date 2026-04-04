@@ -62,11 +62,25 @@ func HasLockedName(name string) bool {
 	return DefaultLockedCatalog().HasByName(name)
 }
 
+// GetHasLockedName is an alias for HasLockedName.
+//
+//	ok := covenant.GetHasLockedName("example")
+func GetHasLockedName(name string) bool {
+	return HasLockedName(name)
+}
+
 // HasLockedByName is an alias for HasLockedName.
 //
 //	ok := covenant.HasLockedByName("example")
 func HasLockedByName(name string) bool {
 	return HasLockedName(name)
+}
+
+// GetHasLockedByName is an alias for HasLockedByName.
+//
+//	ok := covenant.GetHasLockedByName("example")
+func GetHasLockedByName(name string) bool {
+	return HasLockedByName(name)
 }
 
 // HasLockedString is an alias for HasLockedName.
@@ -76,11 +90,25 @@ func HasLockedString(name string) bool {
 	return HasLockedName(name)
 }
 
+// GetHasLockedString is an alias for HasLockedString.
+//
+//	ok := covenant.GetHasLockedString("example")
+func GetHasLockedString(name string) bool {
+	return HasLockedString(name)
+}
+
 // HasLockedBinary is an alias for HasLockedName.
 //
 //	ok := covenant.HasLockedBinary([]byte("example"))
 func HasLockedBinary(name []byte) bool {
 	return HasLockedName(string(name))
+}
+
+// GetHasLockedBinary is an alias for HasLockedBinary.
+//
+//	ok := covenant.GetHasLockedBinary([]byte("example"))
+func GetHasLockedBinary(name []byte) bool {
+	return HasLockedBinary(name)
 }
 
 // GetLockedName returns the locked-name entry for the provided label.
@@ -121,11 +149,25 @@ func HasLockedByString(name string) bool {
 	return HasLockedString(name)
 }
 
+// GetHasLockedByString is an alias for HasLockedByString.
+//
+//	ok := covenant.GetHasLockedByString("example")
+func GetHasLockedByString(name string) bool {
+	return HasLockedByString(name)
+}
+
 // HasLockedByBinary is an alias for HasLockedBinary.
 //
 //	ok := covenant.HasLockedByBinary([]byte("example"))
 func HasLockedByBinary(name []byte) bool {
 	return HasLockedBinary(name)
+}
+
+// GetHasLockedByBinary is an alias for HasLockedByBinary.
+//
+//	ok := covenant.GetHasLockedByBinary([]byte("example"))
+func GetHasLockedByBinary(name []byte) bool {
+	return HasLockedByBinary(name)
 }
 
 // GetLockedByString is an alias for GetLockedString.

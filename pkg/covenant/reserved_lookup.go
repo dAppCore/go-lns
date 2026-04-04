@@ -78,6 +78,13 @@ func HasReservedName(name string) bool {
 	return DefaultReservedCatalog().HasByName(name)
 }
 
+// GetHasReservedName is an alias for HasReservedName.
+//
+//	ok := covenant.GetHasReservedName("example")
+func GetHasReservedName(name string) bool {
+	return HasReservedName(name)
+}
+
 // HasReservedByName is an alias for HasReservedName.
 //
 //	ok := covenant.HasReservedByName("example")
@@ -92,11 +99,25 @@ func HasReservedString(name string) bool {
 	return HasReservedName(name)
 }
 
+// GetHasReservedString is an alias for HasReservedString.
+//
+//	ok := covenant.GetHasReservedString("example")
+func GetHasReservedString(name string) bool {
+	return HasReservedString(name)
+}
+
 // HasReservedBinary is an alias for HasReservedName.
 //
 //	ok := covenant.HasReservedBinary([]byte("example"))
 func HasReservedBinary(name []byte) bool {
 	return HasReservedName(string(name))
+}
+
+// GetHasReservedBinary is an alias for HasReservedBinary.
+//
+//	ok := covenant.GetHasReservedBinary([]byte("example"))
+func GetHasReservedBinary(name []byte) bool {
+	return HasReservedBinary(name)
 }
 
 // GetReservedName returns the reserved-name entry for the provided label.
@@ -137,11 +158,25 @@ func HasReservedByString(name string) bool {
 	return HasReservedString(name)
 }
 
+// GetHasReservedByString is an alias for HasReservedByString.
+//
+//	ok := covenant.GetHasReservedByString("example")
+func GetHasReservedByString(name string) bool {
+	return HasReservedByString(name)
+}
+
 // HasReservedByBinary is an alias for HasReservedBinary.
 //
 //	ok := covenant.HasReservedByBinary([]byte("example"))
 func HasReservedByBinary(name []byte) bool {
 	return HasReservedBinary(name)
+}
+
+// GetHasReservedByBinary is an alias for HasReservedByBinary.
+//
+//	ok := covenant.GetHasReservedByBinary([]byte("example"))
+func GetHasReservedByBinary(name []byte) bool {
+	return HasReservedByBinary(name)
 }
 
 // GetReservedByString is an alias for GetReservedString.
@@ -198,6 +233,13 @@ func HasReservedByHash(hash primitives.Hash) bool {
 //	ok := covenant.GetHasReservedByHash(hash)
 func GetHasReservedByHash(hash primitives.Hash) bool {
 	return HasReservedByHash(hash)
+}
+
+// GetHasReservedByName is an alias for HasReservedByName.
+//
+//	ok := covenant.GetHasReservedByName("example")
+func GetHasReservedByName(name string) bool {
+	return HasReservedByName(name)
 }
 
 // DefaultReservedCatalog returns the lazily loaded reserved-name catalog.
