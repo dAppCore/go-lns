@@ -59,6 +59,9 @@ type ResourceRecord = dnspkg.ResourceRecord
 // ResourceJSON mirrors the DNS resource JSON representation.
 type ResourceJSON = dnspkg.ResourceJSON
 
+// DNSMessage mirrors the DNS response shape used by pkg/dns projection helpers.
+type DNSMessage = dnspkg.DNSMessage
+
 // DSRecord mirrors the DNS DS payload entry.
 type DSRecord = dnspkg.DSRecord
 

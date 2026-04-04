@@ -499,6 +499,77 @@ func TestResourceProjectionHelpers(t *testing.T) {
 	}
 }
 
+func TestResourceToDNSAndReferral(t *testing.T) {
+	resource := NewResource()
+	resource.Records = []ResourceRecord{
+		DSRecord{KeyTag: 7, Algorithm: 8, DigestType: 9, Digest: []byte{0xaa}},
+		NSRecord{NS: "ns1.example."},
+		GLUE4Record{NS: "ns1.example.", Address: netip.MustParseAddr("192.0.2.10")},
+		TXTRecord{Entries: []string{"hello"}},
+	}
+
+	referral := resource.ToReferral("example.", HSTypeNS, false)
+	if referral.AA {
+		t.Fatal("ToReferral should not set AA for a normal referral")
+	}
+	if len(referral.Authority) != 2 {
+		t.Fatalf("ToReferral authority = %d, want 2", len(referral.Authority))
+	}
+	if ns, ok := referral.Authority[0].(NSRecord); !ok || ns.NS != "ns1.example." {
+		t.Fatalf("ToReferral authority[0] = %#v, want NS ns1.example.", referral.Authority[0])
+	}
+	if ds, ok := referral.Authority[1].(DSRecord); !ok || ds.KeyTag != 7 {
+		t.Fatalf("ToReferral authority[1] = %#v, want DS keyTag=7", referral.Authority[1])
+	}
+	if len(referral.Additional) != 1 {
+		t.Fatalf("ToReferral additional = %d, want 1", len(referral.Additional))
+	}
+	if glue, ok := referral.Additional[0].(GLUE4Record); !ok || glue.NS != "ns1.example." || glue.Address.String() != "192.0.2.10" {
+		t.Fatalf("ToReferral additional[0] = %#v, want GLUE4 ns1.example./192.0.2.10", referral.Additional[0])
+	}
+
+	aliasReferral := resource.GetToReferral("example.", HSTypeNS, false)
+	if aliasReferral.AA != referral.AA || len(aliasReferral.Authority) != len(referral.Authority) || len(aliasReferral.Additional) != len(referral.Additional) {
+		t.Fatal("GetToReferral should alias ToReferral")
+	}
+
+	negative := resource.ToDNS("example.", HSTypeDS)
+	if !negative.AA {
+		t.Fatal("ToDNS should set AA for a TLD DS negative proof")
+	}
+	if len(negative.Answer) != 0 {
+		t.Fatalf("ToDNS answer = %d, want 0", len(negative.Answer))
+	}
+	if len(negative.Authority) != 1 {
+		t.Fatalf("ToDNS authority = %d, want 1", len(negative.Authority))
+	}
+	if nsec, ok := negative.Authority[0].(NSECRecord); !ok || nsec.Name != "example." || nsec.NextDomain != "example\x00." {
+		t.Fatalf("ToDNS authority[0] = %#v, want NSEC example./example\\x00.", negative.Authority[0])
+	}
+
+	txtResource := NewResource()
+	txtResource.Records = []ResourceRecord{TXTRecord{Entries: []string{"hello"}}}
+
+	answer := txtResource.ToDNS("example.", HSTypeTXT)
+	if !answer.AA {
+		t.Fatal("ToDNS should set AA for an in-zone TXT answer")
+	}
+	if len(answer.Answer) != 1 {
+		t.Fatalf("ToDNS answer = %d, want 1", len(answer.Answer))
+	}
+	if txt, ok := answer.Answer[0].(TXTRecord); !ok || len(txt.Entries) != 1 || txt.Entries[0] != "hello" {
+		t.Fatalf("ToDNS answer[0] = %#v, want TXT hello", answer.Answer[0])
+	}
+	if len(answer.Authority) != 0 || len(answer.Additional) != 0 {
+		t.Fatalf("ToDNS TXT answer should not populate authority/additional, got %+v", answer)
+	}
+
+	aliasAnswer := txtResource.GetToDNS("example.", HSTypeTXT)
+	if aliasAnswer.AA != answer.AA || len(aliasAnswer.Answer) != len(answer.Answer) || len(aliasAnswer.Authority) != len(answer.Authority) || len(aliasAnswer.Additional) != len(answer.Additional) {
+		t.Fatal("GetToDNS should alias ToDNS")
+	}
+}
+
 func TestResourceDecodeStopsAtUnknownType(t *testing.T) {
 	resource := NewResource()
 	resource.Records = []ResourceRecord{TXTRecord{Entries: []string{"known"}}}

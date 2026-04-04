@@ -35,6 +35,18 @@ type ResourceJSON struct {
 	Records []json.RawMessage `json:"records"`
 }
 
+// DNSMessage mirrors the reference DNS response shape used by the JS helpers.
+//
+// The Go port keeps the payload lightweight and wire-agnostic: answer,
+// authority, and additional sections carry the concrete record values that the
+// reference helpers project, while AA preserves the authoritative-answer flag.
+type DNSMessage struct {
+	AA         bool
+	Answer     []any
+	Authority  []any
+	Additional []any
+}
+
 // DSRecord mirrors the JS DS payload entry.
 type DSRecord struct {
 	KeyTag     uint16
@@ -516,6 +528,85 @@ func (r *Resource) ToZone(name string) []ResourceRecord {
 // GetToZone is an alias for ToZone.
 func (r *Resource) GetToZone(name string) []ResourceRecord {
 	return r.ToZone(name)
+}
+
+// ToReferral builds the referral/negative-answer message shape used by the JS
+// reference helpers.
+//
+// The referral path returns authority NS/DS records plus glue when the
+// resource has NS data. Otherwise, or when DS referrals are disallowed for a
+// TLD lookup, the helper returns a negative proof with AA set and an NSEC
+// record in authority.
+func (r *Resource) ToReferral(name string, typ HSType, isTLD bool) DNSMessage {
+	msg := DNSMessage{}
+	badReferral := isTLD && typ == HSTypeDS
+
+	if r != nil && r.HasNS() && !badReferral {
+		for _, record := range r.ToNS(name) {
+			msg.Authority = append(msg.Authority, record)
+		}
+
+		for _, record := range r.ToDS(name) {
+			msg.Authority = append(msg.Authority, record)
+		}
+
+		for _, record := range r.ToGlue(name) {
+			msg.Additional = append(msg.Additional, record)
+		}
+
+		if !r.HasDS() {
+			msg.Authority = append(msg.Authority, r.ToNSEC(name))
+		}
+
+		return msg
+	}
+
+	msg.AA = true
+	msg.Authority = append(msg.Authority, r.ToNSEC(name))
+	return msg
+}
+
+// GetToReferral is an alias for ToReferral.
+func (r *Resource) GetToReferral(name string, typ HSType, isTLD bool) DNSMessage {
+	return r.ToReferral(name, typ, isTLD)
+}
+
+// ToDNS projects the resource into the JS reference DNS response shape.
+//
+// Subdomain lookups are routed to the appropriate TLD referral. TLD TXT
+// lookups answer directly when the resource has no NS records; DS lookups and
+// all other cases fall through to the referral/negative-answer logic.
+func (r *Resource) ToDNS(name string, typ HSType) DNSMessage {
+	name = fqdn(strings.ToLower(name))
+	labels := strings.Split(strings.TrimSuffix(name, "."), ".")
+	if len(labels) > 1 {
+		return r.ToReferral(labels[len(labels)-1], typ, false)
+	}
+
+	msg := DNSMessage{}
+	switch typ {
+	case HSTypeTXT:
+		if r == nil || !r.HasNS() {
+			msg.AA = true
+			for _, record := range r.ToTXT(name) {
+				msg.Answer = append(msg.Answer, record)
+			}
+		}
+	case HSTypeDS:
+		// DS TLD lookups intentionally fall through to the referral/negative
+		// proof path to match the JS reference helper.
+	}
+
+	if len(msg.Answer) == 0 && len(msg.Authority) == 0 {
+		return r.ToReferral(name, typ, true)
+	}
+
+	return msg
+}
+
+// GetToDNS is an alias for ToDNS.
+func (r *Resource) GetToDNS(name string, typ HSType) DNSMessage {
+	return r.ToDNS(name, typ)
 }
 
 // ToNSEC constructs the reference NSEC helper output for the resource.

@@ -907,6 +907,7 @@ func TestPackageDNSCommonGetters(t *testing.T) {
 
 func TestPackageResourceAliases(t *testing.T) {
 	_ = ResourceJSON{}
+	_ = DNSMessage{}
 	_ = DSRecordJSON{}
 	_ = NSRecordJSON{}
 	_ = GLUE4RecordJSON{}
