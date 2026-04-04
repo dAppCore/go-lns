@@ -360,6 +360,30 @@ func TestPackageServiceConstructorAliases(t *testing.T) {
 	}
 }
 
+func TestPackageServiceOptionAliases(t *testing.T) {
+	c := core.New()
+	reserved := &covenant.ReservedCatalog{}
+	locked := &covenant.LockedCatalog{}
+
+	svc := NewServiceWithOptions(
+		GetWithCore(c),
+		GetWithReservedCatalog(reserved),
+		GetWithLockedCatalog(locked),
+	)
+
+	if svc.Core() != c {
+		t.Fatal("GetWithCore should alias WithCore")
+	}
+
+	if svc.ReservedCatalog() != reserved {
+		t.Fatal("GetWithReservedCatalog should alias WithReservedCatalog")
+	}
+
+	if svc.LockedCatalog() != locked {
+		t.Fatal("GetWithLockedCatalog should alias WithLockedCatalog")
+	}
+}
+
 func TestPackageRegisterAliases(t *testing.T) {
 	if res := GetRegister(nil); res.OK {
 		t.Fatal("GetRegister(nil) should fail")

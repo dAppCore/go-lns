@@ -147,6 +147,14 @@ func WithCore(c *core.Core) ServiceOption {
 	}
 }
 
+// GetWithCore is an alias for WithCore.
+//
+//	app := core.New()
+//	service := lns.NewServiceWithOptions(lns.GetWithCore(app))
+func GetWithCore(c *core.Core) ServiceOption {
+	return WithCore(c)
+}
+
 // WithReservedCatalog sets a reserved-name catalog override for an LNS service.
 //
 //	service := lns.NewServiceWithOptions(lns.WithReservedCatalog(customReserved))
@@ -160,6 +168,13 @@ func WithReservedCatalog(catalog *covenant.ReservedCatalog) ServiceOption {
 	}
 }
 
+// GetWithReservedCatalog is an alias for WithReservedCatalog.
+//
+//	service := lns.NewServiceWithOptions(lns.GetWithReservedCatalog(customReserved))
+func GetWithReservedCatalog(catalog *covenant.ReservedCatalog) ServiceOption {
+	return WithReservedCatalog(catalog)
+}
+
 // WithLockedCatalog sets a locked-name catalog override for an LNS service.
 //
 //	service := lns.NewServiceWithOptions(lns.WithLockedCatalog(customLocked))
@@ -171,6 +186,13 @@ func WithLockedCatalog(catalog *covenant.LockedCatalog) ServiceOption {
 
 		s.lockedCatalogOverride = catalog
 	}
+}
+
+// GetWithLockedCatalog is an alias for WithLockedCatalog.
+//
+//	service := lns.NewServiceWithOptions(lns.GetWithLockedCatalog(customLocked))
+func GetWithLockedCatalog(catalog *covenant.LockedCatalog) ServiceOption {
+	return WithLockedCatalog(catalog)
 }
 
 // NewServiceWithOptions constructs an LNS Service from the provided options.
