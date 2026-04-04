@@ -162,6 +162,61 @@ func TestResourceJSONRoundTrip(t *testing.T) {
 	}
 }
 
+func TestResourceSizeHelpers(t *testing.T) {
+	resource := NewResource()
+	resource.Records = []ResourceRecord{
+		DSRecord{
+			KeyTag:     1,
+			Algorithm:  2,
+			DigestType: 3,
+			Digest:     []byte{0xaa, 0xbb, 0xcc},
+		},
+		NSRecord{NS: "ns1.example."},
+		GLUE4Record{NS: "ns1.example.", Address: netip.MustParseAddr("192.0.2.1")},
+		GLUE6Record{NS: "ns2.example.", Address: netip.MustParseAddr("2001:db8::1")},
+		SYNTH4Record{Address: netip.MustParseAddr("198.51.100.9")},
+		SYNTH6Record{Address: netip.MustParseAddr("2001:db8::9")},
+		TXTRecord{Entries: []string{"hello", "world"}},
+	}
+
+	raw, err := resource.Encode()
+	if err != nil {
+		t.Fatalf("Encode returned error: %v", err)
+	}
+
+	if got := resource.GetSize(); got != len(raw) {
+		t.Fatalf("Resource.GetSize() = %d, want %d", got, len(raw))
+	}
+
+	if got := (DSRecord{Digest: []byte{1, 2, 3}}).GetSize(); got != 8 {
+		t.Fatalf("DSRecord.GetSize() = %d, want 8", got)
+	}
+
+	if got := (NSRecord{NS: "ns1.example."}).GetSize(); got != resourceNameSize("ns1.example.") {
+		t.Fatalf("NSRecord.GetSize() = %d, want %d", got, resourceNameSize("ns1.example."))
+	}
+
+	if got := (GLUE4Record{NS: "ns1.example."}).GetSize(); got != resourceNameSize("ns1.example.")+4 {
+		t.Fatalf("GLUE4Record.GetSize() = %d, want %d", got, resourceNameSize("ns1.example.")+4)
+	}
+
+	if got := (GLUE6Record{NS: "ns1.example."}).GetSize(); got != resourceNameSize("ns1.example.")+16 {
+		t.Fatalf("GLUE6Record.GetSize() = %d, want %d", got, resourceNameSize("ns1.example.")+16)
+	}
+
+	if got := (SYNTH4Record{}).GetSize(); got != 4 {
+		t.Fatalf("SYNTH4Record.GetSize() = %d, want 4", got)
+	}
+
+	if got := (SYNTH6Record{}).GetSize(); got != 16 {
+		t.Fatalf("SYNTH6Record.GetSize() = %d, want 16", got)
+	}
+
+	if got := (TXTRecord{Entries: []string{"hello", "world"}}).GetSize(); got != 13 {
+		t.Fatalf("TXTRecord.GetSize() = %d, want 13", got)
+	}
+}
+
 func TestResourceTypeHelpers(t *testing.T) {
 	resource := NewResource()
 	resource.Records = []ResourceRecord{

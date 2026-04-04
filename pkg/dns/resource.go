@@ -122,6 +122,20 @@ type TXTRecordJSON struct {
 	Entries []string `json:"txt"`
 }
 
+// GetSize returns the encoded size of the resource payload.
+func (r *Resource) GetSize() int {
+	if r == nil {
+		return 0
+	}
+
+	size := 1
+	for _, record := range r.Records {
+		size += 1 + resourceRecordSize(record)
+	}
+
+	return size
+}
+
 // NewResource constructs a resource with the reference default TTL.
 func NewResource() *Resource {
 	return &Resource{TTL: DEFAULT_TTL}
@@ -358,6 +372,45 @@ func (r *Resource) FromJSON(jsonView ResourceJSON) error {
 	return nil
 }
 
+// GetSize returns the encoded size of the DS record.
+func (r DSRecord) GetSize() int {
+	return 5 + len(r.Digest)
+}
+
+// GetSize returns the encoded size of the NS record.
+func (r NSRecord) GetSize() int {
+	return resourceNameSize(r.NS)
+}
+
+// GetSize returns the encoded size of the GLUE4 record.
+func (r GLUE4Record) GetSize() int {
+	return resourceNameSize(r.NS) + 4
+}
+
+// GetSize returns the encoded size of the GLUE6 record.
+func (r GLUE6Record) GetSize() int {
+	return resourceNameSize(r.NS) + 16
+}
+
+// GetSize returns the encoded size of the SYNTH4 record.
+func (r SYNTH4Record) GetSize() int {
+	return 4
+}
+
+// GetSize returns the encoded size of the SYNTH6 record.
+func (r SYNTH6Record) GetSize() int {
+	return 16
+}
+
+// GetSize returns the encoded size of the TXT record.
+func (r TXTRecord) GetSize() int {
+	size := 1
+	for _, entry := range r.Entries {
+		size += 1 + len(entry)
+	}
+	return size
+}
+
 // DecodeResource decodes a raw DNS resource payload.
 func DecodeResource(raw []byte) (*Resource, error) {
 	resource := NewResource()
@@ -406,6 +459,80 @@ func resourceRecordJSON(record ResourceRecord) any {
 	default:
 		return map[string]any{"type": "UNKNOWN"}
 	}
+}
+
+func resourceRecordSize(record ResourceRecord) int {
+	switch rr := record.(type) {
+	case DSRecord:
+		return rr.GetSize()
+	case *DSRecord:
+		if rr == nil {
+			return 0
+		}
+		return rr.GetSize()
+	case NSRecord:
+		return rr.GetSize()
+	case *NSRecord:
+		if rr == nil {
+			return 0
+		}
+		return rr.GetSize()
+	case GLUE4Record:
+		return rr.GetSize()
+	case *GLUE4Record:
+		if rr == nil {
+			return 0
+		}
+		return rr.GetSize()
+	case GLUE6Record:
+		return rr.GetSize()
+	case *GLUE6Record:
+		if rr == nil {
+			return 0
+		}
+		return rr.GetSize()
+	case SYNTH4Record:
+		return rr.GetSize()
+	case *SYNTH4Record:
+		if rr == nil {
+			return 0
+		}
+		return rr.GetSize()
+	case SYNTH6Record:
+		return rr.GetSize()
+	case *SYNTH6Record:
+		if rr == nil {
+			return 0
+		}
+		return rr.GetSize()
+	case TXTRecord:
+		return rr.GetSize()
+	case *TXTRecord:
+		if rr == nil {
+			return 0
+		}
+		return rr.GetSize()
+	default:
+		return 0
+	}
+}
+
+func resourceNameSize(name string) int {
+	name = fqdn(name)
+	if name == "." {
+		return 1
+	}
+
+	trimmed := trimFQDN(name)
+	if trimmed == "" {
+		return 1
+	}
+
+	size := 1
+	for _, label := range strings.Split(trimmed, ".") {
+		size += 1 + len(label)
+	}
+	return size
 }
 
 type resourceRecordProbe struct {
