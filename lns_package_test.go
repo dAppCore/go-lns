@@ -298,6 +298,34 @@ func TestPackageDefaultCatalogAliases(t *testing.T) {
 	}
 }
 
+func TestPackageDefaultCatalogsIgnoreOverrides(t *testing.T) {
+	origReserved := Reserved
+	origLocked := Locked
+	defer func() {
+		Reserved = origReserved
+		Locked = origLocked
+	}()
+
+	Reserved = &covenant.ReservedCatalog{}
+	Locked = &covenant.LockedCatalog{}
+
+	if DefaultReservedCatalog() != covenant.DefaultReservedCatalog() {
+		t.Fatal("DefaultReservedCatalog should return the canonical reserved catalog")
+	}
+
+	if DefaultReservedCatalog() == ReservedCatalog() {
+		t.Fatal("DefaultReservedCatalog should ignore the mutable Reserved variable")
+	}
+
+	if DefaultLockedCatalog() != covenant.DefaultLockedCatalog() {
+		t.Fatal("DefaultLockedCatalog should return the canonical locked catalog")
+	}
+
+	if DefaultLockedCatalog() == LockedCatalog() {
+		t.Fatal("DefaultLockedCatalog should ignore the mutable Locked variable")
+	}
+}
+
 func TestLookupCatalogNamePreservesDottedLabels(t *testing.T) {
 	hash := primitives.Hash(sha3.Sum256([]byte("foo.bar")))
 
