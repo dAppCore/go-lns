@@ -303,6 +303,102 @@ func TestResourceToNSEC(t *testing.T) {
 	}
 }
 
+func TestResourceProjectionHelpers(t *testing.T) {
+	resource := NewResource()
+	resource.Records = []ResourceRecord{
+		DSRecord{KeyTag: 7, Algorithm: 8, DigestType: 9, Digest: []byte{0xaa}},
+		NSRecord{NS: "ns1.example."},
+		GLUE4Record{NS: "ns1.example.", Address: netip.MustParseAddr("192.0.2.10")},
+		GLUE6Record{NS: "ns2.other.", Address: netip.MustParseAddr("2001:db8::20")},
+		SYNTH4Record{Address: netip.MustParseAddr("198.51.100.9")},
+		TXTRecord{Entries: []string{"hello"}},
+	}
+
+	ns := resource.ToNS("example.")
+	if len(ns) != 3 {
+		t.Fatalf("ToNS returned %d records, want 3", len(ns))
+	}
+	if ns[0].NS != "ns1.example." || ns[1].NS != "ns2.other." || ns[2].NS != "_oopm828._synth." {
+		t.Fatalf("ToNS returned %#v, want ns1.example./ns2.other./_oopm828._synth.", ns)
+	}
+
+	aliasNS := resource.GetToNS("example.")
+	if len(aliasNS) != len(ns) {
+		t.Fatalf("GetToNS returned %d records, want %d", len(aliasNS), len(ns))
+	}
+
+	glue := resource.ToGlue("example.")
+	if len(glue) != 2 {
+		t.Fatalf("ToGlue returned %d records, want 2", len(glue))
+	}
+	if rr, ok := glue[0].(GLUE4Record); !ok || rr.NS != "ns1.example." || rr.Address.String() != "192.0.2.10" {
+		t.Fatalf("ToGlue[0] = %#v, want GLUE4 ns1.example./192.0.2.10", glue[0])
+	}
+	if rr, ok := glue[1].(GLUE4Record); !ok || rr.NS != "_oopm828._synth." || rr.Address.String() != "198.51.100.9" {
+		t.Fatalf("ToGlue[1] = %#v, want GLUE4 _oopm828._synth./198.51.100.9", glue[1])
+	}
+
+	aliasGlue := resource.GetToGlue("example.")
+	if len(aliasGlue) != len(glue) {
+		t.Fatalf("GetToGlue returned %d records, want %d", len(aliasGlue), len(glue))
+	}
+
+	ds := resource.ToDS("example.")
+	if len(ds) != 1 || ds[0].KeyTag != 7 || ds[0].Algorithm != 8 || ds[0].DigestType != 9 || !bytes.Equal(ds[0].Digest, []byte{0xaa}) {
+		t.Fatalf("ToDS returned %#v, want one DS record", ds)
+	}
+
+	txt := resource.ToTXT("example.")
+	if len(txt) != 1 || len(txt[0].Entries) != 1 || txt[0].Entries[0] != "hello" {
+		t.Fatalf("ToTXT returned %#v, want one TXT record", txt)
+	}
+
+	zone := resource.ToZone("example.")
+	if len(zone) != 6 {
+		t.Fatalf("ToZone returned %d records, want 6", len(zone))
+	}
+	if rr, ok := zone[0].(DSRecord); !ok || rr.KeyTag != 7 {
+		t.Fatalf("ToZone[0] = %#v, want DS record", zone[0])
+	}
+	if rr, ok := zone[1].(NSRecord); !ok || rr.NS != "ns1.example." {
+		t.Fatalf("ToZone[1] = %#v, want NS ns1.example.", zone[1])
+	}
+	if rr, ok := zone[2].(NSRecord); !ok || rr.NS != "ns2.other." {
+		t.Fatalf("ToZone[2] = %#v, want NS ns2.other.", zone[2])
+	}
+	if rr, ok := zone[3].(NSRecord); !ok || rr.NS != "_oopm828._synth." {
+		t.Fatalf("ToZone[3] = %#v, want NS _oopm828._synth.", zone[3])
+	}
+	if rr, ok := zone[4].(TXTRecord); !ok || len(rr.Entries) != 1 || rr.Entries[0] != "hello" {
+		t.Fatalf("ToZone[4] = %#v, want TXT hello", zone[4])
+	}
+	if rr, ok := zone[5].(GLUE4Record); !ok || rr.NS != "ns1.example." || rr.Address.String() != "192.0.2.10" {
+		t.Fatalf("ToZone[5] = %#v, want GLUE4 ns1.example./192.0.2.10", zone[5])
+	}
+
+	aliasZone := resource.GetToZone("example.")
+	if len(aliasZone) != len(zone) {
+		t.Fatalf("GetToZone returned %d records, want %d", len(aliasZone), len(zone))
+	}
+
+	var nilResource *Resource
+	if got := nilResource.ToNS("example."); got != nil {
+		t.Fatalf("nil ToNS = %#v, want nil", got)
+	}
+	if got := nilResource.ToGlue("example."); got != nil {
+		t.Fatalf("nil ToGlue = %#v, want nil", got)
+	}
+	if got := nilResource.ToDS("example."); got != nil {
+		t.Fatalf("nil ToDS = %#v, want nil", got)
+	}
+	if got := nilResource.ToTXT("example."); got != nil {
+		t.Fatalf("nil ToTXT = %#v, want nil", got)
+	}
+	if got := nilResource.ToZone("example."); got != nil {
+		t.Fatalf("nil ToZone = %#v, want nil", got)
+	}
+}
+
 func TestResourceDecodeStopsAtUnknownType(t *testing.T) {
 	resource := NewResource()
 	resource.Records = []ResourceRecord{TXTRecord{Entries: []string{"known"}}}

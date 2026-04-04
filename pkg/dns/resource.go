@@ -247,6 +247,241 @@ func (r *Resource) GetHasDS() bool {
 	return r.HasDS()
 }
 
+// ToNS projects NS-capable resource entries into authority NS records.
+//
+// The helper mirrors the JS reference behavior:
+// - NS, GLUE, and SYNTH entries all contribute NS targets
+// - duplicate targets are emitted once, in first-seen order
+func (r *Resource) ToNS(_ string) []NSRecord {
+	if r == nil {
+		return nil
+	}
+
+	authority := make([]NSRecord, 0, len(r.Records))
+	seen := make(map[string]struct{}, len(r.Records))
+
+	for _, record := range r.Records {
+		ns, ok := resourceAuthorityNS(record)
+		if !ok {
+			continue
+		}
+
+		key := strings.ToLower(fqdn(ns.NS))
+		if _, ok := seen[key]; ok {
+			continue
+		}
+
+		seen[key] = struct{}{}
+		authority = append(authority, ns)
+	}
+
+	return authority
+}
+
+// GetToNS is an alias for ToNS.
+func (r *Resource) GetToNS(name string) []NSRecord {
+	return r.ToNS(name)
+}
+
+// ToGlue projects glue-capable entries into address-bearing glue records.
+//
+// GLUE records are only returned when their host falls under the requested
+// name. SYNTH records always project into their synthetic hostnames.
+func (r *Resource) ToGlue(name string) []ResourceRecord {
+	if r == nil {
+		return nil
+	}
+
+	additional := make([]ResourceRecord, 0, len(r.Records))
+
+	for _, record := range r.Records {
+		switch rr := record.(type) {
+		case GLUE4Record:
+			if !isSubdomain(name, rr.NS) {
+				continue
+			}
+			additional = append(additional, rr)
+		case *GLUE4Record:
+			if rr == nil || !isSubdomain(name, rr.NS) {
+				continue
+			}
+			additional = append(additional, *rr)
+		case GLUE6Record:
+			if !isSubdomain(name, rr.NS) {
+				continue
+			}
+			additional = append(additional, rr)
+		case *GLUE6Record:
+			if rr == nil || !isSubdomain(name, rr.NS) {
+				continue
+			}
+			additional = append(additional, *rr)
+		case SYNTH4Record:
+			additional = append(additional, GLUE4Record{NS: rr.NS(), Address: rr.Address})
+		case *SYNTH4Record:
+			if rr == nil {
+				continue
+			}
+			additional = append(additional, GLUE4Record{NS: rr.NS(), Address: rr.Address})
+		case SYNTH6Record:
+			additional = append(additional, GLUE6Record{NS: rr.NS(), Address: rr.Address})
+		case *SYNTH6Record:
+			if rr == nil {
+				continue
+			}
+			additional = append(additional, GLUE6Record{NS: rr.NS(), Address: rr.Address})
+		}
+	}
+
+	return additional
+}
+
+// GetToGlue is an alias for ToGlue.
+func (r *Resource) GetToGlue(name string) []ResourceRecord {
+	return r.ToGlue(name)
+}
+
+// ToDS filters DS records in first-seen order.
+func (r *Resource) ToDS(_ string) []DSRecord {
+	if r == nil {
+		return nil
+	}
+
+	answer := make([]DSRecord, 0, len(r.Records))
+	for _, record := range r.Records {
+		switch rr := record.(type) {
+		case DSRecord:
+			answer = append(answer, rr)
+		case *DSRecord:
+			if rr != nil {
+				answer = append(answer, *rr)
+			}
+		}
+	}
+
+	return answer
+}
+
+// GetToDS is an alias for ToDS.
+func (r *Resource) GetToDS(name string) []DSRecord {
+	return r.ToDS(name)
+}
+
+// ToTXT filters TXT records in first-seen order.
+func (r *Resource) ToTXT(_ string) []TXTRecord {
+	if r == nil {
+		return nil
+	}
+
+	answer := make([]TXTRecord, 0, len(r.Records))
+	for _, record := range r.Records {
+		switch rr := record.(type) {
+		case TXTRecord:
+			answer = append(answer, rr)
+		case *TXTRecord:
+			if rr != nil {
+				answer = append(answer, *rr)
+			}
+		}
+	}
+
+	return answer
+}
+
+// GetToTXT is an alias for ToTXT.
+func (r *Resource) GetToTXT(name string) []TXTRecord {
+	return r.ToTXT(name)
+}
+
+// ToZone projects the resource into zone-order records.
+//
+// Authority-like records are emitted first in original order, with duplicate NS
+// targets collapsed. Glue records for in-zone hosts are appended last.
+func (r *Resource) ToZone(name string) []ResourceRecord {
+	if r == nil {
+		return nil
+	}
+
+	zone := make([]ResourceRecord, 0, len(r.Records)*2)
+	seenNS := make(map[string]struct{}, len(r.Records))
+
+	for _, record := range r.Records {
+		if record == nil {
+			continue
+		}
+
+		if ns, ok := resourceAuthorityNS(record); ok {
+			key := strings.ToLower(fqdn(ns.NS))
+			if _, ok := seenNS[key]; ok {
+				continue
+			}
+
+			seenNS[key] = struct{}{}
+			zone = append(zone, ns)
+			continue
+		}
+
+		switch rr := record.(type) {
+		case DSRecord:
+			zone = append(zone, rr)
+		case *DSRecord:
+			if rr != nil {
+				zone = append(zone, *rr)
+			}
+		case TXTRecord:
+			zone = append(zone, rr)
+		case *TXTRecord:
+			if rr != nil {
+				zone = append(zone, *rr)
+			}
+		}
+	}
+
+	for _, record := range r.Records {
+		switch rr := record.(type) {
+		case GLUE4Record:
+			if isSubdomain(name, rr.NS) {
+				zone = append(zone, rr)
+			}
+		case *GLUE4Record:
+			if rr != nil && isSubdomain(name, rr.NS) {
+				zone = append(zone, *rr)
+			}
+		case GLUE6Record:
+			if isSubdomain(name, rr.NS) {
+				zone = append(zone, rr)
+			}
+		case *GLUE6Record:
+			if rr != nil && isSubdomain(name, rr.NS) {
+				zone = append(zone, *rr)
+			}
+		case SYNTH4Record:
+			if isSubdomain(name, rr.NS()) {
+				zone = append(zone, GLUE4Record{NS: rr.NS(), Address: rr.Address})
+			}
+		case *SYNTH4Record:
+			if rr != nil && isSubdomain(name, rr.NS()) {
+				zone = append(zone, GLUE4Record{NS: rr.NS(), Address: rr.Address})
+			}
+		case SYNTH6Record:
+			if isSubdomain(name, rr.NS()) {
+				zone = append(zone, GLUE6Record{NS: rr.NS(), Address: rr.Address})
+			}
+		case *SYNTH6Record:
+			if rr != nil && isSubdomain(name, rr.NS()) {
+				zone = append(zone, GLUE6Record{NS: rr.NS(), Address: rr.Address})
+			}
+		}
+	}
+
+	return zone
+}
+
+// GetToZone is an alias for ToZone.
+func (r *Resource) GetToZone(name string) []ResourceRecord {
+	return r.ToZone(name)
+}
+
 // ToNSEC constructs the reference NSEC helper output for the resource.
 //
 // The bitmap selection matches the JS reference helper:
@@ -483,6 +718,58 @@ func resourceRecordJSON(record ResourceRecord) any {
 	default:
 		return map[string]any{"type": "UNKNOWN"}
 	}
+}
+
+func resourceAuthorityNS(record ResourceRecord) (NSRecord, bool) {
+	switch rr := record.(type) {
+	case NSRecord:
+		return rr, true
+	case *NSRecord:
+		if rr != nil {
+			return *rr, true
+		}
+	case GLUE4Record:
+		return NSRecord{NS: rr.NS}, true
+	case *GLUE4Record:
+		if rr != nil {
+			return NSRecord{NS: rr.NS}, true
+		}
+	case GLUE6Record:
+		return NSRecord{NS: rr.NS}, true
+	case *GLUE6Record:
+		if rr != nil {
+			return NSRecord{NS: rr.NS}, true
+		}
+	case SYNTH4Record:
+		return NSRecord{NS: rr.NS()}, true
+	case *SYNTH4Record:
+		if rr != nil {
+			return NSRecord{NS: rr.NS()}, true
+		}
+	case SYNTH6Record:
+		return NSRecord{NS: rr.NS()}, true
+	case *SYNTH6Record:
+		if rr != nil {
+			return NSRecord{NS: rr.NS()}, true
+		}
+	}
+
+	return NSRecord{}, false
+}
+
+func isSubdomain(parent, child string) bool {
+	parent = strings.ToLower(fqdn(parent))
+	child = strings.ToLower(fqdn(child))
+
+	if parent == "." {
+		return true
+	}
+
+	if child == parent {
+		return true
+	}
+
+	return strings.HasSuffix(trimFQDN(child), "."+trimFQDN(parent))
 }
 
 func resourceRecordSize(record ResourceRecord) int {
