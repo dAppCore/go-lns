@@ -68,6 +68,32 @@ func (c Claim) GetSize() int {
 	return 2 + len(c.Blob)
 }
 
+// Weight returns the claim weight in weight units.
+//
+// The claim wrapper is witness-like data, so its weight matches its serialized
+// size in this implementation.
+func (c Claim) Weight() int {
+	return c.GetSize()
+}
+
+// GetWeight is an alias for Weight.
+func (c Claim) GetWeight() int {
+	return c.Weight()
+}
+
+// VirtualSize returns the compact size used for fee estimation.
+//
+// This mirrors the JS reference helper by rounding weight units up to the next
+// virtual byte.
+func (c Claim) VirtualSize() int {
+	return (c.Weight() + 3) / 4
+}
+
+// GetVirtualSize is an alias for VirtualSize.
+func (c Claim) GetVirtualSize() int {
+	return c.VirtualSize()
+}
+
 // MarshalBinary serializes the claim wrapper.
 func (c Claim) MarshalBinary() ([]byte, error) {
 	if len(c.Blob) > maxClaimSize {

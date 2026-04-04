@@ -36,6 +36,22 @@ func TestClaimHelpers(t *testing.T) {
 		t.Fatalf("GetSize() = %d, want %d", got, 2+len(blob))
 	}
 
+	if got := claim.Weight(); got != claim.GetSize() {
+		t.Fatalf("Weight() = %d, want %d", got, claim.GetSize())
+	}
+
+	if got := claim.GetWeight(); got != claim.Weight() {
+		t.Fatalf("GetWeight() = %d, want %d", got, claim.Weight())
+	}
+
+	if got := claim.VirtualSize(); got != (claim.Weight()+3)/4 {
+		t.Fatalf("VirtualSize() = %d, want %d", got, (claim.Weight()+3)/4)
+	}
+
+	if got := claim.GetVirtualSize(); got != claim.VirtualSize() {
+		t.Fatalf("GetVirtualSize() = %d, want %d", got, claim.VirtualSize())
+	}
+
 	raw, err := claim.MarshalBinary()
 	if err != nil {
 		t.Fatalf("MarshalBinary returned error: %v", err)
