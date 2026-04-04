@@ -614,6 +614,29 @@ func GetLookupCatalogName[T any](
 	return LookupCatalogName(name, byLabel, byHash)
 }
 
+// HasLookupCatalogName reports whether LookupCatalogName can resolve the input.
+//
+//	ok := lns.HasLookupCatalogName(name, byLabel, byHash)
+func HasLookupCatalogName[T any](
+	name any,
+	byLabel func(string) (T, bool),
+	byHash func(primitives.Hash) (T, bool),
+) bool {
+	_, ok := LookupCatalogName(name, byLabel, byHash)
+	return ok
+}
+
+// GetHasLookupCatalogName is an alias for HasLookupCatalogName.
+//
+//	ok := lns.GetHasLookupCatalogName(name, byLabel, byHash)
+func GetHasLookupCatalogName[T any](
+	name any,
+	byLabel func(string) (T, bool),
+	byHash func(primitives.Hash) (T, bool),
+) bool {
+	return HasLookupCatalogName(name, byLabel, byHash)
+}
+
 func lookupCatalogName[T any](
 	name any,
 	byLabel func(string) (T, bool),
@@ -646,6 +669,29 @@ func (s *Service) GetLookupCatalogName(
 	byHash func(primitives.Hash) (any, bool),
 ) (any, bool) {
 	return s.LookupCatalogName(name, byLabel, byHash)
+}
+
+// HasLookupCatalogName reports whether LookupCatalogName can resolve the input.
+//
+//	ok := svc.HasLookupCatalogName(name, byLabel, byHash)
+func (s *Service) HasLookupCatalogName(
+	name any,
+	byLabel func(string) (any, bool),
+	byHash func(primitives.Hash) (any, bool),
+) bool {
+	_, ok := s.LookupCatalogName(name, byLabel, byHash)
+	return ok
+}
+
+// GetHasLookupCatalogName is an alias for HasLookupCatalogName.
+//
+//	ok := svc.GetHasLookupCatalogName(name, byLabel, byHash)
+func (s *Service) GetHasLookupCatalogName(
+	name any,
+	byLabel func(string) (any, bool),
+	byHash func(primitives.Hash) (any, bool),
+) bool {
+	return s.HasLookupCatalogName(name, byLabel, byHash)
 }
 
 // Resolve returns the canonical hash for a validated .lthn name.

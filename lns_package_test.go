@@ -520,6 +520,34 @@ func TestLookupCatalogNamePreservesDottedLabels(t *testing.T) {
 		t.Fatalf("GetLookupCatalogName should alias LookupCatalogName, got %q ok=%v", got, ok)
 	}
 
+	if !HasLookupCatalogName(
+		"foo.bar",
+		func(name string) (string, bool) {
+			item, ok := byLabel[name]
+			return item, ok
+		},
+		func(name primitives.Hash) (string, bool) {
+			item, ok := byHash[name]
+			return item, ok
+		},
+	) {
+		t.Fatal("HasLookupCatalogName should report a dotted raw label match")
+	}
+
+	if !GetHasLookupCatalogName(
+		"FOO.BAR.LTHN",
+		func(name string) (string, bool) {
+			item, ok := byLabel[name]
+			return item, ok
+		},
+		func(name primitives.Hash) (string, bool) {
+			item, ok := byHash[name]
+			return item, ok
+		},
+	) {
+		t.Fatal("GetHasLookupCatalogName should alias HasLookupCatalogName")
+	}
+
 	svc := NewService(nil)
 
 	gotAny, ok := svc.LookupCatalogName(
@@ -559,6 +587,34 @@ func TestLookupCatalogNamePreservesDottedLabels(t *testing.T) {
 	if !ok || gotStr != "hash" {
 		t.Fatalf("svc.GetLookupCatalogName should alias svc.LookupCatalogName, got %v ok=%v", gotAny, ok)
 	}
+
+	if !svc.HasLookupCatalogName(
+		"foo.bar",
+		func(name string) (any, bool) {
+			item, ok := byLabel[name]
+			return any(item), ok
+		},
+		func(name primitives.Hash) (any, bool) {
+			item, ok := byHash[name]
+			return any(item), ok
+		},
+	) {
+		t.Fatal("svc.HasLookupCatalogName should report a dotted raw label match")
+	}
+
+	if !svc.GetHasLookupCatalogName(
+		"FOO.BAR.LTHN",
+		func(name string) (any, bool) {
+			item, ok := byLabel[name]
+			return any(item), ok
+		},
+		func(name primitives.Hash) (any, bool) {
+			item, ok := byHash[name]
+			return any(item), ok
+		},
+	) {
+		t.Fatal("svc.GetHasLookupCatalogName should alias svc.HasLookupCatalogName")
+	}
 }
 
 func TestLookupCatalogNameNilCallbacks(t *testing.T) {
@@ -570,6 +626,14 @@ func TestLookupCatalogNameNilCallbacks(t *testing.T) {
 		t.Fatalf("GetLookupCatalogName with nil callbacks = (%q, %v), want (\"\", false)", got, ok)
 	}
 
+	if ok := HasLookupCatalogName[string]("foo", nil, nil); ok {
+		t.Fatal("HasLookupCatalogName with nil callbacks should return false")
+	}
+
+	if ok := GetHasLookupCatalogName[string]("foo", nil, nil); ok {
+		t.Fatal("GetHasLookupCatalogName with nil callbacks should return false")
+	}
+
 	svc := NewService(nil)
 
 	if got, ok := svc.LookupCatalogName("foo", nil, nil); ok || got != nil {
@@ -578,6 +642,14 @@ func TestLookupCatalogNameNilCallbacks(t *testing.T) {
 
 	if got, ok := svc.GetLookupCatalogName("foo", nil, nil); ok || got != nil {
 		t.Fatalf("svc.GetLookupCatalogName with nil callbacks = (%v, %v), want (nil, false)", got, ok)
+	}
+
+	if ok := svc.HasLookupCatalogName("foo", nil, nil); ok {
+		t.Fatal("svc.HasLookupCatalogName with nil callbacks should return false")
+	}
+
+	if ok := svc.GetHasLookupCatalogName("foo", nil, nil); ok {
+		t.Fatal("svc.GetHasLookupCatalogName with nil callbacks should return false")
 	}
 }
 
