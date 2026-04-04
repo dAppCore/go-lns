@@ -172,6 +172,13 @@ func HasReservedHash(hash primitives.Hash) bool {
 	return DefaultReservedCatalog().Has(hash)
 }
 
+// GetHasReservedHash is an alias for HasReservedHash.
+//
+//	ok := covenant.GetHasReservedHash(hash)
+func GetHasReservedHash(hash primitives.Hash) bool {
+	return HasReservedHash(hash)
+}
+
 // GetReservedByHash is an alias for GetReservedHash.
 //
 //	item, ok := covenant.GetReservedByHash(hash)
@@ -184,6 +191,13 @@ func GetReservedByHash(hash primitives.Hash) (ReservedName, bool) {
 //	ok := covenant.HasReservedByHash(hash)
 func HasReservedByHash(hash primitives.Hash) bool {
 	return HasReservedHash(hash)
+}
+
+// GetHasReservedByHash is an alias for HasReservedByHash.
+//
+//	ok := covenant.GetHasReservedByHash(hash)
+func GetHasReservedByHash(hash primitives.Hash) bool {
+	return HasReservedByHash(hash)
 }
 
 // DefaultReservedCatalog returns the lazily loaded reserved-name catalog.

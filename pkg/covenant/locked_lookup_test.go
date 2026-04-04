@@ -153,12 +153,24 @@ func TestLockedLookupHasByHashAlias(t *testing.T) {
 		t.Fatal("HasLockedHash should report the locked reference entry")
 	}
 
+	if !GetHasLockedHash(hash) {
+		t.Fatal("GetHasLockedHash should alias HasLockedHash")
+	}
+
 	if !HasLockedByHash(hash) {
 		t.Fatal("HasLockedByHash should report the locked reference entry")
 	}
 
+	if !GetHasLockedByHash(hash) {
+		t.Fatal("GetHasLockedByHash should alias HasLockedByHash")
+	}
+
 	if HasLockedHash(primitives.Hash{}) {
 		t.Fatal("HasLockedHash should return false for unknown hashes")
+	}
+
+	if GetHasLockedHash(primitives.Hash{}) {
+		t.Fatal("GetHasLockedHash should return false for unknown hashes")
 	}
 }
 

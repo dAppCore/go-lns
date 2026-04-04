@@ -157,12 +157,24 @@ func TestReservedLookupHasByHashAlias(t *testing.T) {
 		t.Fatal("HasReservedHash should report the reserved reference entry")
 	}
 
+	if !GetHasReservedHash(hash) {
+		t.Fatal("GetHasReservedHash should alias HasReservedHash")
+	}
+
 	if !HasReservedByHash(hash) {
 		t.Fatal("HasReservedByHash should report the reserved reference entry")
 	}
 
+	if !GetHasReservedByHash(hash) {
+		t.Fatal("GetHasReservedByHash should alias HasReservedByHash")
+	}
+
 	if HasReservedHash(primitives.Hash{}) {
 		t.Fatal("HasReservedHash should return false for unknown hashes")
+	}
+
+	if GetHasReservedHash(primitives.Hash{}) {
+		t.Fatal("GetHasReservedHash should return false for unknown hashes")
 	}
 }
 

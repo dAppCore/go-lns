@@ -156,6 +156,13 @@ func HasLockedHash(hash primitives.Hash) bool {
 	return DefaultLockedCatalog().Has(hash)
 }
 
+// GetHasLockedHash is an alias for HasLockedHash.
+//
+//	ok := covenant.GetHasLockedHash(hash)
+func GetHasLockedHash(hash primitives.Hash) bool {
+	return HasLockedHash(hash)
+}
+
 // GetLockedByHash is an alias for GetLockedHash.
 //
 //	item, ok := covenant.GetLockedByHash(hash)
@@ -168,6 +175,13 @@ func GetLockedByHash(hash primitives.Hash) (LockedName, bool) {
 //	ok := covenant.HasLockedByHash(hash)
 func HasLockedByHash(hash primitives.Hash) bool {
 	return HasLockedHash(hash)
+}
+
+// GetHasLockedByHash is an alias for HasLockedByHash.
+//
+//	ok := covenant.GetHasLockedByHash(hash)
+func GetHasLockedByHash(hash primitives.Hash) bool {
+	return HasLockedByHash(hash)
 }
 
 // DefaultLockedCatalog returns the lazily loaded locked-name catalog.
