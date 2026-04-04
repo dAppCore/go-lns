@@ -50,6 +50,57 @@ var HSTypes = dnspkg.HSTypes
 // HSTypesByVal mirrors the DNS hsTypesByVal reverse lookup table from pkg/dns.
 var HSTypesByVal = dnspkg.HSTypesByVal
 
+// Resource mirrors the DNS resource container used for covenant payloads.
+type Resource = dnspkg.Resource
+
+// ResourceRecord mirrors the DNS resource record interface.
+type ResourceRecord = dnspkg.ResourceRecord
+
+// ResourceJSON mirrors the DNS resource JSON representation.
+type ResourceJSON = dnspkg.ResourceJSON
+
+// DSRecord mirrors the DNS DS payload entry.
+type DSRecord = dnspkg.DSRecord
+
+// DSRecordJSON mirrors the DNS DS JSON representation.
+type DSRecordJSON = dnspkg.DSRecordJSON
+
+// NSRecord mirrors the DNS NS payload entry.
+type NSRecord = dnspkg.NSRecord
+
+// NSRecordJSON mirrors the DNS NS JSON representation.
+type NSRecordJSON = dnspkg.NSRecordJSON
+
+// GLUE4Record mirrors the DNS IPv4 glue payload entry.
+type GLUE4Record = dnspkg.GLUE4Record
+
+// GLUE4RecordJSON mirrors the DNS IPv4 glue JSON representation.
+type GLUE4RecordJSON = dnspkg.GLUE4RecordJSON
+
+// GLUE6Record mirrors the DNS IPv6 glue payload entry.
+type GLUE6Record = dnspkg.GLUE6Record
+
+// GLUE6RecordJSON mirrors the DNS IPv6 glue JSON representation.
+type GLUE6RecordJSON = dnspkg.GLUE6RecordJSON
+
+// SYNTH4Record mirrors the DNS synthesized IPv4 payload entry.
+type SYNTH4Record = dnspkg.SYNTH4Record
+
+// SYNTH4RecordJSON mirrors the DNS synthesized IPv4 JSON representation.
+type SYNTH4RecordJSON = dnspkg.SYNTH4RecordJSON
+
+// SYNTH6Record mirrors the DNS synthesized IPv6 payload entry.
+type SYNTH6Record = dnspkg.SYNTH6Record
+
+// SYNTH6RecordJSON mirrors the DNS synthesized IPv6 JSON representation.
+type SYNTH6RecordJSON = dnspkg.SYNTH6RecordJSON
+
+// TXTRecord mirrors the DNS TXT payload entry.
+type TXTRecord = dnspkg.TXTRecord
+
+// TXTRecordJSON mirrors the DNS TXT JSON representation.
+type TXTRecordJSON = dnspkg.TXTRecordJSON
+
 // Service is the LNS service that manages .lthn name resolution,
 // covenant processing, and name-chain state queries.
 //
@@ -206,6 +257,16 @@ func GetHSTypes() map[string]dnspkg.HSType {
 // GetHSTypesByVal returns the reverse DNS record-type lookup table.
 func GetHSTypesByVal() map[dnspkg.HSType]string {
 	return HSTypesByVal
+}
+
+// NewResource constructs a DNS resource with the reference default TTL.
+func NewResource() *Resource {
+	return dnspkg.NewResource()
+}
+
+// GetNewResource is an alias for NewResource.
+func GetNewResource() *Resource {
+	return NewResource()
 }
 
 // OnStartup satisfies core.Startable so LNS participates in Core lifecycle

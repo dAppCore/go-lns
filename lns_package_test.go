@@ -627,6 +627,44 @@ func TestPackageDNSCommonGetters(t *testing.T) {
 	}
 }
 
+func TestPackageResourceAliases(t *testing.T) {
+	_ = ResourceJSON{}
+	_ = DSRecordJSON{}
+	_ = NSRecordJSON{}
+	_ = GLUE4RecordJSON{}
+	_ = GLUE6RecordJSON{}
+	_ = SYNTH4RecordJSON{}
+	_ = SYNTH6RecordJSON{}
+	_ = TXTRecordJSON{}
+
+	resource := NewResource()
+	if resource == nil {
+		t.Fatal("NewResource should return a resource")
+	}
+
+	if resource.TTL != DEFAULT_TTL {
+		t.Fatalf("NewResource TTL = %d, want %d", resource.TTL, DEFAULT_TTL)
+	}
+
+	if GetNewResource() == nil {
+		t.Fatal("GetNewResource should return a resource")
+	}
+
+	resource.Records = []ResourceRecord{
+		DSRecord{Digest: []byte{1, 2, 3}},
+		NSRecord{NS: "ns1.example"},
+		TXTRecord{Entries: []string{"hello", "world"}},
+	}
+
+	if !resource.HasNS() || !resource.GetHasNS() {
+		t.Fatal("resource aliases should expose HasNS helpers from pkg/dns")
+	}
+
+	if resource.HasType(dnspkg.HSTypeTXT) == false {
+		t.Fatal("resource aliases should expose record type helpers from pkg/dns")
+	}
+}
+
 func TestPackageNameStateAliases(t *testing.T) {
 	var state NameState
 	var delta NameDelta
