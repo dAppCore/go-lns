@@ -185,12 +185,26 @@ func NewServiceWithOptions(opts ...ServiceOption) *Service {
 	return svc
 }
 
+// GetNewServiceWithOptions is an alias for NewServiceWithOptions.
+//
+//	service := lns.GetNewServiceWithOptions(lns.WithCore(app))
+func GetNewServiceWithOptions(opts ...ServiceOption) *Service {
+	return NewServiceWithOptions(opts...)
+}
+
 // NewService constructs an LNS Service bound to the provided Core instance.
 //
 //	app := core.New()
 //	service := lns.NewService(app)
 func NewService(c *core.Core) *Service {
 	return NewServiceWithOptions(WithCore(c))
+}
+
+// GetNewService is an alias for NewService.
+//
+//	service := lns.GetNewService(app)
+func GetNewService(c *core.Core) *Service {
+	return NewService(c)
 }
 
 // Register constructs an LNS Service bound to the provided Core instance.

@@ -1073,6 +1073,10 @@ func TestNewService(t *testing.T) {
 	if got := svc.ServiceName(); got != ServiceName {
 		t.Fatalf("NewService ServiceName() = %q, want %q", got, ServiceName)
 	}
+
+	if got := GetNewService(nil); got == nil {
+		t.Fatal("GetNewService should return a service instance")
+	}
 }
 
 func TestNewServiceWithOptions(t *testing.T) {
@@ -1088,6 +1092,12 @@ func TestNewServiceWithOptions(t *testing.T) {
 
 	if got := svc.ServiceName(); got != ServiceName {
 		t.Fatalf("NewServiceWithOptions ServiceName() = %q, want %q", got, ServiceName)
+	}
+
+	if got := GetNewServiceWithOptions(WithCore(c)); got == nil {
+		t.Fatal("GetNewServiceWithOptions should return a service instance")
+	} else if got.Core() != c {
+		t.Fatal("GetNewServiceWithOptions should attach the provided Core instance")
 	}
 }
 

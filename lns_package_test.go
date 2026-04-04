@@ -9,6 +9,7 @@ import (
 	"strings"
 	"testing"
 
+	core "dappco.re/go/core"
 	"golang.org/x/crypto/blake2b"
 
 	"dappco.re/go/lns/pkg/covenant"
@@ -330,6 +331,22 @@ func TestPackageRolloutAlias(t *testing.T) {
 func TestPackageServiceNameAlias(t *testing.T) {
 	if got := GetServiceName(); got != ServiceName {
 		t.Fatalf("GetServiceName() = %q, want %q", got, ServiceName)
+	}
+}
+
+func TestPackageServiceConstructorAliases(t *testing.T) {
+	if got := GetNewService(nil); got == nil {
+		t.Fatal("GetNewService should return a service instance")
+	}
+
+	c := core.New()
+	svc := GetNewServiceWithOptions(WithCore(c))
+	if svc == nil {
+		t.Fatal("GetNewServiceWithOptions should return a service instance")
+	}
+
+	if svc.Core() != c {
+		t.Fatal("GetNewServiceWithOptions should attach the provided Core instance")
 	}
 }
 
