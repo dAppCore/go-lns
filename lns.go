@@ -402,6 +402,17 @@ func (s *Service) GetNewClaim() *Claim {
 	return s.NewClaim()
 }
 
+// NewOutpoint returns the null outpoint used by coinbase inputs and empty
+// name-state owner references.
+func (s *Service) NewOutpoint() Outpoint {
+	return primitives.NewOutpoint()
+}
+
+// GetNewOutpoint is an alias for NewOutpoint.
+func (s *Service) GetNewOutpoint() Outpoint {
+	return s.NewOutpoint()
+}
+
 // NewNameView constructs an empty cached name-state view.
 func (s *Service) NewNameView() *NameView {
 	return primitives.NewNameView()
@@ -1159,6 +1170,33 @@ type NameFlags = covenant.NameFlags
 // NameRules mirrors the covenant rollout and lockup rule inputs.
 type NameRules = covenant.NameRules
 
+// Address mirrors the primitive output-address container.
+type Address = primitives.Address
+
+// Outpoint mirrors the primitive previous-output reference type.
+type Outpoint = primitives.Outpoint
+
+// OutpointJSON mirrors the primitive JSON representation for outpoints.
+type OutpointJSON = primitives.OutpointJSON
+
+// Input mirrors the primitive transaction input type.
+type Input = primitives.Input
+
+// Output mirrors the primitive transaction output type.
+type Output = primitives.Output
+
+// Transaction mirrors the primitive transaction container.
+type Transaction = primitives.Transaction
+
+// BlockHeader mirrors the primitive block-header container.
+type BlockHeader = primitives.BlockHeader
+
+// Covenant mirrors the primitive covenant payload type.
+type Covenant = primitives.Covenant
+
+// CovenantJSON mirrors the primitive covenant JSON representation.
+type CovenantJSON = primitives.CovenantJSON
+
 // NameState mirrors the name-state record type from pkg/primitives.
 type NameState = primitives.NameState
 
@@ -1180,6 +1218,9 @@ type NameUndoEntry = primitives.NameUndoEntry
 
 // Claim mirrors the raw ownership-proof claim wrapper from pkg/primitives.
 type Claim = primitives.Claim
+
+// NameStateJSON mirrors the primitive JSON representation for a name state.
+type NameStateJSON = primitives.NameStateJSON
 
 // NameStateRules mirrors the phase-timing rule set from pkg/primitives.
 type NameStateRules = primitives.NameStateRules
@@ -1221,6 +1262,17 @@ func NewClaim() *Claim {
 // GetNewClaim is an alias for NewClaim.
 func GetNewClaim() *Claim {
 	return NewClaim()
+}
+
+// NewOutpoint returns the null outpoint used by coinbase inputs and empty
+// name-state owner references.
+func NewOutpoint() Outpoint {
+	return primitives.NewOutpoint()
+}
+
+// GetNewOutpoint is an alias for NewOutpoint.
+func GetNewOutpoint() Outpoint {
+	return NewOutpoint()
 }
 
 // NewNameView constructs an empty cached name-state view.

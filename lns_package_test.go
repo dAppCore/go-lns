@@ -1409,6 +1409,43 @@ func TestPackageTypeConstants(t *testing.T) {
 	}
 }
 
+func TestPackagePrimitiveAliases(t *testing.T) {
+	hash := primitives.Hash{1, 2, 3}
+	address := Address{Version: 1, Hash: hash[:]}
+	prevout := NewOutpoint()
+	prevout.Index = 7
+
+	var (
+		_ = primitives.Address(address)
+		_ = primitives.Outpoint(prevout)
+		_ = OutpointJSON{Hash: prevout.GetJSON().Hash, Index: prevout.Index}
+		_ = Input{Prevout: prevout}
+		_ = Output{Address: address}
+		_ = Transaction{Inputs: []Input{{Prevout: prevout}}}
+		_ = BlockHeader{}
+		_ = Covenant{}
+		_ = CovenantJSON{}
+		_ = NameStateJSON{}
+	)
+
+	if got, want := NewOutpoint(), primitives.NewOutpoint(); got != want {
+		t.Fatalf("NewOutpoint() = %+v, want %+v", got, want)
+	}
+
+	if got, want := GetNewOutpoint(), primitives.NewOutpoint(); got != want {
+		t.Fatalf("GetNewOutpoint() = %+v, want %+v", got, want)
+	}
+
+	service := NewService(nil)
+	if got, want := service.NewOutpoint(), primitives.NewOutpoint(); got != want {
+		t.Fatalf("Service.NewOutpoint() = %+v, want %+v", got, want)
+	}
+
+	if got, want := service.GetNewOutpoint(), primitives.NewOutpoint(); got != want {
+		t.Fatalf("Service.GetNewOutpoint() = %+v, want %+v", got, want)
+	}
+}
+
 func TestPackageCovenantTypePredicates(t *testing.T) {
 	if !IsName(TypeOpen) || !GetIsName(TypeOpen) {
 		t.Fatal("IsName should report open covenants")
