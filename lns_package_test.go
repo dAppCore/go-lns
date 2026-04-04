@@ -444,6 +444,14 @@ func TestPackageDefaultCatalogAliases(t *testing.T) {
 	if GetDefaultLockedCatalog() != DefaultLockedCatalog() {
 		t.Fatal("GetDefaultLockedCatalog should alias DefaultLockedCatalog")
 	}
+
+	if !HasReservedCatalog() || !GetHasReservedCatalog() {
+		t.Fatal("HasReservedCatalog aliases should report the package reserved catalog")
+	}
+
+	if !HasLockedCatalog() || !GetHasLockedCatalog() {
+		t.Fatal("HasLockedCatalog aliases should report the package locked catalog")
+	}
 }
 
 func TestPackageDefaultCatalogsIgnoreOverrides(t *testing.T) {
@@ -491,6 +499,14 @@ func TestPackageCatalogFallbacksWhenNil(t *testing.T) {
 
 	if LockedCatalog() == nil {
 		t.Fatal("LockedCatalog should fall back to the canonical catalog when nil")
+	}
+
+	if !HasReservedCatalog() || !GetHasReservedCatalog() {
+		t.Fatal("HasReservedCatalog aliases should keep working when Reserved is nil")
+	}
+
+	if !HasLockedCatalog() || !GetHasLockedCatalog() {
+		t.Fatal("HasLockedCatalog aliases should keep working when Locked is nil")
 	}
 
 	if _, ok := GetReservedName("RESERVED"); !ok {

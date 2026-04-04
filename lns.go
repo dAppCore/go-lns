@@ -2624,6 +2624,20 @@ func (s *Service) GetDefaultReservedCatalog() *covenant.ReservedCatalog {
 	return s.DefaultReservedCatalog()
 }
 
+// HasReservedCatalog reports whether the service has a reserved-name catalog.
+//
+//	ok := svc.HasReservedCatalog()
+func (s *Service) HasReservedCatalog() bool {
+	return s.ReservedCatalog() != nil
+}
+
+// GetHasReservedCatalog is an alias for HasReservedCatalog.
+//
+//	ok := svc.GetHasReservedCatalog()
+func (s *Service) GetHasReservedCatalog() bool {
+	return s.HasReservedCatalog()
+}
+
 // DefaultReservedCatalog exposes the reserved-name catalog used by LNS.
 //
 // This returns the canonical covenant-backed catalog, independent of the
@@ -2820,6 +2834,20 @@ func (s *Service) GetLockedCatalog() *covenant.LockedCatalog {
 	return s.LockedCatalog()
 }
 
+// HasLockedCatalog reports whether the service has a locked-name catalog.
+//
+//	ok := svc.HasLockedCatalog()
+func (s *Service) HasLockedCatalog() bool {
+	return s.LockedCatalog() != nil
+}
+
+// GetHasLockedCatalog is an alias for HasLockedCatalog.
+//
+//	ok := svc.GetHasLockedCatalog()
+func (s *Service) GetHasLockedCatalog() bool {
+	return s.HasLockedCatalog()
+}
+
 // DefaultLockedCatalog returns the package default locked-name catalog.
 //
 // This ignores any service-specific override so callers can always recover
@@ -2852,6 +2880,34 @@ func DefaultLockedCatalog() *covenant.LockedCatalog {
 //	catalog := lns.GetLockedCatalog()
 func GetLockedCatalog() *covenant.LockedCatalog {
 	return DefaultLockedCatalog()
+}
+
+// HasReservedCatalog reports whether the package has a reserved-name catalog.
+//
+//	ok := lns.HasReservedCatalog()
+func HasReservedCatalog() bool {
+	return ReservedCatalog() != nil
+}
+
+// GetHasReservedCatalog is an alias for HasReservedCatalog.
+//
+//	ok := lns.GetHasReservedCatalog()
+func GetHasReservedCatalog() bool {
+	return HasReservedCatalog()
+}
+
+// HasLockedCatalog reports whether the package has a locked-name catalog.
+//
+//	ok := lns.HasLockedCatalog()
+func HasLockedCatalog() bool {
+	return LockedCatalog() != nil
+}
+
+// GetHasLockedCatalog is an alias for HasLockedCatalog.
+//
+//	ok := lns.GetHasLockedCatalog()
+func GetHasLockedCatalog() bool {
+	return HasLockedCatalog()
 }
 
 // GetDefaultLockedCatalog is an alias for DefaultLockedCatalog.

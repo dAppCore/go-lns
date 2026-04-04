@@ -1822,6 +1822,10 @@ func TestServiceReservedCatalog(t *testing.T) {
 		t.Fatal("GetReservedCatalog should alias DefaultReservedCatalog")
 	}
 
+	if !svc.HasReservedCatalog() || !svc.GetHasReservedCatalog() {
+		t.Fatal("HasReservedCatalog aliases should report the service reserved catalog")
+	}
+
 	if got := svc.ReservedSize(); got != catalog.Size() {
 		t.Fatalf("ReservedSize() = %d, want %d", got, catalog.Size())
 	}
@@ -1968,6 +1972,10 @@ func TestServiceLockedCatalog(t *testing.T) {
 
 	if packageGetCatalog != catalog {
 		t.Fatal("GetLockedCatalog should alias DefaultLockedCatalog")
+	}
+
+	if !svc.HasLockedCatalog() || !svc.GetHasLockedCatalog() {
+		t.Fatal("HasLockedCatalog aliases should report the service locked catalog")
 	}
 
 	if got := svc.LockedSize(); got != catalog.Size() {
