@@ -3,6 +3,7 @@
 package lns
 
 import (
+	"bytes"
 	"crypto/sha3"
 	"encoding/binary"
 	"strings"
@@ -11,6 +12,7 @@ import (
 	"golang.org/x/crypto/blake2b"
 
 	"dappco.re/go/lns/pkg/covenant"
+	dnspkg "dappco.re/go/lns/pkg/dns"
 	"dappco.re/go/lns/pkg/primitives"
 )
 
@@ -572,6 +574,56 @@ func TestPackageConstantGetters(t *testing.T) {
 
 	if GetCovenantMaxSize() != CovenantMaxSize {
 		t.Fatalf("GetCovenantMaxSize() = %d, want %d", GetCovenantMaxSize(), CovenantMaxSize)
+	}
+}
+
+func TestPackageDNSCommonGetters(t *testing.T) {
+	if GetDefaultTTL() != DEFAULT_TTL {
+		t.Fatalf("GetDefaultTTL() = %d, want %d", GetDefaultTTL(), DEFAULT_TTL)
+	}
+
+	if !bytes.Equal(GetDummy(), DUMMY) {
+		t.Fatal("GetDummy should alias DUMMY")
+	}
+
+	if !bytes.Equal(GetTypeMapRoot(), TYPE_MAP_ROOT) {
+		t.Fatal("GetTypeMapRoot should alias TYPE_MAP_ROOT")
+	}
+
+	if !bytes.Equal(GetTypeMapEmpty(), TYPE_MAP_EMPTY) {
+		t.Fatal("GetTypeMapEmpty should alias TYPE_MAP_EMPTY")
+	}
+
+	if !bytes.Equal(GetTypeMapNS(), TYPE_MAP_NS) {
+		t.Fatal("GetTypeMapNS should alias TYPE_MAP_NS")
+	}
+
+	if !bytes.Equal(GetTypeMapTXT(), TYPE_MAP_TXT) {
+		t.Fatal("GetTypeMapTXT should alias TYPE_MAP_TXT")
+	}
+
+	if !bytes.Equal(GetTypeMapA(), TYPE_MAP_A) {
+		t.Fatal("GetTypeMapA should alias TYPE_MAP_A")
+	}
+
+	if !bytes.Equal(GetTypeMapAAAA(), TYPE_MAP_AAAA) {
+		t.Fatal("GetTypeMapAAAA should alias TYPE_MAP_AAAA")
+	}
+
+	if len(GetHSTypes()) != len(HSTypes) {
+		t.Fatal("GetHSTypes should alias HSTypes")
+	}
+
+	if len(GetHSTypesByVal()) != len(HSTypesByVal) {
+		t.Fatal("GetHSTypesByVal should alias HSTypesByVal")
+	}
+
+	if got := GetHSTypes()["DS"]; got != dnspkg.HSTypeDS {
+		t.Fatalf("GetHSTypes()[\"DS\"] = %d, want %d", got, dnspkg.HSTypeDS)
+	}
+
+	if got := GetHSTypesByVal()[dnspkg.HSTypeTXT]; got != "TXT" {
+		t.Fatalf("GetHSTypesByVal()[TXT] = %q, want %q", got, "TXT")
 	}
 }
 

@@ -20,11 +20,35 @@ import (
 	core "dappco.re/go/core"
 	"dappco.re/go/lns/internal/nameutil"
 	"dappco.re/go/lns/pkg/covenant"
+	dnspkg "dappco.re/go/lns/pkg/dns"
 	"dappco.re/go/lns/pkg/primitives"
 )
 
 // ServiceName is the registered name for the LNS service group.
 const ServiceName = "lns"
+
+// DNS common constants mirror pkg/dns so callers can stay in the top-level
+// lns package for the reference DNS metadata.
+const DEFAULT_TTL = dnspkg.DEFAULT_TTL
+
+// DUMMY mirrors the DNS zero-length reference buffer used by pkg/dns.
+var DUMMY = dnspkg.DUMMY
+
+// Type map bitmaps mirror pkg/dns common constants.
+var (
+	TYPE_MAP_ROOT  = dnspkg.TYPE_MAP_ROOT
+	TYPE_MAP_EMPTY = dnspkg.TYPE_MAP_EMPTY
+	TYPE_MAP_NS    = dnspkg.TYPE_MAP_NS
+	TYPE_MAP_TXT   = dnspkg.TYPE_MAP_TXT
+	TYPE_MAP_A     = dnspkg.TYPE_MAP_A
+	TYPE_MAP_AAAA  = dnspkg.TYPE_MAP_AAAA
+)
+
+// HSTypes mirrors the DNS hsTypes lookup table from pkg/dns.
+var HSTypes = dnspkg.HSTypes
+
+// HSTypesByVal mirrors the DNS hsTypesByVal reverse lookup table from pkg/dns.
+var HSTypesByVal = dnspkg.HSTypesByVal
 
 // Service is the LNS service that manages .lthn name resolution,
 // covenant processing, and name-chain state queries.
@@ -132,6 +156,56 @@ func Register(c *core.Core) core.Result {
 //	name := lns.ServiceName
 func GetServiceName() string {
 	return ServiceName
+}
+
+// GetDefaultTTL returns the reference DNS TTL used for synthesized records.
+func GetDefaultTTL() int {
+	return DEFAULT_TTL
+}
+
+// GetDummy returns the zero-length DNS reference buffer.
+func GetDummy() []byte {
+	return DUMMY
+}
+
+// GetTypeMapRoot returns the reference type bitmap for the root zone.
+func GetTypeMapRoot() []byte {
+	return TYPE_MAP_ROOT
+}
+
+// GetTypeMapEmpty returns the reference type bitmap for an empty response.
+func GetTypeMapEmpty() []byte {
+	return TYPE_MAP_EMPTY
+}
+
+// GetTypeMapNS returns the reference type bitmap for NS responses.
+func GetTypeMapNS() []byte {
+	return TYPE_MAP_NS
+}
+
+// GetTypeMapTXT returns the reference type bitmap for TXT responses.
+func GetTypeMapTXT() []byte {
+	return TYPE_MAP_TXT
+}
+
+// GetTypeMapA returns the reference type bitmap for A responses.
+func GetTypeMapA() []byte {
+	return TYPE_MAP_A
+}
+
+// GetTypeMapAAAA returns the reference type bitmap for AAAA responses.
+func GetTypeMapAAAA() []byte {
+	return TYPE_MAP_AAAA
+}
+
+// GetHSTypes returns the DNS record-type lookup table.
+func GetHSTypes() map[string]dnspkg.HSType {
+	return HSTypes
+}
+
+// GetHSTypesByVal returns the reverse DNS record-type lookup table.
+func GetHSTypesByVal() map[dnspkg.HSType]string {
+	return HSTypesByVal
 }
 
 // OnStartup satisfies core.Startable so LNS participates in Core lifecycle
