@@ -473,12 +473,20 @@ func TestPackageDefaultCatalogsIgnoreOverrides(t *testing.T) {
 		t.Fatal("DefaultReservedCatalog should ignore the mutable Reserved variable")
 	}
 
+	if GetReservedCatalog() != ReservedCatalog() {
+		t.Fatal("GetReservedCatalog should track the mutable Reserved variable")
+	}
+
 	if DefaultLockedCatalog() != covenant.DefaultLockedCatalog() {
 		t.Fatal("DefaultLockedCatalog should return the canonical locked catalog")
 	}
 
 	if DefaultLockedCatalog() == LockedCatalog() {
 		t.Fatal("DefaultLockedCatalog should ignore the mutable Locked variable")
+	}
+
+	if GetLockedCatalog() != LockedCatalog() {
+		t.Fatal("GetLockedCatalog should track the mutable Locked variable")
 	}
 }
 

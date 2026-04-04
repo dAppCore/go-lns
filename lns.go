@@ -2648,11 +2648,11 @@ func DefaultReservedCatalog() *covenant.ReservedCatalog {
 	return covenant.DefaultReservedCatalog()
 }
 
-// GetReservedCatalog is an alias for DefaultReservedCatalog.
+// GetReservedCatalog is an alias for ReservedCatalog.
 //
 //	catalog := lns.GetReservedCatalog()
 func GetReservedCatalog() *covenant.ReservedCatalog {
-	return DefaultReservedCatalog()
+	return ReservedCatalog()
 }
 
 // GetDefaultReservedCatalog is an alias for DefaultReservedCatalog.
@@ -2875,11 +2875,11 @@ func DefaultLockedCatalog() *covenant.LockedCatalog {
 	return covenant.DefaultLockedCatalog()
 }
 
-// GetLockedCatalog is an alias for DefaultLockedCatalog.
+// GetLockedCatalog is an alias for LockedCatalog.
 //
 //	catalog := lns.GetLockedCatalog()
 func GetLockedCatalog() *covenant.LockedCatalog {
-	return DefaultLockedCatalog()
+	return LockedCatalog()
 }
 
 // HasReservedCatalog reports whether the package has a reserved-name catalog.
