@@ -2435,7 +2435,11 @@ func (s *Service) reservedCatalog() *covenant.ReservedCatalog {
 		return s.reservedCatalogOverride
 	}
 
-	return Reserved
+	if Reserved != nil {
+		return Reserved
+	}
+
+	return covenant.DefaultReservedCatalog()
 }
 
 // lockedCatalog returns the package-backed locked-name catalog.
@@ -2444,7 +2448,11 @@ func (s *Service) lockedCatalog() *covenant.LockedCatalog {
 		return s.lockedCatalogOverride
 	}
 
-	return Locked
+	if Locked != nil {
+		return Locked
+	}
+
+	return covenant.DefaultLockedCatalog()
 }
 
 // GetCore is an alias for Core.
@@ -2729,14 +2737,22 @@ var Locked = covenant.DefaultLockedCatalog()
 //
 //	catalog := lns.ReservedCatalog()
 func ReservedCatalog() *covenant.ReservedCatalog {
-	return Reserved
+	if Reserved != nil {
+		return Reserved
+	}
+
+	return covenant.DefaultReservedCatalog()
 }
 
 // LockedCatalog exposes the locked-name catalog used by the package.
 //
 //	catalog := lns.LockedCatalog()
 func LockedCatalog() *covenant.LockedCatalog {
-	return Locked
+	if Locked != nil {
+		return Locked
+	}
+
+	return covenant.DefaultLockedCatalog()
 }
 
 // ReservedSize reports the number of reserved-name entries available to the package.

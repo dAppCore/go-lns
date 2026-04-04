@@ -404,6 +404,52 @@ func TestPackageDefaultCatalogsIgnoreOverrides(t *testing.T) {
 	}
 }
 
+func TestPackageCatalogFallbacksWhenNil(t *testing.T) {
+	origReserved := Reserved
+	origLocked := Locked
+	defer func() {
+		Reserved = origReserved
+		Locked = origLocked
+	}()
+
+	Reserved = nil
+	Locked = nil
+
+	if ReservedCatalog() == nil {
+		t.Fatal("ReservedCatalog should fall back to the canonical catalog when nil")
+	}
+
+	if LockedCatalog() == nil {
+		t.Fatal("LockedCatalog should fall back to the canonical catalog when nil")
+	}
+
+	if _, ok := GetReservedName("RESERVED"); !ok {
+		t.Fatal("GetReservedName should keep working when Reserved is nil")
+	}
+
+	if _, ok := GetLockedName("NEC"); !ok {
+		t.Fatal("GetLockedName should keep working when Locked is nil")
+	}
+
+	svc := NewService(nil)
+
+	if svc.ReservedCatalog() == nil {
+		t.Fatal("service ReservedCatalog should fall back to the canonical catalog when nil")
+	}
+
+	if svc.LockedCatalog() == nil {
+		t.Fatal("service LockedCatalog should fall back to the canonical catalog when nil")
+	}
+
+	if _, ok := svc.GetReservedName("RESERVED"); !ok {
+		t.Fatal("service GetReservedName should keep working when Reserved is nil")
+	}
+
+	if _, ok := svc.GetLockedName("NEC"); !ok {
+		t.Fatal("service GetLockedName should keep working when Locked is nil")
+	}
+}
+
 func TestLookupCatalogNamePreservesDottedLabels(t *testing.T) {
 	hash := primitives.Hash(sha3.Sum256([]byte("foo.bar")))
 
