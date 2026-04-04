@@ -730,6 +730,11 @@ func TestPackageResourceAliases(t *testing.T) {
 		t.Fatal("resource aliases should expose record type helpers from pkg/dns")
 	}
 
+	nsec := resource.ToNSEC("Example")
+	if nsec.Name != "Example." || nsec.NextDomain != "example\x00." || nsec.TTL != DEFAULT_TTL {
+		t.Fatalf("Resource.ToNSEC returned %+v", nsec)
+	}
+
 	encoded, err := resource.Encode()
 	if err != nil {
 		t.Fatalf("Resource.Encode returned error: %v", err)

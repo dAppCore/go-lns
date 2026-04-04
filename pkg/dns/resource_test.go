@@ -242,6 +242,67 @@ func TestResourceTypeHelpers(t *testing.T) {
 	}
 }
 
+func TestResourceToNSEC(t *testing.T) {
+	cases := []struct {
+		name   string
+		record []ResourceRecord
+		want   []byte
+	}{
+		{
+			name: "empty",
+			want: TYPE_MAP_EMPTY,
+		},
+		{
+			name: "txt",
+			record: []ResourceRecord{
+				TXTRecord{Entries: []string{"txt"}},
+			},
+			want: TYPE_MAP_TXT,
+		},
+		{
+			name: "ns",
+			record: []ResourceRecord{
+				TXTRecord{Entries: []string{"txt"}},
+				NSRecord{NS: "ns1.example."},
+			},
+			want: TYPE_MAP_NS,
+		},
+	}
+
+	for _, tc := range cases {
+		resource := NewResource()
+		resource.Records = append(resource.Records, tc.record...)
+
+		rr := resource.ToNSEC("Example")
+		if rr.Name != "Example." {
+			t.Fatalf("%s: ToNSEC name = %q, want %q", tc.name, rr.Name, "Example.")
+		}
+
+		if rr.NextDomain != "example\x00." {
+			t.Fatalf("%s: ToNSEC next domain = %q, want %q", tc.name, rr.NextDomain, "example\x00.")
+		}
+
+		if rr.TTL != DEFAULT_TTL {
+			t.Fatalf("%s: ToNSEC TTL = %d, want %d", tc.name, rr.TTL, DEFAULT_TTL)
+		}
+
+		if !bytes.Equal(rr.TypeBitmap, tc.want) {
+			t.Fatalf("%s: ToNSEC bitmap = %x, want %x", tc.name, rr.TypeBitmap, tc.want)
+		}
+
+		alias := resource.GetToNSEC("Example")
+		if alias.Name != rr.Name || alias.NextDomain != rr.NextDomain || alias.TTL != rr.TTL {
+			t.Fatalf("%s: GetToNSEC should alias ToNSEC, got %+v want %+v", tc.name, alias, rr)
+		}
+	}
+
+	var nilResource *Resource
+	rr := nilResource.ToNSEC("Example")
+	if !bytes.Equal(rr.TypeBitmap, TYPE_MAP_EMPTY) {
+		t.Fatalf("nil resource ToNSEC bitmap = %x, want %x", rr.TypeBitmap, TYPE_MAP_EMPTY)
+	}
+}
+
 func TestResourceDecodeStopsAtUnknownType(t *testing.T) {
 	resource := NewResource()
 	resource.Records = []ResourceRecord{TXTRecord{Entries: []string{"known"}}}

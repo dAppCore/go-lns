@@ -247,6 +247,30 @@ func (r *Resource) GetHasDS() bool {
 	return r.HasDS()
 }
 
+// ToNSEC constructs the reference NSEC helper output for the resource.
+//
+// The bitmap selection matches the JS reference helper:
+// - NS-capable resources use TYPE_MAP_NS
+// - TXT-only resources use TYPE_MAP_TXT
+// - everything else falls back to TYPE_MAP_EMPTY
+func (r *Resource) ToNSEC(name string) NSECRecord {
+	typeMap := TYPE_MAP_EMPTY
+	if r != nil {
+		if r.HasNS() {
+			typeMap = TYPE_MAP_NS
+		} else if r.HasType(HSTypeTXT) {
+			typeMap = TYPE_MAP_TXT
+		}
+	}
+
+	return Create(name, NextName(name), typeMap)
+}
+
+// GetToNSEC is an alias for ToNSEC.
+func (r *Resource) GetToNSEC(name string) NSECRecord {
+	return r.ToNSEC(name)
+}
+
 // Encode serializes the resource payload in the reference binary format.
 func (r *Resource) Encode() ([]byte, error) {
 	if r == nil {
