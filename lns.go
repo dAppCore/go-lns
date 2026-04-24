@@ -16,12 +16,14 @@ package lns
 import (
 	"context"
 	"crypto/sha3"
+	"sync"
 
 	core "dappco.re/go/core"
 	"dappco.re/go/lns/internal/nameutil"
 	"dappco.re/go/lns/pkg/covenant"
 	dnspkg "dappco.re/go/lns/pkg/dns"
 	"dappco.re/go/lns/pkg/primitives"
+	walletpkg "dappco.re/go/lns/pkg/wallet"
 )
 
 // ServiceName is the registered name for the LNS service group.
@@ -61,6 +63,15 @@ type ResourceJSON = dnspkg.ResourceJSON
 
 // DNSMessage mirrors the DNS response shape used by pkg/dns projection helpers.
 type DNSMessage = dnspkg.DNSMessage
+
+// BridgeConfig mirrors the live DNS bridge configuration.
+type BridgeConfig = dnspkg.BridgeConfig
+
+// SyncReport mirrors the live DNS bridge discovery report.
+type SyncReport = dnspkg.SyncReport
+
+// BridgeHealth mirrors the live DNS bridge health report.
+type BridgeHealth = dnspkg.BridgeHealth
 
 // DSRecord mirrors the DNS DS payload entry.
 type DSRecord = dnspkg.DSRecord
@@ -116,6 +127,13 @@ type Service struct {
 	*core.ServiceRuntime[serviceOptions]
 	reservedCatalogOverride *covenant.ReservedCatalog
 	lockedCatalogOverride   *covenant.LockedCatalog
+	bridgeMu                sync.Mutex
+	dnsBridge               *dnspkg.Bridge
+	bridgeConfig            dnspkg.BridgeConfig
+	walletMu                sync.Mutex
+	wallet                  *walletpkg.Wallet
+	vpnMu                   sync.Mutex
+	vpnConnection           *vpnConnectionState
 }
 
 var (
@@ -576,6 +594,12 @@ func (s *Service) GetDecodeResource(raw []byte) (*Resource, error) {
 // OnStartup satisfies core.Startable so LNS participates in Core lifecycle
 // discovery without requiring any explicit setup.
 func (s *Service) OnStartup(context.Context) core.Result {
+	if s != nil {
+		if result := s.registerActions(); !result.OK {
+			return result
+		}
+	}
+
 	return okResult()
 }
 
@@ -589,6 +613,17 @@ func (s *Service) GetOnStartup(ctx context.Context) core.Result {
 // OnShutdown satisfies core.Stoppable so LNS participates in Core lifecycle
 // discovery without requiring any explicit teardown.
 func (s *Service) OnShutdown(context.Context) core.Result {
+	if s != nil {
+		s.bridgeMu.Lock()
+		bridge := s.dnsBridge
+		s.bridgeMu.Unlock()
+		if bridge != nil {
+			if err := bridge.Shutdown(); err != nil {
+				return core.Result{Value: err, OK: false}
+			}
+		}
+	}
+
 	return okResult()
 }
 
