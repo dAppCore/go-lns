@@ -3,8 +3,6 @@
 package covenant
 
 import (
-	"crypto/sha3"
-
 	core "dappco.re/go/core"
 	"dappco.re/go/lns/pkg/primitives"
 )
@@ -189,7 +187,7 @@ func HashString(name string) (primitives.Hash, error) {
 		return primitives.Hash{}, core.E("covenant.HashString", "invalid name", nil)
 	}
 
-	sum := sha3.Sum256([]byte(name))
+	sum := core.SHA3Keccak256([]byte(name))
 	return primitives.Hash(sum), nil
 }
 
@@ -222,7 +220,7 @@ func HashBinary(name []byte) (primitives.Hash, error) {
 		return primitives.Hash{}, core.E("covenant.HashBinary", "invalid name", nil)
 	}
 
-	sum := sha3.Sum256(name)
+	sum := core.SHA3Keccak256(name)
 	return primitives.Hash(sum), nil
 }
 

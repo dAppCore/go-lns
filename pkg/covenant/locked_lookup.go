@@ -11,7 +11,6 @@ package covenant
 
 import (
 	"bytes"
-	"crypto/sha3"
 	"encoding/hex"
 	"encoding/json"
 	"path/filepath"
@@ -351,7 +350,7 @@ func (c *LockedCatalog) GetByName(name string) (LockedName, bool) {
 		return LockedName{}, false
 	}
 
-	hash := primitives.Hash(sha3.Sum256([]byte(name)))
+	hash := primitives.Hash(core.SHA3Keccak256([]byte(name)))
 	return c.Get(hash)
 }
 

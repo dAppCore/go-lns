@@ -15,8 +15,6 @@ package lns
 
 import (
 	"context"
-	"crypto/sha3"
-	"sync"
 
 	core "dappco.re/go/core"
 	"dappco.re/go/lns/internal/nameutil"
@@ -672,7 +670,7 @@ func resolveCanonicalName(method string, name any) (primitives.Hash, error) {
 			return primitives.Hash{}, core.E(method, "invalid name", nil)
 		}
 
-		return primitives.Hash(sha3.Sum256([]byte(normalized))), nil
+		return primitives.Hash(core.SHA3Keccak256([]byte(normalized))), nil
 	default:
 		return primitives.Hash{}, core.E(method, "invalid name type", nil)
 	}
@@ -719,7 +717,7 @@ func LookupCatalogName[T any](
 		return zero, false
 	}
 
-	hash := primitives.Hash(sha3.Sum256([]byte(normalized)))
+	hash := primitives.Hash(core.SHA3Keccak256([]byte(normalized)))
 	return byHash(hash)
 }
 
