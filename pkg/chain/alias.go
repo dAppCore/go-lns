@@ -3,11 +3,7 @@
 package chain
 
 import (
-	"bytes"
-	"encoding/json"
-	"io"
-	"net/http"
-	"strings"
+	"net/http" // AX-6: structural HTTP boundary for alias JSON-RPC transport.
 	"time"
 
 	core "dappco.re/go/core"
@@ -41,9 +37,11 @@ func WithAliasHTTPClient(httpClient *http.Client) AliasClientOption {
 
 // NewAliasClient constructs a main-chain alias discovery client.
 func NewAliasClient(url string, opts ...AliasClientOption) *AliasClient {
-	url = strings.TrimSpace(url)
-	url = strings.TrimRight(url, "/")
-	if url != "" && !strings.HasSuffix(url, "/json_rpc") {
+	url = core.Trim(url)
+	for core.HasSuffix(url, "/") {
+		url = core.TrimSuffix(url, "/")
+	}
+	if url != "" && !core.HasSuffix(url, "/json_rpc") {
 		url += "/json_rpc"
 	}
 
@@ -68,7 +66,7 @@ func (c *AliasClient) GetAliases() ([]Alias, error) {
 	}
 
 	body := []byte(`{"jsonrpc":"2.0","id":"0","method":"get_all_alias_details","params":{}}`)
-	request, err := http.NewRequest(http.MethodPost, c.url, bytes.NewReader(body))
+	request, err := http.NewRequest(http.MethodPost, c.url, core.NewBuffer(body))
 	if err != nil {
 		return nil, core.E("chain.AliasClient.GetAliases", "build request", err)
 	}
@@ -79,11 +77,15 @@ func (c *AliasClient) GetAliases() ([]Alias, error) {
 	if err != nil {
 		return nil, core.E("chain.AliasClient.GetAliases", "perform request", err)
 	}
-	defer response.Body.Close()
 
-	raw, err := io.ReadAll(response.Body)
-	if err != nil {
+	read := core.ReadAll(response.Body)
+	if !read.OK {
+		err, _ := read.Value.(error)
 		return nil, core.E("chain.AliasClient.GetAliases", "read response", err)
+	}
+	raw, ok := read.Value.(string)
+	if !ok {
+		return nil, core.E("chain.AliasClient.GetAliases", "read response", nil)
 	}
 
 	if response.StatusCode != http.StatusOK {
@@ -100,7 +102,9 @@ func (c *AliasClient) GetAliases() ([]Alias, error) {
 		} `json:"result"`
 	}
 
-	if err := json.Unmarshal(raw, &payload); err != nil {
+	decoded := core.JSONUnmarshal([]byte(raw), &payload)
+	if !decoded.OK {
+		err, _ := decoded.Value.(error)
 		return nil, core.E("chain.AliasClient.GetAliases", "decode response", err)
 	}
 
@@ -119,28 +123,28 @@ func (c *AliasClient) GetAliases() ([]Alias, error) {
 // ParseAliasComment parses `key=value;...` alias comment metadata.
 func ParseAliasComment(comment string) map[string]string {
 	result := make(map[string]string)
-	for _, part := range strings.Split(comment, ";") {
-		part = strings.TrimSpace(part)
+	for _, part := range core.Split(comment, ";") {
+		part = core.Trim(part)
 		if part == "" {
 			continue
 		}
-		key, value, ok := strings.Cut(part, "=")
-		if !ok {
+		field := core.SplitN(part, "=", 2)
+		if len(field) != 2 {
 			continue
 		}
-		result[strings.TrimSpace(key)] = strings.TrimSpace(value)
+		result[core.Trim(field[0])] = core.Trim(field[1])
 	}
 	return result
 }
 
 // HNSName resolves the LNS name for an alias comment, applying `hns=` overrides.
 func HNSName(alias Alias) string {
-	name := strings.TrimSpace(alias.Name)
+	name := core.Trim(alias.Name)
 	comment := ParseAliasComment(alias.Comment)
-	if hns := strings.TrimSpace(comment["hns"]); hns != "" {
-		name = strings.TrimSuffix(strings.TrimSuffix(strings.ToLower(hns), ".lthn."), ".lthn")
+	if hns := core.Trim(comment["hns"]); hns != "" {
+		name = core.TrimSuffix(core.TrimSuffix(core.Lower(hns), ".lthn."), ".lthn")
 	}
-	return strings.ToLower(name)
+	return core.Lower(name)
 }
 
 // DiscoverNames derives the set of distinct HNS names from aliases.
