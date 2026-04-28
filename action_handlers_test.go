@@ -7,7 +7,7 @@ import (
 	"net/netip"
 	"testing"
 
-	core "dappco.re/go/core"
+	core "dappco.re/go"
 )
 
 func TestServiceOnStartupRegistersActionSlice(t *testing.T) {

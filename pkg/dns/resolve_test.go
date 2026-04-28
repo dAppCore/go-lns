@@ -6,7 +6,7 @@ import (
 	"strings"
 	"testing"
 
-	core "dappco.re/go/core"
+	core "dappco.re/go"
 	"dappco.re/go/lns/pkg/primitives"
 )
 
@@ -18,7 +18,7 @@ func TestResolve(t *testing.T) {
 		t.Fatalf("Resolve returned error: %v", err)
 	}
 
-	want := core.SHA3Keccak256([]byte("foo-bar"))
+	want := core.SHA3_256([]byte("foo-bar"))
 	if got != want {
 		t.Fatalf("Resolve returned %x, want %x", got, want)
 	}
@@ -41,7 +41,7 @@ func TestResolveNameAliases(t *testing.T) {
 		t.Fatalf("ResolveName returned error: %v", err)
 	}
 
-	want := core.SHA3Keccak256([]byte("foo-bar"))
+	want := core.SHA3_256([]byte("foo-bar"))
 	if got != want {
 		t.Fatalf("ResolveName returned %x, want %x", got, want)
 	}
@@ -53,7 +53,7 @@ func TestResolveNameAliases(t *testing.T) {
 
 func TestServiceGetAliases(t *testing.T) {
 	svc := NewService()
-	want := core.SHA3Keccak256([]byte("foo-bar"))
+	want := core.SHA3_256([]byte("foo-bar"))
 
 	resolveCases := []struct {
 		name string
@@ -117,7 +117,7 @@ func TestServiceGetAliases(t *testing.T) {
 }
 
 func TestPackageGetAliases(t *testing.T) {
-	want := core.SHA3Keccak256([]byte("foo-bar"))
+	want := core.SHA3_256([]byte("foo-bar"))
 
 	resolveCases := []struct {
 		name  string
@@ -180,7 +180,7 @@ func TestHashAliases(t *testing.T) {
 		t.Fatalf("Hash returned error: %v", err)
 	}
 
-	want := core.SHA3Keccak256([]byte("foo-bar"))
+	want := core.SHA3_256([]byte("foo-bar"))
 	if got != want {
 		t.Fatalf("Hash returned %x, want %x", got, want)
 	}
@@ -234,7 +234,7 @@ func TestResolveByNameAliases(t *testing.T) {
 		t.Fatalf("ResolveByName returned error: %v", err)
 	}
 
-	want := core.SHA3Keccak256([]byte("foo-bar"))
+	want := core.SHA3_256([]byte("foo-bar"))
 	if got != want {
 		t.Fatalf("ResolveByName returned %x, want %x", got, want)
 	}
@@ -252,7 +252,7 @@ func TestResolveStringAndBinary(t *testing.T) {
 		t.Fatalf("ResolveString returned error: %v", err)
 	}
 
-	want := core.SHA3Keccak256([]byte("foo-bar"))
+	want := core.SHA3_256([]byte("foo-bar"))
 	if got != want {
 		t.Fatalf("ResolveString returned %x, want %x", got, want)
 	}
@@ -275,7 +275,7 @@ func TestResolveByStringAndBinaryAliases(t *testing.T) {
 		t.Fatalf("ResolveByString returned error: %v", err)
 	}
 
-	want := core.SHA3Keccak256([]byte("foo-bar"))
+	want := core.SHA3_256([]byte("foo-bar"))
 	if got != want {
 		t.Fatalf("ResolveByString returned %x, want %x", got, want)
 	}
@@ -293,7 +293,7 @@ func TestResolveByStringAndBinaryAliases(t *testing.T) {
 func TestHashByStringAndBinaryAliases(t *testing.T) {
 	svc := NewService()
 
-	want := core.SHA3Keccak256([]byte("foo-bar"))
+	want := core.SHA3_256([]byte("foo-bar"))
 
 	got, err := svc.HashByString("Foo-Bar.lthn")
 	if err != nil {
@@ -479,7 +479,7 @@ func TestServiceName(t *testing.T) {
 }
 
 func TestPackageLevelResolveAndVerifyAliases(t *testing.T) {
-	want := core.SHA3Keccak256([]byte("foo-bar"))
+	want := core.SHA3_256([]byte("foo-bar"))
 
 	resolveCases := []struct {
 		name string

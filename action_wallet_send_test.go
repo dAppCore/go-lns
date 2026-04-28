@@ -7,7 +7,7 @@ import (
 	"encoding/hex"
 	"testing"
 
-	core "dappco.re/go/core"
+	core "dappco.re/go"
 	"dappco.re/go/lns/pkg/primitives"
 	walletpkg "dappco.re/go/lns/pkg/wallet"
 )

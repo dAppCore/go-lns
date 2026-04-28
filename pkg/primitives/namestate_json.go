@@ -5,7 +5,7 @@ package primitives
 import (
 	"encoding/hex"
 
-	core "dappco.re/go/core"
+	core "dappco.re/go"
 )
 
 const nameStateJSONMaxSize = 63

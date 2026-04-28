@@ -5,7 +5,7 @@ package covenant
 import (
 	"testing"
 
-	core "dappco.re/go/core"
+	core "dappco.re/go"
 	"dappco.re/go/lns/pkg/primitives"
 )
 
@@ -321,7 +321,7 @@ func TestLockedCatalogHelpers(t *testing.T) {
 }
 
 func TestLockedCatalogGetByNameSkipsSyntaxValidation(t *testing.T) {
-	hash := primitives.Hash(core.SHA3Keccak256([]byte("foo.bar")))
+	hash := primitives.Hash(core.SHA3_256([]byte("foo.bar")))
 	catalog := &LockedCatalog{
 		byHash: map[primitives.Hash]LockedName{
 			hash: {

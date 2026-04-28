@@ -9,7 +9,7 @@ import (
 	"strings"
 	"testing"
 
-	core "dappco.re/go/core"
+	core "dappco.re/go"
 	"golang.org/x/crypto/blake2b"
 
 	"dappco.re/go/lns/pkg/covenant"

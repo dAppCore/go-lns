@@ -13,7 +13,7 @@ import (
 	"net/netip"
 	"strings"
 
-	core "dappco.re/go/core"
+	core "dappco.re/go"
 	"dappco.re/go/lns/pkg/covenant"
 )
 

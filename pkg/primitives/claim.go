@@ -7,7 +7,7 @@ import (
 	"encoding/hex"
 	"fmt"
 
-	core "dappco.re/go/core"
+	core "dappco.re/go"
 	"golang.org/x/crypto/blake2b"
 )
 

@@ -13,7 +13,7 @@ import (
 	"strings"
 	"time"
 
-	core "dappco.re/go/core"
+	core "dappco.re/go"
 	chainpkg "dappco.re/go/lns/pkg/chain"
 	dnspkg "dappco.re/go/lns/pkg/dns"
 	"dappco.re/go/lns/pkg/primitives"
@@ -252,20 +252,20 @@ func (s *Service) registerActions() core.Result {
 func (s *Service) handleNameLookup(_ context.Context, options core.Options) core.Result {
 	lookup, err := s.lookupNameAction(options)
 	if err != nil {
-		return core.Result{Value: err, OK: false}
+		return core.Fail(err)
 	}
 
-	return core.Result{Value: lookup, OK: true}
+	return core.Ok(lookup)
 }
 
 func (s *Service) handleNameAvailable(_ context.Context, options core.Options) core.Result {
 	lookup, err := s.lookupNameAction(options)
 	if err != nil {
-		return core.Result{Value: err, OK: false}
+		return core.Fail(err)
 	}
 
-	return core.Result{
-		Value: nameAvailabilityResult{
+	return core.Ok(
+		nameAvailabilityResult{
 			Input:              lookup.Input,
 			Canonical:          lookup.Canonical,
 			Valid:              lookup.Valid,
@@ -278,19 +278,18 @@ func (s *Service) handleNameAvailable(_ context.Context, options core.Options) c
 			LockedAtHeight:     lookup.LockedAtHeight,
 			Height:             lookup.Height,
 			HasRollout:         lookup.HasRollout,
-		},
-		OK: true,
-	}
+		})
+
 }
 
 func (s *Service) handleNameAuction(_ context.Context, options core.Options) core.Result {
 	lookup, err := s.lookupNameAction(options)
 	if err != nil {
-		return core.Result{Value: err, OK: false}
+		return core.Fail(err)
 	}
 
-	return core.Result{
-		Value: nameAuctionResult{
+	return core.Ok(
+		nameAuctionResult{
 			Input:            lookup.Input,
 			Canonical:        lookup.Canonical,
 			Hash:             lookup.Hash,
@@ -302,21 +301,20 @@ func (s *Service) handleNameAuction(_ context.Context, options core.Options) cor
 			ReservedAtHeight: lookup.ReservedAtHeight,
 			LockedAtHeight:   lookup.LockedAtHeight,
 			Available:        lookup.Available,
-		},
-		OK: true,
-	}
+		})
+
 }
 
 func (s *Service) handleNameRegister(_ context.Context, options core.Options) core.Result {
 	lookup, err := s.lookupNameAction(options)
 	if err != nil {
-		return core.Result{Value: err, OK: false}
+		return core.Fail(err)
 	}
 	if !lookup.Valid {
-		return core.Result{Value: core.E("lns.name.register", "invalid name", nil), OK: false}
+		return core.Fail(core.E("lns.name.register", "invalid name", nil))
 	}
 	if !lookup.Available {
-		return core.Result{Value: core.E("lns.name.register", "name is not available", nil), OK: false}
+		return core.Fail(core.E("lns.name.register", "name is not available", nil))
 	}
 
 	plan := newNameActionPlan("lns.name.register", lookup)
@@ -329,7 +327,7 @@ func (s *Service) handleNameRegister(_ context.Context, options core.Options) co
 
 	resource, jsonView, size, err := actionOptionalResourceValue(options)
 	if err != nil {
-		return core.Result{Value: core.E("lns.name.register", "invalid resource", err), OK: false}
+		return core.Fail(core.E("lns.name.register", "invalid resource", err))
 	}
 	plan.Resource = jsonView
 	plan.ResourceSize = size
@@ -341,24 +339,24 @@ func (s *Service) handleNameRegister(_ context.Context, options core.Options) co
 
 	nonce, ok, err := actionHashValue(options, "nonce")
 	if err != nil {
-		return core.Result{Value: core.E("lns.name.register", "invalid nonce", err), OK: false}
+		return core.Fail(core.E("lns.name.register", "invalid nonce", err))
 	}
 	if !ok {
 		nonce, err = randomActionHash()
 		if err != nil {
-			return core.Result{Value: err, OK: false}
+			return core.Fail(err)
 		}
 		plan.Warnings = append(plan.Warnings, "nonce was generated automatically for this local draft.")
 	}
 
 	blind, err := s.Blind(bidValue, nonce)
 	if err != nil {
-		return core.Result{Value: err, OK: false}
+		return core.Fail(err)
 	}
 
 	blockHash, blockHashSet, err := actionHashValue(options, "block_hash", "blockHash")
 	if err != nil {
-		return core.Result{Value: core.E("lns.name.register", "invalid block hash", err), OK: false}
+		return core.Fail(core.E("lns.name.register", "invalid block hash", err))
 	}
 	if blockHashSet {
 		plan.BlockHash = &blockHash
@@ -434,18 +432,18 @@ func (s *Service) handleNameRegister(_ context.Context, options core.Options) co
 		},
 	}
 
-	return core.Result{Value: plan, OK: true}
+	return core.Ok(plan)
 }
 
 func (s *Service) handleNameRenew(_ context.Context, options core.Options) core.Result {
 	plan, err := s.prepareLinkedNameAction("lns.name.renew", options)
 	if err != nil {
-		return core.Result{Value: err, OK: false}
+		return core.Fail(err)
 	}
 
 	blockHash, ok, err := actionHashValue(options, "block_hash", "blockHash")
 	if err != nil {
-		return core.Result{Value: core.E("lns.name.renew", "invalid block hash", err), OK: false}
+		return core.Fail(core.E("lns.name.renew", "invalid block hash", err))
 	}
 	if !ok {
 		plan.Warnings = append(plan.Warnings, "block_hash was not provided; the RENEW draft uses a zero hash placeholder.")
@@ -473,21 +471,21 @@ func (s *Service) handleNameRenew(_ context.Context, options core.Options) core.
 		},
 	}
 
-	return core.Result{Value: plan, OK: true}
+	return core.Ok(plan)
 }
 
 func (s *Service) handleNameTransfer(_ context.Context, options core.Options) core.Result {
 	plan, err := s.prepareLinkedNameAction("lns.name.transfer", options)
 	if err != nil {
-		return core.Result{Value: err, OK: false}
+		return core.Fail(err)
 	}
 
 	address, ok := actionAddressValue(options, "address", "recipient", "to")
 	if !ok {
-		return core.Result{Value: core.E("lns.name.transfer", "recipient address is required", nil), OK: false}
+		return core.Fail(core.E("lns.name.transfer", "recipient address is required", nil))
 	}
 	if !address.IsValid() {
-		return core.Result{Value: core.E("lns.name.transfer", "recipient address is invalid", nil), OK: false}
+		return core.Fail(core.E("lns.name.transfer", "recipient address is invalid", nil))
 	}
 	plan.Address = &address
 	outputValue, _ := actionUint64Value(options, "transfer_value", "value")
@@ -506,18 +504,18 @@ func (s *Service) handleNameTransfer(_ context.Context, options core.Options) co
 		},
 	}
 
-	return core.Result{Value: plan, OK: true}
+	return core.Ok(plan)
 }
 
 func (s *Service) handleNameUpdate(_ context.Context, options core.Options) core.Result {
 	plan, err := s.prepareLinkedNameAction("lns.name.update", options)
 	if err != nil {
-		return core.Result{Value: err, OK: false}
+		return core.Fail(err)
 	}
 
 	resource, jsonView, size, err := actionOptionalResourceValue(options)
 	if err != nil {
-		return core.Result{Value: core.E("lns.name.update", "invalid resource", err), OK: false}
+		return core.Fail(core.E("lns.name.update", "invalid resource", err))
 	}
 	plan.Resource = jsonView
 	plan.ResourceSize = size
@@ -543,13 +541,13 @@ func (s *Service) handleNameUpdate(_ context.Context, options core.Options) core
 		},
 	}
 
-	return core.Result{Value: plan, OK: true}
+	return core.Ok(plan)
 }
 
 func (s *Service) handleNameRevoke(_ context.Context, options core.Options) core.Result {
 	plan, err := s.prepareLinkedNameAction("lns.name.revoke", options)
 	if err != nil {
-		return core.Result{Value: err, OK: false}
+		return core.Fail(err)
 	}
 	ownerAddress, ownerWarning := s.nameDraftAddress(options, "address", "owner", "owner_address")
 	if ownerWarning != "" {
@@ -572,13 +570,13 @@ func (s *Service) handleNameRevoke(_ context.Context, options core.Options) core
 		},
 	}
 
-	return core.Result{Value: plan, OK: true}
+	return core.Ok(plan)
 }
 
 func (s *Service) handleDNSResolve(_ context.Context, options core.Options) core.Result {
 	zone, host, resource, err := s.dnsActionInputs(context.Background(), options)
 	if err != nil {
-		return core.Result{Value: err, OK: false}
+		return core.Fail(err)
 	}
 
 	glue := resource.ToGlue(zone)
@@ -604,28 +602,27 @@ func (s *Service) handleDNSResolve(_ context.Context, options core.Options) core
 		}
 	}
 
-	return core.Result{Value: result, OK: true}
+	return core.Ok(result)
 }
 
 func (s *Service) handleDNSResolveTXT(_ context.Context, options core.Options) core.Result {
 	zone, _, resource, err := s.dnsActionInputs(context.Background(), options)
 	if err != nil {
-		return core.Result{Value: err, OK: false}
+		return core.Fail(err)
 	}
 
-	return core.Result{
-		Value: dnsTXTResult{
+	return core.Ok(
+		dnsTXTResult{
 			Zone:    zone,
 			Records: resource.ToTXT(zone),
-		},
-		OK: true,
-	}
+		})
+
 }
 
 func (s *Service) handleDNSResolveAll(_ context.Context, options core.Options) core.Result {
 	zone, _, resource, err := s.dnsActionInputs(context.Background(), options)
 	if err != nil {
-		return core.Result{Value: err, OK: false}
+		return core.Fail(err)
 	}
 
 	records := resource.ToZone(zone)
@@ -634,19 +631,18 @@ func (s *Service) handleDNSResolveAll(_ context.Context, options core.Options) c
 		projected = append(projected, record)
 	}
 
-	return core.Result{
-		Value: dnsAllResult{
+	return core.Ok(
+		dnsAllResult{
 			Zone:    zone,
 			Records: projected,
-		},
-		OK: true,
-	}
+		})
+
 }
 
 func (s *Service) handleDNSReverse(ctx context.Context, options core.Options) core.Result {
 	address, err := dnsReverseAddress(options)
 	if err != nil {
-		return core.Result{Value: err, OK: false}
+		return core.Fail(err)
 	}
 
 	if actionOptionValue(options, "resources", "resource", "resource_json") == nil {
@@ -657,19 +653,18 @@ func (s *Service) handleDNSReverse(ctx context.Context, options core.Options) co
 
 			names := bridge.Reverse(address)
 			sort.Strings(names)
-			return core.Result{
-				Value: dnsReverseResult{
+			return core.Ok(
+				dnsReverseResult{
 					Address: address.String(),
 					Names:   names,
-				},
-				OK: true,
-			}
+				})
+
 		}
 	}
 
 	resources, err := dnsReverseResources(options)
 	if err != nil {
-		return core.Result{Value: err, OK: false}
+		return core.Fail(err)
 	}
 
 	seen := map[string]struct{}{}
@@ -698,13 +693,12 @@ func (s *Service) handleDNSReverse(ctx context.Context, options core.Options) co
 
 	sort.Strings(names)
 
-	return core.Result{
-		Value: dnsReverseResult{
+	return core.Ok(
+		dnsReverseResult{
 			Address: address.String(),
 			Names:   names,
-		},
-		OK: true,
-	}
+		})
+
 }
 
 func (s *Service) handleDNSHealth(_ context.Context, options core.Options) core.Result {
@@ -741,66 +735,66 @@ func (s *Service) handleDNSHealth(_ context.Context, options core.Options) core.
 		}
 	}
 
-	return core.Result{Value: result, OK: true}
+	return core.Ok(result)
 }
 
 func (s *Service) handleDNSServe(_ context.Context, options core.Options) core.Result {
 	bridge, err := s.bridgeFromOptions(options)
 	if err != nil {
-		return core.Result{Value: core.E("lns.dns.serve", "chain_url is required", err), OK: false}
+		return core.Fail(core.E("lns.dns.serve", "chain_url is required", err))
 	}
 	if err := bridge.Serve(nil); err != nil {
-		return core.Result{Value: core.E("lns.dns.serve", "start live DNS bridge", err), OK: false}
+		return core.Fail(core.E("lns.dns.serve", "start live DNS bridge", err))
 	}
-	return core.Result{Value: bridge.Health(), OK: true}
+	return core.Ok(bridge.Health())
 }
 
 func (s *Service) handleDNSDiscover(ctx context.Context, options core.Options) core.Result {
 	bridge, err := s.bridgeFromOptions(options)
 	if err != nil {
-		return core.Result{Value: core.E("lns.dns.discover", "chain_url is required", err), OK: false}
+		return core.Fail(core.E("lns.dns.discover", "chain_url is required", err))
 	}
 
 	report, err := bridge.Discover(ctx)
 	if err != nil {
-		return core.Result{Value: core.E("lns.dns.discover", "refresh live DNS cache", err), OK: false}
+		return core.Fail(core.E("lns.dns.discover", "refresh live DNS cache", err))
 	}
 
-	return core.Result{Value: report, OK: true}
+	return core.Ok(report)
 }
 
 func (s *Service) handleVPNDiscover(ctx context.Context, options core.Options) core.Result {
 	gateways, err := s.vpnGatewaysFromOptions(ctx, options)
 	if err != nil {
-		return core.Result{Value: err, OK: false}
+		return core.Fail(err)
 	}
 
-	return core.Result{Value: vpnDiscoverResult{Gateways: gateways}, OK: true}
+	return core.Ok(vpnDiscoverResult{Gateways: gateways})
 }
 
 func (s *Service) handleVPNConnect(ctx context.Context, options core.Options) core.Result {
 	gateways, err := s.vpnGatewaysFromOptions(ctx, options)
 	if err != nil {
-		return core.Result{Value: err, OK: false}
+		return core.Fail(err)
 	}
 
 	filter := actionStringFromAny(actionOptionValue(options, "name", "gateway", "_input"))
 	gateway, ok := selectVPNGateway(gateways, filter)
 	if !ok {
-		return core.Result{Value: core.E("lns.vpn.connect", "gateway was not found", nil), OK: false}
+		return core.Fail(core.E("lns.vpn.connect", "gateway was not found", nil))
 	}
 
 	status := s.setVPNConnection(gateway)
 	status.Notes = append(status.Notes, "Connection state is local to this service instance; no OS tunnel is created yet.")
-	return core.Result{Value: status, OK: true}
+	return core.Ok(status)
 }
 
 func (s *Service) handleVPNStatus(_ context.Context, _ core.Options) core.Result {
-	return core.Result{Value: s.currentVPNStatus(), OK: true}
+	return core.Ok(s.currentVPNStatus())
 }
 
 func (s *Service) handleVPNDisconnect(_ context.Context, _ core.Options) core.Result {
-	return core.Result{Value: s.clearVPNConnection(), OK: true}
+	return core.Ok(s.clearVPNConnection())
 }
 
 func (s *Service) lookupNameAction(options core.Options) (nameLookupResult, error) {
@@ -873,12 +867,12 @@ func unsupportedAction(operation string, options core.Options, reason string) co
 		switch input.(type) {
 		case string, []byte:
 			if !Verify(input) {
-				return core.Result{Value: core.E(operation, "invalid name", nil), OK: false}
+				return core.Fail(core.E(operation, "invalid name", nil))
 			}
 		}
 	}
 
-	return core.Result{Value: core.E(operation, reason, nil), OK: false}
+	return core.Fail(core.E(operation, reason, nil))
 }
 
 func newNameActionPlan(action string, lookup nameLookupResult) nameActionPlanResult {

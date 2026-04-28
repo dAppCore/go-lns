@@ -11,7 +11,7 @@ import (
 	"sync"
 	"time"
 
-	core "dappco.re/go/core"
+	core "dappco.re/go"
 	chainpkg "dappco.re/go/lns/pkg/chain"
 	miekgdns "github.com/miekg/dns"
 )
@@ -318,7 +318,9 @@ func (b *Bridge) Serve(ctx context.Context) error {
 	if ctx != nil {
 		go func() {
 			<-ctx.Done()
-			_ = b.Shutdown()
+			if err := b.Shutdown(); err != nil {
+				core.Warn("DNS bridge shutdown failed", "err", err)
+			}
 		}()
 	}
 
@@ -550,7 +552,9 @@ func (b *Bridge) handleDNS(writer miekgdns.ResponseWriter, request *miekgdns.Msg
 
 	if len(request.Question) == 0 {
 		reply.SetRcode(request, miekgdns.RcodeFormatError)
-		_ = writer.WriteMsg(reply)
+		if err := writer.WriteMsg(reply); err != nil {
+			core.Warn("DNS response write failed", "err", err)
+		}
 		return
 	}
 
@@ -563,7 +567,9 @@ func (b *Bridge) handleDNS(writer miekgdns.ResponseWriter, request *miekgdns.Msg
 	label, ok := parseLTHNName(question.Name)
 	if !ok {
 		reply.SetRcode(request, miekgdns.RcodeRefused)
-		_ = writer.WriteMsg(reply)
+		if err := writer.WriteMsg(reply); err != nil {
+			core.Warn("DNS response write failed", "err", err)
+		}
 		return
 	}
 
@@ -573,7 +579,9 @@ func (b *Bridge) handleDNS(writer miekgdns.ResponseWriter, request *miekgdns.Msg
 		} else {
 			reply.Ns = []miekgdns.RR{b.soaRecord()}
 		}
-		_ = writer.WriteMsg(reply)
+		if err := writer.WriteMsg(reply); err != nil {
+			core.Warn("DNS response write failed", "err", err)
+		}
 		return
 	}
 
@@ -581,7 +589,9 @@ func (b *Bridge) handleDNS(writer miekgdns.ResponseWriter, request *miekgdns.Msg
 	if !found {
 		reply.SetRcode(request, miekgdns.RcodeNameError)
 		reply.Ns = []miekgdns.RR{b.soaRecord()}
-		_ = writer.WriteMsg(reply)
+		if err := writer.WriteMsg(reply); err != nil {
+			core.Warn("DNS response write failed", "err", err)
+		}
 		return
 	}
 
@@ -629,14 +639,18 @@ func (b *Bridge) handleDNS(writer miekgdns.ResponseWriter, request *miekgdns.Msg
 		reply.Ns = []miekgdns.RR{b.soaRecord()}
 	}
 
-	_ = writer.WriteMsg(reply)
+	if err := writer.WriteMsg(reply); err != nil {
+		core.Warn("DNS response write failed", "err", err)
+	}
 }
 
 func (b *Bridge) handlePTR(writer miekgdns.ResponseWriter, reply *miekgdns.Msg, question miekgdns.Question) {
 	ip := arpaToIP(miekgdns.Fqdn(question.Name))
 	if ip == "" {
 		reply.SetRcode(reply, miekgdns.RcodeNameError)
-		_ = writer.WriteMsg(reply)
+		if err := writer.WriteMsg(reply); err != nil {
+			core.Warn("DNS response write failed", "err", err)
+		}
 		return
 	}
 
@@ -651,7 +665,9 @@ func (b *Bridge) handlePTR(writer miekgdns.ResponseWriter, reply *miekgdns.Msg, 
 		reply.SetRcode(reply, miekgdns.RcodeNameError)
 	}
 
-	_ = writer.WriteMsg(reply)
+	if err := writer.WriteMsg(reply); err != nil {
+		core.Warn("DNS response write failed", "err", err)
+	}
 }
 
 func (b *Bridge) soaRecord() miekgdns.RR {

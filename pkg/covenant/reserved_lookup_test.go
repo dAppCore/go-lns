@@ -5,7 +5,7 @@ package covenant
 import (
 	"testing"
 
-	core "dappco.re/go/core"
+	core "dappco.re/go"
 	"dappco.re/go/lns/pkg/primitives"
 )
 
@@ -349,7 +349,7 @@ func TestReservedCatalogHelpers(t *testing.T) {
 }
 
 func TestReservedCatalogGetByNameSkipsSyntaxValidation(t *testing.T) {
-	hash := primitives.Hash(core.SHA3Keccak256([]byte("foo.bar")))
+	hash := primitives.Hash(core.SHA3_256([]byte("foo.bar")))
 	catalog := &ReservedCatalog{
 		byHash: map[primitives.Hash]ReservedName{
 			hash: {

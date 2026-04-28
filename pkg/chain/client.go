@@ -13,7 +13,7 @@ import (
 	"strings"
 	"time"
 
-	core "dappco.re/go/core"
+	core "dappco.re/go"
 )
 
 // Client is a JSON-RPC client for the LNS sidechain daemon.

@@ -5,7 +5,7 @@ package covenant
 import (
 	"encoding/binary"
 
-	core "dappco.re/go/core"
+	core "dappco.re/go"
 )
 
 const (

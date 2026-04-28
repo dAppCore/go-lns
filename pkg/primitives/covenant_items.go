@@ -6,7 +6,7 @@ import (
 	"bytes"
 	"encoding/binary"
 
-	core "dappco.re/go/core"
+	core "dappco.re/go"
 )
 
 func normaliseCovenantIndex(index, length int) (int, bool) {

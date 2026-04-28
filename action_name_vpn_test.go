@@ -9,7 +9,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	core "dappco.re/go/core"
+	core "dappco.re/go"
 )
 
 func TestNameLinkedActionsReturnDraftPlans(t *testing.T) {

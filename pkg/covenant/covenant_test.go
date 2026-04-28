@@ -41,4 +41,3 @@ func TestCovenantTypePredicates(t *testing.T) {
 		}
 	}
 }
-

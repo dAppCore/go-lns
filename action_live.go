@@ -12,7 +12,7 @@ import (
 	"strings"
 	"time"
 
-	core "dappco.re/go/core"
+	core "dappco.re/go"
 	chainpkg "dappco.re/go/lns/pkg/chain"
 	dnspkg "dappco.re/go/lns/pkg/dns"
 	"dappco.re/go/lns/pkg/primitives"
@@ -63,46 +63,46 @@ type chainBlockResult struct {
 func (s *Service) handleWalletCreate(_ context.Context, _ core.Options) core.Result {
 	wallet, err := walletpkg.Create()
 	if err != nil {
-		return core.Result{Value: err, OK: false}
+		return core.Fail(err)
 	}
 
 	s.walletMu.Lock()
 	s.wallet = wallet
 	s.walletMu.Unlock()
 
-	return core.Result{Value: wallet.Snapshot(), OK: true}
+	return core.Ok(wallet.Snapshot())
 }
 
 func (s *Service) handleWalletImport(_ context.Context, options core.Options) core.Result {
 	seed := actionStringFromAny(actionOptionValue(options, "seed", "_input"))
 	if seed == "" {
-		return core.Result{Value: core.E("lns.wallet.import", "seed is required", nil), OK: false}
+		return core.Fail(core.E("lns.wallet.import", "seed is required", nil))
 	}
 
 	wallet, err := walletpkg.ImportSeed(seed)
 	if err != nil {
-		return core.Result{Value: err, OK: false}
+		return core.Fail(err)
 	}
 
 	s.walletMu.Lock()
 	s.wallet = wallet
 	s.walletMu.Unlock()
 
-	return core.Result{Value: wallet.Snapshot(), OK: true}
+	return core.Ok(wallet.Snapshot())
 }
 
 func (s *Service) handleWalletExport(_ context.Context, _ core.Options) core.Result {
 	wallet, ok := s.currentWallet()
 	if !ok {
-		return core.Result{Value: core.E("lns.wallet.export", "wallet is not initialized", nil), OK: false}
+		return core.Fail(core.E("lns.wallet.export", "wallet is not initialized", nil))
 	}
-	return core.Result{Value: wallet.Snapshot(), OK: true}
+	return core.Ok(wallet.Snapshot())
 }
 
 func (s *Service) handleWalletReceive(_ context.Context, options core.Options) core.Result {
 	wallet, ok := s.currentWallet()
 	if !ok {
-		return core.Result{Value: core.E("lns.wallet.receive", "wallet is not initialized", nil), OK: false}
+		return core.Fail(core.E("lns.wallet.receive", "wallet is not initialized", nil))
 	}
 
 	next, _ := actionBoolValue(options, "next")
@@ -113,49 +113,48 @@ func (s *Service) handleWalletReceive(_ context.Context, options core.Options) c
 		address = wallet.ReceiveAddress()
 	}
 
-	return core.Result{
-		Value: walletReceiveResult{
+	return core.Ok(
+		walletReceiveResult{
 			Address: address,
 			SeedID:  wallet.SeedID(),
 			Index:   wallet.Snapshot().ReceiveIndex,
-		},
-		OK: true,
-	}
+		})
+
 }
 
 func (s *Service) handleWalletBalance(_ context.Context, _ core.Options) core.Result {
 	wallet, ok := s.currentWallet()
 	if !ok {
-		return core.Result{Value: core.E("lns.wallet.balance", "wallet is not initialized", nil), OK: false}
+		return core.Fail(core.E("lns.wallet.balance", "wallet is not initialized", nil))
 	}
 
 	confirmed, locked := wallet.Balance()
-	return core.Result{Value: walletBalanceResult{Confirmed: confirmed, Locked: locked}, OK: true}
+	return core.Ok(walletBalanceResult{Confirmed: confirmed, Locked: locked})
 }
 
 func (s *Service) handleWalletHistory(_ context.Context, _ core.Options) core.Result {
 	wallet, ok := s.currentWallet()
 	if !ok {
-		return core.Result{Value: core.E("lns.wallet.history", "wallet is not initialized", nil), OK: false}
+		return core.Fail(core.E("lns.wallet.history", "wallet is not initialized", nil))
 	}
 
-	return core.Result{Value: wallet.History(), OK: true}
+	return core.Ok(wallet.History())
 }
 
 func (s *Service) handleWalletSend(_ context.Context, options core.Options) core.Result {
 	wallet, ok := s.currentWallet()
 	if !ok {
-		return core.Result{Value: core.E("lns.wallet.send", "wallet is not initialized", nil), OK: false}
+		return core.Fail(core.E("lns.wallet.send", "wallet is not initialized", nil))
 	}
 
 	address, ok := actionAddressValue(options, "address", "to", "recipient")
 	if !ok || !address.IsValid() {
-		return core.Result{Value: core.E("lns.wallet.send", "recipient address is required", nil), OK: false}
+		return core.Fail(core.E("lns.wallet.send", "recipient address is required", nil))
 	}
 
 	amount, ok := actionUint64Value(options, "amount", "value")
 	if !ok || amount == 0 {
-		return core.Result{Value: core.E("lns.wallet.send", "amount is required", nil), OK: false}
+		return core.Fail(core.E("lns.wallet.send", "amount is required", nil))
 	}
 
 	confirmed, locked := wallet.Balance()
@@ -259,7 +258,7 @@ func (s *Service) handleWalletSend(_ context.Context, options core.Options) core
 	}
 	draftHash, draftID, err := walletDraftID(wallet, draft, noteForWalletSend(options))
 	if err != nil {
-		return core.Result{Value: err, OK: false}
+		return core.Fail(err)
 	}
 	result.DraftID = draftID
 
@@ -275,7 +274,7 @@ func (s *Service) handleWalletSend(_ context.Context, options core.Options) core
 	if recordHistory {
 		if !sufficientFunds {
 			result.Warnings = append(result.Warnings, "Draft history entry was not recorded because the local balance is insufficient.")
-			return core.Result{Value: result, OK: true}
+			return core.Ok(result)
 		}
 
 		note := noteForWalletSend(options)
@@ -288,7 +287,7 @@ func (s *Service) handleWalletSend(_ context.Context, options core.Options) core
 		result.PendingEntry = &entry
 	}
 
-	return core.Result{Value: result, OK: true}
+	return core.Ok(result)
 }
 
 func walletDraftID(wallet *walletpkg.Wallet, draft *nameDraftTx, note string) (primitives.Hash, string, error) {
@@ -325,21 +324,21 @@ func noteForWalletSend(options core.Options) string {
 func (s *Service) handleChainHeight(_ context.Context, options core.Options) core.Result {
 	client, err := chainClientFromOptions(options)
 	if err != nil {
-		return core.Result{Value: err, OK: false}
+		return core.Fail(err)
 	}
 
 	info, err := client.GetBlockchainInfo()
 	if err != nil {
-		return core.Result{Value: err, OK: false}
+		return core.Fail(err)
 	}
 
-	return core.Result{Value: chainHeightResult{Height: info.Blocks, TreeRoot: info.TreeRoot}, OK: true}
+	return core.Ok(chainHeightResult{Height: info.Blocks, TreeRoot: info.TreeRoot})
 }
 
 func (s *Service) handleChainStatus(_ context.Context, options core.Options) core.Result {
 	client, err := chainClientFromOptions(options)
 	if err != nil {
-		return core.Result{Value: err, OK: false}
+		return core.Fail(err)
 	}
 
 	status := chainStatusResult{}
@@ -354,60 +353,60 @@ func (s *Service) handleChainStatus(_ context.Context, options core.Options) cor
 		status.Bridge = &health
 	}
 
-	return core.Result{Value: status, OK: true}
+	return core.Ok(status)
 }
 
 func (s *Service) handleChainSync(ctx context.Context, options core.Options) core.Result {
 	bridge, err := s.bridgeFromOptions(options)
 	if err != nil {
-		return core.Result{Value: err, OK: false}
+		return core.Fail(err)
 	}
 
 	report, err := bridge.Discover(ctx)
 	if err != nil {
-		return core.Result{Value: err, OK: false}
+		return core.Fail(err)
 	}
 
-	return core.Result{Value: report, OK: true}
+	return core.Ok(report)
 }
 
 func (s *Service) handleChainPeers(_ context.Context, options core.Options) core.Result {
 	client, err := chainClientFromOptions(options)
 	if err != nil {
-		return core.Result{Value: err, OK: false}
+		return core.Fail(err)
 	}
 
 	raw, err := client.GetPeerInfo()
 	if err != nil {
-		return core.Result{Value: err, OK: false}
+		return core.Fail(err)
 	}
 
-	return core.Result{Value: decodeRawJSON(raw), OK: true}
+	return core.Ok(decodeRawJSON(raw))
 }
 
 func (s *Service) handleChainBlock(_ context.Context, options core.Options) core.Result {
 	client, err := chainClientFromOptions(options)
 	if err != nil {
-		return core.Result{Value: err, OK: false}
+		return core.Fail(err)
 	}
 
 	if hash := actionStringFromAny(actionOptionValue(options, "hash")); hash != "" {
 		raw, err := client.GetBlock(hash)
 		if err != nil {
-			return core.Result{Value: err, OK: false}
+			return core.Fail(err)
 		}
-		return core.Result{Value: chainBlockResult{Block: decodeRawJSON(raw)}, OK: true}
+		return core.Ok(chainBlockResult{Block: decodeRawJSON(raw)})
 	}
 
 	if height, ok := actionUint32Value(options, "height"); ok {
 		raw, err := client.GetBlockByHeight(uint64(height))
 		if err != nil {
-			return core.Result{Value: err, OK: false}
+			return core.Fail(err)
 		}
-		return core.Result{Value: chainBlockResult{Block: decodeRawJSON(raw)}, OK: true}
+		return core.Ok(chainBlockResult{Block: decodeRawJSON(raw)})
 	}
 
-	return core.Result{Value: core.E("lns.chain.block", "hash or height is required", nil), OK: false}
+	return core.Fail(core.E("lns.chain.block", "hash or height is required", nil))
 }
 
 func (s *Service) currentWallet() (*walletpkg.Wallet, bool) {
@@ -445,7 +444,9 @@ func (s *Service) bridgeFromOptions(options core.Options) (*dnspkg.Bridge, error
 
 	if s.dnsBridge == nil || !bridgeConfigsEqual(s.bridgeConfig, config) {
 		if s.dnsBridge != nil {
-			_ = s.dnsBridge.Shutdown()
+			if err := s.dnsBridge.Shutdown(); err != nil {
+				return nil, core.Wrap(err, "lns.bridge", "shutdown existing DNS bridge")
+			}
 		}
 		s.bridgeConfig = config
 		s.dnsBridge = dnspkg.NewBridge(config)

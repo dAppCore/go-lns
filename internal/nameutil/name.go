@@ -2,7 +2,7 @@
 
 package nameutil
 
-import core "dappco.re/go/core"
+import core "dappco.re/go"
 
 // CatalogLabel converts string and byte inputs into a raw catalog label.
 //

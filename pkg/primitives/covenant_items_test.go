@@ -6,7 +6,7 @@ import (
 	"encoding/json"
 	"testing"
 
-	core "dappco.re/go/core"
+	core "dappco.re/go"
 )
 
 func TestCovenantItemHelpers(t *testing.T) {

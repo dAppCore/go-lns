@@ -6,7 +6,7 @@ import (
 	"net/http" // AX-6: structural HTTP boundary for alias JSON-RPC transport.
 	"time"
 
-	core "dappco.re/go/core"
+	core "dappco.re/go"
 )
 
 // Alias describes a main-chain alias entry used for LNS discovery.

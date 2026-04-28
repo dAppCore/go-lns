@@ -5,7 +5,7 @@ package covenant
 import (
 	"testing"
 
-	core "dappco.re/go/core"
+	core "dappco.re/go"
 )
 
 func TestNameSizeLimits(t *testing.T) {
@@ -225,7 +225,7 @@ func TestHashString(t *testing.T) {
 		t.Fatalf("HashString returned error: %v", err)
 	}
 
-	want := core.SHA3Keccak256([]byte("foo-bar"))
+	want := core.SHA3_256([]byte("foo-bar"))
 	if got != want {
 		t.Fatalf("HashString returned %x, want %x", got, want)
 	}
@@ -237,7 +237,7 @@ func TestHashBinary(t *testing.T) {
 		t.Fatalf("HashBinary returned error: %v", err)
 	}
 
-	want := core.SHA3Keccak256([]byte("foo_bar"))
+	want := core.SHA3_256([]byte("foo_bar"))
 	if got != want {
 		t.Fatalf("HashBinary returned %x, want %x", got, want)
 	}
@@ -249,7 +249,7 @@ func TestHashName(t *testing.T) {
 		t.Fatalf("HashName(string) returned error: %v", err)
 	}
 
-	want := core.SHA3Keccak256([]byte("foo-bar"))
+	want := core.SHA3_256([]byte("foo-bar"))
 	if got != want {
 		t.Fatalf("HashName(string) returned %x, want %x", got, want)
 	}
@@ -259,15 +259,15 @@ func TestHashName(t *testing.T) {
 		t.Fatalf("HashName([]byte) returned error: %v", err)
 	}
 
-	want = core.SHA3Keccak256([]byte("foo_bar"))
+	want = core.SHA3_256([]byte("foo_bar"))
 	if got != want {
 		t.Fatalf("HashName([]byte) returned %x, want %x", got, want)
 	}
 }
 
 func TestHashAliases(t *testing.T) {
-	wantString := core.SHA3Keccak256([]byte("foo-bar"))
-	wantBinary := core.SHA3Keccak256([]byte("foo_bar"))
+	wantString := core.SHA3_256([]byte("foo-bar"))
+	wantBinary := core.SHA3_256([]byte("foo_bar"))
 
 	got, err := HashByName("foo-bar")
 	if err != nil {

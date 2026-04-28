@@ -11,7 +11,7 @@
 package dns
 
 import (
-	core "dappco.re/go/core"
+	core "dappco.re/go"
 	"dappco.re/go/lns/internal/nameutil"
 	"dappco.re/go/lns/pkg/covenant"
 	"dappco.re/go/lns/pkg/primitives"

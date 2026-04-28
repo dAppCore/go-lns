@@ -6,7 +6,7 @@ import (
 	"crypto/rand"
 	"math/big"
 
-	core "dappco.re/go/core"
+	core "dappco.re/go"
 	"dappco.re/go/lns/pkg/primitives"
 )
 

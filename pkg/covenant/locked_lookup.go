@@ -18,7 +18,7 @@ import (
 	"sort"
 	"sync"
 
-	core "dappco.re/go/core"
+	core "dappco.re/go"
 	"dappco.re/go/lns/pkg/primitives"
 )
 
@@ -350,7 +350,7 @@ func (c *LockedCatalog) GetByName(name string) (LockedName, bool) {
 		return LockedName{}, false
 	}
 
-	hash := primitives.Hash(core.SHA3Keccak256([]byte(name)))
+	hash := primitives.Hash(core.SHA3_256([]byte(name)))
 	return c.Get(hash)
 }
 

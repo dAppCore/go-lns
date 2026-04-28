@@ -15,8 +15,9 @@ package lns
 
 import (
 	"context"
+	"sync"
 
-	core "dappco.re/go/core"
+	core "dappco.re/go"
 	"dappco.re/go/lns/internal/nameutil"
 	"dappco.re/go/lns/pkg/covenant"
 	dnspkg "dappco.re/go/lns/pkg/dns"
@@ -143,7 +144,7 @@ var (
 )
 
 func okResult() core.Result {
-	return core.Result{OK: true}
+	return core.Ok(nil)
 }
 
 // serviceOptions holds configuration for the LNS service.
@@ -258,10 +259,10 @@ func GetNewService(c *core.Core) *Service {
 //	app := core.New(core.WithService(lns.Register))
 func Register(c *core.Core) core.Result {
 	if c == nil {
-		return core.Result{Value: core.E("lns.Register", "core is required", nil), OK: false}
+		return core.Fail(core.E("lns.Register", "core is required", nil))
 	}
 
-	return core.Result{Value: NewService(c), OK: true}
+	return core.Ok(NewService(c))
 }
 
 // GetRegister is an alias for Register.
@@ -283,12 +284,12 @@ func GetRegister(c *core.Core) core.Result {
 func RegisterWithOptions(opts ...ServiceOption) func(*core.Core) core.Result {
 	return func(c *core.Core) core.Result {
 		if c == nil {
-			return core.Result{Value: core.E("lns.RegisterWithOptions", "core is required", nil), OK: false}
+			return core.Fail(core.E("lns.RegisterWithOptions", "core is required", nil))
 		}
 
 		// Bind Core first so any later service options can rely on it being present.
 		serviceOpts := append([]ServiceOption{WithCore(c)}, opts...)
-		return core.Result{Value: NewServiceWithOptions(serviceOpts...), OK: true}
+		return core.Ok(NewServiceWithOptions(serviceOpts...))
 	}
 }
 
@@ -617,7 +618,7 @@ func (s *Service) OnShutdown(context.Context) core.Result {
 		s.bridgeMu.Unlock()
 		if bridge != nil {
 			if err := bridge.Shutdown(); err != nil {
-				return core.Result{Value: err, OK: false}
+				return core.Fail(err)
 			}
 		}
 	}
@@ -670,7 +671,7 @@ func resolveCanonicalName(method string, name any) (primitives.Hash, error) {
 			return primitives.Hash{}, core.E(method, "invalid name", nil)
 		}
 
-		return primitives.Hash(core.SHA3Keccak256([]byte(normalized))), nil
+		return primitives.Hash(core.SHA3_256([]byte(normalized))), nil
 	default:
 		return primitives.Hash{}, core.E(method, "invalid name type", nil)
 	}
@@ -717,7 +718,7 @@ func LookupCatalogName[T any](
 		return zero, false
 	}
 
-	hash := primitives.Hash(core.SHA3Keccak256([]byte(normalized)))
+	hash := primitives.Hash(core.SHA3_256([]byte(normalized)))
 	return byHash(hash)
 }
 
