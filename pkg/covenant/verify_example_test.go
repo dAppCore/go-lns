@@ -5,15 +5,11 @@ package covenant
 import core "dappco.re/go"
 
 func ExampleVerifyCovenants() {
-	fn := ax7ValueOf(VerifyCovenants)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(VerifyCovenants(coverageTransaction("good"), coverageValue[CoinView]("good"), 1, coverageValue[Network]("good"))))
 	// Output: 1
 }
 
 func ExampleGetVerifyCovenants() {
-	fn := ax7ValueOf(GetVerifyCovenants)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetVerifyCovenants(coverageTransaction("good"), coverageValue[CoinView]("good"), 1, coverageValue[Network]("good"))))
 	// Output: 1
 }

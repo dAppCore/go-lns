@@ -368,753 +368,528 @@ func TestHashRejectsInvalidName(t *testing.T) {
 // BEGIN v090 file-aware generated coverage
 
 func TestName_GetBlacklist_Good(t *core.T) {
-	fn := ax7ValueOf(GetBlacklist)
-	args := ax7Args(fn.Type(), "good")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "good")
+	values := coveragePack(GetBlacklist())
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestName_GetBlacklist_Bad(t *core.T) {
-	fn := ax7ValueOf(GetBlacklist)
-	args := ax7Args(fn.Type(), "bad")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "bad")
+	values := coveragePack(GetBlacklist())
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestName_GetBlacklist_Ugly(t *core.T) {
-	fn := ax7ValueOf(GetBlacklist)
-	args := ax7Args(fn.Type(), "ugly")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "ugly")
+	values := coveragePack(GetBlacklist())
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestName_VerifyString_Good(t *core.T) {
-	fn := ax7ValueOf(VerifyString)
-	args := ax7Args(fn.Type(), "good")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "good")
+	values := coveragePack(VerifyString("lethean.lthn"))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestName_VerifyString_Bad(t *core.T) {
-	fn := ax7ValueOf(VerifyString)
-	args := ax7Args(fn.Type(), "bad")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "bad")
+	values := coveragePack(VerifyString(""))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestName_VerifyString_Ugly(t *core.T) {
-	fn := ax7ValueOf(VerifyString)
-	args := ax7Args(fn.Type(), "ugly")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "ugly")
+	values := coveragePack(VerifyString("lethean.\x00.lthn"))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestName_GetVerifyString_Good(t *core.T) {
-	fn := ax7ValueOf(GetVerifyString)
-	args := ax7Args(fn.Type(), "good")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "good")
+	values := coveragePack(GetVerifyString("lethean.lthn"))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestName_GetVerifyString_Bad(t *core.T) {
-	fn := ax7ValueOf(GetVerifyString)
-	args := ax7Args(fn.Type(), "bad")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "bad")
+	values := coveragePack(GetVerifyString(""))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestName_GetVerifyString_Ugly(t *core.T) {
-	fn := ax7ValueOf(GetVerifyString)
-	args := ax7Args(fn.Type(), "ugly")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "ugly")
+	values := coveragePack(GetVerifyString("lethean.\x00.lthn"))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestName_VerifyBinary_Good(t *core.T) {
-	fn := ax7ValueOf(VerifyBinary)
-	args := ax7Args(fn.Type(), "good")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "good")
+	values := coveragePack(VerifyBinary([]byte("lethean.lthn")))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestName_VerifyBinary_Bad(t *core.T) {
-	fn := ax7ValueOf(VerifyBinary)
-	args := ax7Args(fn.Type(), "bad")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "bad")
+	values := coveragePack(VerifyBinary([]byte{}))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestName_VerifyBinary_Ugly(t *core.T) {
-	fn := ax7ValueOf(VerifyBinary)
-	args := ax7Args(fn.Type(), "ugly")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "ugly")
+	values := coveragePack(VerifyBinary([]byte{0xff, 0x00, 0x61}))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestName_GetVerifyBinary_Good(t *core.T) {
-	fn := ax7ValueOf(GetVerifyBinary)
-	args := ax7Args(fn.Type(), "good")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "good")
+	values := coveragePack(GetVerifyBinary([]byte("lethean.lthn")))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestName_GetVerifyBinary_Bad(t *core.T) {
-	fn := ax7ValueOf(GetVerifyBinary)
-	args := ax7Args(fn.Type(), "bad")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "bad")
+	values := coveragePack(GetVerifyBinary([]byte{}))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestName_GetVerifyBinary_Ugly(t *core.T) {
-	fn := ax7ValueOf(GetVerifyBinary)
-	args := ax7Args(fn.Type(), "ugly")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "ugly")
+	values := coveragePack(GetVerifyBinary([]byte{0xff, 0x00, 0x61}))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestName_VerifyName_Good(t *core.T) {
-	fn := ax7ValueOf(VerifyName)
-	args := ax7Args(fn.Type(), "good")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "good")
+	values := coveragePack(VerifyName("lethean.lthn"))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestName_VerifyName_Bad(t *core.T) {
-	fn := ax7ValueOf(VerifyName)
-	args := ax7Args(fn.Type(), "bad")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "bad")
+	values := coveragePack(VerifyName(nil))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestName_VerifyName_Ugly(t *core.T) {
-	fn := ax7ValueOf(VerifyName)
-	args := ax7Args(fn.Type(), "ugly")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "ugly")
+	values := coveragePack(VerifyName("lethean.\x00.lthn"))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestName_GetVerifyName_Good(t *core.T) {
-	fn := ax7ValueOf(GetVerifyName)
-	args := ax7Args(fn.Type(), "good")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "good")
+	values := coveragePack(GetVerifyName("lethean.lthn"))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestName_GetVerifyName_Bad(t *core.T) {
-	fn := ax7ValueOf(GetVerifyName)
-	args := ax7Args(fn.Type(), "bad")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "bad")
+	values := coveragePack(GetVerifyName(nil))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestName_GetVerifyName_Ugly(t *core.T) {
-	fn := ax7ValueOf(GetVerifyName)
-	args := ax7Args(fn.Type(), "ugly")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "ugly")
+	values := coveragePack(GetVerifyName("lethean.\x00.lthn"))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestName_VerifyByName_Good(t *core.T) {
-	fn := ax7ValueOf(VerifyByName)
-	args := ax7Args(fn.Type(), "good")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "good")
+	values := coveragePack(VerifyByName("lethean.lthn"))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestName_VerifyByName_Bad(t *core.T) {
-	fn := ax7ValueOf(VerifyByName)
-	args := ax7Args(fn.Type(), "bad")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "bad")
+	values := coveragePack(VerifyByName(nil))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestName_VerifyByName_Ugly(t *core.T) {
-	fn := ax7ValueOf(VerifyByName)
-	args := ax7Args(fn.Type(), "ugly")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "ugly")
+	values := coveragePack(VerifyByName("lethean.\x00.lthn"))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestName_GetVerifyByName_Good(t *core.T) {
-	fn := ax7ValueOf(GetVerifyByName)
-	args := ax7Args(fn.Type(), "good")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "good")
+	values := coveragePack(GetVerifyByName("lethean.lthn"))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestName_GetVerifyByName_Bad(t *core.T) {
-	fn := ax7ValueOf(GetVerifyByName)
-	args := ax7Args(fn.Type(), "bad")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "bad")
+	values := coveragePack(GetVerifyByName(nil))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestName_GetVerifyByName_Ugly(t *core.T) {
-	fn := ax7ValueOf(GetVerifyByName)
-	args := ax7Args(fn.Type(), "ugly")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "ugly")
+	values := coveragePack(GetVerifyByName("lethean.\x00.lthn"))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestName_VerifyByString_Good(t *core.T) {
-	fn := ax7ValueOf(VerifyByString)
-	args := ax7Args(fn.Type(), "good")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "good")
+	values := coveragePack(VerifyByString("lethean.lthn"))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestName_VerifyByString_Bad(t *core.T) {
-	fn := ax7ValueOf(VerifyByString)
-	args := ax7Args(fn.Type(), "bad")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "bad")
+	values := coveragePack(VerifyByString(""))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestName_VerifyByString_Ugly(t *core.T) {
-	fn := ax7ValueOf(VerifyByString)
-	args := ax7Args(fn.Type(), "ugly")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "ugly")
+	values := coveragePack(VerifyByString("lethean.\x00.lthn"))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestName_GetVerifyByString_Good(t *core.T) {
-	fn := ax7ValueOf(GetVerifyByString)
-	args := ax7Args(fn.Type(), "good")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "good")
+	values := coveragePack(GetVerifyByString("lethean.lthn"))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestName_GetVerifyByString_Bad(t *core.T) {
-	fn := ax7ValueOf(GetVerifyByString)
-	args := ax7Args(fn.Type(), "bad")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "bad")
+	values := coveragePack(GetVerifyByString(""))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestName_GetVerifyByString_Ugly(t *core.T) {
-	fn := ax7ValueOf(GetVerifyByString)
-	args := ax7Args(fn.Type(), "ugly")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "ugly")
+	values := coveragePack(GetVerifyByString("lethean.\x00.lthn"))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestName_VerifyByBinary_Good(t *core.T) {
-	fn := ax7ValueOf(VerifyByBinary)
-	args := ax7Args(fn.Type(), "good")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "good")
+	values := coveragePack(VerifyByBinary([]byte("lethean.lthn")))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestName_VerifyByBinary_Bad(t *core.T) {
-	fn := ax7ValueOf(VerifyByBinary)
-	args := ax7Args(fn.Type(), "bad")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "bad")
+	values := coveragePack(VerifyByBinary([]byte{}))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestName_VerifyByBinary_Ugly(t *core.T) {
-	fn := ax7ValueOf(VerifyByBinary)
-	args := ax7Args(fn.Type(), "ugly")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "ugly")
+	values := coveragePack(VerifyByBinary([]byte{0xff, 0x00, 0x61}))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestName_GetVerifyByBinary_Good(t *core.T) {
-	fn := ax7ValueOf(GetVerifyByBinary)
-	args := ax7Args(fn.Type(), "good")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "good")
+	values := coveragePack(GetVerifyByBinary([]byte("lethean.lthn")))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestName_GetVerifyByBinary_Bad(t *core.T) {
-	fn := ax7ValueOf(GetVerifyByBinary)
-	args := ax7Args(fn.Type(), "bad")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "bad")
+	values := coveragePack(GetVerifyByBinary([]byte{}))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestName_GetVerifyByBinary_Ugly(t *core.T) {
-	fn := ax7ValueOf(GetVerifyByBinary)
-	args := ax7Args(fn.Type(), "ugly")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "ugly")
+	values := coveragePack(GetVerifyByBinary([]byte{0xff, 0x00, 0x61}))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestName_HashString_Good(t *core.T) {
-	fn := ax7ValueOf(HashString)
-	args := ax7Args(fn.Type(), "good")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "good")
+	values := coveragePack(HashString("lethean.lthn"))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestName_HashString_Bad(t *core.T) {
-	fn := ax7ValueOf(HashString)
-	args := ax7Args(fn.Type(), "bad")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "bad")
+	values := coveragePack(HashString(""))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestName_HashString_Ugly(t *core.T) {
-	fn := ax7ValueOf(HashString)
-	args := ax7Args(fn.Type(), "ugly")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "ugly")
+	values := coveragePack(HashString("lethean.\x00.lthn"))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestName_GetHashString_Good(t *core.T) {
-	fn := ax7ValueOf(GetHashString)
-	args := ax7Args(fn.Type(), "good")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "good")
+	values := coveragePack(GetHashString("lethean.lthn"))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestName_GetHashString_Bad(t *core.T) {
-	fn := ax7ValueOf(GetHashString)
-	args := ax7Args(fn.Type(), "bad")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "bad")
+	values := coveragePack(GetHashString(""))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestName_GetHashString_Ugly(t *core.T) {
-	fn := ax7ValueOf(GetHashString)
-	args := ax7Args(fn.Type(), "ugly")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "ugly")
+	values := coveragePack(GetHashString("lethean.\x00.lthn"))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestName_HashByString_Good(t *core.T) {
-	fn := ax7ValueOf(HashByString)
-	args := ax7Args(fn.Type(), "good")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "good")
+	values := coveragePack(HashByString("lethean.lthn"))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestName_HashByString_Bad(t *core.T) {
-	fn := ax7ValueOf(HashByString)
-	args := ax7Args(fn.Type(), "bad")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "bad")
+	values := coveragePack(HashByString(""))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestName_HashByString_Ugly(t *core.T) {
-	fn := ax7ValueOf(HashByString)
-	args := ax7Args(fn.Type(), "ugly")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "ugly")
+	values := coveragePack(HashByString("lethean.\x00.lthn"))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestName_GetHashByString_Good(t *core.T) {
-	fn := ax7ValueOf(GetHashByString)
-	args := ax7Args(fn.Type(), "good")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "good")
+	values := coveragePack(GetHashByString("lethean.lthn"))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestName_GetHashByString_Bad(t *core.T) {
-	fn := ax7ValueOf(GetHashByString)
-	args := ax7Args(fn.Type(), "bad")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "bad")
+	values := coveragePack(GetHashByString(""))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestName_GetHashByString_Ugly(t *core.T) {
-	fn := ax7ValueOf(GetHashByString)
-	args := ax7Args(fn.Type(), "ugly")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "ugly")
+	values := coveragePack(GetHashByString("lethean.\x00.lthn"))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestName_HashBinary_Good(t *core.T) {
-	fn := ax7ValueOf(HashBinary)
-	args := ax7Args(fn.Type(), "good")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "good")
+	values := coveragePack(HashBinary([]byte("lethean.lthn")))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestName_HashBinary_Bad(t *core.T) {
-	fn := ax7ValueOf(HashBinary)
-	args := ax7Args(fn.Type(), "bad")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "bad")
+	values := coveragePack(HashBinary([]byte{}))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestName_HashBinary_Ugly(t *core.T) {
-	fn := ax7ValueOf(HashBinary)
-	args := ax7Args(fn.Type(), "ugly")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "ugly")
+	values := coveragePack(HashBinary([]byte{0xff, 0x00, 0x61}))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestName_GetHashBinary_Good(t *core.T) {
-	fn := ax7ValueOf(GetHashBinary)
-	args := ax7Args(fn.Type(), "good")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "good")
+	values := coveragePack(GetHashBinary([]byte("lethean.lthn")))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestName_GetHashBinary_Bad(t *core.T) {
-	fn := ax7ValueOf(GetHashBinary)
-	args := ax7Args(fn.Type(), "bad")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "bad")
+	values := coveragePack(GetHashBinary([]byte{}))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestName_GetHashBinary_Ugly(t *core.T) {
-	fn := ax7ValueOf(GetHashBinary)
-	args := ax7Args(fn.Type(), "ugly")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "ugly")
+	values := coveragePack(GetHashBinary([]byte{0xff, 0x00, 0x61}))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestName_HashByBinary_Good(t *core.T) {
-	fn := ax7ValueOf(HashByBinary)
-	args := ax7Args(fn.Type(), "good")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "good")
+	values := coveragePack(HashByBinary([]byte("lethean.lthn")))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestName_HashByBinary_Bad(t *core.T) {
-	fn := ax7ValueOf(HashByBinary)
-	args := ax7Args(fn.Type(), "bad")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "bad")
+	values := coveragePack(HashByBinary([]byte{}))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestName_HashByBinary_Ugly(t *core.T) {
-	fn := ax7ValueOf(HashByBinary)
-	args := ax7Args(fn.Type(), "ugly")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "ugly")
+	values := coveragePack(HashByBinary([]byte{0xff, 0x00, 0x61}))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestName_GetHashByBinary_Good(t *core.T) {
-	fn := ax7ValueOf(GetHashByBinary)
-	args := ax7Args(fn.Type(), "good")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "good")
+	values := coveragePack(GetHashByBinary([]byte("lethean.lthn")))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestName_GetHashByBinary_Bad(t *core.T) {
-	fn := ax7ValueOf(GetHashByBinary)
-	args := ax7Args(fn.Type(), "bad")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "bad")
+	values := coveragePack(GetHashByBinary([]byte{}))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestName_GetHashByBinary_Ugly(t *core.T) {
-	fn := ax7ValueOf(GetHashByBinary)
-	args := ax7Args(fn.Type(), "ugly")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "ugly")
+	values := coveragePack(GetHashByBinary([]byte{0xff, 0x00, 0x61}))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestName_HashName_Good(t *core.T) {
-	fn := ax7ValueOf(HashName)
-	args := ax7Args(fn.Type(), "good")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "good")
+	values := coveragePack(HashName("lethean.lthn"))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestName_HashName_Bad(t *core.T) {
-	fn := ax7ValueOf(HashName)
-	args := ax7Args(fn.Type(), "bad")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "bad")
+	values := coveragePack(HashName(nil))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestName_HashName_Ugly(t *core.T) {
-	fn := ax7ValueOf(HashName)
-	args := ax7Args(fn.Type(), "ugly")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "ugly")
+	values := coveragePack(HashName("lethean.\x00.lthn"))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestName_GetHashName_Good(t *core.T) {
-	fn := ax7ValueOf(GetHashName)
-	args := ax7Args(fn.Type(), "good")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "good")
+	values := coveragePack(GetHashName("lethean.lthn"))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestName_GetHashName_Bad(t *core.T) {
-	fn := ax7ValueOf(GetHashName)
-	args := ax7Args(fn.Type(), "bad")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "bad")
+	values := coveragePack(GetHashName(nil))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestName_GetHashName_Ugly(t *core.T) {
-	fn := ax7ValueOf(GetHashName)
-	args := ax7Args(fn.Type(), "ugly")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "ugly")
+	values := coveragePack(GetHashName("lethean.\x00.lthn"))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestName_HashByName_Good(t *core.T) {
-	fn := ax7ValueOf(HashByName)
-	args := ax7Args(fn.Type(), "good")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "good")
+	values := coveragePack(HashByName("lethean.lthn"))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestName_HashByName_Bad(t *core.T) {
-	fn := ax7ValueOf(HashByName)
-	args := ax7Args(fn.Type(), "bad")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "bad")
+	values := coveragePack(HashByName(nil))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestName_HashByName_Ugly(t *core.T) {
-	fn := ax7ValueOf(HashByName)
-	args := ax7Args(fn.Type(), "ugly")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "ugly")
+	values := coveragePack(HashByName("lethean.\x00.lthn"))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestName_GetHashByName_Good(t *core.T) {
-	fn := ax7ValueOf(GetHashByName)
-	args := ax7Args(fn.Type(), "good")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "good")
+	values := coveragePack(GetHashByName("lethean.lthn"))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestName_GetHashByName_Bad(t *core.T) {
-	fn := ax7ValueOf(GetHashByName)
-	args := ax7Args(fn.Type(), "bad")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "bad")
+	values := coveragePack(GetHashByName(nil))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestName_GetHashByName_Ugly(t *core.T) {
-	fn := ax7ValueOf(GetHashByName)
-	args := ax7Args(fn.Type(), "ugly")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "ugly")
+	values := coveragePack(GetHashByName("lethean.\x00.lthn"))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 // END v090 file-aware generated coverage

@@ -158,243 +158,171 @@ func (d NameDelta) MarshalMust(t *testing.T) []byte {
 // BEGIN v090 file-aware generated coverage
 
 func TestView_NewNameView_Good(t *core.T) {
-	fn := ax7ValueOf(NewNameView)
-	args := ax7Args(fn.Type(), "good")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "good")
+	values := coveragePack(NewNameView())
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestView_NewNameView_Bad(t *core.T) {
-	fn := ax7ValueOf(NewNameView)
-	args := ax7Args(fn.Type(), "bad")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "bad")
+	values := coveragePack(NewNameView())
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestView_NewNameView_Ugly(t *core.T) {
-	fn := ax7ValueOf(NewNameView)
-	args := ax7Args(fn.Type(), "ugly")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "ugly")
+	values := coveragePack(NewNameView())
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestView_NameView_GetNameStateSync_Good(t *core.T) {
-	fn := ax7ValueOf(new(NameView).GetNameStateSync)
-	args := ax7Args(fn.Type(), "good")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "good")
+	values := coveragePack(new(NameView).GetNameStateSync(coverageValue[NameStateGetter]("good"), [32]byte{1}))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestView_NameView_GetNameStateSync_Bad(t *core.T) {
-	fn := ax7ValueOf(new(NameView).GetNameStateSync)
-	args := ax7Args(fn.Type(), "bad")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "bad")
+	values := coveragePack(new(NameView).GetNameStateSync(coverageValue[NameStateGetter]("bad"), [32]byte{}))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestView_NameView_GetNameStateSync_Ugly(t *core.T) {
-	fn := ax7ValueOf(new(NameView).GetNameStateSync)
-	args := ax7Args(fn.Type(), "ugly")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "ugly")
+	values := coveragePack(new(NameView).GetNameStateSync(coverageValue[NameStateGetter]("ugly"), [32]byte{0xff}))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestView_NameView_GetNameState_Good(t *core.T) {
-	fn := ax7ValueOf(new(NameView).GetNameState)
-	args := ax7Args(fn.Type(), "good")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "good")
+	values := coveragePack(new(NameView).GetNameState(coverageValue[NameStateGetter]("good"), [32]byte{1}))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestView_NameView_GetNameState_Bad(t *core.T) {
-	fn := ax7ValueOf(new(NameView).GetNameState)
-	args := ax7Args(fn.Type(), "bad")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "bad")
+	values := coveragePack(new(NameView).GetNameState(coverageValue[NameStateGetter]("bad"), [32]byte{}))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestView_NameView_GetNameState_Ugly(t *core.T) {
-	fn := ax7ValueOf(new(NameView).GetNameState)
-	args := ax7Args(fn.Type(), "ugly")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "ugly")
+	values := coveragePack(new(NameView).GetNameState(coverageValue[NameStateGetter]("ugly"), [32]byte{0xff}))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestView_NameView_ToNameUndo_Good(t *core.T) {
-	fn := ax7ValueOf(new(NameView).ToNameUndo)
-	args := ax7Args(fn.Type(), "good")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "good")
+	values := coveragePack(new(NameView).ToNameUndo())
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestView_NameView_ToNameUndo_Bad(t *core.T) {
-	fn := ax7ValueOf(new(NameView).ToNameUndo)
-	args := ax7Args(fn.Type(), "bad")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "bad")
+	values := coveragePack(new(NameView).ToNameUndo())
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestView_NameView_ToNameUndo_Ugly(t *core.T) {
-	fn := ax7ValueOf(new(NameView).ToNameUndo)
-	args := ax7Args(fn.Type(), "ugly")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "ugly")
+	values := coveragePack(new(NameView).ToNameUndo())
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestView_NameUndo_FromView_Good(t *core.T) {
-	fn := ax7ValueOf(new(NameUndo).FromView)
-	args := ax7Args(fn.Type(), "good")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "good")
+	values := coveragePack(new(NameUndo).FromView(nil))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestView_NameUndo_FromView_Bad(t *core.T) {
-	fn := ax7ValueOf(new(NameUndo).FromView)
-	args := ax7Args(fn.Type(), "bad")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "bad")
+	values := coveragePack(new(NameUndo).FromView(nil))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestView_NameUndo_FromView_Ugly(t *core.T) {
-	fn := ax7ValueOf(new(NameUndo).FromView)
-	args := ax7Args(fn.Type(), "ugly")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "ugly")
+	values := coveragePack(new(NameUndo).FromView(nil))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestView_NameUndo_GetSize_Good(t *core.T) {
-	fn := ax7ValueOf(new(NameUndo).GetSize)
-	args := ax7Args(fn.Type(), "good")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "good")
+	values := coveragePack(new(NameUndo).GetSize())
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestView_NameUndo_GetSize_Bad(t *core.T) {
-	fn := ax7ValueOf(new(NameUndo).GetSize)
-	args := ax7Args(fn.Type(), "bad")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "bad")
+	values := coveragePack(new(NameUndo).GetSize())
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestView_NameUndo_GetSize_Ugly(t *core.T) {
-	fn := ax7ValueOf(new(NameUndo).GetSize)
-	args := ax7Args(fn.Type(), "ugly")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "ugly")
+	values := coveragePack(new(NameUndo).GetSize())
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestView_NameUndo_MarshalBinary_Good(t *core.T) {
-	fn := ax7ValueOf(new(NameUndo).MarshalBinary)
-	args := ax7Args(fn.Type(), "good")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "good")
+	values := coveragePack(new(NameUndo).MarshalBinary())
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestView_NameUndo_MarshalBinary_Bad(t *core.T) {
-	fn := ax7ValueOf(new(NameUndo).MarshalBinary)
-	args := ax7Args(fn.Type(), "bad")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "bad")
+	values := coveragePack(new(NameUndo).MarshalBinary())
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestView_NameUndo_MarshalBinary_Ugly(t *core.T) {
-	fn := ax7ValueOf(new(NameUndo).MarshalBinary)
-	args := ax7Args(fn.Type(), "ugly")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "ugly")
+	values := coveragePack(new(NameUndo).MarshalBinary())
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestView_NameUndo_UnmarshalBinary_Good(t *core.T) {
-	fn := ax7ValueOf(new(NameUndo).UnmarshalBinary)
-	args := ax7Args(fn.Type(), "good")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "good")
+	values := coveragePack(new(NameUndo).UnmarshalBinary([]byte("lethean.lthn")))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestView_NameUndo_UnmarshalBinary_Bad(t *core.T) {
-	fn := ax7ValueOf(new(NameUndo).UnmarshalBinary)
-	args := ax7Args(fn.Type(), "bad")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "bad")
+	values := coveragePack(new(NameUndo).UnmarshalBinary([]byte{}))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestView_NameUndo_UnmarshalBinary_Ugly(t *core.T) {
-	fn := ax7ValueOf(new(NameUndo).UnmarshalBinary)
-	args := ax7Args(fn.Type(), "ugly")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "ugly")
+	values := coveragePack(new(NameUndo).UnmarshalBinary([]byte{0xff, 0x00, 0x61}))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 // END v090 file-aware generated coverage

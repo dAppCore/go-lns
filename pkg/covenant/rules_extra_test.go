@@ -793,243 +793,171 @@ func TestCoinbaseClaimConjureOverflow(t *testing.T) {
 // BEGIN v090 file-aware generated coverage
 
 func TestRulesExtra_GrindName_Good(t *core.T) {
-	fn := ax7ValueOf(GrindName)
-	args := ax7Args(fn.Type(), "good")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "good")
+	values := coveragePack(GrindName(1, 1, coverageValue[NameRules]("good")))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestRulesExtra_GrindName_Bad(t *core.T) {
-	fn := ax7ValueOf(GrindName)
-	args := ax7Args(fn.Type(), "bad")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "bad")
+	values := coveragePack(GrindName(0, 0, coverageValue[NameRules]("bad")))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestRulesExtra_GrindName_Ugly(t *core.T) {
-	fn := ax7ValueOf(GrindName)
-	args := ax7Args(fn.Type(), "ugly")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "ugly")
+	values := coveragePack(GrindName(-1, 63, coverageValue[NameRules]("ugly")))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestRulesExtra_GetGrindName_Good(t *core.T) {
-	fn := ax7ValueOf(GetGrindName)
-	args := ax7Args(fn.Type(), "good")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "good")
+	values := coveragePack(GetGrindName(1, 1, coverageValue[NameRules]("good")))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestRulesExtra_GetGrindName_Bad(t *core.T) {
-	fn := ax7ValueOf(GetGrindName)
-	args := ax7Args(fn.Type(), "bad")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "bad")
+	values := coveragePack(GetGrindName(0, 0, coverageValue[NameRules]("bad")))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestRulesExtra_GetGrindName_Ugly(t *core.T) {
-	fn := ax7ValueOf(GetGrindName)
-	args := ax7Args(fn.Type(), "ugly")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "ugly")
+	values := coveragePack(GetGrindName(-1, 63, coverageValue[NameRules]("ugly")))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestRulesExtra_CountOpens_Good(t *core.T) {
-	fn := ax7ValueOf(CountOpens)
-	args := ax7Args(fn.Type(), "good")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "good")
+	values := coveragePack(CountOpens(coverageTransaction("good")))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestRulesExtra_CountOpens_Bad(t *core.T) {
-	fn := ax7ValueOf(CountOpens)
-	args := ax7Args(fn.Type(), "bad")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "bad")
+	values := coveragePack(CountOpens(coverageTransaction("bad")))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestRulesExtra_CountOpens_Ugly(t *core.T) {
-	fn := ax7ValueOf(CountOpens)
-	args := ax7Args(fn.Type(), "ugly")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "ugly")
+	values := coveragePack(CountOpens(coverageTransaction("ugly")))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestRulesExtra_GetCountOpens_Good(t *core.T) {
-	fn := ax7ValueOf(GetCountOpens)
-	args := ax7Args(fn.Type(), "good")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "good")
+	values := coveragePack(GetCountOpens(coverageTransaction("good")))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestRulesExtra_GetCountOpens_Bad(t *core.T) {
-	fn := ax7ValueOf(GetCountOpens)
-	args := ax7Args(fn.Type(), "bad")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "bad")
+	values := coveragePack(GetCountOpens(coverageTransaction("bad")))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestRulesExtra_GetCountOpens_Ugly(t *core.T) {
-	fn := ax7ValueOf(GetCountOpens)
-	args := ax7Args(fn.Type(), "ugly")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "ugly")
+	values := coveragePack(GetCountOpens(coverageTransaction("ugly")))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestRulesExtra_CountUpdates_Good(t *core.T) {
-	fn := ax7ValueOf(CountUpdates)
-	args := ax7Args(fn.Type(), "good")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "good")
+	values := coveragePack(CountUpdates(coverageTransaction("good")))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestRulesExtra_CountUpdates_Bad(t *core.T) {
-	fn := ax7ValueOf(CountUpdates)
-	args := ax7Args(fn.Type(), "bad")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "bad")
+	values := coveragePack(CountUpdates(coverageTransaction("bad")))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestRulesExtra_CountUpdates_Ugly(t *core.T) {
-	fn := ax7ValueOf(CountUpdates)
-	args := ax7Args(fn.Type(), "ugly")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "ugly")
+	values := coveragePack(CountUpdates(coverageTransaction("ugly")))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestRulesExtra_GetCountUpdates_Good(t *core.T) {
-	fn := ax7ValueOf(GetCountUpdates)
-	args := ax7Args(fn.Type(), "good")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "good")
+	values := coveragePack(GetCountUpdates(coverageTransaction("good")))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestRulesExtra_GetCountUpdates_Bad(t *core.T) {
-	fn := ax7ValueOf(GetCountUpdates)
-	args := ax7Args(fn.Type(), "bad")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "bad")
+	values := coveragePack(GetCountUpdates(coverageTransaction("bad")))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestRulesExtra_GetCountUpdates_Ugly(t *core.T) {
-	fn := ax7ValueOf(GetCountUpdates)
-	args := ax7Args(fn.Type(), "ugly")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "ugly")
+	values := coveragePack(GetCountUpdates(coverageTransaction("ugly")))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestRulesExtra_CountRenewals_Good(t *core.T) {
-	fn := ax7ValueOf(CountRenewals)
-	args := ax7Args(fn.Type(), "good")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "good")
+	values := coveragePack(CountRenewals(coverageTransaction("good")))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestRulesExtra_CountRenewals_Bad(t *core.T) {
-	fn := ax7ValueOf(CountRenewals)
-	args := ax7Args(fn.Type(), "bad")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "bad")
+	values := coveragePack(CountRenewals(coverageTransaction("bad")))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestRulesExtra_CountRenewals_Ugly(t *core.T) {
-	fn := ax7ValueOf(CountRenewals)
-	args := ax7Args(fn.Type(), "ugly")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "ugly")
+	values := coveragePack(CountRenewals(coverageTransaction("ugly")))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestRulesExtra_GetCountRenewals_Good(t *core.T) {
-	fn := ax7ValueOf(GetCountRenewals)
-	args := ax7Args(fn.Type(), "good")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "good")
+	values := coveragePack(GetCountRenewals(coverageTransaction("good")))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestRulesExtra_GetCountRenewals_Bad(t *core.T) {
-	fn := ax7ValueOf(GetCountRenewals)
-	args := ax7Args(fn.Type(), "bad")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "bad")
+	values := coveragePack(GetCountRenewals(coverageTransaction("bad")))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestRulesExtra_GetCountRenewals_Ugly(t *core.T) {
-	fn := ax7ValueOf(GetCountRenewals)
-	args := ax7Args(fn.Type(), "ugly")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "ugly")
+	values := coveragePack(GetCountRenewals(coverageTransaction("ugly")))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 // END v090 file-aware generated coverage

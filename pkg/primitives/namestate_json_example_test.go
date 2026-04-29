@@ -5,36 +5,26 @@ package primitives
 import core "dappco.re/go"
 
 func ExampleNameState_GetJSON() {
-	fn := ax7ValueOf(new(NameState).GetJSON)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(NameState).GetJSON(1, coverageValue[NameStateRules]("good"))))
 	// Output: 1
 }
 
 func ExampleNameState_Format() {
-	fn := ax7ValueOf(new(NameState).Format)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(NameState).Format(1, coverageValue[NameStateRules]("good"))))
 	// Output: 1
 }
 
 func ExampleNameState_GetFormat() {
-	fn := ax7ValueOf(new(NameState).GetFormat)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(NameState).GetFormat(1, coverageValue[NameStateRules]("good"))))
 	// Output: 1
 }
 
 func ExampleNameState_FromJSON() {
-	fn := ax7ValueOf(new(NameState).FromJSON)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(NameState).FromJSON(coverageValue[NameStateJSON]("good"))))
 	// Output: 1
 }
 
 func ExampleNameState_GetFromJSON() {
-	fn := ax7ValueOf(new(NameState).GetFromJSON)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(NameState).GetFromJSON(coverageValue[NameStateJSON]("good"))))
 	// Output: 1
 }

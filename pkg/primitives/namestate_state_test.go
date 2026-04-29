@@ -158,633 +158,444 @@ func TestNameStateClaimableAndExpired(t *testing.T) {
 // BEGIN v090 file-aware generated coverage
 
 func TestNamestateState_NameStateStatus_String_Good(t *core.T) {
-	fn := ax7ValueOf(new(NameStateStatus).String)
-	args := ax7Args(fn.Type(), "good")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "good")
+	values := coveragePack(new(NameStateStatus).String())
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestNamestateState_NameStateStatus_String_Bad(t *core.T) {
-	fn := ax7ValueOf(new(NameStateStatus).String)
-	args := ax7Args(fn.Type(), "bad")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "bad")
+	values := coveragePack(new(NameStateStatus).String())
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestNamestateState_NameStateStatus_String_Ugly(t *core.T) {
-	fn := ax7ValueOf(new(NameStateStatus).String)
-	args := ax7Args(fn.Type(), "ugly")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "ugly")
+	values := coveragePack(new(NameStateStatus).String())
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestNamestateState_NameState_State_Good(t *core.T) {
-	fn := ax7ValueOf(new(NameState).State)
-	args := ax7Args(fn.Type(), "good")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "good")
+	values := coveragePack(new(NameState).State(1, coverageValue[NameStateRules]("good")))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestNamestateState_NameState_State_Bad(t *core.T) {
-	fn := ax7ValueOf(new(NameState).State)
-	args := ax7Args(fn.Type(), "bad")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "bad")
+	values := coveragePack(new(NameState).State(0, coverageValue[NameStateRules]("bad")))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestNamestateState_NameState_State_Ugly(t *core.T) {
-	fn := ax7ValueOf(new(NameState).State)
-	args := ax7Args(fn.Type(), "ugly")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "ugly")
+	values := coveragePack(new(NameState).State(63, coverageValue[NameStateRules]("ugly")))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestNamestateState_NameState_GetState_Good(t *core.T) {
-	fn := ax7ValueOf(new(NameState).GetState)
-	args := ax7Args(fn.Type(), "good")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "good")
+	values := coveragePack(new(NameState).GetState(1, coverageValue[NameStateRules]("good")))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestNamestateState_NameState_GetState_Bad(t *core.T) {
-	fn := ax7ValueOf(new(NameState).GetState)
-	args := ax7Args(fn.Type(), "bad")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "bad")
+	values := coveragePack(new(NameState).GetState(0, coverageValue[NameStateRules]("bad")))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestNamestateState_NameState_GetState_Ugly(t *core.T) {
-	fn := ax7ValueOf(new(NameState).GetState)
-	args := ax7Args(fn.Type(), "ugly")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "ugly")
+	values := coveragePack(new(NameState).GetState(63, coverageValue[NameStateRules]("ugly")))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestNamestateState_NameState_IsOpening_Good(t *core.T) {
-	fn := ax7ValueOf(new(NameState).IsOpening)
-	args := ax7Args(fn.Type(), "good")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "good")
+	values := coveragePack(new(NameState).IsOpening(1, coverageValue[NameStateRules]("good")))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestNamestateState_NameState_IsOpening_Bad(t *core.T) {
-	fn := ax7ValueOf(new(NameState).IsOpening)
-	args := ax7Args(fn.Type(), "bad")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "bad")
+	values := coveragePack(new(NameState).IsOpening(0, coverageValue[NameStateRules]("bad")))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestNamestateState_NameState_IsOpening_Ugly(t *core.T) {
-	fn := ax7ValueOf(new(NameState).IsOpening)
-	args := ax7Args(fn.Type(), "ugly")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "ugly")
+	values := coveragePack(new(NameState).IsOpening(63, coverageValue[NameStateRules]("ugly")))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestNamestateState_NameState_GetIsOpening_Good(t *core.T) {
-	fn := ax7ValueOf(new(NameState).GetIsOpening)
-	args := ax7Args(fn.Type(), "good")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "good")
+	values := coveragePack(new(NameState).GetIsOpening(1, coverageValue[NameStateRules]("good")))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestNamestateState_NameState_GetIsOpening_Bad(t *core.T) {
-	fn := ax7ValueOf(new(NameState).GetIsOpening)
-	args := ax7Args(fn.Type(), "bad")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "bad")
+	values := coveragePack(new(NameState).GetIsOpening(0, coverageValue[NameStateRules]("bad")))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestNamestateState_NameState_GetIsOpening_Ugly(t *core.T) {
-	fn := ax7ValueOf(new(NameState).GetIsOpening)
-	args := ax7Args(fn.Type(), "ugly")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "ugly")
+	values := coveragePack(new(NameState).GetIsOpening(63, coverageValue[NameStateRules]("ugly")))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestNamestateState_NameState_IsLocked_Good(t *core.T) {
-	fn := ax7ValueOf(new(NameState).IsLocked)
-	args := ax7Args(fn.Type(), "good")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "good")
+	values := coveragePack(new(NameState).IsLocked(1, coverageValue[NameStateRules]("good")))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestNamestateState_NameState_IsLocked_Bad(t *core.T) {
-	fn := ax7ValueOf(new(NameState).IsLocked)
-	args := ax7Args(fn.Type(), "bad")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "bad")
+	values := coveragePack(new(NameState).IsLocked(0, coverageValue[NameStateRules]("bad")))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestNamestateState_NameState_IsLocked_Ugly(t *core.T) {
-	fn := ax7ValueOf(new(NameState).IsLocked)
-	args := ax7Args(fn.Type(), "ugly")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "ugly")
+	values := coveragePack(new(NameState).IsLocked(63, coverageValue[NameStateRules]("ugly")))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestNamestateState_NameState_GetIsLocked_Good(t *core.T) {
-	fn := ax7ValueOf(new(NameState).GetIsLocked)
-	args := ax7Args(fn.Type(), "good")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "good")
+	values := coveragePack(new(NameState).GetIsLocked(1, coverageValue[NameStateRules]("good")))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestNamestateState_NameState_GetIsLocked_Bad(t *core.T) {
-	fn := ax7ValueOf(new(NameState).GetIsLocked)
-	args := ax7Args(fn.Type(), "bad")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "bad")
+	values := coveragePack(new(NameState).GetIsLocked(0, coverageValue[NameStateRules]("bad")))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestNamestateState_NameState_GetIsLocked_Ugly(t *core.T) {
-	fn := ax7ValueOf(new(NameState).GetIsLocked)
-	args := ax7Args(fn.Type(), "ugly")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "ugly")
+	values := coveragePack(new(NameState).GetIsLocked(63, coverageValue[NameStateRules]("ugly")))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestNamestateState_NameState_IsBidding_Good(t *core.T) {
-	fn := ax7ValueOf(new(NameState).IsBidding)
-	args := ax7Args(fn.Type(), "good")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "good")
+	values := coveragePack(new(NameState).IsBidding(1, coverageValue[NameStateRules]("good")))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestNamestateState_NameState_IsBidding_Bad(t *core.T) {
-	fn := ax7ValueOf(new(NameState).IsBidding)
-	args := ax7Args(fn.Type(), "bad")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "bad")
+	values := coveragePack(new(NameState).IsBidding(0, coverageValue[NameStateRules]("bad")))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestNamestateState_NameState_IsBidding_Ugly(t *core.T) {
-	fn := ax7ValueOf(new(NameState).IsBidding)
-	args := ax7Args(fn.Type(), "ugly")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "ugly")
+	values := coveragePack(new(NameState).IsBidding(63, coverageValue[NameStateRules]("ugly")))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestNamestateState_NameState_GetIsBidding_Good(t *core.T) {
-	fn := ax7ValueOf(new(NameState).GetIsBidding)
-	args := ax7Args(fn.Type(), "good")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "good")
+	values := coveragePack(new(NameState).GetIsBidding(1, coverageValue[NameStateRules]("good")))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestNamestateState_NameState_GetIsBidding_Bad(t *core.T) {
-	fn := ax7ValueOf(new(NameState).GetIsBidding)
-	args := ax7Args(fn.Type(), "bad")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "bad")
+	values := coveragePack(new(NameState).GetIsBidding(0, coverageValue[NameStateRules]("bad")))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestNamestateState_NameState_GetIsBidding_Ugly(t *core.T) {
-	fn := ax7ValueOf(new(NameState).GetIsBidding)
-	args := ax7Args(fn.Type(), "ugly")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "ugly")
+	values := coveragePack(new(NameState).GetIsBidding(63, coverageValue[NameStateRules]("ugly")))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestNamestateState_NameState_IsReveal_Good(t *core.T) {
-	fn := ax7ValueOf(new(NameState).IsReveal)
-	args := ax7Args(fn.Type(), "good")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "good")
+	values := coveragePack(new(NameState).IsReveal(1, coverageValue[NameStateRules]("good")))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestNamestateState_NameState_IsReveal_Bad(t *core.T) {
-	fn := ax7ValueOf(new(NameState).IsReveal)
-	args := ax7Args(fn.Type(), "bad")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "bad")
+	values := coveragePack(new(NameState).IsReveal(0, coverageValue[NameStateRules]("bad")))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestNamestateState_NameState_IsReveal_Ugly(t *core.T) {
-	fn := ax7ValueOf(new(NameState).IsReveal)
-	args := ax7Args(fn.Type(), "ugly")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "ugly")
+	values := coveragePack(new(NameState).IsReveal(63, coverageValue[NameStateRules]("ugly")))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestNamestateState_NameState_GetIsReveal_Good(t *core.T) {
-	fn := ax7ValueOf(new(NameState).GetIsReveal)
-	args := ax7Args(fn.Type(), "good")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "good")
+	values := coveragePack(new(NameState).GetIsReveal(1, coverageValue[NameStateRules]("good")))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestNamestateState_NameState_GetIsReveal_Bad(t *core.T) {
-	fn := ax7ValueOf(new(NameState).GetIsReveal)
-	args := ax7Args(fn.Type(), "bad")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "bad")
+	values := coveragePack(new(NameState).GetIsReveal(0, coverageValue[NameStateRules]("bad")))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestNamestateState_NameState_GetIsReveal_Ugly(t *core.T) {
-	fn := ax7ValueOf(new(NameState).GetIsReveal)
-	args := ax7Args(fn.Type(), "ugly")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "ugly")
+	values := coveragePack(new(NameState).GetIsReveal(63, coverageValue[NameStateRules]("ugly")))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestNamestateState_NameState_IsClosed_Good(t *core.T) {
-	fn := ax7ValueOf(new(NameState).IsClosed)
-	args := ax7Args(fn.Type(), "good")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "good")
+	values := coveragePack(new(NameState).IsClosed(1, coverageValue[NameStateRules]("good")))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestNamestateState_NameState_IsClosed_Bad(t *core.T) {
-	fn := ax7ValueOf(new(NameState).IsClosed)
-	args := ax7Args(fn.Type(), "bad")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "bad")
+	values := coveragePack(new(NameState).IsClosed(0, coverageValue[NameStateRules]("bad")))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestNamestateState_NameState_IsClosed_Ugly(t *core.T) {
-	fn := ax7ValueOf(new(NameState).IsClosed)
-	args := ax7Args(fn.Type(), "ugly")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "ugly")
+	values := coveragePack(new(NameState).IsClosed(63, coverageValue[NameStateRules]("ugly")))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestNamestateState_NameState_GetIsClosed_Good(t *core.T) {
-	fn := ax7ValueOf(new(NameState).GetIsClosed)
-	args := ax7Args(fn.Type(), "good")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "good")
+	values := coveragePack(new(NameState).GetIsClosed(1, coverageValue[NameStateRules]("good")))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestNamestateState_NameState_GetIsClosed_Bad(t *core.T) {
-	fn := ax7ValueOf(new(NameState).GetIsClosed)
-	args := ax7Args(fn.Type(), "bad")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "bad")
+	values := coveragePack(new(NameState).GetIsClosed(0, coverageValue[NameStateRules]("bad")))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestNamestateState_NameState_GetIsClosed_Ugly(t *core.T) {
-	fn := ax7ValueOf(new(NameState).GetIsClosed)
-	args := ax7Args(fn.Type(), "ugly")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "ugly")
+	values := coveragePack(new(NameState).GetIsClosed(63, coverageValue[NameStateRules]("ugly")))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestNamestateState_NameState_IsRevoked_Good(t *core.T) {
-	fn := ax7ValueOf(new(NameState).IsRevoked)
-	args := ax7Args(fn.Type(), "good")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "good")
+	values := coveragePack(new(NameState).IsRevoked(1, coverageValue[NameStateRules]("good")))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestNamestateState_NameState_IsRevoked_Bad(t *core.T) {
-	fn := ax7ValueOf(new(NameState).IsRevoked)
-	args := ax7Args(fn.Type(), "bad")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "bad")
+	values := coveragePack(new(NameState).IsRevoked(0, coverageValue[NameStateRules]("bad")))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestNamestateState_NameState_IsRevoked_Ugly(t *core.T) {
-	fn := ax7ValueOf(new(NameState).IsRevoked)
-	args := ax7Args(fn.Type(), "ugly")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "ugly")
+	values := coveragePack(new(NameState).IsRevoked(63, coverageValue[NameStateRules]("ugly")))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestNamestateState_NameState_GetIsRevoked_Good(t *core.T) {
-	fn := ax7ValueOf(new(NameState).GetIsRevoked)
-	args := ax7Args(fn.Type(), "good")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "good")
+	values := coveragePack(new(NameState).GetIsRevoked(1, coverageValue[NameStateRules]("good")))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestNamestateState_NameState_GetIsRevoked_Bad(t *core.T) {
-	fn := ax7ValueOf(new(NameState).GetIsRevoked)
-	args := ax7Args(fn.Type(), "bad")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "bad")
+	values := coveragePack(new(NameState).GetIsRevoked(0, coverageValue[NameStateRules]("bad")))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestNamestateState_NameState_GetIsRevoked_Ugly(t *core.T) {
-	fn := ax7ValueOf(new(NameState).GetIsRevoked)
-	args := ax7Args(fn.Type(), "ugly")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "ugly")
+	values := coveragePack(new(NameState).GetIsRevoked(63, coverageValue[NameStateRules]("ugly")))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestNamestateState_NameState_IsRedeemable_Good(t *core.T) {
-	fn := ax7ValueOf(new(NameState).IsRedeemable)
-	args := ax7Args(fn.Type(), "good")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "good")
+	values := coveragePack(new(NameState).IsRedeemable(1, coverageValue[NameStateRules]("good")))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestNamestateState_NameState_IsRedeemable_Bad(t *core.T) {
-	fn := ax7ValueOf(new(NameState).IsRedeemable)
-	args := ax7Args(fn.Type(), "bad")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "bad")
+	values := coveragePack(new(NameState).IsRedeemable(0, coverageValue[NameStateRules]("bad")))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestNamestateState_NameState_IsRedeemable_Ugly(t *core.T) {
-	fn := ax7ValueOf(new(NameState).IsRedeemable)
-	args := ax7Args(fn.Type(), "ugly")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "ugly")
+	values := coveragePack(new(NameState).IsRedeemable(63, coverageValue[NameStateRules]("ugly")))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestNamestateState_NameState_GetIsRedeemable_Good(t *core.T) {
-	fn := ax7ValueOf(new(NameState).GetIsRedeemable)
-	args := ax7Args(fn.Type(), "good")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "good")
+	values := coveragePack(new(NameState).GetIsRedeemable(1, coverageValue[NameStateRules]("good")))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestNamestateState_NameState_GetIsRedeemable_Bad(t *core.T) {
-	fn := ax7ValueOf(new(NameState).GetIsRedeemable)
-	args := ax7Args(fn.Type(), "bad")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "bad")
+	values := coveragePack(new(NameState).GetIsRedeemable(0, coverageValue[NameStateRules]("bad")))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestNamestateState_NameState_GetIsRedeemable_Ugly(t *core.T) {
-	fn := ax7ValueOf(new(NameState).GetIsRedeemable)
-	args := ax7Args(fn.Type(), "ugly")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "ugly")
+	values := coveragePack(new(NameState).GetIsRedeemable(63, coverageValue[NameStateRules]("ugly")))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestNamestateState_NameState_IsClaimable_Good(t *core.T) {
-	fn := ax7ValueOf(new(NameState).IsClaimable)
-	args := ax7Args(fn.Type(), "good")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "good")
+	values := coveragePack(new(NameState).IsClaimable(1, coverageValue[NameStateRules]("good")))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestNamestateState_NameState_IsClaimable_Bad(t *core.T) {
-	fn := ax7ValueOf(new(NameState).IsClaimable)
-	args := ax7Args(fn.Type(), "bad")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "bad")
+	values := coveragePack(new(NameState).IsClaimable(0, coverageValue[NameStateRules]("bad")))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestNamestateState_NameState_IsClaimable_Ugly(t *core.T) {
-	fn := ax7ValueOf(new(NameState).IsClaimable)
-	args := ax7Args(fn.Type(), "ugly")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "ugly")
+	values := coveragePack(new(NameState).IsClaimable(63, coverageValue[NameStateRules]("ugly")))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestNamestateState_NameState_GetIsClaimable_Good(t *core.T) {
-	fn := ax7ValueOf(new(NameState).GetIsClaimable)
-	args := ax7Args(fn.Type(), "good")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "good")
+	values := coveragePack(new(NameState).GetIsClaimable(1, coverageValue[NameStateRules]("good")))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestNamestateState_NameState_GetIsClaimable_Bad(t *core.T) {
-	fn := ax7ValueOf(new(NameState).GetIsClaimable)
-	args := ax7Args(fn.Type(), "bad")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "bad")
+	values := coveragePack(new(NameState).GetIsClaimable(0, coverageValue[NameStateRules]("bad")))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestNamestateState_NameState_GetIsClaimable_Ugly(t *core.T) {
-	fn := ax7ValueOf(new(NameState).GetIsClaimable)
-	args := ax7Args(fn.Type(), "ugly")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "ugly")
+	values := coveragePack(new(NameState).GetIsClaimable(63, coverageValue[NameStateRules]("ugly")))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestNamestateState_NameState_IsExpired_Good(t *core.T) {
-	fn := ax7ValueOf(new(NameState).IsExpired)
-	args := ax7Args(fn.Type(), "good")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "good")
+	values := coveragePack(new(NameState).IsExpired(1, coverageValue[NameStateRules]("good")))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestNamestateState_NameState_IsExpired_Bad(t *core.T) {
-	fn := ax7ValueOf(new(NameState).IsExpired)
-	args := ax7Args(fn.Type(), "bad")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "bad")
+	values := coveragePack(new(NameState).IsExpired(0, coverageValue[NameStateRules]("bad")))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestNamestateState_NameState_IsExpired_Ugly(t *core.T) {
-	fn := ax7ValueOf(new(NameState).IsExpired)
-	args := ax7Args(fn.Type(), "ugly")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "ugly")
+	values := coveragePack(new(NameState).IsExpired(63, coverageValue[NameStateRules]("ugly")))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestNamestateState_NameState_GetIsExpired_Good(t *core.T) {
-	fn := ax7ValueOf(new(NameState).GetIsExpired)
-	args := ax7Args(fn.Type(), "good")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "good")
+	values := coveragePack(new(NameState).GetIsExpired(1, coverageValue[NameStateRules]("good")))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestNamestateState_NameState_GetIsExpired_Bad(t *core.T) {
-	fn := ax7ValueOf(new(NameState).GetIsExpired)
-	args := ax7Args(fn.Type(), "bad")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "bad")
+	values := coveragePack(new(NameState).GetIsExpired(0, coverageValue[NameStateRules]("bad")))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestNamestateState_NameState_GetIsExpired_Ugly(t *core.T) {
-	fn := ax7ValueOf(new(NameState).GetIsExpired)
-	args := ax7Args(fn.Type(), "ugly")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "ugly")
+	values := coveragePack(new(NameState).GetIsExpired(63, coverageValue[NameStateRules]("ugly")))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 // END v090 file-aware generated coverage

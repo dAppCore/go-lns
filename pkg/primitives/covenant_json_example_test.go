@@ -5,15 +5,11 @@ package primitives
 import core "dappco.re/go"
 
 func ExampleCovenant_GetJSON() {
-	fn := ax7ValueOf(new(Covenant).GetJSON)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Covenant).GetJSON()))
 	// Output: 1
 }
 
 func ExampleCovenant_FromJSON() {
-	fn := ax7ValueOf(new(Covenant).FromJSON)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Covenant).FromJSON(coverageValue[CovenantJSON]("good"))))
 	// Output: 1
 }

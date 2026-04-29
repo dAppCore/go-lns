@@ -5,148 +5,106 @@ package primitives
 import core "dappco.re/go"
 
 func ExampleNameStateStatus_String() {
-	fn := ax7ValueOf(new(NameStateStatus).String)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(NameStateStatus).String()))
 	// Output: 1
 }
 
 func ExampleNameState_State() {
-	fn := ax7ValueOf(new(NameState).State)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(NameState).State(1, coverageValue[NameStateRules]("good"))))
 	// Output: 1
 }
 
 func ExampleNameState_GetState() {
-	fn := ax7ValueOf(new(NameState).GetState)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(NameState).GetState(1, coverageValue[NameStateRules]("good"))))
 	// Output: 1
 }
 
 func ExampleNameState_IsOpening() {
-	fn := ax7ValueOf(new(NameState).IsOpening)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(NameState).IsOpening(1, coverageValue[NameStateRules]("good"))))
 	// Output: 1
 }
 
 func ExampleNameState_GetIsOpening() {
-	fn := ax7ValueOf(new(NameState).GetIsOpening)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(NameState).GetIsOpening(1, coverageValue[NameStateRules]("good"))))
 	// Output: 1
 }
 
 func ExampleNameState_IsLocked() {
-	fn := ax7ValueOf(new(NameState).IsLocked)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(NameState).IsLocked(1, coverageValue[NameStateRules]("good"))))
 	// Output: 1
 }
 
 func ExampleNameState_GetIsLocked() {
-	fn := ax7ValueOf(new(NameState).GetIsLocked)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(NameState).GetIsLocked(1, coverageValue[NameStateRules]("good"))))
 	// Output: 1
 }
 
 func ExampleNameState_IsBidding() {
-	fn := ax7ValueOf(new(NameState).IsBidding)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(NameState).IsBidding(1, coverageValue[NameStateRules]("good"))))
 	// Output: 1
 }
 
 func ExampleNameState_GetIsBidding() {
-	fn := ax7ValueOf(new(NameState).GetIsBidding)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(NameState).GetIsBidding(1, coverageValue[NameStateRules]("good"))))
 	// Output: 1
 }
 
 func ExampleNameState_IsReveal() {
-	fn := ax7ValueOf(new(NameState).IsReveal)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(NameState).IsReveal(1, coverageValue[NameStateRules]("good"))))
 	// Output: 1
 }
 
 func ExampleNameState_GetIsReveal() {
-	fn := ax7ValueOf(new(NameState).GetIsReveal)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(NameState).GetIsReveal(1, coverageValue[NameStateRules]("good"))))
 	// Output: 1
 }
 
 func ExampleNameState_IsClosed() {
-	fn := ax7ValueOf(new(NameState).IsClosed)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(NameState).IsClosed(1, coverageValue[NameStateRules]("good"))))
 	// Output: 1
 }
 
 func ExampleNameState_GetIsClosed() {
-	fn := ax7ValueOf(new(NameState).GetIsClosed)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(NameState).GetIsClosed(1, coverageValue[NameStateRules]("good"))))
 	// Output: 1
 }
 
 func ExampleNameState_IsRevoked() {
-	fn := ax7ValueOf(new(NameState).IsRevoked)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(NameState).IsRevoked(1, coverageValue[NameStateRules]("good"))))
 	// Output: 1
 }
 
 func ExampleNameState_GetIsRevoked() {
-	fn := ax7ValueOf(new(NameState).GetIsRevoked)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(NameState).GetIsRevoked(1, coverageValue[NameStateRules]("good"))))
 	// Output: 1
 }
 
 func ExampleNameState_IsRedeemable() {
-	fn := ax7ValueOf(new(NameState).IsRedeemable)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(NameState).IsRedeemable(1, coverageValue[NameStateRules]("good"))))
 	// Output: 1
 }
 
 func ExampleNameState_GetIsRedeemable() {
-	fn := ax7ValueOf(new(NameState).GetIsRedeemable)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(NameState).GetIsRedeemable(1, coverageValue[NameStateRules]("good"))))
 	// Output: 1
 }
 
 func ExampleNameState_IsClaimable() {
-	fn := ax7ValueOf(new(NameState).IsClaimable)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(NameState).IsClaimable(1, coverageValue[NameStateRules]("good"))))
 	// Output: 1
 }
 
 func ExampleNameState_GetIsClaimable() {
-	fn := ax7ValueOf(new(NameState).GetIsClaimable)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(NameState).GetIsClaimable(1, coverageValue[NameStateRules]("good"))))
 	// Output: 1
 }
 
 func ExampleNameState_IsExpired() {
-	fn := ax7ValueOf(new(NameState).IsExpired)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(NameState).IsExpired(1, coverageValue[NameStateRules]("good"))))
 	// Output: 1
 }
 
 func ExampleNameState_GetIsExpired() {
-	fn := ax7ValueOf(new(NameState).GetIsExpired)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(NameState).GetIsExpired(1, coverageValue[NameStateRules]("good"))))
 	// Output: 1
 }

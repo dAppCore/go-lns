@@ -7,63 +7,45 @@ import core "dappco.re/go"
 // BEGIN v090 file-aware generated coverage
 
 func TestVerify_VerifyCovenants_Good(t *core.T) {
-	fn := ax7ValueOf(VerifyCovenants)
-	args := ax7Args(fn.Type(), "good")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "good")
+	values := coveragePack(VerifyCovenants(coverageTransaction("good"), coverageValue[CoinView]("good"), 1, coverageValue[Network]("good")))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestVerify_VerifyCovenants_Bad(t *core.T) {
-	fn := ax7ValueOf(VerifyCovenants)
-	args := ax7Args(fn.Type(), "bad")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "bad")
+	values := coveragePack(VerifyCovenants(coverageTransaction("bad"), coverageValue[CoinView]("bad"), 0, coverageValue[Network]("bad")))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestVerify_VerifyCovenants_Ugly(t *core.T) {
-	fn := ax7ValueOf(VerifyCovenants)
-	args := ax7Args(fn.Type(), "ugly")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "ugly")
+	values := coveragePack(VerifyCovenants(coverageTransaction("ugly"), coverageValue[CoinView]("ugly"), 63, coverageValue[Network]("ugly")))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestVerify_GetVerifyCovenants_Good(t *core.T) {
-	fn := ax7ValueOf(GetVerifyCovenants)
-	args := ax7Args(fn.Type(), "good")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "good")
+	values := coveragePack(GetVerifyCovenants(coverageTransaction("good"), coverageValue[CoinView]("good"), 1, coverageValue[Network]("good")))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestVerify_GetVerifyCovenants_Bad(t *core.T) {
-	fn := ax7ValueOf(GetVerifyCovenants)
-	args := ax7Args(fn.Type(), "bad")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "bad")
+	values := coveragePack(GetVerifyCovenants(coverageTransaction("bad"), coverageValue[CoinView]("bad"), 0, coverageValue[Network]("bad")))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 func TestVerify_GetVerifyCovenants_Ugly(t *core.T) {
-	fn := ax7ValueOf(GetVerifyCovenants)
-	args := ax7Args(fn.Type(), "ugly")
-	outCount := -1
-	core.AssertNotPanics(t, func() {
-		outCount = len(ax7Invoke(fn, args))
-	})
-	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+	coverageAssertVariant(t, "ugly")
+	values := coveragePack(GetVerifyCovenants(coverageTransaction("ugly"), coverageValue[CoinView]("ugly"), 63, coverageValue[Network]("ugly")))
+	core.AssertTrue(t, len(values) >= 1)
+	coverageAssertReturn(t, values...)
 }
 
 // END v090 file-aware generated coverage

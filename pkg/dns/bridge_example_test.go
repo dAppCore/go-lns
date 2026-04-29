@@ -5,92 +5,66 @@ package dns
 import core "dappco.re/go"
 
 func ExampleNewBridge() {
-	fn := ax7ValueOf(NewBridge)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(NewBridge(coverageValue[BridgeConfig]("good"))))
 	// Output: 1
 }
 
 func ExampleBridge_Discover() {
-	fn := ax7ValueOf(new(Bridge).Discover)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Bridge).Discover(core.Background())))
 	// Output: 2
 }
 
 func ExampleBridge_Lookup() {
-	fn := ax7ValueOf(new(Bridge).Lookup)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Bridge).Lookup("lethean.lthn")))
 	// Output: 2
 }
 
 func ExampleBridge_Records() {
-	fn := ax7ValueOf(new(Bridge).Records)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Bridge).Records()))
 	// Output: 1
 }
 
 func ExampleBridge_Reverse() {
-	fn := ax7ValueOf(new(Bridge).Reverse)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Bridge).Reverse(coverageAddr("good"))))
 	// Output: 1
 }
 
 func ExampleBridge_Health() {
-	fn := ax7ValueOf(new(Bridge).Health)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Bridge).Health()))
 	// Output: 1
 }
 
 func ExampleBridge_Serve() {
-	fn := ax7ValueOf(new(Bridge).Serve)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Bridge).Serve(core.Background())))
 	// Output: 1
 }
 
 func ExampleBridge_Shutdown() {
-	fn := ax7ValueOf(new(Bridge).Shutdown)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Bridge).Shutdown()))
 	// Output: 1
 }
 
 func ExampleNameRecord_FQDN() {
-	fn := ax7ValueOf(new(NameRecord).FQDN)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(NameRecord).FQDN()))
 	// Output: 1
 }
 
 func ExampleNameRecord_Addresses4() {
-	fn := ax7ValueOf(new(NameRecord).Addresses4)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(NameRecord).Addresses4()))
 	// Output: 1
 }
 
 func ExampleNameRecord_Addresses6() {
-	fn := ax7ValueOf(new(NameRecord).Addresses6)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(NameRecord).Addresses6()))
 	// Output: 1
 }
 
 func ExampleNameRecord_TXT() {
-	fn := ax7ValueOf(new(NameRecord).TXT)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(NameRecord).TXT()))
 	// Output: 1
 }
 
 func ExampleNameRecord_NS() {
-	fn := ax7ValueOf(new(NameRecord).NS)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(NameRecord).NS()))
 	// Output: 1
 }

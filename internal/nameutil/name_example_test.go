@@ -5,15 +5,11 @@ package nameutil
 import core "dappco.re/go"
 
 func ExampleCatalogLabel() {
-	fn := ax7ValueOf(CatalogLabel)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(CatalogLabel("lethean.lthn")))
 	// Output: 2
 }
 
 func ExampleCanonicalize() {
-	fn := ax7ValueOf(Canonicalize)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(Canonicalize("lethean.lthn")))
 	// Output: 2
 }

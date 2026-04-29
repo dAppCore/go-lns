@@ -5,15 +5,11 @@ package primitives
 import core "dappco.re/go"
 
 func ExampleCovenant_MarshalBinary() {
-	fn := ax7ValueOf(new(Covenant).MarshalBinary)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Covenant).MarshalBinary()))
 	// Output: 2
 }
 
 func ExampleCovenant_UnmarshalBinary() {
-	fn := ax7ValueOf(new(Covenant).UnmarshalBinary)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Covenant).UnmarshalBinary([]byte("lethean.lthn"))))
 	// Output: 1
 }

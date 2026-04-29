@@ -5,3417 +5,2449 @@ package lns
 import core "dappco.re/go"
 
 func ExampleWithCore() {
-	fn := ax7ValueOf(WithCore)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(WithCore(core.New())))
 	// Output: 1
 }
 
 func ExampleGetWithCore() {
-	fn := ax7ValueOf(GetWithCore)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetWithCore(core.New())))
 	// Output: 1
 }
 
 func ExampleWithReservedCatalog() {
-	fn := ax7ValueOf(WithReservedCatalog)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(WithReservedCatalog(nil)))
 	// Output: 1
 }
 
 func ExampleGetWithReservedCatalog() {
-	fn := ax7ValueOf(GetWithReservedCatalog)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetWithReservedCatalog(nil)))
 	// Output: 1
 }
 
 func ExampleWithLockedCatalog() {
-	fn := ax7ValueOf(WithLockedCatalog)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(WithLockedCatalog(nil)))
 	// Output: 1
 }
 
 func ExampleGetWithLockedCatalog() {
-	fn := ax7ValueOf(GetWithLockedCatalog)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetWithLockedCatalog(nil)))
 	// Output: 1
 }
 
 func ExampleNewServiceWithOptions() {
-	fn := ax7ValueOf(NewServiceWithOptions)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(NewServiceWithOptions()))
 	// Output: 1
 }
 
 func ExampleGetNewServiceWithOptions() {
-	fn := ax7ValueOf(GetNewServiceWithOptions)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetNewServiceWithOptions()))
 	// Output: 1
 }
 
 func ExampleNewService() {
-	fn := ax7ValueOf(NewService)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(NewService(core.New())))
 	// Output: 1
 }
 
 func ExampleGetNewService() {
-	fn := ax7ValueOf(GetNewService)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetNewService(core.New())))
 	// Output: 1
 }
 
 func ExampleRegister() {
-	fn := ax7ValueOf(Register)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(Register(core.New())))
 	// Output: 1
 }
 
 func ExampleGetRegister() {
-	fn := ax7ValueOf(GetRegister)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetRegister(core.New())))
 	// Output: 1
 }
 
 func ExampleRegisterWithOptions() {
-	fn := ax7ValueOf(RegisterWithOptions)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(RegisterWithOptions()))
 	// Output: 1
 }
 
 func ExampleGetRegisterWithOptions() {
-	fn := ax7ValueOf(GetRegisterWithOptions)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetRegisterWithOptions()))
 	// Output: 1
 }
 
 func ExampleGetServiceName() {
-	fn := ax7ValueOf(GetServiceName)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetServiceName()))
 	// Output: 1
 }
 
 func ExampleGetDefaultTTL() {
-	fn := ax7ValueOf(GetDefaultTTL)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetDefaultTTL()))
 	// Output: 1
 }
 
 func ExampleGetDummy() {
-	fn := ax7ValueOf(GetDummy)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetDummy()))
 	// Output: 1
 }
 
 func ExampleGetTypeMapRoot() {
-	fn := ax7ValueOf(GetTypeMapRoot)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetTypeMapRoot()))
 	// Output: 1
 }
 
 func ExampleGetTypeMapEmpty() {
-	fn := ax7ValueOf(GetTypeMapEmpty)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetTypeMapEmpty()))
 	// Output: 1
 }
 
 func ExampleGetTypeMapNS() {
-	fn := ax7ValueOf(GetTypeMapNS)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetTypeMapNS()))
 	// Output: 1
 }
 
 func ExampleGetTypeMapTXT() {
-	fn := ax7ValueOf(GetTypeMapTXT)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetTypeMapTXT()))
 	// Output: 1
 }
 
 func ExampleGetTypeMapA() {
-	fn := ax7ValueOf(GetTypeMapA)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetTypeMapA()))
 	// Output: 1
 }
 
 func ExampleGetTypeMapAAAA() {
-	fn := ax7ValueOf(GetTypeMapAAAA)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetTypeMapAAAA()))
 	// Output: 1
 }
 
 func ExampleGetHSTypes() {
-	fn := ax7ValueOf(GetHSTypes)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetHSTypes()))
 	// Output: 1
 }
 
 func ExampleGetHSTypesByVal() {
-	fn := ax7ValueOf(GetHSTypesByVal)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetHSTypesByVal()))
 	// Output: 1
 }
 
 func ExampleNewResource() {
-	fn := ax7ValueOf(NewResource)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(NewResource()))
 	// Output: 1
 }
 
 func ExampleGetNewResource() {
-	fn := ax7ValueOf(GetNewResource)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetNewResource()))
 	// Output: 1
 }
 
 func ExampleDecodeResource() {
-	fn := ax7ValueOf(DecodeResource)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(DecodeResource([]byte("lethean.lthn"))))
 	// Output: 2
 }
 
 func ExampleGetDecodeResource() {
-	fn := ax7ValueOf(GetDecodeResource)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetDecodeResource([]byte("lethean.lthn"))))
 	// Output: 2
 }
 
 func ExampleCreate() {
-	fn := ax7ValueOf(Create)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(Create("lethean.lthn", "lethean.lthn", []byte("lethean.lthn"))))
 	// Output: 1
 }
 
 func ExampleGetCreate() {
-	fn := ax7ValueOf(GetCreate)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetCreate("lethean.lthn", "lethean.lthn", []byte("lethean.lthn"))))
 	// Output: 1
 }
 
 func ExampleNextName() {
-	fn := ax7ValueOf(NextName)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(NextName("lethean.lthn")))
 	// Output: 1
 }
 
 func ExampleGetNextName() {
-	fn := ax7ValueOf(GetNextName)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetNextName("lethean.lthn")))
 	// Output: 1
 }
 
 func ExamplePrevName() {
-	fn := ax7ValueOf(PrevName)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(PrevName("lethean.lthn")))
 	// Output: 1
 }
 
 func ExampleGetPrevName() {
-	fn := ax7ValueOf(GetPrevName)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetPrevName("lethean.lthn")))
 	// Output: 1
 }
 
 func ExampleService_NewClaim() {
-	fn := ax7ValueOf(new(Service).NewClaim)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).NewClaim()))
 	// Output: 1
 }
 
 func ExampleService_GetNewClaim() {
-	fn := ax7ValueOf(new(Service).GetNewClaim)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetNewClaim()))
 	// Output: 1
 }
 
 func ExampleService_NewOutpoint() {
-	fn := ax7ValueOf(new(Service).NewOutpoint)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).NewOutpoint()))
 	// Output: 1
 }
 
 func ExampleService_GetNewOutpoint() {
-	fn := ax7ValueOf(new(Service).GetNewOutpoint)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetNewOutpoint()))
 	// Output: 1
 }
 
 func ExampleService_NewNameView() {
-	fn := ax7ValueOf(new(Service).NewNameView)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).NewNameView()))
 	// Output: 1
 }
 
 func ExampleService_GetNewNameView() {
-	fn := ax7ValueOf(new(Service).GetNewNameView)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetNewNameView()))
 	// Output: 1
 }
 
 func ExampleService_Create() {
-	fn := ax7ValueOf(new(Service).Create)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).Create("lethean.lthn", "lethean.lthn", []byte("lethean.lthn"))))
 	// Output: 1
 }
 
 func ExampleService_GetCreate() {
-	fn := ax7ValueOf(new(Service).GetCreate)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetCreate("lethean.lthn", "lethean.lthn", []byte("lethean.lthn"))))
 	// Output: 1
 }
 
 func ExampleService_DefaultTTL() {
-	fn := ax7ValueOf(new(Service).DefaultTTL)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).DefaultTTL()))
 	// Output: 1
 }
 
 func ExampleService_GetDefaultTTL() {
-	fn := ax7ValueOf(new(Service).GetDefaultTTL)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetDefaultTTL()))
 	// Output: 1
 }
 
 func ExampleService_Dummy() {
-	fn := ax7ValueOf(new(Service).Dummy)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).Dummy()))
 	// Output: 1
 }
 
 func ExampleService_GetDummy() {
-	fn := ax7ValueOf(new(Service).GetDummy)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetDummy()))
 	// Output: 1
 }
 
 func ExampleService_TypeMapRoot() {
-	fn := ax7ValueOf(new(Service).TypeMapRoot)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).TypeMapRoot()))
 	// Output: 1
 }
 
 func ExampleService_GetTypeMapRoot() {
-	fn := ax7ValueOf(new(Service).GetTypeMapRoot)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetTypeMapRoot()))
 	// Output: 1
 }
 
 func ExampleService_TypeMapEmpty() {
-	fn := ax7ValueOf(new(Service).TypeMapEmpty)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).TypeMapEmpty()))
 	// Output: 1
 }
 
 func ExampleService_GetTypeMapEmpty() {
-	fn := ax7ValueOf(new(Service).GetTypeMapEmpty)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetTypeMapEmpty()))
 	// Output: 1
 }
 
 func ExampleService_TypeMapNS() {
-	fn := ax7ValueOf(new(Service).TypeMapNS)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).TypeMapNS()))
 	// Output: 1
 }
 
 func ExampleService_GetTypeMapNS() {
-	fn := ax7ValueOf(new(Service).GetTypeMapNS)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetTypeMapNS()))
 	// Output: 1
 }
 
 func ExampleService_TypeMapTXT() {
-	fn := ax7ValueOf(new(Service).TypeMapTXT)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).TypeMapTXT()))
 	// Output: 1
 }
 
 func ExampleService_GetTypeMapTXT() {
-	fn := ax7ValueOf(new(Service).GetTypeMapTXT)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetTypeMapTXT()))
 	// Output: 1
 }
 
 func ExampleService_TypeMapA() {
-	fn := ax7ValueOf(new(Service).TypeMapA)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).TypeMapA()))
 	// Output: 1
 }
 
 func ExampleService_GetTypeMapA() {
-	fn := ax7ValueOf(new(Service).GetTypeMapA)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetTypeMapA()))
 	// Output: 1
 }
 
 func ExampleService_TypeMapAAAA() {
-	fn := ax7ValueOf(new(Service).TypeMapAAAA)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).TypeMapAAAA()))
 	// Output: 1
 }
 
 func ExampleService_GetTypeMapAAAA() {
-	fn := ax7ValueOf(new(Service).GetTypeMapAAAA)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetTypeMapAAAA()))
 	// Output: 1
 }
 
 func ExampleService_HSTypes() {
-	fn := ax7ValueOf(new(Service).HSTypes)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).HSTypes()))
 	// Output: 1
 }
 
 func ExampleService_GetHSTypes() {
-	fn := ax7ValueOf(new(Service).GetHSTypes)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetHSTypes()))
 	// Output: 1
 }
 
 func ExampleService_HSTypesByVal() {
-	fn := ax7ValueOf(new(Service).HSTypesByVal)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).HSTypesByVal()))
 	// Output: 1
 }
 
 func ExampleService_GetHSTypesByVal() {
-	fn := ax7ValueOf(new(Service).GetHSTypesByVal)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetHSTypesByVal()))
 	// Output: 1
 }
 
 func ExampleService_NextName() {
-	fn := ax7ValueOf(new(Service).NextName)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).NextName("lethean.lthn")))
 	// Output: 1
 }
 
 func ExampleService_GetNextName() {
-	fn := ax7ValueOf(new(Service).GetNextName)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetNextName("lethean.lthn")))
 	// Output: 1
 }
 
 func ExampleService_PrevName() {
-	fn := ax7ValueOf(new(Service).PrevName)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).PrevName("lethean.lthn")))
 	// Output: 1
 }
 
 func ExampleService_GetPrevName() {
-	fn := ax7ValueOf(new(Service).GetPrevName)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetPrevName("lethean.lthn")))
 	// Output: 1
 }
 
 func ExampleService_NewResource() {
-	fn := ax7ValueOf(new(Service).NewResource)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).NewResource()))
 	// Output: 1
 }
 
 func ExampleService_GetNewResource() {
-	fn := ax7ValueOf(new(Service).GetNewResource)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetNewResource()))
 	// Output: 1
 }
 
 func ExampleService_DecodeResource() {
-	fn := ax7ValueOf(new(Service).DecodeResource)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).DecodeResource([]byte("lethean.lthn"))))
 	// Output: 2
 }
 
 func ExampleService_GetDecodeResource() {
-	fn := ax7ValueOf(new(Service).GetDecodeResource)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetDecodeResource([]byte("lethean.lthn"))))
 	// Output: 2
 }
 
 func ExampleService_OnStartup() {
-	fn := ax7ValueOf(new(Service).OnStartup)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).OnStartup(core.Background())))
 	// Output: 1
 }
 
 func ExampleService_GetOnStartup() {
-	fn := ax7ValueOf(new(Service).GetOnStartup)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetOnStartup(core.Background())))
 	// Output: 1
 }
 
 func ExampleService_OnShutdown() {
-	fn := ax7ValueOf(new(Service).OnShutdown)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).OnShutdown(core.Background())))
 	// Output: 1
 }
 
 func ExampleService_GetOnShutdown() {
-	fn := ax7ValueOf(new(Service).GetOnShutdown)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetOnShutdown(core.Background())))
 	// Output: 1
 }
 
 func ExampleService_HandleIPCEvents() {
-	fn := ax7ValueOf(new(Service).HandleIPCEvents)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).HandleIPCEvents(core.New(), "lethean.lthn")))
 	// Output: 1
 }
 
 func ExampleService_GetHandleIPCEvents() {
-	fn := ax7ValueOf(new(Service).GetHandleIPCEvents)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetHandleIPCEvents(core.New(), "lethean.lthn")))
 	// Output: 1
 }
 
 func ExampleLookupCatalogName() {
-	fn := ax7ValueOf(LookupCatalogName[any])
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(LookupCatalogName[any]("lethean.lthn", nil, nil)))
 	// Output: 2
 }
 
 func ExampleGetLookupCatalogName() {
-	fn := ax7ValueOf(GetLookupCatalogName[any])
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetLookupCatalogName[any]("lethean.lthn", nil, nil)))
 	// Output: 2
 }
 
 func ExampleHasLookupCatalogName() {
-	fn := ax7ValueOf(HasLookupCatalogName[any])
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(HasLookupCatalogName[any]("lethean.lthn", nil, nil)))
 	// Output: 1
 }
 
 func ExampleGetHasLookupCatalogName() {
-	fn := ax7ValueOf(GetHasLookupCatalogName[any])
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetHasLookupCatalogName[any]("lethean.lthn", nil, nil)))
 	// Output: 1
 }
 
 func ExampleService_LookupCatalogName() {
-	fn := ax7ValueOf(new(Service).LookupCatalogName)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).LookupCatalogName("lethean.lthn", nil, nil)))
 	// Output: 2
 }
 
 func ExampleService_GetLookupCatalogName() {
-	fn := ax7ValueOf(new(Service).GetLookupCatalogName)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetLookupCatalogName("lethean.lthn", nil, nil)))
 	// Output: 2
 }
 
 func ExampleService_HasLookupCatalogName() {
-	fn := ax7ValueOf(new(Service).HasLookupCatalogName)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).HasLookupCatalogName("lethean.lthn", nil, nil)))
 	// Output: 1
 }
 
 func ExampleService_GetHasLookupCatalogName() {
-	fn := ax7ValueOf(new(Service).GetHasLookupCatalogName)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetHasLookupCatalogName("lethean.lthn", nil, nil)))
 	// Output: 1
 }
 
 func ExampleResolve() {
-	fn := ax7ValueOf(Resolve)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(Resolve("lethean.lthn")))
 	// Output: 2
 }
 
 func ExampleGetResolve() {
-	fn := ax7ValueOf(GetResolve)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetResolve("lethean.lthn")))
 	// Output: 2
 }
 
 func ExampleHash() {
-	fn := ax7ValueOf(Hash)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(Hash("lethean.lthn")))
 	// Output: 2
 }
 
 func ExampleGetHash() {
-	fn := ax7ValueOf(GetHash)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetHash("lethean.lthn")))
 	// Output: 2
 }
 
 func ExampleVerify() {
-	fn := ax7ValueOf(Verify)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(Verify("lethean.lthn")))
 	// Output: 1
 }
 
 func ExampleGetVerify() {
-	fn := ax7ValueOf(GetVerify)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetVerify("lethean.lthn")))
 	// Output: 1
 }
 
 func ExampleHashString() {
-	fn := ax7ValueOf(HashString)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(HashString("lethean.lthn")))
 	// Output: 2
 }
 
 func ExampleGetHashString() {
-	fn := ax7ValueOf(GetHashString)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetHashString("lethean.lthn")))
 	// Output: 2
 }
 
 func ExampleHashBinary() {
-	fn := ax7ValueOf(HashBinary)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(HashBinary([]byte("lethean.lthn"))))
 	// Output: 2
 }
 
 func ExampleGetHashBinary() {
-	fn := ax7ValueOf(GetHashBinary)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetHashBinary([]byte("lethean.lthn"))))
 	// Output: 2
 }
 
 func ExampleResolveByString() {
-	fn := ax7ValueOf(ResolveByString)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(ResolveByString("lethean.lthn")))
 	// Output: 2
 }
 
 func ExampleGetResolveByString() {
-	fn := ax7ValueOf(GetResolveByString)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetResolveByString("lethean.lthn")))
 	// Output: 2
 }
 
 func ExampleResolveByBinary() {
-	fn := ax7ValueOf(ResolveByBinary)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(ResolveByBinary([]byte("lethean.lthn"))))
 	// Output: 2
 }
 
 func ExampleGetResolveByBinary() {
-	fn := ax7ValueOf(GetResolveByBinary)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetResolveByBinary([]byte("lethean.lthn"))))
 	// Output: 2
 }
 
 func ExampleHashByString() {
-	fn := ax7ValueOf(HashByString)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(HashByString("lethean.lthn")))
 	// Output: 2
 }
 
 func ExampleGetHashByString() {
-	fn := ax7ValueOf(GetHashByString)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetHashByString("lethean.lthn")))
 	// Output: 2
 }
 
 func ExampleHashByBinary() {
-	fn := ax7ValueOf(HashByBinary)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(HashByBinary([]byte("lethean.lthn"))))
 	// Output: 2
 }
 
 func ExampleGetHashByBinary() {
-	fn := ax7ValueOf(GetHashByBinary)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetHashByBinary([]byte("lethean.lthn"))))
 	// Output: 2
 }
 
 func ExampleResolveString() {
-	fn := ax7ValueOf(ResolveString)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(ResolveString("lethean.lthn")))
 	// Output: 2
 }
 
 func ExampleGetResolveString() {
-	fn := ax7ValueOf(GetResolveString)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetResolveString("lethean.lthn")))
 	// Output: 2
 }
 
 func ExampleResolveBinary() {
-	fn := ax7ValueOf(ResolveBinary)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(ResolveBinary([]byte("lethean.lthn"))))
 	// Output: 2
 }
 
 func ExampleGetResolveBinary() {
-	fn := ax7ValueOf(GetResolveBinary)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetResolveBinary([]byte("lethean.lthn"))))
 	// Output: 2
 }
 
 func ExampleResolveName() {
-	fn := ax7ValueOf(ResolveName)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(ResolveName("lethean.lthn")))
 	// Output: 2
 }
 
 func ExampleGetResolveName() {
-	fn := ax7ValueOf(GetResolveName)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetResolveName("lethean.lthn")))
 	// Output: 2
 }
 
 func ExampleHashName() {
-	fn := ax7ValueOf(HashName)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(HashName("lethean.lthn")))
 	// Output: 2
 }
 
 func ExampleGetHashName() {
-	fn := ax7ValueOf(GetHashName)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetHashName("lethean.lthn")))
 	// Output: 2
 }
 
 func ExampleVerifyName() {
-	fn := ax7ValueOf(VerifyName)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(VerifyName("lethean.lthn")))
 	// Output: 1
 }
 
 func ExampleGetVerifyName() {
-	fn := ax7ValueOf(GetVerifyName)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetVerifyName("lethean.lthn")))
 	// Output: 1
 }
 
 func ExampleResolveByName() {
-	fn := ax7ValueOf(ResolveByName)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(ResolveByName("lethean.lthn")))
 	// Output: 2
 }
 
 func ExampleGetResolveByName() {
-	fn := ax7ValueOf(GetResolveByName)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetResolveByName("lethean.lthn")))
 	// Output: 2
 }
 
 func ExampleHashByName() {
-	fn := ax7ValueOf(HashByName)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(HashByName("lethean.lthn")))
 	// Output: 2
 }
 
 func ExampleGetHashByName() {
-	fn := ax7ValueOf(GetHashByName)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetHashByName("lethean.lthn")))
 	// Output: 2
 }
 
 func ExampleVerifyByName() {
-	fn := ax7ValueOf(VerifyByName)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(VerifyByName("lethean.lthn")))
 	// Output: 1
 }
 
 func ExampleGetVerifyByName() {
-	fn := ax7ValueOf(GetVerifyByName)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetVerifyByName("lethean.lthn")))
 	// Output: 1
 }
 
 func ExampleVerifyString() {
-	fn := ax7ValueOf(VerifyString)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(VerifyString("lethean.lthn")))
 	// Output: 1
 }
 
 func ExampleGetVerifyString() {
-	fn := ax7ValueOf(GetVerifyString)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetVerifyString("lethean.lthn")))
 	// Output: 1
 }
 
 func ExampleVerifyBinary() {
-	fn := ax7ValueOf(VerifyBinary)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(VerifyBinary([]byte("lethean.lthn"))))
 	// Output: 1
 }
 
 func ExampleGetVerifyBinary() {
-	fn := ax7ValueOf(GetVerifyBinary)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetVerifyBinary([]byte("lethean.lthn"))))
 	// Output: 1
 }
 
 func ExampleVerifyByString() {
-	fn := ax7ValueOf(VerifyByString)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(VerifyByString("lethean.lthn")))
 	// Output: 1
 }
 
 func ExampleGetVerifyByString() {
-	fn := ax7ValueOf(GetVerifyByString)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetVerifyByString("lethean.lthn")))
 	// Output: 1
 }
 
 func ExampleVerifyByBinary() {
-	fn := ax7ValueOf(VerifyByBinary)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(VerifyByBinary([]byte("lethean.lthn"))))
 	// Output: 1
 }
 
 func ExampleGetVerifyByBinary() {
-	fn := ax7ValueOf(GetVerifyByBinary)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetVerifyByBinary([]byte("lethean.lthn"))))
 	// Output: 1
 }
 
 func ExampleBlind() {
-	fn := ax7ValueOf(Blind)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(Blind(1, [32]byte{1})))
 	// Output: 2
 }
 
 func ExampleGetBlind() {
-	fn := ax7ValueOf(GetBlind)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetBlind(1, [32]byte{1})))
 	// Output: 2
 }
 
 func ExampleTypeName() {
-	fn := ax7ValueOf(TypeName)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(TypeName(1)))
 	// Output: 1
 }
 
 func ExampleGetBlacklist() {
-	fn := ax7ValueOf(GetBlacklist)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetBlacklist()))
 	// Output: 1
 }
 
 func ExampleGetVerificationFlags() {
-	fn := ax7ValueOf(GetVerificationFlags)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetVerificationFlags()))
 	// Output: 1
 }
 
 func ExampleGetVerificationFlagsByVal() {
-	fn := ax7ValueOf(GetVerificationFlagsByVal)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetVerificationFlagsByVal()))
 	// Output: 1
 }
 
 func ExampleNewClaim() {
-	fn := ax7ValueOf(NewClaim)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(NewClaim()))
 	// Output: 1
 }
 
 func ExampleGetNewClaim() {
-	fn := ax7ValueOf(GetNewClaim)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetNewClaim()))
 	// Output: 1
 }
 
 func ExampleNewOutpoint() {
-	fn := ax7ValueOf(NewOutpoint)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(NewOutpoint()))
 	// Output: 1
 }
 
 func ExampleGetNewOutpoint() {
-	fn := ax7ValueOf(GetNewOutpoint)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetNewOutpoint()))
 	// Output: 1
 }
 
 func ExampleNewNameView() {
-	fn := ax7ValueOf(NewNameView)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(NewNameView()))
 	// Output: 1
 }
 
 func ExampleGetNewNameView() {
-	fn := ax7ValueOf(GetNewNameView)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetNewNameView()))
 	// Output: 1
 }
 
 func ExampleGetMaxNameSize() {
-	fn := ax7ValueOf(GetMaxNameSize)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetMaxNameSize()))
 	// Output: 1
 }
 
 func ExampleGetMaxResourceSize() {
-	fn := ax7ValueOf(GetMaxResourceSize)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetMaxResourceSize()))
 	// Output: 1
 }
 
 func ExampleGetVerifyCovenantsNone() {
-	fn := ax7ValueOf(GetVerifyCovenantsNone)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetVerifyCovenantsNone()))
 	// Output: 1
 }
 
 func ExampleGetVerifyCovenantsHardened() {
-	fn := ax7ValueOf(GetVerifyCovenantsHardened)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetVerifyCovenantsHardened()))
 	// Output: 1
 }
 
 func ExampleGetVerifyCovenantsLockup() {
-	fn := ax7ValueOf(GetVerifyCovenantsLockup)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetVerifyCovenantsLockup()))
 	// Output: 1
 }
 
 func ExampleGetMandatoryVerifyCovenantFlags() {
-	fn := ax7ValueOf(GetMandatoryVerifyCovenantFlags)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetMandatoryVerifyCovenantFlags()))
 	// Output: 1
 }
 
 func ExampleGetMaxCovenantSize() {
-	fn := ax7ValueOf(GetMaxCovenantSize)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetMaxCovenantSize()))
 	// Output: 1
 }
 
 func ExampleGetCovenantMaxSize() {
-	fn := ax7ValueOf(GetCovenantMaxSize)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetCovenantMaxSize()))
 	// Output: 1
 }
 
 func ExampleGetTypes() {
-	fn := ax7ValueOf(GetTypes)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetTypes()))
 	// Output: 1
 }
 
 func ExampleGetTypesByVal() {
-	fn := ax7ValueOf(GetTypesByVal)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetTypesByVal()))
 	// Output: 1
 }
 
 func ExampleGetTypeName() {
-	fn := ax7ValueOf(GetTypeName)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetTypeName(1)))
 	// Output: 1
 }
 
 func ExampleIsName() {
-	fn := ax7ValueOf(IsName)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(IsName(1)))
 	// Output: 1
 }
 
 func ExampleGetIsName() {
-	fn := ax7ValueOf(GetIsName)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetIsName(1)))
 	// Output: 1
 }
 
 func ExampleIsKnown() {
-	fn := ax7ValueOf(IsKnown)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(IsKnown(1)))
 	// Output: 1
 }
 
 func ExampleGetIsKnown() {
-	fn := ax7ValueOf(GetIsKnown)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetIsKnown(1)))
 	// Output: 1
 }
 
 func ExampleIsLinked() {
-	fn := ax7ValueOf(IsLinked)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(IsLinked(1)))
 	// Output: 1
 }
 
 func ExampleGetIsLinked() {
-	fn := ax7ValueOf(GetIsLinked)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetIsLinked(1)))
 	// Output: 1
 }
 
 func ExampleService_MaxNameSize() {
-	fn := ax7ValueOf(new(Service).MaxNameSize)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).MaxNameSize()))
 	// Output: 1
 }
 
 func ExampleService_GetMaxNameSize() {
-	fn := ax7ValueOf(new(Service).GetMaxNameSize)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetMaxNameSize()))
 	// Output: 1
 }
 
 func ExampleService_MaxResourceSize() {
-	fn := ax7ValueOf(new(Service).MaxResourceSize)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).MaxResourceSize()))
 	// Output: 1
 }
 
 func ExampleService_GetMaxResourceSize() {
-	fn := ax7ValueOf(new(Service).GetMaxResourceSize)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetMaxResourceSize()))
 	// Output: 1
 }
 
 func ExampleService_VerifyCovenantsNone() {
-	fn := ax7ValueOf(new(Service).VerifyCovenantsNone)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).VerifyCovenantsNone()))
 	// Output: 1
 }
 
 func ExampleService_GetVerifyCovenantsNone() {
-	fn := ax7ValueOf(new(Service).GetVerifyCovenantsNone)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetVerifyCovenantsNone()))
 	// Output: 1
 }
 
 func ExampleService_VerifyCovenantsHardened() {
-	fn := ax7ValueOf(new(Service).VerifyCovenantsHardened)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).VerifyCovenantsHardened()))
 	// Output: 1
 }
 
 func ExampleService_GetVerifyCovenantsHardened() {
-	fn := ax7ValueOf(new(Service).GetVerifyCovenantsHardened)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetVerifyCovenantsHardened()))
 	// Output: 1
 }
 
 func ExampleService_VerifyCovenantsLockup() {
-	fn := ax7ValueOf(new(Service).VerifyCovenantsLockup)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).VerifyCovenantsLockup()))
 	// Output: 1
 }
 
 func ExampleService_GetVerifyCovenantsLockup() {
-	fn := ax7ValueOf(new(Service).GetVerifyCovenantsLockup)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetVerifyCovenantsLockup()))
 	// Output: 1
 }
 
 func ExampleService_MandatoryVerifyCovenantFlags() {
-	fn := ax7ValueOf(new(Service).MandatoryVerifyCovenantFlags)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).MandatoryVerifyCovenantFlags()))
 	// Output: 1
 }
 
 func ExampleService_GetMandatoryVerifyCovenantFlags() {
-	fn := ax7ValueOf(new(Service).GetMandatoryVerifyCovenantFlags)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetMandatoryVerifyCovenantFlags()))
 	// Output: 1
 }
 
 func ExampleService_MaxCovenantSize() {
-	fn := ax7ValueOf(new(Service).MaxCovenantSize)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).MaxCovenantSize()))
 	// Output: 1
 }
 
 func ExampleService_GetMaxCovenantSize() {
-	fn := ax7ValueOf(new(Service).GetMaxCovenantSize)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetMaxCovenantSize()))
 	// Output: 1
 }
 
 func ExampleService_CovenantMaxSize() {
-	fn := ax7ValueOf(new(Service).CovenantMaxSize)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).CovenantMaxSize()))
 	// Output: 1
 }
 
 func ExampleService_GetCovenantMaxSize() {
-	fn := ax7ValueOf(new(Service).GetCovenantMaxSize)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetCovenantMaxSize()))
 	// Output: 1
 }
 
 func ExampleGetRollout() {
-	fn := ax7ValueOf(GetRollout)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetRollout([32]byte{1}, coverageValue[NameRules]("good"))))
 	// Output: 2
 }
 
 func ExampleHasRollout() {
-	fn := ax7ValueOf(HasRollout)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(HasRollout([32]byte{1}, 1, coverageValue[NameRules]("good"))))
 	// Output: 1
 }
 
 func ExampleGetHasRollout() {
-	fn := ax7ValueOf(GetHasRollout)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetHasRollout([32]byte{1}, 1, coverageValue[NameRules]("good"))))
 	// Output: 1
 }
 
 func ExampleIsReserved() {
-	fn := ax7ValueOf(IsReserved)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(IsReserved([32]byte{1}, 1, coverageValue[NameRules]("good"))))
 	// Output: 1
 }
 
 func ExampleGetIsReserved() {
-	fn := ax7ValueOf(GetIsReserved)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetIsReserved([32]byte{1}, 1, coverageValue[NameRules]("good"))))
 	// Output: 1
 }
 
 func ExampleIsLockedUp() {
-	fn := ax7ValueOf(IsLockedUp)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(IsLockedUp([32]byte{1}, 1, coverageValue[NameRules]("good"))))
 	// Output: 1
 }
 
 func ExampleGetIsLockedUp() {
-	fn := ax7ValueOf(GetIsLockedUp)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetIsLockedUp([32]byte{1}, 1, coverageValue[NameRules]("good"))))
 	// Output: 1
 }
 
 func ExampleGrindName() {
-	fn := ax7ValueOf(GrindName)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GrindName(1, 1, coverageValue[NameRules]("good"))))
 	// Output: 2
 }
 
 func ExampleGetGrindName() {
-	fn := ax7ValueOf(GetGrindName)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetGrindName(1, 1, coverageValue[NameRules]("good"))))
 	// Output: 2
 }
 
 func ExampleCountOpens() {
-	fn := ax7ValueOf(CountOpens)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(CountOpens(coverageTransaction("good"))))
 	// Output: 1
 }
 
 func ExampleGetCountOpens() {
-	fn := ax7ValueOf(GetCountOpens)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetCountOpens(coverageTransaction("good"))))
 	// Output: 1
 }
 
 func ExampleCountUpdates() {
-	fn := ax7ValueOf(CountUpdates)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(CountUpdates(coverageTransaction("good"))))
 	// Output: 1
 }
 
 func ExampleGetCountUpdates() {
-	fn := ax7ValueOf(GetCountUpdates)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetCountUpdates(coverageTransaction("good"))))
 	// Output: 1
 }
 
 func ExampleCountRenewals() {
-	fn := ax7ValueOf(CountRenewals)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(CountRenewals(coverageTransaction("good"))))
 	// Output: 1
 }
 
 func ExampleGetCountRenewals() {
-	fn := ax7ValueOf(GetCountRenewals)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetCountRenewals(coverageTransaction("good"))))
 	// Output: 1
 }
 
 func ExampleHasNames() {
-	fn := ax7ValueOf(HasNames)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(HasNames(coverageTransaction("good"), nil)))
 	// Output: 1
 }
 
 func ExampleGetHasNames() {
-	fn := ax7ValueOf(GetHasNames)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetHasNames(coverageTransaction("good"), nil)))
 	// Output: 1
 }
 
 func ExampleAddNames() {
-	fn := ax7ValueOf(AddNames)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	AddNames(coverageTransaction("good"), nil)
+	core.Println(coverageExample())
 	// Output: 0
 }
 
 func ExampleGetAddNames() {
-	fn := ax7ValueOf(GetAddNames)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	GetAddNames(coverageTransaction("good"), nil)
+	core.Println(coverageExample())
 	// Output: 0
 }
 
 func ExampleRemoveNames() {
-	fn := ax7ValueOf(RemoveNames)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	RemoveNames(coverageTransaction("good"), nil)
+	core.Println(coverageExample())
 	// Output: 0
 }
 
 func ExampleGetRemoveNames() {
-	fn := ax7ValueOf(GetRemoveNames)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	GetRemoveNames(coverageTransaction("good"), nil)
+	core.Println(coverageExample())
 	// Output: 0
 }
 
 func ExampleHasSaneCovenants() {
-	fn := ax7ValueOf(HasSaneCovenants)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(HasSaneCovenants(coverageTransaction("good"))))
 	// Output: 1
 }
 
 func ExampleGetHasSaneCovenants() {
-	fn := ax7ValueOf(GetHasSaneCovenants)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetHasSaneCovenants(coverageTransaction("good"))))
 	// Output: 1
 }
 
 func ExampleVerifyCovenants() {
-	fn := ax7ValueOf(VerifyCovenants)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(VerifyCovenants(coverageTransaction("good"), coverageValue[CoinView]("good"), 1, coverageValue[Network]("good"))))
 	// Output: 1
 }
 
 func ExampleGetVerifyCovenants() {
-	fn := ax7ValueOf(GetVerifyCovenants)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetVerifyCovenants(coverageTransaction("good"), coverageValue[CoinView]("good"), 1, coverageValue[Network]("good"))))
 	// Output: 1
 }
 
 func ExampleService_ServiceName() {
-	fn := ax7ValueOf(new(Service).ServiceName)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).ServiceName()))
 	// Output: 1
 }
 
 func ExampleService_GetServiceName() {
-	fn := ax7ValueOf(new(Service).GetServiceName)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetServiceName()))
 	// Output: 1
 }
 
 func ExampleService_Resolve() {
-	fn := ax7ValueOf(new(Service).Resolve)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).Resolve("lethean.lthn")))
 	// Output: 2
 }
 
 func ExampleService_GetResolve() {
-	fn := ax7ValueOf(new(Service).GetResolve)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetResolve("lethean.lthn")))
 	// Output: 2
 }
 
 func ExampleService_Hash() {
-	fn := ax7ValueOf(new(Service).Hash)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).Hash("lethean.lthn")))
 	// Output: 2
 }
 
 func ExampleService_GetHash() {
-	fn := ax7ValueOf(new(Service).GetHash)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetHash("lethean.lthn")))
 	// Output: 2
 }
 
 func ExampleService_Verify() {
-	fn := ax7ValueOf(new(Service).Verify)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).Verify("lethean.lthn")))
 	// Output: 1
 }
 
 func ExampleService_GetVerify() {
-	fn := ax7ValueOf(new(Service).GetVerify)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetVerify("lethean.lthn")))
 	// Output: 1
 }
 
 func ExampleService_HashString() {
-	fn := ax7ValueOf(new(Service).HashString)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).HashString("lethean.lthn")))
 	// Output: 2
 }
 
 func ExampleService_GetHashString() {
-	fn := ax7ValueOf(new(Service).GetHashString)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetHashString("lethean.lthn")))
 	// Output: 2
 }
 
 func ExampleService_HashBinary() {
-	fn := ax7ValueOf(new(Service).HashBinary)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).HashBinary([]byte("lethean.lthn"))))
 	// Output: 2
 }
 
 func ExampleService_GetHashBinary() {
-	fn := ax7ValueOf(new(Service).GetHashBinary)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetHashBinary([]byte("lethean.lthn"))))
 	// Output: 2
 }
 
 func ExampleService_ResolveByString() {
-	fn := ax7ValueOf(new(Service).ResolveByString)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).ResolveByString("lethean.lthn")))
 	// Output: 2
 }
 
 func ExampleService_GetResolveByString() {
-	fn := ax7ValueOf(new(Service).GetResolveByString)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetResolveByString("lethean.lthn")))
 	// Output: 2
 }
 
 func ExampleService_ResolveByBinary() {
-	fn := ax7ValueOf(new(Service).ResolveByBinary)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).ResolveByBinary([]byte("lethean.lthn"))))
 	// Output: 2
 }
 
 func ExampleService_GetResolveByBinary() {
-	fn := ax7ValueOf(new(Service).GetResolveByBinary)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetResolveByBinary([]byte("lethean.lthn"))))
 	// Output: 2
 }
 
 func ExampleService_HashByString() {
-	fn := ax7ValueOf(new(Service).HashByString)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).HashByString("lethean.lthn")))
 	// Output: 2
 }
 
 func ExampleService_GetHashByString() {
-	fn := ax7ValueOf(new(Service).GetHashByString)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetHashByString("lethean.lthn")))
 	// Output: 2
 }
 
 func ExampleService_HashByBinary() {
-	fn := ax7ValueOf(new(Service).HashByBinary)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).HashByBinary([]byte("lethean.lthn"))))
 	// Output: 2
 }
 
 func ExampleService_GetHashByBinary() {
-	fn := ax7ValueOf(new(Service).GetHashByBinary)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetHashByBinary([]byte("lethean.lthn"))))
 	// Output: 2
 }
 
 func ExampleService_ResolveString() {
-	fn := ax7ValueOf(new(Service).ResolveString)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).ResolveString("lethean.lthn")))
 	// Output: 2
 }
 
 func ExampleService_GetResolveString() {
-	fn := ax7ValueOf(new(Service).GetResolveString)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetResolveString("lethean.lthn")))
 	// Output: 2
 }
 
 func ExampleService_ResolveBinary() {
-	fn := ax7ValueOf(new(Service).ResolveBinary)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).ResolveBinary([]byte("lethean.lthn"))))
 	// Output: 2
 }
 
 func ExampleService_GetResolveBinary() {
-	fn := ax7ValueOf(new(Service).GetResolveBinary)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetResolveBinary([]byte("lethean.lthn"))))
 	// Output: 2
 }
 
 func ExampleService_ResolveName() {
-	fn := ax7ValueOf(new(Service).ResolveName)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).ResolveName("lethean.lthn")))
 	// Output: 2
 }
 
 func ExampleService_GetResolveName() {
-	fn := ax7ValueOf(new(Service).GetResolveName)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetResolveName("lethean.lthn")))
 	// Output: 2
 }
 
 func ExampleService_HashName() {
-	fn := ax7ValueOf(new(Service).HashName)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).HashName("lethean.lthn")))
 	// Output: 2
 }
 
 func ExampleService_GetHashName() {
-	fn := ax7ValueOf(new(Service).GetHashName)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetHashName("lethean.lthn")))
 	// Output: 2
 }
 
 func ExampleService_VerifyName() {
-	fn := ax7ValueOf(new(Service).VerifyName)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).VerifyName("lethean.lthn")))
 	// Output: 1
 }
 
 func ExampleService_GetVerifyName() {
-	fn := ax7ValueOf(new(Service).GetVerifyName)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetVerifyName("lethean.lthn")))
 	// Output: 1
 }
 
 func ExampleService_ResolveByName() {
-	fn := ax7ValueOf(new(Service).ResolveByName)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).ResolveByName("lethean.lthn")))
 	// Output: 2
 }
 
 func ExampleService_GetResolveByName() {
-	fn := ax7ValueOf(new(Service).GetResolveByName)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetResolveByName("lethean.lthn")))
 	// Output: 2
 }
 
 func ExampleService_HashByName() {
-	fn := ax7ValueOf(new(Service).HashByName)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).HashByName("lethean.lthn")))
 	// Output: 2
 }
 
 func ExampleService_GetHashByName() {
-	fn := ax7ValueOf(new(Service).GetHashByName)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetHashByName("lethean.lthn")))
 	// Output: 2
 }
 
 func ExampleService_VerifyByName() {
-	fn := ax7ValueOf(new(Service).VerifyByName)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).VerifyByName("lethean.lthn")))
 	// Output: 1
 }
 
 func ExampleService_GetVerifyByName() {
-	fn := ax7ValueOf(new(Service).GetVerifyByName)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetVerifyByName("lethean.lthn")))
 	// Output: 1
 }
 
 func ExampleService_VerifyString() {
-	fn := ax7ValueOf(new(Service).VerifyString)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).VerifyString("lethean.lthn")))
 	// Output: 1
 }
 
 func ExampleService_GetVerifyString() {
-	fn := ax7ValueOf(new(Service).GetVerifyString)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetVerifyString("lethean.lthn")))
 	// Output: 1
 }
 
 func ExampleService_VerifyBinary() {
-	fn := ax7ValueOf(new(Service).VerifyBinary)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).VerifyBinary([]byte("lethean.lthn"))))
 	// Output: 1
 }
 
 func ExampleService_GetVerifyBinary() {
-	fn := ax7ValueOf(new(Service).GetVerifyBinary)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetVerifyBinary([]byte("lethean.lthn"))))
 	// Output: 1
 }
 
 func ExampleService_VerifyByString() {
-	fn := ax7ValueOf(new(Service).VerifyByString)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).VerifyByString("lethean.lthn")))
 	// Output: 1
 }
 
 func ExampleService_GetVerifyByString() {
-	fn := ax7ValueOf(new(Service).GetVerifyByString)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetVerifyByString("lethean.lthn")))
 	// Output: 1
 }
 
 func ExampleService_VerifyByBinary() {
-	fn := ax7ValueOf(new(Service).VerifyByBinary)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).VerifyByBinary([]byte("lethean.lthn"))))
 	// Output: 1
 }
 
 func ExampleService_GetVerifyByBinary() {
-	fn := ax7ValueOf(new(Service).GetVerifyByBinary)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetVerifyByBinary([]byte("lethean.lthn"))))
 	// Output: 1
 }
 
 func ExampleService_Blind() {
-	fn := ax7ValueOf(new(Service).Blind)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).Blind(1, [32]byte{1})))
 	// Output: 2
 }
 
 func ExampleService_GetBlind() {
-	fn := ax7ValueOf(new(Service).GetBlind)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetBlind(1, [32]byte{1})))
 	// Output: 2
 }
 
 func ExampleService_TypeName() {
-	fn := ax7ValueOf(new(Service).TypeName)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).TypeName(1)))
 	// Output: 1
 }
 
 func ExampleService_GetTypeName() {
-	fn := ax7ValueOf(new(Service).GetTypeName)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetTypeName(1)))
 	// Output: 1
 }
 
 func ExampleService_IsName() {
-	fn := ax7ValueOf(new(Service).IsName)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).IsName(1)))
 	// Output: 1
 }
 
 func ExampleService_GetIsName() {
-	fn := ax7ValueOf(new(Service).GetIsName)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetIsName(1)))
 	// Output: 1
 }
 
 func ExampleService_IsKnown() {
-	fn := ax7ValueOf(new(Service).IsKnown)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).IsKnown(1)))
 	// Output: 1
 }
 
 func ExampleService_GetIsKnown() {
-	fn := ax7ValueOf(new(Service).GetIsKnown)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetIsKnown(1)))
 	// Output: 1
 }
 
 func ExampleService_IsLinked() {
-	fn := ax7ValueOf(new(Service).IsLinked)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).IsLinked(1)))
 	// Output: 1
 }
 
 func ExampleService_GetIsLinked() {
-	fn := ax7ValueOf(new(Service).GetIsLinked)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetIsLinked(1)))
 	// Output: 1
 }
 
 func ExampleService_GetRollout() {
-	fn := ax7ValueOf(new(Service).GetRollout)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetRollout([32]byte{1}, coverageValue[NameRules]("good"))))
 	// Output: 2
 }
 
 func ExampleService_HasRollout() {
-	fn := ax7ValueOf(new(Service).HasRollout)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).HasRollout([32]byte{1}, 1, coverageValue[NameRules]("good"))))
 	// Output: 1
 }
 
 func ExampleService_GetHasRollout() {
-	fn := ax7ValueOf(new(Service).GetHasRollout)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetHasRollout([32]byte{1}, 1, coverageValue[NameRules]("good"))))
 	// Output: 1
 }
 
 func ExampleService_IsReserved() {
-	fn := ax7ValueOf(new(Service).IsReserved)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).IsReserved([32]byte{1}, 1, coverageValue[NameRules]("good"))))
 	// Output: 1
 }
 
 func ExampleService_GetIsReserved() {
-	fn := ax7ValueOf(new(Service).GetIsReserved)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetIsReserved([32]byte{1}, 1, coverageValue[NameRules]("good"))))
 	// Output: 1
 }
 
 func ExampleService_IsLockedUp() {
-	fn := ax7ValueOf(new(Service).IsLockedUp)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).IsLockedUp([32]byte{1}, 1, coverageValue[NameRules]("good"))))
 	// Output: 1
 }
 
 func ExampleService_GetIsLockedUp() {
-	fn := ax7ValueOf(new(Service).GetIsLockedUp)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetIsLockedUp([32]byte{1}, 1, coverageValue[NameRules]("good"))))
 	// Output: 1
 }
 
 func ExampleService_GrindName() {
-	fn := ax7ValueOf(new(Service).GrindName)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GrindName(1, 1, coverageValue[NameRules]("good"))))
 	// Output: 2
 }
 
 func ExampleService_GetGrindName() {
-	fn := ax7ValueOf(new(Service).GetGrindName)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetGrindName(1, 1, coverageValue[NameRules]("good"))))
 	// Output: 2
 }
 
 func ExampleService_CountOpens() {
-	fn := ax7ValueOf(new(Service).CountOpens)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).CountOpens(coverageTransaction("good"))))
 	// Output: 1
 }
 
 func ExampleService_GetCountOpens() {
-	fn := ax7ValueOf(new(Service).GetCountOpens)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetCountOpens(coverageTransaction("good"))))
 	// Output: 1
 }
 
 func ExampleService_CountUpdates() {
-	fn := ax7ValueOf(new(Service).CountUpdates)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).CountUpdates(coverageTransaction("good"))))
 	// Output: 1
 }
 
 func ExampleService_GetCountUpdates() {
-	fn := ax7ValueOf(new(Service).GetCountUpdates)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetCountUpdates(coverageTransaction("good"))))
 	// Output: 1
 }
 
 func ExampleService_CountRenewals() {
-	fn := ax7ValueOf(new(Service).CountRenewals)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).CountRenewals(coverageTransaction("good"))))
 	// Output: 1
 }
 
 func ExampleService_GetCountRenewals() {
-	fn := ax7ValueOf(new(Service).GetCountRenewals)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetCountRenewals(coverageTransaction("good"))))
 	// Output: 1
 }
 
 func ExampleService_HasNames() {
-	fn := ax7ValueOf(new(Service).HasNames)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).HasNames(coverageTransaction("good"), nil)))
 	// Output: 1
 }
 
 func ExampleService_GetHasNames() {
-	fn := ax7ValueOf(new(Service).GetHasNames)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetHasNames(coverageTransaction("good"), nil)))
 	// Output: 1
 }
 
 func ExampleService_AddNames() {
-	fn := ax7ValueOf(new(Service).AddNames)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	new(Service).AddNames(coverageTransaction("good"), nil)
+	core.Println(coverageExample())
 	// Output: 0
 }
 
 func ExampleService_GetAddNames() {
-	fn := ax7ValueOf(new(Service).GetAddNames)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	new(Service).GetAddNames(coverageTransaction("good"), nil)
+	core.Println(coverageExample())
 	// Output: 0
 }
 
 func ExampleService_RemoveNames() {
-	fn := ax7ValueOf(new(Service).RemoveNames)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	new(Service).RemoveNames(coverageTransaction("good"), nil)
+	core.Println(coverageExample())
 	// Output: 0
 }
 
 func ExampleService_GetRemoveNames() {
-	fn := ax7ValueOf(new(Service).GetRemoveNames)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	new(Service).GetRemoveNames(coverageTransaction("good"), nil)
+	core.Println(coverageExample())
 	// Output: 0
 }
 
 func ExampleService_HasSaneCovenants() {
-	fn := ax7ValueOf(new(Service).HasSaneCovenants)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).HasSaneCovenants(coverageTransaction("good"))))
 	// Output: 1
 }
 
 func ExampleService_GetHasSaneCovenants() {
-	fn := ax7ValueOf(new(Service).GetHasSaneCovenants)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetHasSaneCovenants(coverageTransaction("good"))))
 	// Output: 1
 }
 
 func ExampleService_VerifyCovenants() {
-	fn := ax7ValueOf(new(Service).VerifyCovenants)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).VerifyCovenants(coverageTransaction("good"), coverageValue[CoinView]("good"), 1, coverageValue[Network]("good"))))
 	// Output: 1
 }
 
 func ExampleService_GetVerifyCovenants() {
-	fn := ax7ValueOf(new(Service).GetVerifyCovenants)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetVerifyCovenants(coverageTransaction("good"), coverageValue[CoinView]("good"), 1, coverageValue[Network]("good"))))
 	// Output: 1
 }
 
 func ExampleService_Types() {
-	fn := ax7ValueOf(new(Service).Types)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).Types()))
 	// Output: 1
 }
 
 func ExampleService_GetTypes() {
-	fn := ax7ValueOf(new(Service).GetTypes)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetTypes()))
 	// Output: 1
 }
 
 func ExampleService_TypesByVal() {
-	fn := ax7ValueOf(new(Service).TypesByVal)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).TypesByVal()))
 	// Output: 1
 }
 
 func ExampleService_GetTypesByVal() {
-	fn := ax7ValueOf(new(Service).GetTypesByVal)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetTypesByVal()))
 	// Output: 1
 }
 
 func ExampleService_Blacklist() {
-	fn := ax7ValueOf(new(Service).Blacklist)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).Blacklist()))
 	// Output: 1
 }
 
 func ExampleService_GetBlacklist() {
-	fn := ax7ValueOf(new(Service).GetBlacklist)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetBlacklist()))
 	// Output: 1
 }
 
 func ExampleService_VerificationFlags() {
-	fn := ax7ValueOf(new(Service).VerificationFlags)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).VerificationFlags()))
 	// Output: 1
 }
 
 func ExampleService_GetVerificationFlags() {
-	fn := ax7ValueOf(new(Service).GetVerificationFlags)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetVerificationFlags()))
 	// Output: 1
 }
 
 func ExampleService_VerificationFlagsByVal() {
-	fn := ax7ValueOf(new(Service).VerificationFlagsByVal)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).VerificationFlagsByVal()))
 	// Output: 1
 }
 
 func ExampleService_GetVerificationFlagsByVal() {
-	fn := ax7ValueOf(new(Service).GetVerificationFlagsByVal)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetVerificationFlagsByVal()))
 	// Output: 1
 }
 
 func ExampleService_GetReserved() {
-	fn := ax7ValueOf(new(Service).GetReserved)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetReserved("lethean.lthn")))
 	// Output: 2
 }
 
 func ExampleService_GetReservedName() {
-	fn := ax7ValueOf(new(Service).GetReservedName)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetReservedName("lethean.lthn")))
 	// Output: 2
 }
 
 func ExampleService_GetReservedString() {
-	fn := ax7ValueOf(new(Service).GetReservedString)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetReservedString("lethean.lthn")))
 	// Output: 2
 }
 
 func ExampleService_GetReservedBinary() {
-	fn := ax7ValueOf(new(Service).GetReservedBinary)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetReservedBinary([]byte("lethean.lthn"))))
 	// Output: 2
 }
 
 func ExampleService_GetReservedByString() {
-	fn := ax7ValueOf(new(Service).GetReservedByString)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetReservedByString("lethean.lthn")))
 	// Output: 2
 }
 
 func ExampleService_GetReservedByBinary() {
-	fn := ax7ValueOf(new(Service).GetReservedByBinary)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetReservedByBinary([]byte("lethean.lthn"))))
 	// Output: 2
 }
 
 func ExampleService_HasReserved() {
-	fn := ax7ValueOf(new(Service).HasReserved)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).HasReserved("lethean.lthn")))
 	// Output: 1
 }
 
 func ExampleService_HasReservedString() {
-	fn := ax7ValueOf(new(Service).HasReservedString)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).HasReservedString("lethean.lthn")))
 	// Output: 1
 }
 
 func ExampleService_HasReservedBinary() {
-	fn := ax7ValueOf(new(Service).HasReservedBinary)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).HasReservedBinary([]byte("lethean.lthn"))))
 	// Output: 1
 }
 
 func ExampleService_HasReservedByString() {
-	fn := ax7ValueOf(new(Service).HasReservedByString)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).HasReservedByString("lethean.lthn")))
 	// Output: 1
 }
 
 func ExampleService_HasReservedByBinary() {
-	fn := ax7ValueOf(new(Service).HasReservedByBinary)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).HasReservedByBinary([]byte("lethean.lthn"))))
 	// Output: 1
 }
 
 func ExampleService_GetReservedByName() {
-	fn := ax7ValueOf(new(Service).GetReservedByName)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetReservedByName("lethean.lthn")))
 	// Output: 2
 }
 
 func ExampleService_HasReservedByName() {
-	fn := ax7ValueOf(new(Service).HasReservedByName)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).HasReservedByName("lethean.lthn")))
 	// Output: 1
 }
 
 func ExampleService_HasReservedName() {
-	fn := ax7ValueOf(new(Service).HasReservedName)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).HasReservedName("lethean.lthn")))
 	// Output: 1
 }
 
 func ExampleService_GetReservedHash() {
-	fn := ax7ValueOf(new(Service).GetReservedHash)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetReservedHash([32]byte{1})))
 	// Output: 2
 }
 
 func ExampleService_HasReservedHash() {
-	fn := ax7ValueOf(new(Service).HasReservedHash)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).HasReservedHash([32]byte{1})))
 	// Output: 1
 }
 
 func ExampleService_GetReservedByHash() {
-	fn := ax7ValueOf(new(Service).GetReservedByHash)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetReservedByHash([32]byte{1})))
 	// Output: 2
 }
 
 func ExampleService_HasReservedByHash() {
-	fn := ax7ValueOf(new(Service).HasReservedByHash)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).HasReservedByHash([32]byte{1})))
 	// Output: 1
 }
 
 func ExampleService_GetLocked() {
-	fn := ax7ValueOf(new(Service).GetLocked)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetLocked("lethean.lthn")))
 	// Output: 2
 }
 
 func ExampleService_GetLockedName() {
-	fn := ax7ValueOf(new(Service).GetLockedName)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetLockedName("lethean.lthn")))
 	// Output: 2
 }
 
 func ExampleService_GetLockedString() {
-	fn := ax7ValueOf(new(Service).GetLockedString)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetLockedString("lethean.lthn")))
 	// Output: 2
 }
 
 func ExampleService_GetLockedBinary() {
-	fn := ax7ValueOf(new(Service).GetLockedBinary)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetLockedBinary([]byte("lethean.lthn"))))
 	// Output: 2
 }
 
 func ExampleService_GetLockedByString() {
-	fn := ax7ValueOf(new(Service).GetLockedByString)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetLockedByString("lethean.lthn")))
 	// Output: 2
 }
 
 func ExampleService_GetLockedByBinary() {
-	fn := ax7ValueOf(new(Service).GetLockedByBinary)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetLockedByBinary([]byte("lethean.lthn"))))
 	// Output: 2
 }
 
 func ExampleService_HasLocked() {
-	fn := ax7ValueOf(new(Service).HasLocked)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).HasLocked("lethean.lthn")))
 	// Output: 1
 }
 
 func ExampleService_HasLockedString() {
-	fn := ax7ValueOf(new(Service).HasLockedString)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).HasLockedString("lethean.lthn")))
 	// Output: 1
 }
 
 func ExampleService_HasLockedBinary() {
-	fn := ax7ValueOf(new(Service).HasLockedBinary)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).HasLockedBinary([]byte("lethean.lthn"))))
 	// Output: 1
 }
 
 func ExampleService_HasLockedByString() {
-	fn := ax7ValueOf(new(Service).HasLockedByString)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).HasLockedByString("lethean.lthn")))
 	// Output: 1
 }
 
 func ExampleService_HasLockedByBinary() {
-	fn := ax7ValueOf(new(Service).HasLockedByBinary)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).HasLockedByBinary([]byte("lethean.lthn"))))
 	// Output: 1
 }
 
 func ExampleService_GetLockedByName() {
-	fn := ax7ValueOf(new(Service).GetLockedByName)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetLockedByName("lethean.lthn")))
 	// Output: 2
 }
 
 func ExampleService_HasLockedByName() {
-	fn := ax7ValueOf(new(Service).HasLockedByName)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).HasLockedByName("lethean.lthn")))
 	// Output: 1
 }
 
 func ExampleService_HasLockedName() {
-	fn := ax7ValueOf(new(Service).HasLockedName)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).HasLockedName("lethean.lthn")))
 	// Output: 1
 }
 
 func ExampleService_GetLockedHash() {
-	fn := ax7ValueOf(new(Service).GetLockedHash)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetLockedHash([32]byte{1})))
 	// Output: 2
 }
 
 func ExampleService_HasLockedHash() {
-	fn := ax7ValueOf(new(Service).HasLockedHash)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).HasLockedHash([32]byte{1})))
 	// Output: 1
 }
 
 func ExampleService_GetLockedByHash() {
-	fn := ax7ValueOf(new(Service).GetLockedByHash)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetLockedByHash([32]byte{1})))
 	// Output: 2
 }
 
 func ExampleService_HasLockedByHash() {
-	fn := ax7ValueOf(new(Service).HasLockedByHash)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).HasLockedByHash([32]byte{1})))
 	// Output: 1
 }
 
 func ExampleService_ReservedCatalog() {
-	fn := ax7ValueOf(new(Service).ReservedCatalog)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).ReservedCatalog()))
 	// Output: 1
 }
 
 func ExampleService_Core() {
-	fn := ax7ValueOf(new(Service).Core)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).Core()))
 	// Output: 1
 }
 
 func ExampleService_GetCore() {
-	fn := ax7ValueOf(new(Service).GetCore)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetCore()))
 	// Output: 1
 }
 
 func ExampleService_GetReservedCatalog() {
-	fn := ax7ValueOf(new(Service).GetReservedCatalog)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetReservedCatalog()))
 	// Output: 1
 }
 
 func ExampleService_DefaultReservedCatalog() {
-	fn := ax7ValueOf(new(Service).DefaultReservedCatalog)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).DefaultReservedCatalog()))
 	// Output: 1
 }
 
 func ExampleService_GetDefaultReservedCatalog() {
-	fn := ax7ValueOf(new(Service).GetDefaultReservedCatalog)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetDefaultReservedCatalog()))
 	// Output: 1
 }
 
 func ExampleService_HasReservedCatalog() {
-	fn := ax7ValueOf(new(Service).HasReservedCatalog)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).HasReservedCatalog()))
 	// Output: 1
 }
 
 func ExampleService_GetHasReservedCatalog() {
-	fn := ax7ValueOf(new(Service).GetHasReservedCatalog)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetHasReservedCatalog()))
 	// Output: 1
 }
 
 func ExampleDefaultReservedCatalog() {
-	fn := ax7ValueOf(DefaultReservedCatalog)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(DefaultReservedCatalog()))
 	// Output: 1
 }
 
 func ExampleGetReservedCatalog() {
-	fn := ax7ValueOf(GetReservedCatalog)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetReservedCatalog()))
 	// Output: 1
 }
 
 func ExampleGetDefaultReservedCatalog() {
-	fn := ax7ValueOf(GetDefaultReservedCatalog)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetDefaultReservedCatalog()))
 	// Output: 1
 }
 
 func ExampleService_ReservedSize() {
-	fn := ax7ValueOf(new(Service).ReservedSize)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).ReservedSize()))
 	// Output: 1
 }
 
 func ExampleService_GetReservedSize() {
-	fn := ax7ValueOf(new(Service).GetReservedSize)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetReservedSize()))
 	// Output: 1
 }
 
 func ExampleService_ReservedNameValue() {
-	fn := ax7ValueOf(new(Service).ReservedNameValue)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).ReservedNameValue()))
 	// Output: 1
 }
 
 func ExampleService_GetReservedNameValue() {
-	fn := ax7ValueOf(new(Service).GetReservedNameValue)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetReservedNameValue()))
 	// Output: 1
 }
 
 func ExampleService_ReservedRootValue() {
-	fn := ax7ValueOf(new(Service).ReservedRootValue)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).ReservedRootValue()))
 	// Output: 1
 }
 
 func ExampleService_GetReservedRootValue() {
-	fn := ax7ValueOf(new(Service).GetReservedRootValue)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetReservedRootValue()))
 	// Output: 1
 }
 
 func ExampleService_ReservedTopValue() {
-	fn := ax7ValueOf(new(Service).ReservedTopValue)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).ReservedTopValue()))
 	// Output: 1
 }
 
 func ExampleService_GetReservedTopValue() {
-	fn := ax7ValueOf(new(Service).GetReservedTopValue)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetReservedTopValue()))
 	// Output: 1
 }
 
 func ExampleService_NameValue() {
-	fn := ax7ValueOf(new(Service).NameValue)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).NameValue()))
 	// Output: 1
 }
 
 func ExampleService_GetNameValue() {
-	fn := ax7ValueOf(new(Service).GetNameValue)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetNameValue()))
 	// Output: 1
 }
 
 func ExampleService_RootValue() {
-	fn := ax7ValueOf(new(Service).RootValue)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).RootValue()))
 	// Output: 1
 }
 
 func ExampleService_GetRootValue() {
-	fn := ax7ValueOf(new(Service).GetRootValue)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetRootValue()))
 	// Output: 1
 }
 
 func ExampleService_TopValue() {
-	fn := ax7ValueOf(new(Service).TopValue)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).TopValue()))
 	// Output: 1
 }
 
 func ExampleService_GetTopValue() {
-	fn := ax7ValueOf(new(Service).GetTopValue)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetTopValue()))
 	// Output: 1
 }
 
 func ExampleService_PrefixSize() {
-	fn := ax7ValueOf(new(Service).PrefixSize)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).PrefixSize()))
 	// Output: 1
 }
 
 func ExampleService_GetPrefixSize() {
-	fn := ax7ValueOf(new(Service).GetPrefixSize)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetPrefixSize()))
 	// Output: 1
 }
 
 func ExampleService_ReservedEntries() {
-	fn := ax7ValueOf(new(Service).ReservedEntries)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).ReservedEntries()))
 	// Output: 1
 }
 
 func ExampleService_GetReservedEntries() {
-	fn := ax7ValueOf(new(Service).GetReservedEntries)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetReservedEntries()))
 	// Output: 1
 }
 
 func ExampleService_ReservedKeys() {
-	fn := ax7ValueOf(new(Service).ReservedKeys)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).ReservedKeys()))
 	// Output: 1
 }
 
 func ExampleService_GetReservedKeys() {
-	fn := ax7ValueOf(new(Service).GetReservedKeys)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetReservedKeys()))
 	// Output: 1
 }
 
 func ExampleService_ReservedValues() {
-	fn := ax7ValueOf(new(Service).ReservedValues)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).ReservedValues()))
 	// Output: 1
 }
 
 func ExampleService_GetReservedValues() {
-	fn := ax7ValueOf(new(Service).GetReservedValues)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetReservedValues()))
 	// Output: 1
 }
 
 func ExampleService_LockedCatalog() {
-	fn := ax7ValueOf(new(Service).LockedCatalog)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).LockedCatalog()))
 	// Output: 1
 }
 
 func ExampleService_GetLockedCatalog() {
-	fn := ax7ValueOf(new(Service).GetLockedCatalog)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetLockedCatalog()))
 	// Output: 1
 }
 
 func ExampleService_HasLockedCatalog() {
-	fn := ax7ValueOf(new(Service).HasLockedCatalog)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).HasLockedCatalog()))
 	// Output: 1
 }
 
 func ExampleService_GetHasLockedCatalog() {
-	fn := ax7ValueOf(new(Service).GetHasLockedCatalog)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetHasLockedCatalog()))
 	// Output: 1
 }
 
 func ExampleService_DefaultLockedCatalog() {
-	fn := ax7ValueOf(new(Service).DefaultLockedCatalog)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).DefaultLockedCatalog()))
 	// Output: 1
 }
 
 func ExampleService_GetDefaultLockedCatalog() {
-	fn := ax7ValueOf(new(Service).GetDefaultLockedCatalog)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetDefaultLockedCatalog()))
 	// Output: 1
 }
 
 func ExampleDefaultLockedCatalog() {
-	fn := ax7ValueOf(DefaultLockedCatalog)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(DefaultLockedCatalog()))
 	// Output: 1
 }
 
 func ExampleGetLockedCatalog() {
-	fn := ax7ValueOf(GetLockedCatalog)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetLockedCatalog()))
 	// Output: 1
 }
 
 func ExampleHasReservedCatalog() {
-	fn := ax7ValueOf(HasReservedCatalog)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(HasReservedCatalog()))
 	// Output: 1
 }
 
 func ExampleGetHasReservedCatalog() {
-	fn := ax7ValueOf(GetHasReservedCatalog)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetHasReservedCatalog()))
 	// Output: 1
 }
 
 func ExampleHasLockedCatalog() {
-	fn := ax7ValueOf(HasLockedCatalog)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(HasLockedCatalog()))
 	// Output: 1
 }
 
 func ExampleGetHasLockedCatalog() {
-	fn := ax7ValueOf(GetHasLockedCatalog)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetHasLockedCatalog()))
 	// Output: 1
 }
 
 func ExampleGetDefaultLockedCatalog() {
-	fn := ax7ValueOf(GetDefaultLockedCatalog)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetDefaultLockedCatalog()))
 	// Output: 1
 }
 
 func ExampleReservedCatalog() {
-	fn := ax7ValueOf(ReservedCatalog)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(ReservedCatalog()))
 	// Output: 1
 }
 
 func ExampleLockedCatalog() {
-	fn := ax7ValueOf(LockedCatalog)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(LockedCatalog()))
 	// Output: 1
 }
 
 func ExampleReservedSize() {
-	fn := ax7ValueOf(ReservedSize)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(ReservedSize()))
 	// Output: 1
 }
 
 func ExampleGetReservedSize() {
-	fn := ax7ValueOf(GetReservedSize)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetReservedSize()))
 	// Output: 1
 }
 
 func ExampleReservedNameValue() {
-	fn := ax7ValueOf(ReservedNameValue)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(ReservedNameValue()))
 	// Output: 1
 }
 
 func ExampleGetReservedNameValue() {
-	fn := ax7ValueOf(GetReservedNameValue)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetReservedNameValue()))
 	// Output: 1
 }
 
 func ExampleReservedRootValue() {
-	fn := ax7ValueOf(ReservedRootValue)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(ReservedRootValue()))
 	// Output: 1
 }
 
 func ExampleGetReservedRootValue() {
-	fn := ax7ValueOf(GetReservedRootValue)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetReservedRootValue()))
 	// Output: 1
 }
 
 func ExampleReservedTopValue() {
-	fn := ax7ValueOf(ReservedTopValue)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(ReservedTopValue()))
 	// Output: 1
 }
 
 func ExampleGetReservedTopValue() {
-	fn := ax7ValueOf(GetReservedTopValue)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetReservedTopValue()))
 	// Output: 1
 }
 
 func ExampleNameValue() {
-	fn := ax7ValueOf(NameValue)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(NameValue()))
 	// Output: 1
 }
 
 func ExampleGetNameValue() {
-	fn := ax7ValueOf(GetNameValue)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetNameValue()))
 	// Output: 1
 }
 
 func ExampleRootValue() {
-	fn := ax7ValueOf(RootValue)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(RootValue()))
 	// Output: 1
 }
 
 func ExampleGetRootValue() {
-	fn := ax7ValueOf(GetRootValue)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetRootValue()))
 	// Output: 1
 }
 
 func ExampleTopValue() {
-	fn := ax7ValueOf(TopValue)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(TopValue()))
 	// Output: 1
 }
 
 func ExampleGetTopValue() {
-	fn := ax7ValueOf(GetTopValue)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetTopValue()))
 	// Output: 1
 }
 
 func ExamplePrefixSize() {
-	fn := ax7ValueOf(PrefixSize)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(PrefixSize()))
 	// Output: 1
 }
 
 func ExampleGetPrefixSize() {
-	fn := ax7ValueOf(GetPrefixSize)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetPrefixSize()))
 	// Output: 1
 }
 
 func ExampleReservedPrefixSize() {
-	fn := ax7ValueOf(ReservedPrefixSize)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(ReservedPrefixSize()))
 	// Output: 1
 }
 
 func ExampleGetReservedPrefixSize() {
-	fn := ax7ValueOf(GetReservedPrefixSize)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetReservedPrefixSize()))
 	// Output: 1
 }
 
 func ExampleReservedEntries() {
-	fn := ax7ValueOf(ReservedEntries)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(ReservedEntries()))
 	// Output: 1
 }
 
 func ExampleGetReservedEntries() {
-	fn := ax7ValueOf(GetReservedEntries)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetReservedEntries()))
 	// Output: 1
 }
 
 func ExampleReservedKeys() {
-	fn := ax7ValueOf(ReservedKeys)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(ReservedKeys()))
 	// Output: 1
 }
 
 func ExampleGetReservedKeys() {
-	fn := ax7ValueOf(GetReservedKeys)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetReservedKeys()))
 	// Output: 1
 }
 
 func ExampleReservedValues() {
-	fn := ax7ValueOf(ReservedValues)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(ReservedValues()))
 	// Output: 1
 }
 
 func ExampleGetReservedValues() {
-	fn := ax7ValueOf(GetReservedValues)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetReservedValues()))
 	// Output: 1
 }
 
 func ExampleLockedSize() {
-	fn := ax7ValueOf(LockedSize)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(LockedSize()))
 	// Output: 1
 }
 
 func ExampleGetLockedSize() {
-	fn := ax7ValueOf(GetLockedSize)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetLockedSize()))
 	// Output: 1
 }
 
 func ExampleLockedPrefixSize() {
-	fn := ax7ValueOf(LockedPrefixSize)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(LockedPrefixSize()))
 	// Output: 1
 }
 
 func ExampleGetLockedPrefixSize() {
-	fn := ax7ValueOf(GetLockedPrefixSize)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetLockedPrefixSize()))
 	// Output: 1
 }
 
 func ExampleLockedEntries() {
-	fn := ax7ValueOf(LockedEntries)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(LockedEntries()))
 	// Output: 1
 }
 
 func ExampleGetLockedEntries() {
-	fn := ax7ValueOf(GetLockedEntries)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetLockedEntries()))
 	// Output: 1
 }
 
 func ExampleLockedKeys() {
-	fn := ax7ValueOf(LockedKeys)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(LockedKeys()))
 	// Output: 1
 }
 
 func ExampleGetLockedKeys() {
-	fn := ax7ValueOf(GetLockedKeys)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetLockedKeys()))
 	// Output: 1
 }
 
 func ExampleLockedValues() {
-	fn := ax7ValueOf(LockedValues)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(LockedValues()))
 	// Output: 1
 }
 
 func ExampleGetLockedValues() {
-	fn := ax7ValueOf(GetLockedValues)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetLockedValues()))
 	// Output: 1
 }
 
 func ExampleGetReserved() {
-	fn := ax7ValueOf(GetReserved)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetReserved("lethean.lthn")))
 	// Output: 2
 }
 
 func ExampleGetReservedName() {
-	fn := ax7ValueOf(GetReservedName)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetReservedName("lethean.lthn")))
 	// Output: 2
 }
 
 func ExampleGetReservedString() {
-	fn := ax7ValueOf(GetReservedString)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetReservedString("lethean.lthn")))
 	// Output: 2
 }
 
 func ExampleGetReservedBinary() {
-	fn := ax7ValueOf(GetReservedBinary)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetReservedBinary([]byte("lethean.lthn"))))
 	// Output: 2
 }
 
 func ExampleGetReservedByString() {
-	fn := ax7ValueOf(GetReservedByString)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetReservedByString("lethean.lthn")))
 	// Output: 2
 }
 
 func ExampleGetReservedByBinary() {
-	fn := ax7ValueOf(GetReservedByBinary)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetReservedByBinary([]byte("lethean.lthn"))))
 	// Output: 2
 }
 
 func ExampleHasReserved() {
-	fn := ax7ValueOf(HasReserved)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(HasReserved("lethean.lthn")))
 	// Output: 1
 }
 
 func ExampleGetHasReserved() {
-	fn := ax7ValueOf(GetHasReserved)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetHasReserved("lethean.lthn")))
 	// Output: 1
 }
 
 func ExampleService_GetHasReserved() {
-	fn := ax7ValueOf(new(Service).GetHasReserved)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetHasReserved("lethean.lthn")))
 	// Output: 1
 }
 
 func ExampleHasReservedString() {
-	fn := ax7ValueOf(HasReservedString)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(HasReservedString("lethean.lthn")))
 	// Output: 1
 }
 
 func ExampleGetHasReservedString() {
-	fn := ax7ValueOf(GetHasReservedString)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetHasReservedString("lethean.lthn")))
 	// Output: 1
 }
 
 func ExampleService_GetHasReservedString() {
-	fn := ax7ValueOf(new(Service).GetHasReservedString)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetHasReservedString("lethean.lthn")))
 	// Output: 1
 }
 
 func ExampleHasReservedBinary() {
-	fn := ax7ValueOf(HasReservedBinary)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(HasReservedBinary([]byte("lethean.lthn"))))
 	// Output: 1
 }
 
 func ExampleGetHasReservedBinary() {
-	fn := ax7ValueOf(GetHasReservedBinary)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetHasReservedBinary([]byte("lethean.lthn"))))
 	// Output: 1
 }
 
 func ExampleService_GetHasReservedBinary() {
-	fn := ax7ValueOf(new(Service).GetHasReservedBinary)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetHasReservedBinary([]byte("lethean.lthn"))))
 	// Output: 1
 }
 
 func ExampleHasReservedByString() {
-	fn := ax7ValueOf(HasReservedByString)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(HasReservedByString("lethean.lthn")))
 	// Output: 1
 }
 
 func ExampleGetHasReservedByString() {
-	fn := ax7ValueOf(GetHasReservedByString)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetHasReservedByString("lethean.lthn")))
 	// Output: 1
 }
 
 func ExampleService_GetHasReservedByString() {
-	fn := ax7ValueOf(new(Service).GetHasReservedByString)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetHasReservedByString("lethean.lthn")))
 	// Output: 1
 }
 
 func ExampleHasReservedByBinary() {
-	fn := ax7ValueOf(HasReservedByBinary)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(HasReservedByBinary([]byte("lethean.lthn"))))
 	// Output: 1
 }
 
 func ExampleGetHasReservedByBinary() {
-	fn := ax7ValueOf(GetHasReservedByBinary)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetHasReservedByBinary([]byte("lethean.lthn"))))
 	// Output: 1
 }
 
 func ExampleService_GetHasReservedByBinary() {
-	fn := ax7ValueOf(new(Service).GetHasReservedByBinary)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetHasReservedByBinary([]byte("lethean.lthn"))))
 	// Output: 1
 }
 
 func ExampleGetReservedByName() {
-	fn := ax7ValueOf(GetReservedByName)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetReservedByName("lethean.lthn")))
 	// Output: 2
 }
 
 func ExampleHasReservedByName() {
-	fn := ax7ValueOf(HasReservedByName)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(HasReservedByName("lethean.lthn")))
 	// Output: 1
 }
 
 func ExampleGetHasReservedByName() {
-	fn := ax7ValueOf(GetHasReservedByName)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetHasReservedByName("lethean.lthn")))
 	// Output: 1
 }
 
 func ExampleService_GetHasReservedByName() {
-	fn := ax7ValueOf(new(Service).GetHasReservedByName)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetHasReservedByName("lethean.lthn")))
 	// Output: 1
 }
 
 func ExampleHasReservedName() {
-	fn := ax7ValueOf(HasReservedName)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(HasReservedName("lethean.lthn")))
 	// Output: 1
 }
 
 func ExampleGetHasReservedName() {
-	fn := ax7ValueOf(GetHasReservedName)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetHasReservedName("lethean.lthn")))
 	// Output: 1
 }
 
 func ExampleService_GetHasReservedName() {
-	fn := ax7ValueOf(new(Service).GetHasReservedName)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetHasReservedName("lethean.lthn")))
 	// Output: 1
 }
 
 func ExampleGetReservedHash() {
-	fn := ax7ValueOf(GetReservedHash)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetReservedHash([32]byte{1})))
 	// Output: 2
 }
 
 func ExampleHasReservedHash() {
-	fn := ax7ValueOf(HasReservedHash)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(HasReservedHash([32]byte{1})))
 	// Output: 1
 }
 
 func ExampleGetHasReservedHash() {
-	fn := ax7ValueOf(GetHasReservedHash)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetHasReservedHash([32]byte{1})))
 	// Output: 1
 }
 
 func ExampleService_GetHasReservedHash() {
-	fn := ax7ValueOf(new(Service).GetHasReservedHash)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetHasReservedHash([32]byte{1})))
 	// Output: 1
 }
 
 func ExampleGetReservedByHash() {
-	fn := ax7ValueOf(GetReservedByHash)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetReservedByHash([32]byte{1})))
 	// Output: 2
 }
 
 func ExampleHasReservedByHash() {
-	fn := ax7ValueOf(HasReservedByHash)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(HasReservedByHash([32]byte{1})))
 	// Output: 1
 }
 
 func ExampleGetHasReservedByHash() {
-	fn := ax7ValueOf(GetHasReservedByHash)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetHasReservedByHash([32]byte{1})))
 	// Output: 1
 }
 
 func ExampleService_GetHasReservedByHash() {
-	fn := ax7ValueOf(new(Service).GetHasReservedByHash)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetHasReservedByHash([32]byte{1})))
 	// Output: 1
 }
 
 func ExampleGetLocked() {
-	fn := ax7ValueOf(GetLocked)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetLocked("lethean.lthn")))
 	// Output: 2
 }
 
 func ExampleGetLockedName() {
-	fn := ax7ValueOf(GetLockedName)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetLockedName("lethean.lthn")))
 	// Output: 2
 }
 
 func ExampleGetLockedString() {
-	fn := ax7ValueOf(GetLockedString)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetLockedString("lethean.lthn")))
 	// Output: 2
 }
 
 func ExampleGetLockedBinary() {
-	fn := ax7ValueOf(GetLockedBinary)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetLockedBinary([]byte("lethean.lthn"))))
 	// Output: 2
 }
 
 func ExampleGetLockedByString() {
-	fn := ax7ValueOf(GetLockedByString)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetLockedByString("lethean.lthn")))
 	// Output: 2
 }
 
 func ExampleGetLockedByBinary() {
-	fn := ax7ValueOf(GetLockedByBinary)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetLockedByBinary([]byte("lethean.lthn"))))
 	// Output: 2
 }
 
 func ExampleHasLocked() {
-	fn := ax7ValueOf(HasLocked)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(HasLocked("lethean.lthn")))
 	// Output: 1
 }
 
 func ExampleGetHasLocked() {
-	fn := ax7ValueOf(GetHasLocked)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetHasLocked("lethean.lthn")))
 	// Output: 1
 }
 
 func ExampleService_GetHasLocked() {
-	fn := ax7ValueOf(new(Service).GetHasLocked)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetHasLocked("lethean.lthn")))
 	// Output: 1
 }
 
 func ExampleHasLockedString() {
-	fn := ax7ValueOf(HasLockedString)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(HasLockedString("lethean.lthn")))
 	// Output: 1
 }
 
 func ExampleGetHasLockedString() {
-	fn := ax7ValueOf(GetHasLockedString)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetHasLockedString("lethean.lthn")))
 	// Output: 1
 }
 
 func ExampleService_GetHasLockedString() {
-	fn := ax7ValueOf(new(Service).GetHasLockedString)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetHasLockedString("lethean.lthn")))
 	// Output: 1
 }
 
 func ExampleHasLockedBinary() {
-	fn := ax7ValueOf(HasLockedBinary)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(HasLockedBinary([]byte("lethean.lthn"))))
 	// Output: 1
 }
 
 func ExampleGetHasLockedBinary() {
-	fn := ax7ValueOf(GetHasLockedBinary)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetHasLockedBinary([]byte("lethean.lthn"))))
 	// Output: 1
 }
 
 func ExampleService_GetHasLockedBinary() {
-	fn := ax7ValueOf(new(Service).GetHasLockedBinary)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetHasLockedBinary([]byte("lethean.lthn"))))
 	// Output: 1
 }
 
 func ExampleHasLockedByString() {
-	fn := ax7ValueOf(HasLockedByString)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(HasLockedByString("lethean.lthn")))
 	// Output: 1
 }
 
 func ExampleGetHasLockedByString() {
-	fn := ax7ValueOf(GetHasLockedByString)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetHasLockedByString("lethean.lthn")))
 	// Output: 1
 }
 
 func ExampleService_GetHasLockedByString() {
-	fn := ax7ValueOf(new(Service).GetHasLockedByString)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetHasLockedByString("lethean.lthn")))
 	// Output: 1
 }
 
 func ExampleHasLockedByBinary() {
-	fn := ax7ValueOf(HasLockedByBinary)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(HasLockedByBinary([]byte("lethean.lthn"))))
 	// Output: 1
 }
 
 func ExampleGetHasLockedByBinary() {
-	fn := ax7ValueOf(GetHasLockedByBinary)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetHasLockedByBinary([]byte("lethean.lthn"))))
 	// Output: 1
 }
 
 func ExampleService_GetHasLockedByBinary() {
-	fn := ax7ValueOf(new(Service).GetHasLockedByBinary)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetHasLockedByBinary([]byte("lethean.lthn"))))
 	// Output: 1
 }
 
 func ExampleGetLockedByName() {
-	fn := ax7ValueOf(GetLockedByName)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetLockedByName("lethean.lthn")))
 	// Output: 2
 }
 
 func ExampleHasLockedByName() {
-	fn := ax7ValueOf(HasLockedByName)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(HasLockedByName("lethean.lthn")))
 	// Output: 1
 }
 
 func ExampleGetHasLockedByName() {
-	fn := ax7ValueOf(GetHasLockedByName)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetHasLockedByName("lethean.lthn")))
 	// Output: 1
 }
 
 func ExampleService_GetHasLockedByName() {
-	fn := ax7ValueOf(new(Service).GetHasLockedByName)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetHasLockedByName("lethean.lthn")))
 	// Output: 1
 }
 
 func ExampleHasLockedName() {
-	fn := ax7ValueOf(HasLockedName)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(HasLockedName("lethean.lthn")))
 	// Output: 1
 }
 
 func ExampleGetHasLockedName() {
-	fn := ax7ValueOf(GetHasLockedName)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetHasLockedName("lethean.lthn")))
 	// Output: 1
 }
 
 func ExampleService_GetHasLockedName() {
-	fn := ax7ValueOf(new(Service).GetHasLockedName)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetHasLockedName("lethean.lthn")))
 	// Output: 1
 }
 
 func ExampleGetLockedHash() {
-	fn := ax7ValueOf(GetLockedHash)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetLockedHash([32]byte{1})))
 	// Output: 2
 }
 
 func ExampleHasLockedHash() {
-	fn := ax7ValueOf(HasLockedHash)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(HasLockedHash([32]byte{1})))
 	// Output: 1
 }
 
 func ExampleGetHasLockedHash() {
-	fn := ax7ValueOf(GetHasLockedHash)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetHasLockedHash([32]byte{1})))
 	// Output: 1
 }
 
 func ExampleService_GetHasLockedHash() {
-	fn := ax7ValueOf(new(Service).GetHasLockedHash)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetHasLockedHash([32]byte{1})))
 	// Output: 1
 }
 
 func ExampleGetLockedByHash() {
-	fn := ax7ValueOf(GetLockedByHash)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetLockedByHash([32]byte{1})))
 	// Output: 2
 }
 
 func ExampleHasLockedByHash() {
-	fn := ax7ValueOf(HasLockedByHash)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(HasLockedByHash([32]byte{1})))
 	// Output: 1
 }
 
 func ExampleGetHasLockedByHash() {
-	fn := ax7ValueOf(GetHasLockedByHash)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetHasLockedByHash([32]byte{1})))
 	// Output: 1
 }
 
 func ExampleService_GetHasLockedByHash() {
-	fn := ax7ValueOf(new(Service).GetHasLockedByHash)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetHasLockedByHash([32]byte{1})))
 	// Output: 1
 }
 
 func ExampleService_LockedSize() {
-	fn := ax7ValueOf(new(Service).LockedSize)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).LockedSize()))
 	// Output: 1
 }
 
 func ExampleService_GetLockedSize() {
-	fn := ax7ValueOf(new(Service).GetLockedSize)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetLockedSize()))
 	// Output: 1
 }
 
 func ExampleService_LockedPrefixSize() {
-	fn := ax7ValueOf(new(Service).LockedPrefixSize)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).LockedPrefixSize()))
 	// Output: 1
 }
 
 func ExampleService_GetLockedPrefixSize() {
-	fn := ax7ValueOf(new(Service).GetLockedPrefixSize)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetLockedPrefixSize()))
 	// Output: 1
 }
 
 func ExampleService_ReservedPrefixSize() {
-	fn := ax7ValueOf(new(Service).ReservedPrefixSize)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).ReservedPrefixSize()))
 	// Output: 1
 }
 
 func ExampleService_GetReservedPrefixSize() {
-	fn := ax7ValueOf(new(Service).GetReservedPrefixSize)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetReservedPrefixSize()))
 	// Output: 1
 }
 
 func ExampleService_LockedEntries() {
-	fn := ax7ValueOf(new(Service).LockedEntries)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).LockedEntries()))
 	// Output: 1
 }
 
 func ExampleService_GetLockedEntries() {
-	fn := ax7ValueOf(new(Service).GetLockedEntries)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetLockedEntries()))
 	// Output: 1
 }
 
 func ExampleService_LockedKeys() {
-	fn := ax7ValueOf(new(Service).LockedKeys)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).LockedKeys()))
 	// Output: 1
 }
 
 func ExampleService_GetLockedKeys() {
-	fn := ax7ValueOf(new(Service).GetLockedKeys)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetLockedKeys()))
 	// Output: 1
 }
 
 func ExampleService_LockedValues() {
-	fn := ax7ValueOf(new(Service).LockedValues)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).LockedValues()))
 	// Output: 1
 }
 
 func ExampleService_GetLockedValues() {
-	fn := ax7ValueOf(new(Service).GetLockedValues)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Service).GetLockedValues()))
 	// Output: 1
 }

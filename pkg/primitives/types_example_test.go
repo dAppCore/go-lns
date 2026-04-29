@@ -5,246 +5,176 @@ package primitives
 import core "dappco.re/go"
 
 func ExampleAddress_Inject() {
-	fn := ax7ValueOf(new(Address).Inject)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Address).Inject(coverageValue[Address]("good"))))
 	// Output: 1
 }
 
 func ExampleAddress_Clone() {
-	fn := ax7ValueOf(new(Address).Clone)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Address).Clone()))
 	// Output: 1
 }
 
 func ExampleAddress_Equals() {
-	fn := ax7ValueOf(new(Address).Equals)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Address).Equals(coverageValue[Address]("good"))))
 	// Output: 1
 }
 
 func ExampleAddress_Compare() {
-	fn := ax7ValueOf(new(Address).Compare)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Address).Compare(coverageValue[Address]("good"))))
 	// Output: 1
 }
 
 func ExampleAddress_IsNull() {
-	fn := ax7ValueOf(new(Address).IsNull)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Address).IsNull()))
 	// Output: 1
 }
 
 func ExampleAddress_IsPubkeyHash() {
-	fn := ax7ValueOf(new(Address).IsPubkeyHash)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Address).IsPubkeyHash()))
 	// Output: 1
 }
 
 func ExampleAddress_IsScripthash() {
-	fn := ax7ValueOf(new(Address).IsScripthash)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Address).IsScripthash()))
 	// Output: 1
 }
 
 func ExampleAddress_IsNulldata() {
-	fn := ax7ValueOf(new(Address).IsNulldata)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Address).IsNulldata()))
 	// Output: 1
 }
 
 func ExampleAddress_IsUnspendable() {
-	fn := ax7ValueOf(new(Address).IsUnspendable)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Address).IsUnspendable()))
 	// Output: 1
 }
 
 func ExampleAddress_IsUnknown() {
-	fn := ax7ValueOf(new(Address).IsUnknown)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Address).IsUnknown()))
 	// Output: 1
 }
 
 func ExampleAddress_IsValid() {
-	fn := ax7ValueOf(new(Address).IsValid)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Address).IsValid()))
 	// Output: 1
 }
 
 func ExampleAddress_GetSize() {
-	fn := ax7ValueOf(new(Address).GetSize)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Address).GetSize()))
 	// Output: 1
 }
 
 func ExampleCovenant_IsUnspendable() {
-	fn := ax7ValueOf(new(Covenant).IsUnspendable)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Covenant).IsUnspendable()))
 	// Output: 1
 }
 
 func ExampleCovenant_IsNone() {
-	fn := ax7ValueOf(new(Covenant).IsNone)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Covenant).IsNone()))
 	// Output: 1
 }
 
 func ExampleCovenant_IsClaim() {
-	fn := ax7ValueOf(new(Covenant).IsClaim)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Covenant).IsClaim()))
 	// Output: 1
 }
 
 func ExampleCovenant_IsOpen() {
-	fn := ax7ValueOf(new(Covenant).IsOpen)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Covenant).IsOpen()))
 	// Output: 1
 }
 
 func ExampleCovenant_IsBid() {
-	fn := ax7ValueOf(new(Covenant).IsBid)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Covenant).IsBid()))
 	// Output: 1
 }
 
 func ExampleCovenant_IsReveal() {
-	fn := ax7ValueOf(new(Covenant).IsReveal)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Covenant).IsReveal()))
 	// Output: 1
 }
 
 func ExampleCovenant_IsRedeem() {
-	fn := ax7ValueOf(new(Covenant).IsRedeem)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Covenant).IsRedeem()))
 	// Output: 1
 }
 
 func ExampleCovenant_IsRegister() {
-	fn := ax7ValueOf(new(Covenant).IsRegister)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Covenant).IsRegister()))
 	// Output: 1
 }
 
 func ExampleCovenant_IsUpdate() {
-	fn := ax7ValueOf(new(Covenant).IsUpdate)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Covenant).IsUpdate()))
 	// Output: 1
 }
 
 func ExampleCovenant_IsRenew() {
-	fn := ax7ValueOf(new(Covenant).IsRenew)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Covenant).IsRenew()))
 	// Output: 1
 }
 
 func ExampleCovenant_IsTransfer() {
-	fn := ax7ValueOf(new(Covenant).IsTransfer)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Covenant).IsTransfer()))
 	// Output: 1
 }
 
 func ExampleCovenant_IsFinalize() {
-	fn := ax7ValueOf(new(Covenant).IsFinalize)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Covenant).IsFinalize()))
 	// Output: 1
 }
 
 func ExampleCovenant_IsRevoke() {
-	fn := ax7ValueOf(new(Covenant).IsRevoke)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Covenant).IsRevoke()))
 	// Output: 1
 }
 
 func ExampleCovenant_IsName() {
-	fn := ax7ValueOf(new(Covenant).IsName)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Covenant).IsName()))
 	// Output: 1
 }
 
 func ExampleCovenant_IsKnown() {
-	fn := ax7ValueOf(new(Covenant).IsKnown)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Covenant).IsKnown()))
 	// Output: 1
 }
 
 func ExampleCovenant_IsUnknown() {
-	fn := ax7ValueOf(new(Covenant).IsUnknown)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Covenant).IsUnknown()))
 	// Output: 1
 }
 
 func ExampleCovenant_IsDustworthy() {
-	fn := ax7ValueOf(new(Covenant).IsDustworthy)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Covenant).IsDustworthy()))
 	// Output: 1
 }
 
 func ExampleCovenant_IsNonspendable() {
-	fn := ax7ValueOf(new(Covenant).IsNonspendable)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Covenant).IsNonspendable()))
 	// Output: 1
 }
 
 func ExampleCovenant_IsLinked() {
-	fn := ax7ValueOf(new(Covenant).IsLinked)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Covenant).IsLinked()))
 	// Output: 1
 }
 
 func ExampleOutpoint_IsNull() {
-	fn := ax7ValueOf(new(Outpoint).IsNull)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Outpoint).IsNull()))
 	// Output: 1
 }
 
 func ExampleInput_IsCoinbase() {
-	fn := ax7ValueOf(new(Input).IsCoinbase)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Input).IsCoinbase()))
 	// Output: 1
 }
 
 func ExampleInput_IsFinal() {
-	fn := ax7ValueOf(new(Input).IsFinal)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Input).IsFinal()))
 	// Output: 1
 }
 
 func ExampleOutput_IsUnspendable() {
-	fn := ax7ValueOf(new(Output).IsUnspendable)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(Output).IsUnspendable()))
 	// Output: 1
 }

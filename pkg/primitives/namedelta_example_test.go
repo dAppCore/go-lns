@@ -5,57 +5,41 @@ package primitives
 import core "dappco.re/go"
 
 func ExampleNameDelta_IsNull() {
-	fn := ax7ValueOf(new(NameDelta).IsNull)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(NameDelta).IsNull()))
 	// Output: 1
 }
 
 func ExampleNameDelta_Clone() {
-	fn := ax7ValueOf(new(NameDelta).Clone)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(NameDelta).Clone()))
 	// Output: 1
 }
 
 func ExampleNameDelta_Inject() {
-	fn := ax7ValueOf(new(NameDelta).Inject)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(NameDelta).Inject(coverageValue[NameDelta]("good"))))
 	// Output: 1
 }
 
 func ExampleNameDelta_Clear() {
-	fn := ax7ValueOf(new(NameDelta).Clear)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(NameDelta).Clear()))
 	// Output: 1
 }
 
 func ExampleNameDelta_GetField() {
-	fn := ax7ValueOf(new(NameDelta).GetField)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(NameDelta).GetField()))
 	// Output: 1
 }
 
 func ExampleNameDelta_GetSize() {
-	fn := ax7ValueOf(new(NameDelta).GetSize)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(NameDelta).GetSize()))
 	// Output: 1
 }
 
 func ExampleNameDelta_MarshalBinary() {
-	fn := ax7ValueOf(new(NameDelta).MarshalBinary)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(NameDelta).MarshalBinary()))
 	// Output: 2
 }
 
 func ExampleNameDelta_UnmarshalBinary() {
-	fn := ax7ValueOf(new(NameDelta).UnmarshalBinary)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(NameDelta).UnmarshalBinary([]byte("lethean.lthn"))))
 	// Output: 1
 }

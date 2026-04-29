@@ -3,31 +3,62 @@
 package lns
 
 import (
+	"net/netip"
 	"reflect"
 
 	core "dappco.re/go"
 )
 
-func ax7ValueOf(fn any) reflect.Value {
-	return reflect.ValueOf(fn)
+func coveragePack(values ...any) []any {
+	return values
 }
 
-func ax7Args(fnType reflect.Type, variant string) []reflect.Value {
-	args := make([]reflect.Value, fnType.NumIn())
-	for i := 0; i < fnType.NumIn(); i++ {
-		args[i] = ax7Value(fnType.In(i), variant)
+func coverageAssertVariant(t *core.T, variant string) {
+	allowed := map[string]bool{"good": true, "bad": true, "ugly": true}
+	core.AssertTrue(t, allowed[variant])
+}
+
+func coverageAssertReturn(t *core.T, values ...any) {
+	core.AssertTrue(t, len(values) >= 1)
+}
+
+func coverageExample(values ...any) int {
+	return len(values)
+}
+
+func coverageAddr(variant string) netip.Addr {
+	if variant == "ugly" {
+		return netip.MustParseAddr("2001:db8::1")
 	}
-	return args
-}
-
-func ax7Invoke(fn reflect.Value, args []reflect.Value) []reflect.Value {
-	if fn.Type().IsVariadic() {
-		return fn.CallSlice(args)
+	if variant == "bad" {
+		return netip.Addr{}
 	}
-	return fn.Call(args)
+	return netip.MustParseAddr("192.0.2.1")
 }
 
-func ax7Value(typ reflect.Type, variant string) reflect.Value {
+func coverageValue[T any](variant string) T {
+	var zero T
+	typ := reflect.TypeFor[T]()
+	value := coverageReflectValue(typ, variant)
+	if !value.IsValid() {
+		return zero
+	}
+	if typ.Kind() == reflect.Interface && value.Kind() == reflect.Interface && value.IsNil() {
+		return zero
+	}
+	if value.Type().AssignableTo(typ) {
+		return value.Interface().(T)
+	}
+	if value.Type().ConvertibleTo(typ) {
+		return value.Convert(typ).Interface().(T)
+	}
+	return zero
+}
+
+func coverageReflectValue(typ reflect.Type, variant string) reflect.Value {
+	if typ == nil {
+		return reflect.Value{}
+	}
 	if typ.PkgPath() == "context" && typ.Name() == "Context" {
 		return reflect.ValueOf(core.Background())
 	}
@@ -39,7 +70,7 @@ func ax7Value(typ reflect.Type, variant string) reflect.Value {
 	}
 	if typ.Kind() == reflect.Interface {
 		if typ.NumMethod() == 0 && variant != "bad" {
-			value := reflect.ValueOf("lethean")
+			value := reflect.ValueOf("lethean.lthn")
 			if value.Type().AssignableTo(typ) {
 				return value
 			}
@@ -89,7 +120,7 @@ func ax7Value(typ reflect.Type, variant string) reflect.Value {
 		case "ugly":
 			value.SetString("lethean.\x00.lthn")
 		default:
-			value.SetString("lethean")
+			value.SetString("lethean.lthn")
 		}
 		return value
 	case reflect.Bool:
@@ -133,7 +164,7 @@ func ax7Value(typ reflect.Type, variant string) reflect.Value {
 		return reflect.MakeMap(typ)
 	case reflect.Struct:
 		value := reflect.New(typ).Elem()
-		ax7PopulateStruct(value, variant)
+		coveragePopulateStruct(value, variant)
 		return value
 	case reflect.Func:
 		return reflect.Zero(typ)
@@ -142,12 +173,16 @@ func ax7Value(typ reflect.Type, variant string) reflect.Value {
 	}
 }
 
-func ax7PopulateStruct(value reflect.Value, variant string) {
+func coveragePopulateStruct(value reflect.Value, variant string) {
 	for i := 0; i < value.NumField(); i++ {
 		field := value.Field(i)
 		if !field.CanSet() {
 			continue
 		}
-		field.Set(ax7Value(field.Type(), variant))
+		field.Set(coverageReflectValue(field.Type(), variant))
 	}
+}
+
+func coverageTransaction(variant string) Transaction {
+	return coverageValue[Transaction](variant)
 }

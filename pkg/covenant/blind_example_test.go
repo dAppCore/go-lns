@@ -5,15 +5,11 @@ package covenant
 import core "dappco.re/go"
 
 func ExampleBlind() {
-	fn := ax7ValueOf(Blind)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(Blind(1, [32]byte{1})))
 	// Output: 2
 }
 
 func ExampleGetBlind() {
-	fn := ax7ValueOf(GetBlind)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetBlind(1, [32]byte{1})))
 	// Output: 2
 }

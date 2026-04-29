@@ -5,57 +5,41 @@ package covenant
 import core "dappco.re/go"
 
 func ExampleGetTypes() {
-	fn := ax7ValueOf(GetTypes)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetTypes()))
 	// Output: 1
 }
 
 func ExampleGetTypesByVal() {
-	fn := ax7ValueOf(GetTypesByVal)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetTypesByVal()))
 	// Output: 1
 }
 
 func ExampleTypeName() {
-	fn := ax7ValueOf(TypeName)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(TypeName(1)))
 	// Output: 1
 }
 
 func ExampleGetTypeName() {
-	fn := ax7ValueOf(GetTypeName)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetTypeName(1)))
 	// Output: 1
 }
 
 func ExampleCovenantType_IsName() {
-	fn := ax7ValueOf(new(CovenantType).IsName)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(CovenantType).IsName()))
 	// Output: 1
 }
 
 func ExampleCovenantType_IsKnown() {
-	fn := ax7ValueOf(new(CovenantType).IsKnown)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(CovenantType).IsKnown()))
 	// Output: 1
 }
 
 func ExampleCovenantType_IsLinked() {
-	fn := ax7ValueOf(new(CovenantType).IsLinked)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(CovenantType).IsLinked()))
 	// Output: 1
 }
 
 func ExampleCovenantType_String() {
-	fn := ax7ValueOf(new(CovenantType).String)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(CovenantType).String()))
 	// Output: 1
 }

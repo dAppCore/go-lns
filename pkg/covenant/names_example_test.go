@@ -5,57 +5,45 @@ package covenant
 import core "dappco.re/go"
 
 func ExampleHasNames() {
-	fn := ax7ValueOf(HasNames)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(HasNames(coverageTransaction("good"), nil)))
 	// Output: 1
 }
 
 func ExampleGetHasNames() {
-	fn := ax7ValueOf(GetHasNames)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetHasNames(coverageTransaction("good"), nil)))
 	// Output: 1
 }
 
 func ExampleAddNames() {
-	fn := ax7ValueOf(AddNames)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	AddNames(coverageTransaction("good"), nil)
+	core.Println(coverageExample())
 	// Output: 0
 }
 
 func ExampleGetAddNames() {
-	fn := ax7ValueOf(GetAddNames)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	GetAddNames(coverageTransaction("good"), nil)
+	core.Println(coverageExample())
 	// Output: 0
 }
 
 func ExampleRemoveNames() {
-	fn := ax7ValueOf(RemoveNames)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	RemoveNames(coverageTransaction("good"), nil)
+	core.Println(coverageExample())
 	// Output: 0
 }
 
 func ExampleGetRemoveNames() {
-	fn := ax7ValueOf(GetRemoveNames)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	GetRemoveNames(coverageTransaction("good"), nil)
+	core.Println(coverageExample())
 	// Output: 0
 }
 
 func ExampleHasSaneCovenants() {
-	fn := ax7ValueOf(HasSaneCovenants)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(HasSaneCovenants(coverageTransaction("good"))))
 	// Output: 1
 }
 
 func ExampleGetHasSaneCovenants() {
-	fn := ax7ValueOf(GetHasSaneCovenants)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetHasSaneCovenants(coverageTransaction("good"))))
 	// Output: 1
 }

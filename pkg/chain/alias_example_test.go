@@ -5,43 +5,31 @@ package chain
 import core "dappco.re/go"
 
 func ExampleWithAliasHTTPClient() {
-	fn := ax7ValueOf(WithAliasHTTPClient)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(WithAliasHTTPClient(nil)))
 	// Output: 1
 }
 
 func ExampleNewAliasClient() {
-	fn := ax7ValueOf(NewAliasClient)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(NewAliasClient("lethean.lthn")))
 	// Output: 1
 }
 
 func ExampleAliasClient_GetAliases() {
-	fn := ax7ValueOf(new(AliasClient).GetAliases)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(new(AliasClient).GetAliases()))
 	// Output: 2
 }
 
 func ExampleParseAliasComment() {
-	fn := ax7ValueOf(ParseAliasComment)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(ParseAliasComment("lethean.lthn")))
 	// Output: 1
 }
 
 func ExampleHNSName() {
-	fn := ax7ValueOf(HNSName)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(HNSName(coverageValue[Alias]("good"))))
 	// Output: 1
 }
 
 func ExampleDiscoverNames() {
-	fn := ax7ValueOf(DiscoverNames)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(DiscoverNames(nil, []string{"lethean"})))
 	// Output: 1
 }

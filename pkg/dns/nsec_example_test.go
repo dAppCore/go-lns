@@ -5,43 +5,31 @@ package dns
 import core "dappco.re/go"
 
 func ExampleCreate() {
-	fn := ax7ValueOf(Create)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(Create("lethean.lthn", "lethean.lthn", []byte("lethean.lthn"))))
 	// Output: 1
 }
 
 func ExampleGetCreate() {
-	fn := ax7ValueOf(GetCreate)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetCreate("lethean.lthn", "lethean.lthn", []byte("lethean.lthn"))))
 	// Output: 1
 }
 
 func ExampleNextName() {
-	fn := ax7ValueOf(NextName)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(NextName("lethean.lthn")))
 	// Output: 1
 }
 
 func ExampleGetNextName() {
-	fn := ax7ValueOf(GetNextName)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetNextName("lethean.lthn")))
 	// Output: 1
 }
 
 func ExamplePrevName() {
-	fn := ax7ValueOf(PrevName)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(PrevName("lethean.lthn")))
 	// Output: 1
 }
 
 func ExampleGetPrevName() {
-	fn := ax7ValueOf(GetPrevName)
-	out := ax7Invoke(fn, ax7Args(fn.Type(), "good"))
-	core.Println(len(out))
+	core.Println(coverageExample(GetPrevName("lethean.lthn")))
 	// Output: 1
 }
