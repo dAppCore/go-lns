@@ -2,7 +2,10 @@
 
 package primitives
 
-import "testing"
+import (
+	core "dappco.re/go"
+	"testing"
+)
 
 func TestCovenantBinaryRoundTrip(t *testing.T) {
 	original := Covenant{}
@@ -66,3 +69,67 @@ func TestCovenantBinaryZeroValue(t *testing.T) {
 		t.Fatalf("decoded zero value = %+v, want zero value", decoded)
 	}
 }
+
+// BEGIN v090 file-aware generated coverage
+
+func TestCovenantBinary_Covenant_MarshalBinary_Good(t *core.T) {
+	fn := ax7ValueOf(new(Covenant).MarshalBinary)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestCovenantBinary_Covenant_MarshalBinary_Bad(t *core.T) {
+	fn := ax7ValueOf(new(Covenant).MarshalBinary)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestCovenantBinary_Covenant_MarshalBinary_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(Covenant).MarshalBinary)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestCovenantBinary_Covenant_UnmarshalBinary_Good(t *core.T) {
+	fn := ax7ValueOf(new(Covenant).UnmarshalBinary)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestCovenantBinary_Covenant_UnmarshalBinary_Bad(t *core.T) {
+	fn := ax7ValueOf(new(Covenant).UnmarshalBinary)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestCovenantBinary_Covenant_UnmarshalBinary_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(Covenant).UnmarshalBinary)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+// END v090 file-aware generated coverage

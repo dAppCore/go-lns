@@ -10,10 +10,7 @@
 package covenant
 
 import (
-	"bytes"
 	"encoding/hex"
-	"encoding/json"
-	"path/filepath"
 	"runtime"
 	"sort"
 	"sync"
@@ -513,7 +510,7 @@ func (c *ReservedCatalog) sortedHashes() []primitives.Hash {
 	}
 
 	sort.Slice(hashes, func(i, j int) bool {
-		return bytes.Compare(hashes[i][:], hashes[j][:]) < 0
+		return compareBytes(hashes[i][:], hashes[j][:]) < 0
 	})
 
 	return hashes
@@ -543,9 +540,9 @@ func loadReservedCatalog() (*ReservedCatalog, error) {
 		return nil, err
 	}
 
-	var raw map[string]json.RawMessage
-	if err := json.Unmarshal(data, &raw); err != nil {
-		return nil, core.E("covenant.loadReservedCatalog", "failed to decode reserved catalog", err)
+	var raw map[string]jsonraw
+	if r := core.JSONUnmarshal(data, &raw); !r.OK {
+		return nil, core.E("covenant.loadReservedCatalog", "failed to decode reserved catalog", r.Value.(error))
 	}
 
 	catalog := &ReservedCatalog{
@@ -582,10 +579,10 @@ func loadReservedCatalog() (*ReservedCatalog, error) {
 	return catalog, nil
 }
 
-func parseReservedMeta(raw json.RawMessage) (reservedCatalogMeta, error) {
+func parseReservedMeta(raw jsonraw) (reservedCatalogMeta, error) {
 	var values []uint64
-	if err := json.Unmarshal(raw, &values); err != nil {
-		return reservedCatalogMeta{}, core.E("covenant.parseReservedMeta", "failed to decode reserved metadata", err)
+	if r := core.JSONUnmarshal(raw, &values); !r.OK {
+		return reservedCatalogMeta{}, core.E("covenant.parseReservedMeta", "failed to decode reserved metadata", r.Value.(error))
 	}
 
 	if len(values) != 4 {
@@ -599,10 +596,10 @@ func parseReservedMeta(raw json.RawMessage) (reservedCatalogMeta, error) {
 	}, nil
 }
 
-func parseReservedEntry(hash primitives.Hash, raw json.RawMessage, meta reservedCatalogMeta) (ReservedName, error) {
-	var fields []json.RawMessage
-	if err := json.Unmarshal(raw, &fields); err != nil {
-		return ReservedName{}, core.E("covenant.parseReservedEntry", "failed to decode reserved entry", err)
+func parseReservedEntry(hash primitives.Hash, raw jsonraw, meta reservedCatalogMeta) (ReservedName, error) {
+	var fields []jsonraw
+	if r := core.JSONUnmarshal(raw, &fields); !r.OK {
+		return ReservedName{}, core.E("covenant.parseReservedEntry", "failed to decode reserved entry", r.Value.(error))
 	}
 
 	if len(fields) < 2 || len(fields) > 3 {
@@ -610,8 +607,8 @@ func parseReservedEntry(hash primitives.Hash, raw json.RawMessage, meta reserved
 	}
 
 	var target string
-	if err := json.Unmarshal(fields[0], &target); err != nil {
-		return ReservedName{}, core.E("covenant.parseReservedEntry", "failed to decode target", err)
+	if r := core.JSONUnmarshal(fields[0], &target); !r.OK {
+		return ReservedName{}, core.E("covenant.parseReservedEntry", "failed to decode target", r.Value.(error))
 	}
 
 	parts := core.SplitN(target, ".", 2)
@@ -663,10 +660,10 @@ func parseReservedEntry(hash primitives.Hash, raw json.RawMessage, meta reserved
 	return item, nil
 }
 
-func parseReservedUint(raw json.RawMessage) (uint64, error) {
+func parseReservedUint(raw jsonraw) (uint64, error) {
 	var num uint64
-	if err := json.Unmarshal(raw, &num); err != nil {
-		return 0, err
+	if r := core.JSONUnmarshal(raw, &num); !r.OK {
+		return 0, r.Value.(error)
 	}
 
 	return num, nil
@@ -702,14 +699,14 @@ func readReservedData() ([]byte, error) {
 
 func reservedDataPaths() []string {
 	paths := []string{
-		filepath.Join("docs", "js-covenants", "names.json"),
+		core.PathJoin("docs", "js-covenants", "names.json"),
 	}
 
 	if _, file, _, ok := runtime.Caller(0); ok {
-		base := filepath.Dir(file)
+		base := core.PathDir(file)
 		paths = append(paths,
-			filepath.Join(base, "..", "..", "docs", "js-covenants", "names.json"),
-			filepath.Join(base, "..", "..", "..", "docs", "js-covenants", "names.json"),
+			core.PathJoin(base, "..", "..", "docs", "js-covenants", "names.json"),
+			core.PathJoin(base, "..", "..", "..", "docs", "js-covenants", "names.json"),
 		)
 	}
 

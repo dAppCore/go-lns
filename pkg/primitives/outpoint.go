@@ -3,9 +3,9 @@
 package primitives
 
 import (
-	"bytes"
 	"encoding/binary"
-	"fmt"
+
+	core "dappco.re/go"
 )
 
 // NewOutpoint returns the null outpoint used by coinbase inputs and empty
@@ -34,7 +34,7 @@ func (o Outpoint) Equals(other Outpoint) bool {
 
 // Compare orders two outpoints by hash and then by output index.
 func (o Outpoint) Compare(other Outpoint) int {
-	if cmp := bytes.Compare(o.TxHash[:], other.TxHash[:]); cmp != 0 {
+	if cmp := compareBytes(o.TxHash[:], other.TxHash[:]); cmp != 0 {
 		return cmp
 	}
 
@@ -67,7 +67,7 @@ func (o Outpoint) MarshalBinary() ([]byte, error) {
 // UnmarshalBinary decodes the outpoint from the reference wire format.
 func (o *Outpoint) UnmarshalBinary(data []byte) error {
 	if len(data) != o.GetSize() {
-		return fmt.Errorf("primitives.Outpoint.UnmarshalBinary: invalid length")
+		return core.Errorf("primitives.Outpoint.UnmarshalBinary: invalid length")
 	}
 
 	copy(o.TxHash[:], data[:len(o.TxHash)])

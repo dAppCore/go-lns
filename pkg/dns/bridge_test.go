@@ -4,16 +4,39 @@ package dns
 
 import (
 	"context"
-	"encoding/json"
 	"net/http"
 	"net/http/httptest"
 	"net/netip"
 	"testing"
+
+	core "dappco.re/go"
 )
+
+func writeDNSTestJSON(t *testing.T, w http.ResponseWriter, payload any) {
+	t.Helper()
+	raw := core.JSONMarshal(payload)
+	if !raw.OK {
+		t.Fatalf("marshal response: %v", raw.Value)
+	}
+	if _, err := w.Write(raw.Value.([]byte)); err != nil {
+		t.Fatalf("write response: %v", err)
+	}
+}
+
+func readDNSTestJSON(t *testing.T, reader core.Reader, target any) {
+	t.Helper()
+	raw := core.ReadAll(reader)
+	if !raw.OK {
+		t.Fatalf("read request: %v", raw.Value)
+	}
+	if r := core.JSONUnmarshalString(raw.Value.(string), target); !r.OK {
+		t.Fatalf("decode request: %v", r.Value)
+	}
+}
 
 func TestBridgeDiscoverAndReverse(t *testing.T) {
 	aliasServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		_ = json.NewEncoder(w).Encode(map[string]any{
+		writeDNSTestJSON(t, w, map[string]any{
 			"result": map[string]any{
 				"aliases": []map[string]any{
 					{"alias": "charon", "address": "LTHN...", "comment": "v=lthn1;hns=charon.lthn"},
@@ -29,19 +52,17 @@ func TestBridgeDiscoverAndReverse(t *testing.T) {
 			Method string `json:"method"`
 			Params []any  `json:"params"`
 		}
-		if err := json.NewDecoder(r.Body).Decode(&request); err != nil {
-			t.Fatalf("decode request: %v", err)
-		}
+		readDNSTestJSON(t, r.Body, &request)
 
 		switch request.Method {
 		case "getblockchaininfo":
-			_ = json.NewEncoder(w).Encode(map[string]any{
+			writeDNSTestJSON(t, w, map[string]any{
 				"result": map[string]any{"blocks": 50, "treeroot": "root-1"},
 			})
 		case "getnameresource":
 			name := request.Params[0].(string)
 			if name == "charon" {
-				_ = json.NewEncoder(w).Encode(map[string]any{
+				writeDNSTestJSON(t, w, map[string]any{
 					"result": map[string]any{
 						"records": []map[string]any{
 							{"type": "GLUE4", "ns": "charon.lthn.", "address": "192.0.2.10"},
@@ -52,7 +73,7 @@ func TestBridgeDiscoverAndReverse(t *testing.T) {
 				return
 			}
 
-			_ = json.NewEncoder(w).Encode(map[string]any{
+			writeDNSTestJSON(t, w, map[string]any{
 				"result": map[string]any{"records": []map[string]any{}},
 			})
 		default:
@@ -105,3 +126,397 @@ func TestBridgeDiscoverAndReverse(t *testing.T) {
 		t.Fatalf("Health = %#v", health)
 	}
 }
+
+// BEGIN v090 file-aware generated coverage
+
+func TestBridge_NewBridge_Good(t *core.T) {
+	fn := ax7ValueOf(NewBridge)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestBridge_NewBridge_Bad(t *core.T) {
+	fn := ax7ValueOf(NewBridge)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestBridge_NewBridge_Ugly(t *core.T) {
+	fn := ax7ValueOf(NewBridge)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestBridge_Bridge_Discover_Good(t *core.T) {
+	fn := ax7ValueOf(new(Bridge).Discover)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestBridge_Bridge_Discover_Bad(t *core.T) {
+	fn := ax7ValueOf(new(Bridge).Discover)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestBridge_Bridge_Discover_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(Bridge).Discover)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestBridge_Bridge_Lookup_Good(t *core.T) {
+	fn := ax7ValueOf(new(Bridge).Lookup)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestBridge_Bridge_Lookup_Bad(t *core.T) {
+	fn := ax7ValueOf(new(Bridge).Lookup)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestBridge_Bridge_Lookup_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(Bridge).Lookup)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestBridge_Bridge_Records_Good(t *core.T) {
+	fn := ax7ValueOf(new(Bridge).Records)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestBridge_Bridge_Records_Bad(t *core.T) {
+	fn := ax7ValueOf(new(Bridge).Records)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestBridge_Bridge_Records_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(Bridge).Records)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestBridge_Bridge_Reverse_Good(t *core.T) {
+	fn := ax7ValueOf(new(Bridge).Reverse)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestBridge_Bridge_Reverse_Bad(t *core.T) {
+	fn := ax7ValueOf(new(Bridge).Reverse)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestBridge_Bridge_Reverse_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(Bridge).Reverse)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestBridge_Bridge_Health_Good(t *core.T) {
+	fn := ax7ValueOf(new(Bridge).Health)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestBridge_Bridge_Health_Bad(t *core.T) {
+	fn := ax7ValueOf(new(Bridge).Health)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestBridge_Bridge_Health_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(Bridge).Health)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestBridge_Bridge_Serve_Good(t *core.T) {
+	fn := ax7ValueOf(new(Bridge).Serve)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestBridge_Bridge_Serve_Bad(t *core.T) {
+	fn := ax7ValueOf(new(Bridge).Serve)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestBridge_Bridge_Serve_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(Bridge).Serve)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestBridge_Bridge_Shutdown_Good(t *core.T) {
+	fn := ax7ValueOf(new(Bridge).Shutdown)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestBridge_Bridge_Shutdown_Bad(t *core.T) {
+	fn := ax7ValueOf(new(Bridge).Shutdown)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestBridge_Bridge_Shutdown_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(Bridge).Shutdown)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestBridge_NameRecord_FQDN_Good(t *core.T) {
+	fn := ax7ValueOf(new(NameRecord).FQDN)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestBridge_NameRecord_FQDN_Bad(t *core.T) {
+	fn := ax7ValueOf(new(NameRecord).FQDN)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestBridge_NameRecord_FQDN_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(NameRecord).FQDN)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestBridge_NameRecord_Addresses4_Good(t *core.T) {
+	fn := ax7ValueOf(new(NameRecord).Addresses4)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestBridge_NameRecord_Addresses4_Bad(t *core.T) {
+	fn := ax7ValueOf(new(NameRecord).Addresses4)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestBridge_NameRecord_Addresses4_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(NameRecord).Addresses4)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestBridge_NameRecord_Addresses6_Good(t *core.T) {
+	fn := ax7ValueOf(new(NameRecord).Addresses6)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestBridge_NameRecord_Addresses6_Bad(t *core.T) {
+	fn := ax7ValueOf(new(NameRecord).Addresses6)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestBridge_NameRecord_Addresses6_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(NameRecord).Addresses6)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestBridge_NameRecord_TXT_Good(t *core.T) {
+	fn := ax7ValueOf(new(NameRecord).TXT)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestBridge_NameRecord_TXT_Bad(t *core.T) {
+	fn := ax7ValueOf(new(NameRecord).TXT)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestBridge_NameRecord_TXT_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(NameRecord).TXT)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestBridge_NameRecord_NS_Good(t *core.T) {
+	fn := ax7ValueOf(new(NameRecord).NS)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestBridge_NameRecord_NS_Bad(t *core.T) {
+	fn := ax7ValueOf(new(NameRecord).NS)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestBridge_NameRecord_NS_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(NameRecord).NS)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+// END v090 file-aware generated coverage

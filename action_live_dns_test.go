@@ -4,7 +4,6 @@ package lns
 
 import (
 	"context"
-	"encoding/json"
 	"net/http"
 	"net/http/httptest"
 	"net/netip"
@@ -14,9 +13,31 @@ import (
 	dnspkg "dappco.re/go/lns/pkg/dns"
 )
 
+func writeActionTestJSON(t *testing.T, w http.ResponseWriter, payload any) {
+	t.Helper()
+	raw := core.JSONMarshal(payload)
+	if !raw.OK {
+		t.Fatalf("marshal response: %v", raw.Value)
+	}
+	if _, err := w.Write(raw.Value.([]byte)); err != nil {
+		t.Fatalf("write response: %v", err)
+	}
+}
+
+func readActionTestJSON(t *testing.T, reader core.Reader, target any) {
+	t.Helper()
+	raw := core.ReadAll(reader)
+	if !raw.OK {
+		t.Fatalf("read request: %v", raw.Value)
+	}
+	if r := core.JSONUnmarshalString(raw.Value.(string), target); !r.OK {
+		t.Fatalf("decode request: %v", r.Value)
+	}
+}
+
 func TestLiveDNSActionsDiscoverServeAndResolve(t *testing.T) {
 	aliasServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		_ = json.NewEncoder(w).Encode(map[string]any{
+		writeActionTestJSON(t, w, map[string]any{
 			"result": map[string]any{
 				"aliases": []map[string]any{
 					{"alias": "charon", "address": "LTHN...", "comment": "v=lthn1;type=gateway;cap=vpn,dns;hns=charon.lthn"},
@@ -31,17 +52,15 @@ func TestLiveDNSActionsDiscoverServeAndResolve(t *testing.T) {
 			Method string `json:"method"`
 			Params []any  `json:"params"`
 		}
-		if err := json.NewDecoder(r.Body).Decode(&request); err != nil {
-			t.Fatalf("decode request: %v", err)
-		}
+		readActionTestJSON(t, r.Body, &request)
 
 		switch request.Method {
 		case "getblockchaininfo":
-			_ = json.NewEncoder(w).Encode(map[string]any{
+			writeActionTestJSON(t, w, map[string]any{
 				"result": map[string]any{"blocks": 50, "treeroot": "root-1"},
 			})
 		case "getnameresource":
-			_ = json.NewEncoder(w).Encode(map[string]any{
+			writeActionTestJSON(t, w, map[string]any{
 				"result": map[string]any{
 					"records": []map[string]any{
 						{"type": "GLUE4", "ns": "charon.lthn.", "address": "192.0.2.10"},

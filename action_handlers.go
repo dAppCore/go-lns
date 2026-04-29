@@ -6,11 +6,9 @@ import (
 	"context"
 	"crypto/rand"
 	"encoding/hex"
-	"encoding/json"
 	"net/netip"
 	"sort"
 	"strconv"
-	"strings"
 	"time"
 
 	core "dappco.re/go"
@@ -1106,7 +1104,7 @@ func (s *Service) dnsActionInputs(ctx context.Context, options core.Options) (st
 		_, _ = bridge.Discover(ctx)
 	}
 
-	label := strings.TrimSuffix(strings.TrimSuffix(strings.ToLower(zone), ".lthn."), ".lthn")
+	label := core.TrimSuffix(core.TrimSuffix(core.Lower(zone), ".lthn."), ".lthn")
 	if record, ok := bridge.Lookup(label); ok && record != nil && record.Resource != nil {
 		return zone, host, record.Resource, nil
 	}
@@ -1169,16 +1167,14 @@ func resourceFromAny(value any) (*Resource, error) {
 		return resource, nil
 	case []byte:
 		return DecodeResource(typed)
-	case json.RawMessage:
-		return resourceFromJSONBytes(typed)
 	case string:
 		return resourceFromJSONBytes([]byte(typed))
 	case map[string]any:
-		raw, err := json.Marshal(typed)
-		if err != nil {
-			return nil, core.E("lns.action.resource", "invalid resource JSON", err)
+		raw := core.JSONMarshal(typed)
+		if !raw.OK {
+			return nil, core.E("lns.action.resource", "invalid resource JSON", raw.Value.(error))
 		}
-		return resourceFromJSONBytes(raw)
+		return resourceFromJSONBytes(raw.Value.([]byte))
 	default:
 		return nil, core.E("lns.action.resource", "unsupported resource value", nil)
 	}
@@ -1186,8 +1182,8 @@ func resourceFromAny(value any) (*Resource, error) {
 
 func resourceFromJSONBytes(raw []byte) (*Resource, error) {
 	var jsonView ResourceJSON
-	if err := json.Unmarshal(raw, &jsonView); err != nil {
-		return nil, core.E("lns.action.resource", "invalid resource JSON", err)
+	if r := core.JSONUnmarshal(raw, &jsonView); !r.OK {
+		return nil, core.E("lns.action.resource", "invalid resource JSON", r.Value.(error))
 	}
 
 	resource := NewResource()
@@ -1246,7 +1242,7 @@ func hashFromAny(value any) (primitives.Hash, bool, error) {
 			copy(hash[:], typed)
 			return hash, true, nil
 		}
-		raw, err := hex.DecodeString(strings.TrimSpace(string(typed)))
+		raw, err := hex.DecodeString(core.Trim(string(typed)))
 		if err != nil || len(raw) != 32 {
 			return primitives.Hash{}, false, core.E("lns.action.hash", "invalid hash encoding", err)
 		}
@@ -1254,7 +1250,7 @@ func hashFromAny(value any) (primitives.Hash, bool, error) {
 		copy(hash[:], raw)
 		return hash, true, nil
 	case string:
-		raw, err := hex.DecodeString(strings.TrimSpace(typed))
+		raw, err := hex.DecodeString(core.Trim(typed))
 		if err != nil || len(raw) != 32 {
 			return primitives.Hash{}, false, core.E("lns.action.hash", "invalid hash encoding", err)
 		}
@@ -1329,7 +1325,7 @@ func addressHashFromAny(value any) ([]byte, bool) {
 		}
 		return append([]byte(nil), typed...), true
 	case string:
-		raw, err := hex.DecodeString(strings.TrimSpace(typed))
+		raw, err := hex.DecodeString(core.Trim(typed))
 		if err != nil || len(raw) == 0 {
 			return nil, false
 		}
@@ -1436,11 +1432,9 @@ func actionStringFromAny(value any) string {
 		return typed
 	case []byte:
 		return string(typed)
-	case json.RawMessage:
-		return string(typed)
 	default:
 		if typed != nil {
-			return strings.TrimSpace(core.Sprint(typed))
+			return core.Trim(core.Sprint(typed))
 		}
 		return ""
 	}
@@ -1485,12 +1479,8 @@ func actionUint32FromAny(value any) (uint32, bool) {
 			return 0, false
 		}
 		return uint32(typed), true
-	case json.Number:
-		if parsed, err := typed.Int64(); err == nil && parsed >= 0 {
-			return uint32(parsed), true
-		}
 	case string:
-		if parsed, err := strconv.ParseUint(strings.TrimSpace(typed), 10, 32); err == nil {
+		if parsed, err := strconv.ParseUint(core.Trim(typed), 10, 32); err == nil {
 			return uint32(parsed), true
 		}
 	}
@@ -1520,12 +1510,8 @@ func actionUint64FromAny(value any) (uint64, bool) {
 			return 0, false
 		}
 		return uint64(typed), true
-	case json.Number:
-		if parsed, err := typed.Int64(); err == nil && parsed >= 0 {
-			return uint64(parsed), true
-		}
 	case string:
-		if parsed, err := strconv.ParseUint(strings.TrimSpace(typed), 10, 64); err == nil {
+		if parsed, err := strconv.ParseUint(core.Trim(typed), 10, 64); err == nil {
 			return parsed, true
 		}
 	}
@@ -1546,7 +1532,7 @@ func actionBoolFromAny(value any) (bool, bool) {
 	case bool:
 		return typed, true
 	case string:
-		parsed, err := strconv.ParseBool(strings.TrimSpace(typed))
+		parsed, err := strconv.ParseBool(core.Trim(typed))
 		if err != nil {
 			return false, false
 		}
@@ -1557,11 +1543,11 @@ func actionBoolFromAny(value any) (bool, bool) {
 }
 
 func dnsFQDN(name string) string {
-	name = strings.ToLower(strings.TrimSpace(name))
+	name = core.Lower(core.Trim(name))
 	if name == "" {
 		return "."
 	}
-	if strings.HasSuffix(name, ".") {
+	if core.HasSuffix(name, ".") {
 		return name
 	}
 	return name + "."
@@ -1612,7 +1598,7 @@ func (s *Service) vpnRecordsFromOptions(ctx context.Context, options core.Option
 
 		records := make([]dnspkg.NameRecord, 0, len(names))
 		for _, zone := range names {
-			label := strings.TrimSuffix(strings.TrimSuffix(strings.ToLower(zone), ".lthn."), ".lthn")
+			label := core.TrimSuffix(core.TrimSuffix(core.Lower(zone), ".lthn."), ".lthn")
 			records = append(records, dnspkg.NameRecord{Name: label, Resource: resources[zone], Source: "resource"})
 		}
 		return records, nil
@@ -1662,7 +1648,7 @@ func vpnGatewayFromRecord(record dnspkg.NameRecord) (vpnGatewayResult, bool) {
 		capabilities = append(capabilities, "vpn")
 	}
 
-	gatewayType := strings.ToLower(strings.TrimSpace(metadata["type"]))
+	gatewayType := core.Lower(core.Trim(metadata["type"]))
 	if gatewayType == "" && metadata["vpn"] != "" {
 		gatewayType = "gateway"
 	}
@@ -1674,7 +1660,7 @@ func vpnGatewayFromRecord(record dnspkg.NameRecord) (vpnGatewayResult, bool) {
 
 	addresses := append(record.Addresses4(), record.Addresses6()...)
 	return vpnGatewayResult{
-		Name:         strings.ToLower(record.Name),
+		Name:         core.Lower(record.Name),
 		FQDN:         record.FQDN(),
 		Source:       record.Source,
 		Type:         gatewayType,
@@ -1688,15 +1674,13 @@ func vpnGatewayFromRecord(record dnspkg.NameRecord) (vpnGatewayResult, bool) {
 func vpnMetadataFromTXT(entries []string) map[string]string {
 	metadata := make(map[string]string)
 	for _, entry := range entries {
-		for _, part := range strings.FieldsFunc(entry, func(r rune) bool {
-			return r == ';' || r == ','
-		}) {
-			key, value, ok := strings.Cut(strings.TrimSpace(part), "=")
+		for _, part := range splitMetadataFields(entry) {
+			key, value, ok := cutKeyValue(core.Trim(part))
 			if !ok {
 				continue
 			}
-			key = strings.ToLower(strings.TrimSpace(key))
-			value = strings.TrimSpace(value)
+			key = core.Lower(core.Trim(key))
+			value = core.Trim(value)
 			if key == "" || value == "" {
 				continue
 			}
@@ -1706,17 +1690,39 @@ func vpnMetadataFromTXT(entries []string) map[string]string {
 	return metadata
 }
 
+func splitMetadataFields(entry string) []string {
+	var out []string
+	start := 0
+	for i, r := range entry {
+		if r != ';' && r != ',' {
+			continue
+		}
+		out = append(out, entry[start:i])
+		start = i + len(string(r))
+	}
+	return append(out, entry[start:])
+}
+
+func cutKeyValue(value string) (string, string, bool) {
+	for i, r := range value {
+		if r == '=' {
+			return value[:i], value[i+len(string(r)):], true
+		}
+	}
+	return value, "", false
+}
+
 func txtLooksVPN(entries []string) bool {
 	for _, entry := range entries {
-		lower := strings.ToLower(strings.TrimSpace(entry))
+		lower := core.Lower(core.Trim(entry))
 		switch {
-		case strings.Contains(lower, "vpn"):
+		case core.Contains(lower, "vpn"):
 			return true
-		case strings.HasPrefix(lower, "wg="),
-			strings.HasPrefix(lower, "wireguard="),
-			strings.HasPrefix(lower, "openvpn="),
-			strings.HasPrefix(lower, "ovpn="),
-			strings.HasPrefix(lower, "endpoint="):
+		case core.HasPrefix(lower, "wg="),
+			core.HasPrefix(lower, "wireguard="),
+			core.HasPrefix(lower, "openvpn="),
+			core.HasPrefix(lower, "ovpn="),
+			core.HasPrefix(lower, "endpoint="):
 			return true
 		}
 	}
@@ -1727,10 +1733,10 @@ func splitCSV(value string) []string {
 	if value == "" {
 		return nil
 	}
-	parts := strings.Split(value, ",")
+	parts := core.Split(value, ",")
 	out := make([]string, 0, len(parts))
 	for _, part := range parts {
-		part = strings.ToLower(strings.TrimSpace(part))
+		part = core.Lower(core.Trim(part))
 		if part != "" {
 			out = append(out, part)
 		}
@@ -1755,9 +1761,9 @@ func uniqueStrings(values []string) []string {
 }
 
 func containsString(values []string, want string) bool {
-	want = strings.ToLower(strings.TrimSpace(want))
+	want = core.Lower(core.Trim(want))
 	for _, value := range values {
-		if strings.ToLower(strings.TrimSpace(value)) == want {
+		if core.Lower(core.Trim(value)) == want {
 			return true
 		}
 	}
@@ -1765,9 +1771,9 @@ func containsString(values []string, want string) bool {
 }
 
 func canonicalVPNFilter(value string) string {
-	value = strings.ToLower(strings.TrimSpace(value))
-	value = strings.TrimSuffix(value, ".")
-	value = strings.TrimSuffix(value, ".lthn")
+	value = core.Lower(core.Trim(value))
+	value = core.TrimSuffix(value, ".")
+	value = core.TrimSuffix(value, ".lthn")
 	return value
 }
 

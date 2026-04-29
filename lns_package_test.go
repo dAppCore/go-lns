@@ -3,10 +3,8 @@
 package lns
 
 import (
-	"bytes"
 	"crypto/sha3"
 	"encoding/binary"
-	"strings"
 	"testing"
 
 	core "dappco.re/go"
@@ -76,11 +74,11 @@ func TestPackageResolveAndVerifyAliases(t *testing.T) {
 		t.Fatalf("ResolveBinary returned %x, want %x", got, want)
 	}
 
-	if _, err := Resolve(123); err == nil || !strings.Contains(err.Error(), "invalid name type") {
+	if _, err := Resolve(123); err == nil || !core.Contains(err.Error(), "invalid name type") {
 		t.Fatalf("Resolve should reject unsupported input types with an invalid name type error, got %v", err)
 	}
 
-	if _, err := Hash(123); err == nil || !strings.Contains(err.Error(), "invalid name type") {
+	if _, err := Hash(123); err == nil || !core.Contains(err.Error(), "invalid name type") {
 		t.Fatalf("Hash should reject unsupported input types with an invalid name type error, got %v", err)
 	}
 
@@ -302,12 +300,12 @@ func TestPackageNSECAliases(t *testing.T) {
 		t.Fatalf("Create TTL = %d, want %d", record.TTL, DEFAULT_TTL)
 	}
 
-	if !bytes.Equal(record.TypeBitmap, TYPE_MAP_ROOT) {
+	if !core.DeepEqual(record.TypeBitmap, TYPE_MAP_ROOT) {
 		t.Fatalf("Create TypeBitmap = %x, want %x", record.TypeBitmap, TYPE_MAP_ROOT)
 	}
 
 	record.TypeBitmap[0] ^= 0xff
-	if bytes.Equal(record.TypeBitmap, TYPE_MAP_ROOT) {
+	if core.DeepEqual(record.TypeBitmap, TYPE_MAP_ROOT) {
 		t.Fatal("Create should copy the type bitmap")
 	}
 
@@ -316,7 +314,7 @@ func TestPackageNSECAliases(t *testing.T) {
 		t.Fatalf("GetCreate returned %+v", alias)
 	}
 
-	if !bytes.Equal(alias.TypeBitmap, TYPE_MAP_NS) {
+	if !core.DeepEqual(alias.TypeBitmap, TYPE_MAP_NS) {
 		t.Fatalf("GetCreate TypeBitmap = %x, want %x", alias.TypeBitmap, TYPE_MAP_NS)
 	}
 }
@@ -860,31 +858,31 @@ func TestPackageDNSCommonGetters(t *testing.T) {
 		t.Fatalf("GetDefaultTTL() = %d, want %d", GetDefaultTTL(), DEFAULT_TTL)
 	}
 
-	if !bytes.Equal(GetDummy(), DUMMY) {
+	if !core.DeepEqual(GetDummy(), DUMMY) {
 		t.Fatal("GetDummy should alias DUMMY")
 	}
 
-	if !bytes.Equal(GetTypeMapRoot(), TYPE_MAP_ROOT) {
+	if !core.DeepEqual(GetTypeMapRoot(), TYPE_MAP_ROOT) {
 		t.Fatal("GetTypeMapRoot should alias TYPE_MAP_ROOT")
 	}
 
-	if !bytes.Equal(GetTypeMapEmpty(), TYPE_MAP_EMPTY) {
+	if !core.DeepEqual(GetTypeMapEmpty(), TYPE_MAP_EMPTY) {
 		t.Fatal("GetTypeMapEmpty should alias TYPE_MAP_EMPTY")
 	}
 
-	if !bytes.Equal(GetTypeMapNS(), TYPE_MAP_NS) {
+	if !core.DeepEqual(GetTypeMapNS(), TYPE_MAP_NS) {
 		t.Fatal("GetTypeMapNS should alias TYPE_MAP_NS")
 	}
 
-	if !bytes.Equal(GetTypeMapTXT(), TYPE_MAP_TXT) {
+	if !core.DeepEqual(GetTypeMapTXT(), TYPE_MAP_TXT) {
 		t.Fatal("GetTypeMapTXT should alias TYPE_MAP_TXT")
 	}
 
-	if !bytes.Equal(GetTypeMapA(), TYPE_MAP_A) {
+	if !core.DeepEqual(GetTypeMapA(), TYPE_MAP_A) {
 		t.Fatal("GetTypeMapA should alias TYPE_MAP_A")
 	}
 
-	if !bytes.Equal(GetTypeMapAAAA(), TYPE_MAP_AAAA) {
+	if !core.DeepEqual(GetTypeMapAAAA(), TYPE_MAP_AAAA) {
 		t.Fatal("GetTypeMapAAAA should alias TYPE_MAP_AAAA")
 	}
 

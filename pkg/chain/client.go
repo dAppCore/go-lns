@@ -5,12 +5,8 @@
 package chain
 
 import (
-	"bytes"
-	"encoding/json"
-	"fmt"
 	"io"
 	"net/http"
-	"strings"
 	"time"
 
 	core "dappco.re/go"
@@ -32,7 +28,7 @@ func WithAPIKey(apiKey string) ClientOption {
 		if c == nil {
 			return
 		}
-		c.apiKey = strings.TrimSpace(apiKey)
+		c.apiKey = core.Trim(apiKey)
 	}
 }
 
@@ -49,7 +45,7 @@ func WithHTTPClient(httpClient *http.Client) ClientOption {
 // NewClient constructs a sidechain RPC client.
 func NewClient(url string, opts ...ClientOption) *Client {
 	client := &Client{
-		url:        strings.TrimSpace(url),
+		url:        core.Trim(url),
 		httpClient: &http.Client{Timeout: 30 * time.Second},
 	}
 
@@ -70,17 +66,34 @@ type rpcRequest struct {
 }
 
 type rpcResponse struct {
-	Result json.RawMessage `json:"result"`
-	Error  *rpcError       `json:"error,omitempty"`
+	Result jsonraw     `json:"result"`
+	Error  *rpcfailure `json:"error,omitempty"`
 }
 
-type rpcError struct {
+type rpcfailure struct {
 	Code    int    `json:"code"`
 	Message string `json:"message"`
 }
 
-func (e *rpcError) Error() string {
-	return fmt.Sprintf("rpc error %d: %s", e.Code, e.Message)
+func (e *rpcfailure) Error() string {
+	return core.Sprintf("rpc error %d: %s", e.Code, e.Message)
+}
+
+type jsonraw []byte
+
+func (m jsonraw) MarshalJSON() ([]byte, error) {
+	if m == nil {
+		return []byte("null"), nil
+	}
+	return []byte(m), nil
+}
+
+func (m *jsonraw) UnmarshalJSON(data []byte) error {
+	if m == nil {
+		return core.NewError("chain.jsonraw: nil receiver")
+	}
+	*m = append((*m)[:0], data...)
+	return nil
 }
 
 // BlockchainInfo contains the sidechain cache invalidation metadata.
@@ -117,22 +130,22 @@ type NameResource struct {
 }
 
 // RawCall executes a JSON-RPC call and returns the raw `result` payload.
-func (c *Client) RawCall(method string, params any) (json.RawMessage, error) {
+func (c *Client) RawCall(method string, params any) ([]byte, error) {
 	if c == nil || c.url == "" {
 		return nil, core.E("chain.Client.RawCall", "url is required", nil)
 	}
 
-	body, err := json.Marshal(rpcRequest{
+	body := core.JSONMarshal(rpcRequest{
 		JSONRPC: "2.0",
 		ID:      "0",
 		Method:  method,
 		Params:  params,
 	})
-	if err != nil {
-		return nil, core.E("chain.Client.RawCall", "marshal request", err)
+	if !body.OK {
+		return nil, core.E("chain.Client.RawCall", "marshal request", body.Value.(error))
 	}
 
-	request, err := http.NewRequest(http.MethodPost, c.url, bytes.NewReader(body))
+	request, err := http.NewRequest(http.MethodPost, c.url, core.NewBuffer(body.Value.([]byte)))
 	if err != nil {
 		return nil, core.E("chain.Client.RawCall", "build request", err)
 	}
@@ -154,19 +167,19 @@ func (c *Client) RawCall(method string, params any) (json.RawMessage, error) {
 	}
 
 	if response.StatusCode != http.StatusOK {
-		return nil, core.E("chain.Client.RawCall", fmt.Sprintf("%s http %d", method, response.StatusCode), nil)
+		return nil, core.E("chain.Client.RawCall", core.Sprintf("%s http %d", method, response.StatusCode), nil)
 	}
 
 	var decoded rpcResponse
-	if err := json.Unmarshal(raw, &decoded); err != nil {
-		return nil, core.E("chain.Client.RawCall", "decode response", err)
+	if r := core.JSONUnmarshal(raw, &decoded); !r.OK {
+		return nil, core.E("chain.Client.RawCall", "decode response", r.Value.(error))
 	}
 
 	if decoded.Error != nil {
 		return nil, core.E("chain.Client.RawCall", method, decoded.Error)
 	}
 
-	return decoded.Result, nil
+	return []byte(decoded.Result), nil
 }
 
 func (c *Client) call(method string, params any, out any) error {
@@ -179,8 +192,8 @@ func (c *Client) call(method string, params any, out any) error {
 		return nil
 	}
 
-	if err := json.Unmarshal(raw, out); err != nil {
-		return core.E("chain.Client.call", fmt.Sprintf("decode %s result", method), err)
+	if r := core.JSONUnmarshal(raw, out); !r.OK {
+		return core.E("chain.Client.call", core.Sprintf("decode %s result", method), r.Value.(error))
 	}
 
 	return nil
@@ -207,23 +220,23 @@ func (c *Client) GetInfo() (*Info, error) {
 // GetNameResource loads the DNS records for a single LNS name.
 func (c *Client) GetNameResource(name string) (*NameResource, error) {
 	var resource NameResource
-	if err := c.call("getnameresource", []any{strings.TrimSuffix(strings.ToLower(name), ".lthn")}, &resource); err != nil {
+	if err := c.call("getnameresource", []any{core.TrimSuffix(core.Lower(name), ".lthn")}, &resource); err != nil {
 		return nil, err
 	}
 	return &resource, nil
 }
 
 // GetBlock returns the raw block payload for a block hash.
-func (c *Client) GetBlock(hash string) (json.RawMessage, error) {
+func (c *Client) GetBlock(hash string) ([]byte, error) {
 	return c.RawCall("getblock", []any{hash})
 }
 
 // GetBlockByHeight returns the raw block payload for a block height.
-func (c *Client) GetBlockByHeight(height uint64) (json.RawMessage, error) {
+func (c *Client) GetBlockByHeight(height uint64) ([]byte, error) {
 	return c.RawCall("getblockbyheight", []any{height})
 }
 
 // GetPeerInfo returns the raw peer list payload.
-func (c *Client) GetPeerInfo() (json.RawMessage, error) {
+func (c *Client) GetPeerInfo() ([]byte, error) {
 	return c.RawCall("getpeerinfo", nil)
 }

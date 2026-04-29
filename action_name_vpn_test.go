@@ -4,7 +4,6 @@ package lns
 
 import (
 	"context"
-	"encoding/json"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -105,7 +104,7 @@ func TestNameLinkedActionsReturnDraftPlans(t *testing.T) {
 
 func TestVPNActionsDiscoverAndTrackSession(t *testing.T) {
 	aliasServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		_ = json.NewEncoder(w).Encode(map[string]any{
+		writeActionTestJSON(t, w, map[string]any{
 			"result": map[string]any{
 				"aliases": []map[string]any{
 					{"alias": "charon", "address": "LTHN...", "comment": "v=lthn1;type=gateway;cap=vpn,dns;hns=charon.lthn"},
@@ -119,17 +118,15 @@ func TestVPNActionsDiscoverAndTrackSession(t *testing.T) {
 		var request struct {
 			Method string `json:"method"`
 		}
-		if err := json.NewDecoder(r.Body).Decode(&request); err != nil {
-			t.Fatalf("decode request: %v", err)
-		}
+		readActionTestJSON(t, r.Body, &request)
 
 		switch request.Method {
 		case "getblockchaininfo":
-			_ = json.NewEncoder(w).Encode(map[string]any{
+			writeActionTestJSON(t, w, map[string]any{
 				"result": map[string]any{"blocks": 50, "treeroot": "root-1"},
 			})
 		case "getnameresource":
-			_ = json.NewEncoder(w).Encode(map[string]any{
+			writeActionTestJSON(t, w, map[string]any{
 				"result": map[string]any{
 					"records": []map[string]any{
 						{"type": "GLUE4", "ns": "charon.lthn.", "address": "192.0.2.10"},

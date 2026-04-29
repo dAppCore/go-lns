@@ -3,9 +3,18 @@
 package dns
 
 import (
-	"bytes"
 	"testing"
+
+	core "dappco.re/go"
 )
+
+func repeatString(value string, count int) string {
+	out := ""
+	for i := 0; i < count; i++ {
+		out += value
+	}
+	return out
+}
 
 func TestCommonConstants(t *testing.T) {
 	if DEFAULT_TTL != 21600 || GetDefaultTTL() != DEFAULT_TTL {
@@ -34,7 +43,7 @@ func TestCommonConstants(t *testing.T) {
 	}
 
 	for _, tc := range cases {
-		if !bytes.Equal(tc.got, tc.want) {
+		if !core.DeepEqual(tc.got, tc.want) {
 			t.Fatalf("%s = %x, want %x", tc.name, tc.got, tc.want)
 		}
 
@@ -54,7 +63,7 @@ func TestCommonConstants(t *testing.T) {
 			got = GetTypeMapAAAA()
 		}
 
-		if !bytes.Equal(got, tc.want) {
+		if !core.DeepEqual(got, tc.want) {
 			t.Fatalf("%s getter = %x, want %x", tc.name, got, tc.want)
 		}
 	}
@@ -109,3 +118,307 @@ func TestHSTypesTables(t *testing.T) {
 		}
 	}
 }
+
+// BEGIN v090 file-aware generated coverage
+
+func TestCommon_GetDummy_Good(t *core.T) {
+	fn := ax7ValueOf(GetDummy)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestCommon_GetDummy_Bad(t *core.T) {
+	fn := ax7ValueOf(GetDummy)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestCommon_GetDummy_Ugly(t *core.T) {
+	fn := ax7ValueOf(GetDummy)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestCommon_GetDefaultTTL_Good(t *core.T) {
+	fn := ax7ValueOf(GetDefaultTTL)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestCommon_GetDefaultTTL_Bad(t *core.T) {
+	fn := ax7ValueOf(GetDefaultTTL)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestCommon_GetDefaultTTL_Ugly(t *core.T) {
+	fn := ax7ValueOf(GetDefaultTTL)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestCommon_GetTypeMapRoot_Good(t *core.T) {
+	fn := ax7ValueOf(GetTypeMapRoot)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestCommon_GetTypeMapRoot_Bad(t *core.T) {
+	fn := ax7ValueOf(GetTypeMapRoot)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestCommon_GetTypeMapRoot_Ugly(t *core.T) {
+	fn := ax7ValueOf(GetTypeMapRoot)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestCommon_GetTypeMapEmpty_Good(t *core.T) {
+	fn := ax7ValueOf(GetTypeMapEmpty)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestCommon_GetTypeMapEmpty_Bad(t *core.T) {
+	fn := ax7ValueOf(GetTypeMapEmpty)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestCommon_GetTypeMapEmpty_Ugly(t *core.T) {
+	fn := ax7ValueOf(GetTypeMapEmpty)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestCommon_GetTypeMapNS_Good(t *core.T) {
+	fn := ax7ValueOf(GetTypeMapNS)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestCommon_GetTypeMapNS_Bad(t *core.T) {
+	fn := ax7ValueOf(GetTypeMapNS)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestCommon_GetTypeMapNS_Ugly(t *core.T) {
+	fn := ax7ValueOf(GetTypeMapNS)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestCommon_GetTypeMapTXT_Good(t *core.T) {
+	fn := ax7ValueOf(GetTypeMapTXT)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestCommon_GetTypeMapTXT_Bad(t *core.T) {
+	fn := ax7ValueOf(GetTypeMapTXT)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestCommon_GetTypeMapTXT_Ugly(t *core.T) {
+	fn := ax7ValueOf(GetTypeMapTXT)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestCommon_GetTypeMapA_Good(t *core.T) {
+	fn := ax7ValueOf(GetTypeMapA)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestCommon_GetTypeMapA_Bad(t *core.T) {
+	fn := ax7ValueOf(GetTypeMapA)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestCommon_GetTypeMapA_Ugly(t *core.T) {
+	fn := ax7ValueOf(GetTypeMapA)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestCommon_GetTypeMapAAAA_Good(t *core.T) {
+	fn := ax7ValueOf(GetTypeMapAAAA)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestCommon_GetTypeMapAAAA_Bad(t *core.T) {
+	fn := ax7ValueOf(GetTypeMapAAAA)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestCommon_GetTypeMapAAAA_Ugly(t *core.T) {
+	fn := ax7ValueOf(GetTypeMapAAAA)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestCommon_GetHSTypes_Good(t *core.T) {
+	fn := ax7ValueOf(GetHSTypes)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestCommon_GetHSTypes_Bad(t *core.T) {
+	fn := ax7ValueOf(GetHSTypes)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestCommon_GetHSTypes_Ugly(t *core.T) {
+	fn := ax7ValueOf(GetHSTypes)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestCommon_GetHSTypesByVal_Good(t *core.T) {
+	fn := ax7ValueOf(GetHSTypesByVal)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestCommon_GetHSTypesByVal_Bad(t *core.T) {
+	fn := ax7ValueOf(GetHSTypesByVal)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestCommon_GetHSTypesByVal_Ugly(t *core.T) {
+	fn := ax7ValueOf(GetHSTypesByVal)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+// END v090 file-aware generated coverage

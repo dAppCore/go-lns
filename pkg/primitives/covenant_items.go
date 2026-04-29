@@ -3,7 +3,6 @@
 package primitives
 
 import (
-	"bytes"
 	"encoding/binary"
 
 	core "dappco.re/go"
@@ -91,7 +90,7 @@ func (c *Covenant) FromArray(items [][]byte) *Covenant {
 // IndexOf reports the first matching item index or -1 if the item is absent.
 func (c Covenant) IndexOf(data []byte) int {
 	for i, item := range c.Items {
-		if bytes.Equal(item, data) {
+		if equalBytes(item, data) {
 			return i
 		}
 	}

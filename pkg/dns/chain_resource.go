@@ -5,7 +5,6 @@ package dns
 import (
 	"encoding/hex"
 	"net/netip"
-	"strings"
 
 	core "dappco.re/go"
 	chainpkg "dappco.re/go/lns/pkg/chain"
@@ -18,7 +17,7 @@ func resourceFromChainResource(resource *chainpkg.NameResource) (*Resource, erro
 	}
 
 	for _, record := range resource.Records {
-		switch strings.ToUpper(record.Type) {
+		switch core.Upper(record.Type) {
 		case "GLUE4":
 			address, err := netip.ParseAddr(record.Address)
 			if err != nil {

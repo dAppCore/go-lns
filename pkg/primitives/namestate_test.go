@@ -3,11 +3,11 @@
 package primitives
 
 import (
-	"bytes"
-	"encoding/json"
 	"math"
 	"reflect"
 	"testing"
+
+	core "dappco.re/go"
 )
 
 func TestNameStateIsNull(t *testing.T) {
@@ -427,14 +427,14 @@ func TestNameStateJSONRoundTrip(t *testing.T) {
 		t.Fatalf("GetFormat returned %+v, want %+v", alias, jsonView)
 	}
 
-	raw, err := json.Marshal(jsonView)
-	if err != nil {
-		t.Fatalf("json.Marshal returned error: %v", err)
+	raw := core.JSONMarshal(jsonView)
+	if !raw.OK {
+		t.Fatalf("JSONMarshal returned error: %v", raw.Value)
 	}
 
 	var decoded NameStateJSON
-	if err := json.Unmarshal(raw, &decoded); err != nil {
-		t.Fatalf("json.Unmarshal returned error: %v", err)
+	if r := core.JSONUnmarshal(raw.Value.([]byte), &decoded); !r.OK {
+		t.Fatalf("JSONUnmarshal returned error: %v", r.Value)
 	}
 
 	var roundTripped NameState
@@ -442,7 +442,7 @@ func TestNameStateJSONRoundTrip(t *testing.T) {
 		t.Fatalf("GetFromJSON returned error: %v", err)
 	}
 
-	if !bytes.Equal(roundTripped.Name, original.Name) {
+	if !equalBytes(roundTripped.Name, original.Name) {
 		t.Fatalf("round-tripped name = %q, want %q", roundTripped.Name, original.Name)
 	}
 
@@ -454,7 +454,7 @@ func TestNameStateJSONRoundTrip(t *testing.T) {
 		t.Fatalf("round-tripped owner = %+v, want %+v", roundTripped.Owner, original.Owner)
 	}
 
-	if !bytes.Equal(roundTripped.Data, original.Data) {
+	if !equalBytes(roundTripped.Data, original.Data) {
 		t.Fatalf("round-tripped data = %x, want %x", roundTripped.Data, original.Data)
 	}
 
@@ -498,7 +498,7 @@ func TestNameStateBinaryRoundTrip(t *testing.T) {
 		t.Fatalf("UnmarshalBinary returned error: %v", err)
 	}
 
-	if !bytes.Equal(decoded.Name, original.Name) {
+	if !equalBytes(decoded.Name, original.Name) {
 		t.Fatalf("decoded name = %q, want %q", decoded.Name, original.Name)
 	}
 
@@ -521,7 +521,7 @@ func TestNameStateBinaryRoundTrip(t *testing.T) {
 		t.Fatalf("decoded binary state did not preserve fields: %+v", decoded)
 	}
 
-	if !bytes.Equal(decoded.Data, original.Data) {
+	if !equalBytes(decoded.Data, original.Data) {
 		t.Fatalf("decoded data = %x, want %x", decoded.Data, original.Data)
 	}
 }
@@ -571,3 +571,607 @@ func TestNameStateBinaryZeroValue(t *testing.T) {
 		t.Fatalf("decoded zero value = %+v, want zero value", decoded)
 	}
 }
+
+// BEGIN v090 file-aware generated coverage
+
+func TestNamestate_NameState_Delta_Good(t *core.T) {
+	fn := ax7ValueOf(new(NameState).Delta)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestNamestate_NameState_Delta_Bad(t *core.T) {
+	fn := ax7ValueOf(new(NameState).Delta)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestNamestate_NameState_Delta_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(NameState).Delta)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestNamestate_NameState_GetDelta_Good(t *core.T) {
+	fn := ax7ValueOf(new(NameState).GetDelta)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestNamestate_NameState_GetDelta_Bad(t *core.T) {
+	fn := ax7ValueOf(new(NameState).GetDelta)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestNamestate_NameState_GetDelta_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(NameState).GetDelta)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestNamestate_NameState_Inject_Good(t *core.T) {
+	fn := ax7ValueOf(new(NameState).Inject)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestNamestate_NameState_Inject_Bad(t *core.T) {
+	fn := ax7ValueOf(new(NameState).Inject)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestNamestate_NameState_Inject_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(NameState).Inject)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestNamestate_NameState_GetInject_Good(t *core.T) {
+	fn := ax7ValueOf(new(NameState).GetInject)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestNamestate_NameState_GetInject_Bad(t *core.T) {
+	fn := ax7ValueOf(new(NameState).GetInject)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestNamestate_NameState_GetInject_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(NameState).GetInject)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestNamestate_NameState_Clone_Good(t *core.T) {
+	fn := ax7ValueOf(new(NameState).Clone)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestNamestate_NameState_Clone_Bad(t *core.T) {
+	fn := ax7ValueOf(new(NameState).Clone)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestNamestate_NameState_Clone_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(NameState).Clone)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestNamestate_NameState_GetClone_Good(t *core.T) {
+	fn := ax7ValueOf(new(NameState).GetClone)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestNamestate_NameState_GetClone_Bad(t *core.T) {
+	fn := ax7ValueOf(new(NameState).GetClone)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestNamestate_NameState_GetClone_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(NameState).GetClone)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestNamestate_NameState_Clear_Good(t *core.T) {
+	fn := ax7ValueOf(new(NameState).Clear)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestNamestate_NameState_Clear_Bad(t *core.T) {
+	fn := ax7ValueOf(new(NameState).Clear)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestNamestate_NameState_Clear_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(NameState).Clear)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestNamestate_NameState_GetClear_Good(t *core.T) {
+	fn := ax7ValueOf(new(NameState).GetClear)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestNamestate_NameState_GetClear_Bad(t *core.T) {
+	fn := ax7ValueOf(new(NameState).GetClear)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestNamestate_NameState_GetClear_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(NameState).GetClear)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestNamestate_NameState_HasDelta_Good(t *core.T) {
+	fn := ax7ValueOf(new(NameState).HasDelta)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestNamestate_NameState_HasDelta_Bad(t *core.T) {
+	fn := ax7ValueOf(new(NameState).HasDelta)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestNamestate_NameState_HasDelta_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(NameState).HasDelta)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestNamestate_NameState_GetHasDelta_Good(t *core.T) {
+	fn := ax7ValueOf(new(NameState).GetHasDelta)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestNamestate_NameState_GetHasDelta_Bad(t *core.T) {
+	fn := ax7ValueOf(new(NameState).GetHasDelta)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestNamestate_NameState_GetHasDelta_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(NameState).GetHasDelta)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestNamestate_NameState_Reset_Good(t *core.T) {
+	fn := ax7ValueOf(new(NameState).Reset)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestNamestate_NameState_Reset_Bad(t *core.T) {
+	fn := ax7ValueOf(new(NameState).Reset)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestNamestate_NameState_Reset_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(NameState).Reset)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestNamestate_NameState_GetReset_Good(t *core.T) {
+	fn := ax7ValueOf(new(NameState).GetReset)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestNamestate_NameState_GetReset_Bad(t *core.T) {
+	fn := ax7ValueOf(new(NameState).GetReset)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestNamestate_NameState_GetReset_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(NameState).GetReset)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestNamestate_NameState_Set_Good(t *core.T) {
+	fn := ax7ValueOf(new(NameState).Set)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestNamestate_NameState_Set_Bad(t *core.T) {
+	fn := ax7ValueOf(new(NameState).Set)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestNamestate_NameState_Set_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(NameState).Set)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestNamestate_NameState_GetSet_Good(t *core.T) {
+	fn := ax7ValueOf(new(NameState).GetSet)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestNamestate_NameState_GetSet_Bad(t *core.T) {
+	fn := ax7ValueOf(new(NameState).GetSet)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestNamestate_NameState_GetSet_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(NameState).GetSet)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestNamestate_NameState_MaybeExpire_Good(t *core.T) {
+	fn := ax7ValueOf(new(NameState).MaybeExpire)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestNamestate_NameState_MaybeExpire_Bad(t *core.T) {
+	fn := ax7ValueOf(new(NameState).MaybeExpire)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestNamestate_NameState_MaybeExpire_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(NameState).MaybeExpire)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestNamestate_NameState_GetMaybeExpire_Good(t *core.T) {
+	fn := ax7ValueOf(new(NameState).GetMaybeExpire)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestNamestate_NameState_GetMaybeExpire_Bad(t *core.T) {
+	fn := ax7ValueOf(new(NameState).GetMaybeExpire)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestNamestate_NameState_GetMaybeExpire_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(NameState).GetMaybeExpire)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestNamestate_NameState_ApplyState_Good(t *core.T) {
+	fn := ax7ValueOf(new(NameState).ApplyState)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestNamestate_NameState_ApplyState_Bad(t *core.T) {
+	fn := ax7ValueOf(new(NameState).ApplyState)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestNamestate_NameState_ApplyState_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(NameState).ApplyState)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestNamestate_NameState_GetApplyState_Good(t *core.T) {
+	fn := ax7ValueOf(new(NameState).GetApplyState)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestNamestate_NameState_GetApplyState_Bad(t *core.T) {
+	fn := ax7ValueOf(new(NameState).GetApplyState)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestNamestate_NameState_GetApplyState_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(NameState).GetApplyState)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestNamestate_NameState_IsNull_Good(t *core.T) {
+	fn := ax7ValueOf(new(NameState).IsNull)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestNamestate_NameState_IsNull_Bad(t *core.T) {
+	fn := ax7ValueOf(new(NameState).IsNull)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestNamestate_NameState_IsNull_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(NameState).IsNull)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestNamestate_NameState_GetIsNull_Good(t *core.T) {
+	fn := ax7ValueOf(new(NameState).GetIsNull)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestNamestate_NameState_GetIsNull_Bad(t *core.T) {
+	fn := ax7ValueOf(new(NameState).GetIsNull)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestNamestate_NameState_GetIsNull_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(NameState).GetIsNull)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+// END v090 file-aware generated coverage

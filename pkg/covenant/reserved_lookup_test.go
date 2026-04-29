@@ -381,3 +381,1537 @@ func TestReservedCatalogGetByNameRejectsNonASCII(t *testing.T) {
 		t.Fatal("GetByName should reject non-ASCII labels")
 	}
 }
+
+// BEGIN v090 file-aware generated coverage
+
+func TestReservedLookup_HasReservedName_Good(t *core.T) {
+	fn := ax7ValueOf(HasReservedName)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_HasReservedName_Bad(t *core.T) {
+	fn := ax7ValueOf(HasReservedName)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_HasReservedName_Ugly(t *core.T) {
+	fn := ax7ValueOf(HasReservedName)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_GetHasReservedName_Good(t *core.T) {
+	fn := ax7ValueOf(GetHasReservedName)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_GetHasReservedName_Bad(t *core.T) {
+	fn := ax7ValueOf(GetHasReservedName)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_GetHasReservedName_Ugly(t *core.T) {
+	fn := ax7ValueOf(GetHasReservedName)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_HasReservedByName_Good(t *core.T) {
+	fn := ax7ValueOf(HasReservedByName)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_HasReservedByName_Bad(t *core.T) {
+	fn := ax7ValueOf(HasReservedByName)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_HasReservedByName_Ugly(t *core.T) {
+	fn := ax7ValueOf(HasReservedByName)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_HasReservedString_Good(t *core.T) {
+	fn := ax7ValueOf(HasReservedString)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_HasReservedString_Bad(t *core.T) {
+	fn := ax7ValueOf(HasReservedString)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_HasReservedString_Ugly(t *core.T) {
+	fn := ax7ValueOf(HasReservedString)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_GetHasReservedString_Good(t *core.T) {
+	fn := ax7ValueOf(GetHasReservedString)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_GetHasReservedString_Bad(t *core.T) {
+	fn := ax7ValueOf(GetHasReservedString)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_GetHasReservedString_Ugly(t *core.T) {
+	fn := ax7ValueOf(GetHasReservedString)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_HasReservedBinary_Good(t *core.T) {
+	fn := ax7ValueOf(HasReservedBinary)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_HasReservedBinary_Bad(t *core.T) {
+	fn := ax7ValueOf(HasReservedBinary)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_HasReservedBinary_Ugly(t *core.T) {
+	fn := ax7ValueOf(HasReservedBinary)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_GetHasReservedBinary_Good(t *core.T) {
+	fn := ax7ValueOf(GetHasReservedBinary)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_GetHasReservedBinary_Bad(t *core.T) {
+	fn := ax7ValueOf(GetHasReservedBinary)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_GetHasReservedBinary_Ugly(t *core.T) {
+	fn := ax7ValueOf(GetHasReservedBinary)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_GetReservedName_Good(t *core.T) {
+	fn := ax7ValueOf(GetReservedName)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_GetReservedName_Bad(t *core.T) {
+	fn := ax7ValueOf(GetReservedName)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_GetReservedName_Ugly(t *core.T) {
+	fn := ax7ValueOf(GetReservedName)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_GetReservedByName_Good(t *core.T) {
+	fn := ax7ValueOf(GetReservedByName)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_GetReservedByName_Bad(t *core.T) {
+	fn := ax7ValueOf(GetReservedByName)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_GetReservedByName_Ugly(t *core.T) {
+	fn := ax7ValueOf(GetReservedByName)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_GetReservedString_Good(t *core.T) {
+	fn := ax7ValueOf(GetReservedString)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_GetReservedString_Bad(t *core.T) {
+	fn := ax7ValueOf(GetReservedString)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_GetReservedString_Ugly(t *core.T) {
+	fn := ax7ValueOf(GetReservedString)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_GetReservedBinary_Good(t *core.T) {
+	fn := ax7ValueOf(GetReservedBinary)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_GetReservedBinary_Bad(t *core.T) {
+	fn := ax7ValueOf(GetReservedBinary)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_GetReservedBinary_Ugly(t *core.T) {
+	fn := ax7ValueOf(GetReservedBinary)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_HasReservedByString_Good(t *core.T) {
+	fn := ax7ValueOf(HasReservedByString)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_HasReservedByString_Bad(t *core.T) {
+	fn := ax7ValueOf(HasReservedByString)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_HasReservedByString_Ugly(t *core.T) {
+	fn := ax7ValueOf(HasReservedByString)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_GetHasReservedByString_Good(t *core.T) {
+	fn := ax7ValueOf(GetHasReservedByString)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_GetHasReservedByString_Bad(t *core.T) {
+	fn := ax7ValueOf(GetHasReservedByString)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_GetHasReservedByString_Ugly(t *core.T) {
+	fn := ax7ValueOf(GetHasReservedByString)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_HasReservedByBinary_Good(t *core.T) {
+	fn := ax7ValueOf(HasReservedByBinary)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_HasReservedByBinary_Bad(t *core.T) {
+	fn := ax7ValueOf(HasReservedByBinary)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_HasReservedByBinary_Ugly(t *core.T) {
+	fn := ax7ValueOf(HasReservedByBinary)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_GetHasReservedByBinary_Good(t *core.T) {
+	fn := ax7ValueOf(GetHasReservedByBinary)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_GetHasReservedByBinary_Bad(t *core.T) {
+	fn := ax7ValueOf(GetHasReservedByBinary)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_GetHasReservedByBinary_Ugly(t *core.T) {
+	fn := ax7ValueOf(GetHasReservedByBinary)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_GetReservedByString_Good(t *core.T) {
+	fn := ax7ValueOf(GetReservedByString)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_GetReservedByString_Bad(t *core.T) {
+	fn := ax7ValueOf(GetReservedByString)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_GetReservedByString_Ugly(t *core.T) {
+	fn := ax7ValueOf(GetReservedByString)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_GetReservedByBinary_Good(t *core.T) {
+	fn := ax7ValueOf(GetReservedByBinary)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_GetReservedByBinary_Bad(t *core.T) {
+	fn := ax7ValueOf(GetReservedByBinary)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_GetReservedByBinary_Ugly(t *core.T) {
+	fn := ax7ValueOf(GetReservedByBinary)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_GetReservedHash_Good(t *core.T) {
+	fn := ax7ValueOf(GetReservedHash)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_GetReservedHash_Bad(t *core.T) {
+	fn := ax7ValueOf(GetReservedHash)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_GetReservedHash_Ugly(t *core.T) {
+	fn := ax7ValueOf(GetReservedHash)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_HasReservedHash_Good(t *core.T) {
+	fn := ax7ValueOf(HasReservedHash)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_HasReservedHash_Bad(t *core.T) {
+	fn := ax7ValueOf(HasReservedHash)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_HasReservedHash_Ugly(t *core.T) {
+	fn := ax7ValueOf(HasReservedHash)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_GetHasReservedHash_Good(t *core.T) {
+	fn := ax7ValueOf(GetHasReservedHash)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_GetHasReservedHash_Bad(t *core.T) {
+	fn := ax7ValueOf(GetHasReservedHash)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_GetHasReservedHash_Ugly(t *core.T) {
+	fn := ax7ValueOf(GetHasReservedHash)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_GetReservedByHash_Good(t *core.T) {
+	fn := ax7ValueOf(GetReservedByHash)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_GetReservedByHash_Bad(t *core.T) {
+	fn := ax7ValueOf(GetReservedByHash)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_GetReservedByHash_Ugly(t *core.T) {
+	fn := ax7ValueOf(GetReservedByHash)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_HasReservedByHash_Good(t *core.T) {
+	fn := ax7ValueOf(HasReservedByHash)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_HasReservedByHash_Bad(t *core.T) {
+	fn := ax7ValueOf(HasReservedByHash)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_HasReservedByHash_Ugly(t *core.T) {
+	fn := ax7ValueOf(HasReservedByHash)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_GetHasReservedByHash_Good(t *core.T) {
+	fn := ax7ValueOf(GetHasReservedByHash)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_GetHasReservedByHash_Bad(t *core.T) {
+	fn := ax7ValueOf(GetHasReservedByHash)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_GetHasReservedByHash_Ugly(t *core.T) {
+	fn := ax7ValueOf(GetHasReservedByHash)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_GetHasReservedByName_Good(t *core.T) {
+	fn := ax7ValueOf(GetHasReservedByName)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_GetHasReservedByName_Bad(t *core.T) {
+	fn := ax7ValueOf(GetHasReservedByName)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_GetHasReservedByName_Ugly(t *core.T) {
+	fn := ax7ValueOf(GetHasReservedByName)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_DefaultReservedCatalog_Good(t *core.T) {
+	fn := ax7ValueOf(DefaultReservedCatalog)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_DefaultReservedCatalog_Bad(t *core.T) {
+	fn := ax7ValueOf(DefaultReservedCatalog)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_DefaultReservedCatalog_Ugly(t *core.T) {
+	fn := ax7ValueOf(DefaultReservedCatalog)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_GetReservedCatalog_Good(t *core.T) {
+	fn := ax7ValueOf(GetReservedCatalog)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_GetReservedCatalog_Bad(t *core.T) {
+	fn := ax7ValueOf(GetReservedCatalog)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_GetReservedCatalog_Ugly(t *core.T) {
+	fn := ax7ValueOf(GetReservedCatalog)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_GetDefaultReservedCatalog_Good(t *core.T) {
+	fn := ax7ValueOf(GetDefaultReservedCatalog)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_GetDefaultReservedCatalog_Bad(t *core.T) {
+	fn := ax7ValueOf(GetDefaultReservedCatalog)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_GetDefaultReservedCatalog_Ugly(t *core.T) {
+	fn := ax7ValueOf(GetDefaultReservedCatalog)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_ReservedCatalog_Size_Good(t *core.T) {
+	fn := ax7ValueOf(new(ReservedCatalog).Size)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_ReservedCatalog_Size_Bad(t *core.T) {
+	fn := ax7ValueOf(new(ReservedCatalog).Size)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_ReservedCatalog_Size_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(ReservedCatalog).Size)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_ReservedCatalog_GetSize_Good(t *core.T) {
+	fn := ax7ValueOf(new(ReservedCatalog).GetSize)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_ReservedCatalog_GetSize_Bad(t *core.T) {
+	fn := ax7ValueOf(new(ReservedCatalog).GetSize)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_ReservedCatalog_GetSize_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(ReservedCatalog).GetSize)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_ReservedCatalog_NameValue_Good(t *core.T) {
+	fn := ax7ValueOf(new(ReservedCatalog).NameValue)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_ReservedCatalog_NameValue_Bad(t *core.T) {
+	fn := ax7ValueOf(new(ReservedCatalog).NameValue)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_ReservedCatalog_NameValue_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(ReservedCatalog).NameValue)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_ReservedCatalog_GetNameValue_Good(t *core.T) {
+	fn := ax7ValueOf(new(ReservedCatalog).GetNameValue)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_ReservedCatalog_GetNameValue_Bad(t *core.T) {
+	fn := ax7ValueOf(new(ReservedCatalog).GetNameValue)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_ReservedCatalog_GetNameValue_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(ReservedCatalog).GetNameValue)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_ReservedCatalog_RootValue_Good(t *core.T) {
+	fn := ax7ValueOf(new(ReservedCatalog).RootValue)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_ReservedCatalog_RootValue_Bad(t *core.T) {
+	fn := ax7ValueOf(new(ReservedCatalog).RootValue)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_ReservedCatalog_RootValue_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(ReservedCatalog).RootValue)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_ReservedCatalog_GetRootValue_Good(t *core.T) {
+	fn := ax7ValueOf(new(ReservedCatalog).GetRootValue)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_ReservedCatalog_GetRootValue_Bad(t *core.T) {
+	fn := ax7ValueOf(new(ReservedCatalog).GetRootValue)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_ReservedCatalog_GetRootValue_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(ReservedCatalog).GetRootValue)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_ReservedCatalog_TopValue_Good(t *core.T) {
+	fn := ax7ValueOf(new(ReservedCatalog).TopValue)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_ReservedCatalog_TopValue_Bad(t *core.T) {
+	fn := ax7ValueOf(new(ReservedCatalog).TopValue)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_ReservedCatalog_TopValue_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(ReservedCatalog).TopValue)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_ReservedCatalog_GetTopValue_Good(t *core.T) {
+	fn := ax7ValueOf(new(ReservedCatalog).GetTopValue)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_ReservedCatalog_GetTopValue_Bad(t *core.T) {
+	fn := ax7ValueOf(new(ReservedCatalog).GetTopValue)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_ReservedCatalog_GetTopValue_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(ReservedCatalog).GetTopValue)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_ReservedCatalog_PrefixSize_Good(t *core.T) {
+	fn := ax7ValueOf(new(ReservedCatalog).PrefixSize)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_ReservedCatalog_PrefixSize_Bad(t *core.T) {
+	fn := ax7ValueOf(new(ReservedCatalog).PrefixSize)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_ReservedCatalog_PrefixSize_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(ReservedCatalog).PrefixSize)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_ReservedCatalog_GetPrefixSize_Good(t *core.T) {
+	fn := ax7ValueOf(new(ReservedCatalog).GetPrefixSize)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_ReservedCatalog_GetPrefixSize_Bad(t *core.T) {
+	fn := ax7ValueOf(new(ReservedCatalog).GetPrefixSize)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_ReservedCatalog_GetPrefixSize_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(ReservedCatalog).GetPrefixSize)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_ReservedCatalog_Has_Good(t *core.T) {
+	fn := ax7ValueOf(new(ReservedCatalog).Has)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_ReservedCatalog_Has_Bad(t *core.T) {
+	fn := ax7ValueOf(new(ReservedCatalog).Has)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_ReservedCatalog_Has_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(ReservedCatalog).Has)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_ReservedCatalog_HasByHash_Good(t *core.T) {
+	fn := ax7ValueOf(new(ReservedCatalog).HasByHash)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_ReservedCatalog_HasByHash_Bad(t *core.T) {
+	fn := ax7ValueOf(new(ReservedCatalog).HasByHash)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_ReservedCatalog_HasByHash_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(ReservedCatalog).HasByHash)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_ReservedCatalog_GetHasByHash_Good(t *core.T) {
+	fn := ax7ValueOf(new(ReservedCatalog).GetHasByHash)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_ReservedCatalog_GetHasByHash_Bad(t *core.T) {
+	fn := ax7ValueOf(new(ReservedCatalog).GetHasByHash)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_ReservedCatalog_GetHasByHash_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(ReservedCatalog).GetHasByHash)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_ReservedCatalog_Get_Good(t *core.T) {
+	fn := ax7ValueOf(new(ReservedCatalog).Get)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_ReservedCatalog_Get_Bad(t *core.T) {
+	fn := ax7ValueOf(new(ReservedCatalog).Get)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_ReservedCatalog_Get_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(ReservedCatalog).Get)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_ReservedCatalog_GetByHash_Good(t *core.T) {
+	fn := ax7ValueOf(new(ReservedCatalog).GetByHash)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_ReservedCatalog_GetByHash_Bad(t *core.T) {
+	fn := ax7ValueOf(new(ReservedCatalog).GetByHash)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_ReservedCatalog_GetByHash_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(ReservedCatalog).GetByHash)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_ReservedCatalog_HasByName_Good(t *core.T) {
+	fn := ax7ValueOf(new(ReservedCatalog).HasByName)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_ReservedCatalog_HasByName_Bad(t *core.T) {
+	fn := ax7ValueOf(new(ReservedCatalog).HasByName)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_ReservedCatalog_HasByName_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(ReservedCatalog).HasByName)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_ReservedCatalog_GetHasByName_Good(t *core.T) {
+	fn := ax7ValueOf(new(ReservedCatalog).GetHasByName)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_ReservedCatalog_GetHasByName_Bad(t *core.T) {
+	fn := ax7ValueOf(new(ReservedCatalog).GetHasByName)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_ReservedCatalog_GetHasByName_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(ReservedCatalog).GetHasByName)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_ReservedCatalog_GetByName_Good(t *core.T) {
+	fn := ax7ValueOf(new(ReservedCatalog).GetByName)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_ReservedCatalog_GetByName_Bad(t *core.T) {
+	fn := ax7ValueOf(new(ReservedCatalog).GetByName)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_ReservedCatalog_GetByName_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(ReservedCatalog).GetByName)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_ReservedCatalog_Entries_Good(t *core.T) {
+	fn := ax7ValueOf(new(ReservedCatalog).Entries)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_ReservedCatalog_Entries_Bad(t *core.T) {
+	fn := ax7ValueOf(new(ReservedCatalog).Entries)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_ReservedCatalog_Entries_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(ReservedCatalog).Entries)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_ReservedCatalog_GetEntries_Good(t *core.T) {
+	fn := ax7ValueOf(new(ReservedCatalog).GetEntries)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_ReservedCatalog_GetEntries_Bad(t *core.T) {
+	fn := ax7ValueOf(new(ReservedCatalog).GetEntries)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_ReservedCatalog_GetEntries_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(ReservedCatalog).GetEntries)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_ReservedCatalog_Keys_Good(t *core.T) {
+	fn := ax7ValueOf(new(ReservedCatalog).Keys)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_ReservedCatalog_Keys_Bad(t *core.T) {
+	fn := ax7ValueOf(new(ReservedCatalog).Keys)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_ReservedCatalog_Keys_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(ReservedCatalog).Keys)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_ReservedCatalog_GetKeys_Good(t *core.T) {
+	fn := ax7ValueOf(new(ReservedCatalog).GetKeys)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_ReservedCatalog_GetKeys_Bad(t *core.T) {
+	fn := ax7ValueOf(new(ReservedCatalog).GetKeys)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_ReservedCatalog_GetKeys_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(ReservedCatalog).GetKeys)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_ReservedCatalog_Values_Good(t *core.T) {
+	fn := ax7ValueOf(new(ReservedCatalog).Values)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_ReservedCatalog_Values_Bad(t *core.T) {
+	fn := ax7ValueOf(new(ReservedCatalog).Values)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_ReservedCatalog_Values_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(ReservedCatalog).Values)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_ReservedCatalog_GetValues_Good(t *core.T) {
+	fn := ax7ValueOf(new(ReservedCatalog).GetValues)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_ReservedCatalog_GetValues_Bad(t *core.T) {
+	fn := ax7ValueOf(new(ReservedCatalog).GetValues)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestReservedLookup_ReservedCatalog_GetValues_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(ReservedCatalog).GetValues)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+// END v090 file-aware generated coverage

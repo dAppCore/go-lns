@@ -4,7 +4,8 @@ package primitives
 
 import (
 	"encoding/binary"
-	"fmt"
+
+	core "dappco.re/go"
 )
 
 const (
@@ -58,11 +59,11 @@ func (ns NameState) GetSize() int {
 // caller and is not part of the on-wire payload.
 func (ns NameState) MarshalBinary() ([]byte, error) {
 	if len(ns.Name) > 0xff {
-		return nil, fmt.Errorf("primitives.NameState.MarshalBinary: name too long")
+		return nil, core.Errorf("primitives.NameState.MarshalBinary: name too long")
 	}
 
 	if len(ns.Data) > 0xffff {
-		return nil, fmt.Errorf("primitives.NameState.MarshalBinary: data too long")
+		return nil, core.Errorf("primitives.NameState.MarshalBinary: data too long")
 	}
 
 	buf := make([]byte, 0, ns.GetSize())
@@ -156,14 +157,14 @@ func (ns *NameState) UnmarshalBinary(data []byte) error {
 	*ns = NameState{}
 
 	if len(data) < 1 {
-		return fmt.Errorf("primitives.NameState.UnmarshalBinary: short buffer")
+		return core.Errorf("primitives.NameState.UnmarshalBinary: short buffer")
 	}
 
 	nameLen := int(data[0])
 	data = data[1:]
 
 	if len(data) < nameLen+2+4+4+2 {
-		return fmt.Errorf("primitives.NameState.UnmarshalBinary: short buffer")
+		return core.Errorf("primitives.NameState.UnmarshalBinary: short buffer")
 	}
 
 	ns.Name = append([]byte(nil), data[:nameLen]...)
@@ -173,7 +174,7 @@ func (ns *NameState) UnmarshalBinary(data []byte) error {
 	data = data[2:]
 
 	if len(data) < dataLen+4+4+2 {
-		return fmt.Errorf("primitives.NameState.UnmarshalBinary: short buffer")
+		return core.Errorf("primitives.NameState.UnmarshalBinary: short buffer")
 	}
 
 	ns.Data = append([]byte(nil), data[:dataLen]...)
@@ -190,7 +191,7 @@ func (ns *NameState) UnmarshalBinary(data []byte) error {
 
 	if field&(1<<0) != 0 {
 		if len(data) < len(ns.Owner.TxHash) {
-			return fmt.Errorf("primitives.NameState.UnmarshalBinary: short buffer")
+			return core.Errorf("primitives.NameState.UnmarshalBinary: short buffer")
 		}
 
 		copy(ns.Owner.TxHash[:], data[:len(ns.Owner.TxHash)])
@@ -198,7 +199,7 @@ func (ns *NameState) UnmarshalBinary(data []byte) error {
 
 		index, n, err := readVarint(data)
 		if err != nil {
-			return fmt.Errorf("primitives.NameState.UnmarshalBinary: %w", err)
+			return core.Errorf("primitives.NameState.UnmarshalBinary: %w", err)
 		}
 
 		ns.Owner.Index = uint32(index)
@@ -208,7 +209,7 @@ func (ns *NameState) UnmarshalBinary(data []byte) error {
 	if field&(1<<1) != 0 {
 		value, n, err := readVarint(data)
 		if err != nil {
-			return fmt.Errorf("primitives.NameState.UnmarshalBinary: %w", err)
+			return core.Errorf("primitives.NameState.UnmarshalBinary: %w", err)
 		}
 
 		ns.Value = value
@@ -218,7 +219,7 @@ func (ns *NameState) UnmarshalBinary(data []byte) error {
 	if field&(1<<2) != 0 {
 		highest, n, err := readVarint(data)
 		if err != nil {
-			return fmt.Errorf("primitives.NameState.UnmarshalBinary: %w", err)
+			return core.Errorf("primitives.NameState.UnmarshalBinary: %w", err)
 		}
 
 		ns.Highest = highest
@@ -227,7 +228,7 @@ func (ns *NameState) UnmarshalBinary(data []byte) error {
 
 	if field&(1<<3) != 0 {
 		if len(data) < 4 {
-			return fmt.Errorf("primitives.NameState.UnmarshalBinary: short buffer")
+			return core.Errorf("primitives.NameState.UnmarshalBinary: short buffer")
 		}
 
 		ns.Transfer = binary.LittleEndian.Uint32(data[:4])
@@ -236,7 +237,7 @@ func (ns *NameState) UnmarshalBinary(data []byte) error {
 
 	if field&(1<<4) != 0 {
 		if len(data) < 4 {
-			return fmt.Errorf("primitives.NameState.UnmarshalBinary: short buffer")
+			return core.Errorf("primitives.NameState.UnmarshalBinary: short buffer")
 		}
 
 		ns.Revoked = binary.LittleEndian.Uint32(data[:4])
@@ -245,7 +246,7 @@ func (ns *NameState) UnmarshalBinary(data []byte) error {
 
 	if field&(1<<5) != 0 {
 		if len(data) < 4 {
-			return fmt.Errorf("primitives.NameState.UnmarshalBinary: short buffer")
+			return core.Errorf("primitives.NameState.UnmarshalBinary: short buffer")
 		}
 
 		ns.Claimed = binary.LittleEndian.Uint32(data[:4])
@@ -255,7 +256,7 @@ func (ns *NameState) UnmarshalBinary(data []byte) error {
 	if field&(1<<6) != 0 {
 		renewals, n, err := readVarint(data)
 		if err != nil {
-			return fmt.Errorf("primitives.NameState.UnmarshalBinary: %w", err)
+			return core.Errorf("primitives.NameState.UnmarshalBinary: %w", err)
 		}
 
 		ns.Renewals = uint32(renewals)
@@ -275,7 +276,7 @@ func (ns *NameState) UnmarshalBinary(data []byte) error {
 	}
 
 	if len(data) != 0 {
-		return fmt.Errorf("primitives.NameState.UnmarshalBinary: trailing data")
+		return core.Errorf("primitives.NameState.UnmarshalBinary: trailing data")
 	}
 
 	return nil

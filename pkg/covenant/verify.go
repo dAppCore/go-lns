@@ -2,11 +2,7 @@
 
 package covenant
 
-import (
-	"bytes"
-
-	"dappco.re/go/lns/pkg/primitives"
-)
+import "dappco.re/go/lns/pkg/primitives"
 
 // maxScriptStack mirrors the JS consensus limit used for covenant sanity checks.
 const maxScriptStack = 1000
@@ -76,7 +72,7 @@ func VerifyCovenants(tx primitives.Transaction, view CoinView, height uint32, ne
 					return -1
 				}
 
-				if !bytes.Equal(output.Address.Hash, proof.address) {
+				if !equalBytes(output.Address.Hash, proof.address) {
 					return -1
 				}
 
@@ -272,7 +268,7 @@ func VerifyCovenants(tx primitives.Transaction, view CoinView, height uint32, ne
 				}
 
 				addr, err := uc.Get(3)
-				if err != nil || !bytes.Equal(output.Address.Hash, addr) {
+				if err != nil || !equalBytes(output.Address.Hash, addr) {
 					return -1
 				}
 

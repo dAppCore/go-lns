@@ -4,7 +4,8 @@ package primitives
 
 import (
 	"encoding/binary"
-	"fmt"
+
+	core "dappco.re/go"
 )
 
 // NameDelta tracks a sparse update to a name state.
@@ -272,7 +273,7 @@ func (d *NameDelta) UnmarshalBinary(data []byte) error {
 	*d = NameDelta{}
 
 	if len(data) < 4 {
-		return fmt.Errorf("primitives.NameDelta.UnmarshalBinary: short buffer")
+		return core.Errorf("primitives.NameDelta.UnmarshalBinary: short buffer")
 	}
 
 	field := binary.LittleEndian.Uint32(data[:4])
@@ -280,7 +281,7 @@ func (d *NameDelta) UnmarshalBinary(data []byte) error {
 
 	if field&(1<<0) != 0 {
 		if len(data) < 4 {
-			return fmt.Errorf("primitives.NameDelta.UnmarshalBinary: short buffer")
+			return core.Errorf("primitives.NameDelta.UnmarshalBinary: short buffer")
 		}
 		height := binary.LittleEndian.Uint32(data[:4])
 		d.Height = &height
@@ -289,7 +290,7 @@ func (d *NameDelta) UnmarshalBinary(data []byte) error {
 
 	if field&(1<<1) != 0 {
 		if len(data) < 4 {
-			return fmt.Errorf("primitives.NameDelta.UnmarshalBinary: short buffer")
+			return core.Errorf("primitives.NameDelta.UnmarshalBinary: short buffer")
 		}
 		renewal := binary.LittleEndian.Uint32(data[:4])
 		d.Renewal = &renewal
@@ -301,14 +302,14 @@ func (d *NameDelta) UnmarshalBinary(data []byte) error {
 
 		if field&(1<<3) != 0 {
 			if len(data) < len(owner.TxHash) {
-				return fmt.Errorf("primitives.NameDelta.UnmarshalBinary: short buffer")
+				return core.Errorf("primitives.NameDelta.UnmarshalBinary: short buffer")
 			}
 			copy(owner.TxHash[:], data[:len(owner.TxHash)])
 			data = data[len(owner.TxHash):]
 
 			index, n, err := readVarint(data)
 			if err != nil {
-				return fmt.Errorf("primitives.NameDelta.UnmarshalBinary: %w", err)
+				return core.Errorf("primitives.NameDelta.UnmarshalBinary: %w", err)
 			}
 			owner.Index = uint32(index)
 			data = data[n:]
@@ -324,7 +325,7 @@ func (d *NameDelta) UnmarshalBinary(data []byte) error {
 			var err error
 			value, n, err = readVarint(data)
 			if err != nil {
-				return fmt.Errorf("primitives.NameDelta.UnmarshalBinary: %w", err)
+				return core.Errorf("primitives.NameDelta.UnmarshalBinary: %w", err)
 			}
 			data = data[n:]
 		}
@@ -338,7 +339,7 @@ func (d *NameDelta) UnmarshalBinary(data []byte) error {
 			var err error
 			highest, n, err = readVarint(data)
 			if err != nil {
-				return fmt.Errorf("primitives.NameDelta.UnmarshalBinary: %w", err)
+				return core.Errorf("primitives.NameDelta.UnmarshalBinary: %w", err)
 			}
 			data = data[n:]
 		}
@@ -352,7 +353,7 @@ func (d *NameDelta) UnmarshalBinary(data []byte) error {
 			var err error
 			payload, n, err = readVarBytes(data)
 			if err != nil {
-				return fmt.Errorf("primitives.NameDelta.UnmarshalBinary: %w", err)
+				return core.Errorf("primitives.NameDelta.UnmarshalBinary: %w", err)
 			}
 			data = data[n:]
 		}
@@ -363,7 +364,7 @@ func (d *NameDelta) UnmarshalBinary(data []byte) error {
 		transfer := uint32(0)
 		if field&(1<<11) != 0 {
 			if len(data) < 4 {
-				return fmt.Errorf("primitives.NameDelta.UnmarshalBinary: short buffer")
+				return core.Errorf("primitives.NameDelta.UnmarshalBinary: short buffer")
 			}
 			transfer = binary.LittleEndian.Uint32(data[:4])
 			data = data[4:]
@@ -375,7 +376,7 @@ func (d *NameDelta) UnmarshalBinary(data []byte) error {
 		revoked := uint32(0)
 		if field&(1<<13) != 0 {
 			if len(data) < 4 {
-				return fmt.Errorf("primitives.NameDelta.UnmarshalBinary: short buffer")
+				return core.Errorf("primitives.NameDelta.UnmarshalBinary: short buffer")
 			}
 			revoked = binary.LittleEndian.Uint32(data[:4])
 			data = data[4:]
@@ -387,7 +388,7 @@ func (d *NameDelta) UnmarshalBinary(data []byte) error {
 		claimed := uint32(0)
 		if field&(1<<15) != 0 {
 			if len(data) < 4 {
-				return fmt.Errorf("primitives.NameDelta.UnmarshalBinary: short buffer")
+				return core.Errorf("primitives.NameDelta.UnmarshalBinary: short buffer")
 			}
 			claimed = binary.LittleEndian.Uint32(data[:4])
 			data = data[4:]
@@ -402,7 +403,7 @@ func (d *NameDelta) UnmarshalBinary(data []byte) error {
 			var err error
 			renewals, n, err = readVarint(data)
 			if err != nil {
-				return fmt.Errorf("primitives.NameDelta.UnmarshalBinary: %w", err)
+				return core.Errorf("primitives.NameDelta.UnmarshalBinary: %w", err)
 			}
 			data = data[n:]
 		}
@@ -435,7 +436,7 @@ func (d *NameDelta) UnmarshalBinary(data []byte) error {
 	}
 
 	if len(data) != 0 {
-		return fmt.Errorf("primitives.NameDelta.UnmarshalBinary: trailing data")
+		return core.Errorf("primitives.NameDelta.UnmarshalBinary: trailing data")
 	}
 
 	return nil
@@ -477,7 +478,7 @@ func sizeVarint64(n uint64) int {
 
 func readVarint(src []byte) (uint64, int, error) {
 	if len(src) == 0 {
-		return 0, 0, fmt.Errorf("short buffer")
+		return 0, 0, core.Errorf("short buffer")
 	}
 
 	prefix := src[0]
@@ -487,17 +488,17 @@ func readVarint(src []byte) (uint64, int, error) {
 		return uint64(prefix), 1, nil
 	case prefix == 0xfd:
 		if len(src) < 3 {
-			return 0, 0, fmt.Errorf("short buffer")
+			return 0, 0, core.Errorf("short buffer")
 		}
 		return uint64(binary.LittleEndian.Uint16(src[1:3])), 3, nil
 	case prefix == 0xfe:
 		if len(src) < 5 {
-			return 0, 0, fmt.Errorf("short buffer")
+			return 0, 0, core.Errorf("short buffer")
 		}
 		return uint64(binary.LittleEndian.Uint32(src[1:5])), 5, nil
 	default:
 		if len(src) < 9 {
-			return 0, 0, fmt.Errorf("short buffer")
+			return 0, 0, core.Errorf("short buffer")
 		}
 		return binary.LittleEndian.Uint64(src[1:9]), 9, nil
 	}
@@ -510,7 +511,7 @@ func readVarBytes(src []byte) ([]byte, int, error) {
 	}
 
 	if uint64(len(src[consumed:])) < n {
-		return nil, 0, fmt.Errorf("short buffer")
+		return nil, 0, core.Errorf("short buffer")
 	}
 
 	end := consumed + int(n)

@@ -3,7 +3,7 @@
 package primitives
 
 import (
-	"bytes"
+	core "dappco.re/go"
 	"testing"
 )
 
@@ -104,7 +104,7 @@ func TestNameUndoRoundTrip(t *testing.T) {
 		t.Fatalf("decoded hash %x, want %x", decoded.Names[0].NameHash, hash)
 	}
 
-	if !bytes.Equal(decoded.Names[0].Delta.MarshalMust(t), undo.Names[0].Delta.MarshalMust(t)) {
+	if !equalBytes(decoded.Names[0].Delta.MarshalMust(t), undo.Names[0].Delta.MarshalMust(t)) {
 		t.Fatal("decoded delta did not match the original")
 	}
 }
@@ -154,3 +154,247 @@ func (d NameDelta) MarshalMust(t *testing.T) []byte {
 
 	return data
 }
+
+// BEGIN v090 file-aware generated coverage
+
+func TestView_NewNameView_Good(t *core.T) {
+	fn := ax7ValueOf(NewNameView)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestView_NewNameView_Bad(t *core.T) {
+	fn := ax7ValueOf(NewNameView)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestView_NewNameView_Ugly(t *core.T) {
+	fn := ax7ValueOf(NewNameView)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestView_NameView_GetNameStateSync_Good(t *core.T) {
+	fn := ax7ValueOf(new(NameView).GetNameStateSync)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestView_NameView_GetNameStateSync_Bad(t *core.T) {
+	fn := ax7ValueOf(new(NameView).GetNameStateSync)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestView_NameView_GetNameStateSync_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(NameView).GetNameStateSync)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestView_NameView_GetNameState_Good(t *core.T) {
+	fn := ax7ValueOf(new(NameView).GetNameState)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestView_NameView_GetNameState_Bad(t *core.T) {
+	fn := ax7ValueOf(new(NameView).GetNameState)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestView_NameView_GetNameState_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(NameView).GetNameState)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestView_NameView_ToNameUndo_Good(t *core.T) {
+	fn := ax7ValueOf(new(NameView).ToNameUndo)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestView_NameView_ToNameUndo_Bad(t *core.T) {
+	fn := ax7ValueOf(new(NameView).ToNameUndo)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestView_NameView_ToNameUndo_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(NameView).ToNameUndo)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestView_NameUndo_FromView_Good(t *core.T) {
+	fn := ax7ValueOf(new(NameUndo).FromView)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestView_NameUndo_FromView_Bad(t *core.T) {
+	fn := ax7ValueOf(new(NameUndo).FromView)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestView_NameUndo_FromView_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(NameUndo).FromView)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestView_NameUndo_GetSize_Good(t *core.T) {
+	fn := ax7ValueOf(new(NameUndo).GetSize)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestView_NameUndo_GetSize_Bad(t *core.T) {
+	fn := ax7ValueOf(new(NameUndo).GetSize)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestView_NameUndo_GetSize_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(NameUndo).GetSize)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestView_NameUndo_MarshalBinary_Good(t *core.T) {
+	fn := ax7ValueOf(new(NameUndo).MarshalBinary)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestView_NameUndo_MarshalBinary_Bad(t *core.T) {
+	fn := ax7ValueOf(new(NameUndo).MarshalBinary)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestView_NameUndo_MarshalBinary_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(NameUndo).MarshalBinary)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestView_NameUndo_UnmarshalBinary_Good(t *core.T) {
+	fn := ax7ValueOf(new(NameUndo).UnmarshalBinary)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestView_NameUndo_UnmarshalBinary_Bad(t *core.T) {
+	fn := ax7ValueOf(new(NameUndo).UnmarshalBinary)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestView_NameUndo_UnmarshalBinary_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(NameUndo).UnmarshalBinary)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+// END v090 file-aware generated coverage

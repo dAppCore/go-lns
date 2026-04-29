@@ -2,7 +2,7 @@
 
 package dns
 
-import "strings"
+import core "dappco.re/go"
 
 // NSECRecord is a minimal representation of the reference NSEC helper output.
 //
@@ -38,7 +38,7 @@ func GetCreate(name, nextDomain string, typeBitmap []byte) NSECRecord {
 // The helper lowercases and trims any trailing dot before applying the
 // reference ordering logic.
 func NextName(tld string) string {
-	tld = trimFQDN(strings.ToLower(tld))
+	tld = trimFQDN(core.Lower(tld))
 
 	if len(tld) == 63 {
 		last := tld[62] + 1
@@ -58,7 +58,7 @@ func GetNextName(tld string) string {
 // The helper lowercases and trims any trailing dot before applying the
 // reference ordering logic.
 func PrevName(tld string) string {
-	tld = trimFQDN(strings.ToLower(tld))
+	tld = trimFQDN(core.Lower(tld))
 	if len(tld) == 0 {
 		return "."
 	}
@@ -79,7 +79,10 @@ func GetPrevName(tld string) string {
 }
 
 func trimFQDN(name string) string {
-	return strings.TrimRight(name, ".")
+	for core.HasSuffix(name, ".") {
+		name = core.TrimSuffix(name, ".")
+	}
+	return name
 }
 
 func fqdn(name string) string {
@@ -87,7 +90,7 @@ func fqdn(name string) string {
 		return "."
 	}
 
-	if strings.HasSuffix(name, ".") {
+	if core.HasSuffix(name, ".") {
 		return name
 	}
 

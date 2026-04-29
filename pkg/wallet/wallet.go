@@ -10,8 +10,6 @@ import (
 	"crypto/rand"
 	"crypto/sha3"
 	"encoding/hex"
-	"encoding/json"
-	"fmt"
 	"slices"
 
 	core "dappco.re/go"
@@ -99,7 +97,11 @@ func (w *Wallet) Snapshot() Snapshot {
 
 // MarshalJSON emits the wallet snapshot for API responses.
 func (w *Wallet) MarshalJSON() ([]byte, error) {
-	return json.Marshal(w.Snapshot())
+	r := core.JSONMarshal(w.Snapshot())
+	if !r.OK {
+		return nil, r.Value.(error)
+	}
+	return r.Value.([]byte), nil
 }
 
 // ReceiveAddress returns the current deterministic receive address.
@@ -224,5 +226,5 @@ func (w *Wallet) SeedID() string {
 		return ""
 	}
 	hash := sha3.Sum256(w.seed[:])
-	return fmt.Sprintf("%x", hash[:6])
+	return core.Sprintf("%x", hash[:6])
 }

@@ -2,7 +2,7 @@
 
 package primitives
 
-import "fmt"
+import core "dappco.re/go"
 
 // MarshalBinary serializes the covenant using the compact JS reference layout.
 //
@@ -28,7 +28,7 @@ func (c *Covenant) UnmarshalBinary(data []byte) error {
 	*c = Covenant{}
 
 	if len(data) < 1 {
-		return fmt.Errorf("primitives.Covenant.UnmarshalBinary: short buffer")
+		return core.Errorf("primitives.Covenant.UnmarshalBinary: short buffer")
 	}
 
 	c.Type = uint8(data[0])
@@ -36,7 +36,7 @@ func (c *Covenant) UnmarshalBinary(data []byte) error {
 
 	count, consumed, err := readVarint(data)
 	if err != nil {
-		return fmt.Errorf("primitives.Covenant.UnmarshalBinary: %w", err)
+		return core.Errorf("primitives.Covenant.UnmarshalBinary: %w", err)
 	}
 	data = data[consumed:]
 
@@ -44,14 +44,14 @@ func (c *Covenant) UnmarshalBinary(data []byte) error {
 	for i := uint64(0); i < count; i++ {
 		item, n, err := readVarBytes(data)
 		if err != nil {
-			return fmt.Errorf("primitives.Covenant.UnmarshalBinary: %w", err)
+			return core.Errorf("primitives.Covenant.UnmarshalBinary: %w", err)
 		}
 		c.Items = append(c.Items, item)
 		data = data[n:]
 	}
 
 	if len(data) != 0 {
-		return fmt.Errorf("primitives.Covenant.UnmarshalBinary: trailing data")
+		return core.Errorf("primitives.Covenant.UnmarshalBinary: trailing data")
 	}
 
 	return nil

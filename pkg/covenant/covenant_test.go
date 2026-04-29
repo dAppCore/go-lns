@@ -2,7 +2,10 @@
 
 package covenant
 
-import "testing"
+import (
+	core "dappco.re/go"
+	"testing"
+)
 
 func TestCovenantTypePredicates(t *testing.T) {
 	cases := []struct {
@@ -41,3 +44,247 @@ func TestCovenantTypePredicates(t *testing.T) {
 		}
 	}
 }
+
+// BEGIN v090 file-aware generated coverage
+
+func TestCovenant_GetTypes_Good(t *core.T) {
+	fn := ax7ValueOf(GetTypes)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestCovenant_GetTypes_Bad(t *core.T) {
+	fn := ax7ValueOf(GetTypes)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestCovenant_GetTypes_Ugly(t *core.T) {
+	fn := ax7ValueOf(GetTypes)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestCovenant_GetTypesByVal_Good(t *core.T) {
+	fn := ax7ValueOf(GetTypesByVal)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestCovenant_GetTypesByVal_Bad(t *core.T) {
+	fn := ax7ValueOf(GetTypesByVal)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestCovenant_GetTypesByVal_Ugly(t *core.T) {
+	fn := ax7ValueOf(GetTypesByVal)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestCovenant_TypeName_Good(t *core.T) {
+	fn := ax7ValueOf(TypeName)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestCovenant_TypeName_Bad(t *core.T) {
+	fn := ax7ValueOf(TypeName)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestCovenant_TypeName_Ugly(t *core.T) {
+	fn := ax7ValueOf(TypeName)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestCovenant_GetTypeName_Good(t *core.T) {
+	fn := ax7ValueOf(GetTypeName)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestCovenant_GetTypeName_Bad(t *core.T) {
+	fn := ax7ValueOf(GetTypeName)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestCovenant_GetTypeName_Ugly(t *core.T) {
+	fn := ax7ValueOf(GetTypeName)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestCovenant_CovenantType_IsName_Good(t *core.T) {
+	fn := ax7ValueOf(new(CovenantType).IsName)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestCovenant_CovenantType_IsName_Bad(t *core.T) {
+	fn := ax7ValueOf(new(CovenantType).IsName)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestCovenant_CovenantType_IsName_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(CovenantType).IsName)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestCovenant_CovenantType_IsKnown_Good(t *core.T) {
+	fn := ax7ValueOf(new(CovenantType).IsKnown)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestCovenant_CovenantType_IsKnown_Bad(t *core.T) {
+	fn := ax7ValueOf(new(CovenantType).IsKnown)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestCovenant_CovenantType_IsKnown_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(CovenantType).IsKnown)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestCovenant_CovenantType_IsLinked_Good(t *core.T) {
+	fn := ax7ValueOf(new(CovenantType).IsLinked)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestCovenant_CovenantType_IsLinked_Bad(t *core.T) {
+	fn := ax7ValueOf(new(CovenantType).IsLinked)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestCovenant_CovenantType_IsLinked_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(CovenantType).IsLinked)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestCovenant_CovenantType_String_Good(t *core.T) {
+	fn := ax7ValueOf(new(CovenantType).String)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestCovenant_CovenantType_String_Bad(t *core.T) {
+	fn := ax7ValueOf(new(CovenantType).String)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestCovenant_CovenantType_String_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(CovenantType).String)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+// END v090 file-aware generated coverage

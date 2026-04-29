@@ -7,7 +7,6 @@ import (
 	"net"
 	"net/netip"
 	"sort"
-	"strings"
 	"sync"
 	"time"
 
@@ -176,7 +175,7 @@ func (b *Bridge) Lookup(name string) (*NameRecord, bool) {
 		return nil, false
 	}
 
-	name = strings.TrimSuffix(strings.TrimSuffix(strings.ToLower(strings.TrimSpace(name)), ".lthn."), ".lthn")
+	name = core.TrimSuffix(core.TrimSuffix(core.Lower(core.Trim(name)), ".lthn."), ".lthn")
 	if name == "" {
 		return nil, false
 	}
@@ -343,12 +342,12 @@ func (b *Bridge) Shutdown() error {
 
 	var firstErr error
 	if b.udpServer != nil {
-		if err := b.udpServer.Shutdown(); err != nil && firstErr == nil && !strings.Contains(err.Error(), "not started") {
+		if err := b.udpServer.Shutdown(); err != nil && firstErr == nil && !core.Contains(err.Error(), "not started") {
 			firstErr = err
 		}
 	}
 	if b.tcpServer != nil {
-		if err := b.tcpServer.Shutdown(); err != nil && firstErr == nil && !strings.Contains(err.Error(), "not started") {
+		if err := b.tcpServer.Shutdown(); err != nil && firstErr == nil && !core.Contains(err.Error(), "not started") {
 			firstErr = err
 		}
 	}
@@ -402,7 +401,7 @@ func (record *NameRecord) FQDN() string {
 	if record == nil || record.Name == "" {
 		return "lthn."
 	}
-	return strings.ToLower(record.Name) + ".lthn."
+	return core.Lower(record.Name) + ".lthn."
 }
 
 // Addresses4 returns IPv4 glue addresses for the record.
@@ -463,40 +462,40 @@ func (record *NameRecord) NS() []string {
 
 func resourceFromAliasComment(name string, comment string) *Resource {
 	parsed := chainpkg.ParseAliasComment(comment)
-	dnsField := strings.TrimSpace(parsed["dns"])
+	dnsField := core.Trim(parsed["dns"])
 	if dnsField == "" {
 		return nil
 	}
 
 	resource := NewResource()
 	var entries []string
-	if strings.Contains(dnsField, "|") {
-		entries = strings.Split(dnsField, "|")
+	if core.Contains(dnsField, "|") {
+		entries = core.Split(dnsField, "|")
 	} else {
-		entries = strings.Split(dnsField, ",")
+		entries = core.Split(dnsField, ",")
 	}
 
 	for _, entry := range entries {
-		entry = strings.TrimSpace(entry)
+		entry = core.Trim(entry)
 		if entry == "" {
 			continue
 		}
-		parts := strings.SplitN(entry, ":", 3)
+		parts := core.SplitN(entry, ":", 3)
 		if len(parts) < 3 {
 			continue
 		}
 
-		switch strings.ToUpper(parts[0]) {
+		switch core.Upper(parts[0]) {
 		case "A":
-			if address, err := netip.ParseAddr(strings.TrimSpace(parts[2])); err == nil {
+			if address, err := netip.ParseAddr(core.Trim(parts[2])); err == nil {
 				resource.Records = append(resource.Records, GLUE4Record{NS: aliasRecordHost(name, parts[1]), Address: address})
 			}
 		case "AAAA":
-			if address, err := netip.ParseAddr(strings.TrimSpace(parts[2])); err == nil {
+			if address, err := netip.ParseAddr(core.Trim(parts[2])); err == nil {
 				resource.Records = append(resource.Records, GLUE6Record{NS: aliasRecordHost(name, parts[1]), Address: address})
 			}
 		case "TXT":
-			resource.Records = append(resource.Records, TXTRecord{Entries: []string{strings.TrimSpace(parts[2])}})
+			resource.Records = append(resource.Records, TXTRecord{Entries: []string{core.Trim(parts[2])}})
 		case "NS":
 			resource.Records = append(resource.Records, NSRecord{NS: dnsFQDN(parts[2])})
 		}
@@ -510,23 +509,23 @@ func resourceFromAliasComment(name string, comment string) *Resource {
 }
 
 func dnsFQDN(name string) string {
-	name = strings.TrimSpace(strings.ToLower(name))
+	name = core.Trim(core.Lower(name))
 	if name == "" || name == "@" {
 		return "."
 	}
-	if strings.HasSuffix(name, ".") {
+	if core.HasSuffix(name, ".") {
 		return name
 	}
 	return name + "."
 }
 
 func aliasRecordHost(name, host string) string {
-	host = strings.TrimSpace(host)
+	host = core.Trim(host)
 	if host == "" || host == "@" {
-		return strings.ToLower(name) + ".lthn."
+		return core.Lower(name) + ".lthn."
 	}
-	if strings.HasSuffix(strings.ToLower(host), ".lthn.") {
-		return strings.ToLower(host)
+	if core.HasSuffix(core.Lower(host), ".lthn.") {
+		return core.Lower(host)
 	}
 	return dnsFQDN(host)
 }
@@ -539,8 +538,8 @@ func parseLTHNName(queryName string) (string, bool) {
 	if queryName == "lthn." {
 		return "", true
 	}
-	label := strings.TrimSuffix(queryName, "lthn.")
-	label = strings.TrimSuffix(label, ".")
+	label := core.TrimSuffix(queryName, "lthn.")
+	label = core.TrimSuffix(label, ".")
 	return label, label != ""
 }
 
@@ -685,11 +684,11 @@ func (b *Bridge) soaRecord() miekgdns.RR {
 
 func arpaToIP(arpa string) string {
 	const suffix = ".in-addr.arpa."
-	if !strings.HasSuffix(arpa, suffix) {
+	if !core.HasSuffix(arpa, suffix) {
 		return ""
 	}
 
-	parts := strings.Split(strings.TrimSuffix(arpa, suffix), ".")
+	parts := core.Split(core.TrimSuffix(arpa, suffix), ".")
 	if len(parts) != 4 {
 		return ""
 	}

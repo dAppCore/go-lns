@@ -1,13 +1,16 @@
 // SPDX-License-Identifier: EUPL-1.2
 
-package nameutil_test
+package dns
 
 import (
 	"reflect"
 
-	. "dappco.re/go"
-	subject "dappco.re/go/lns/internal/nameutil"
+	core "dappco.re/go"
 )
+
+func ax7ValueOf(fn any) reflect.Value {
+	return reflect.ValueOf(fn)
+}
 
 func ax7Args(fnType reflect.Type, variant string) []reflect.Value {
 	args := make([]reflect.Value, fnType.NumIn())
@@ -26,13 +29,13 @@ func ax7Invoke(fn reflect.Value, args []reflect.Value) []reflect.Value {
 
 func ax7Value(typ reflect.Type, variant string) reflect.Value {
 	if typ.PkgPath() == "context" && typ.Name() == "Context" {
-		return reflect.ValueOf(Background())
+		return reflect.ValueOf(core.Background())
 	}
 	if typ.PkgPath() == "dappco.re/go" && typ.Name() == "Options" {
-		return reflect.ValueOf(NewOptions())
+		return reflect.ValueOf(core.NewOptions())
 	}
 	if typ.Kind() == reflect.Pointer && typ.Elem().PkgPath() == "dappco.re/go" && typ.Elem().Name() == "Core" {
-		return reflect.ValueOf(New())
+		return reflect.ValueOf(core.New())
 	}
 	if typ.Kind() == reflect.Interface {
 		if typ.NumMethod() == 0 && variant != "bad" {
@@ -147,64 +150,4 @@ func ax7PopulateStruct(value reflect.Value, variant string) {
 		}
 		field.Set(ax7Value(field.Type(), variant))
 	}
-}
-
-func TestAX7_CatalogLabel_Good(t *T) {
-	fn := reflect.ValueOf(subject.CatalogLabel)
-	args := ax7Args(fn.Type(), "good")
-	var out []reflect.Value
-	AssertNotPanics(t, func() {
-		out = ax7Invoke(fn, args)
-	})
-	AssertGreaterOrEqual(t, len(out), 0)
-}
-
-func TestAX7_CatalogLabel_Bad(t *T) {
-	fn := reflect.ValueOf(subject.CatalogLabel)
-	args := ax7Args(fn.Type(), "bad")
-	var out []reflect.Value
-	AssertNotPanics(t, func() {
-		out = ax7Invoke(fn, args)
-	})
-	AssertGreaterOrEqual(t, len(out), 0)
-}
-
-func TestAX7_CatalogLabel_Ugly(t *T) {
-	fn := reflect.ValueOf(subject.CatalogLabel)
-	args := ax7Args(fn.Type(), "ugly")
-	var out []reflect.Value
-	AssertNotPanics(t, func() {
-		out = ax7Invoke(fn, args)
-	})
-	AssertGreaterOrEqual(t, len(out), 0)
-}
-
-func TestAX7_Canonicalize_Good(t *T) {
-	fn := reflect.ValueOf(subject.Canonicalize)
-	args := ax7Args(fn.Type(), "good")
-	var out []reflect.Value
-	AssertNotPanics(t, func() {
-		out = ax7Invoke(fn, args)
-	})
-	AssertGreaterOrEqual(t, len(out), 0)
-}
-
-func TestAX7_Canonicalize_Bad(t *T) {
-	fn := reflect.ValueOf(subject.Canonicalize)
-	args := ax7Args(fn.Type(), "bad")
-	var out []reflect.Value
-	AssertNotPanics(t, func() {
-		out = ax7Invoke(fn, args)
-	})
-	AssertGreaterOrEqual(t, len(out), 0)
-}
-
-func TestAX7_Canonicalize_Ugly(t *T) {
-	fn := reflect.ValueOf(subject.Canonicalize)
-	args := ax7Args(fn.Type(), "ugly")
-	var out []reflect.Value
-	AssertNotPanics(t, func() {
-		out = ax7Invoke(fn, args)
-	})
-	AssertGreaterOrEqual(t, len(out), 0)
 }

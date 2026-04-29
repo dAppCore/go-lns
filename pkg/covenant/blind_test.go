@@ -3,6 +3,7 @@
 package covenant
 
 import (
+	core "dappco.re/go"
 	"encoding/binary"
 	"testing"
 
@@ -52,3 +53,67 @@ func TestGetBlind(t *testing.T) {
 		t.Fatalf("GetBlind returned %x, want %x", got, want)
 	}
 }
+
+// BEGIN v090 file-aware generated coverage
+
+func TestBlind_Blind_Good(t *core.T) {
+	fn := ax7ValueOf(Blind)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestBlind_Blind_Bad(t *core.T) {
+	fn := ax7ValueOf(Blind)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestBlind_Blind_Ugly(t *core.T) {
+	fn := ax7ValueOf(Blind)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestBlind_GetBlind_Good(t *core.T) {
+	fn := ax7ValueOf(GetBlind)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestBlind_GetBlind_Bad(t *core.T) {
+	fn := ax7ValueOf(GetBlind)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestBlind_GetBlind_Ugly(t *core.T) {
+	fn := ax7ValueOf(GetBlind)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+// END v090 file-aware generated coverage

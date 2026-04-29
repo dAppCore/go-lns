@@ -3,10 +3,10 @@
 package primitives
 
 import (
-	"bytes"
 	"encoding/binary"
-	"fmt"
 	"sort"
+
+	core "dappco.re/go"
 )
 
 // NameStateGetter is the minimal lookup interface used by NameView.
@@ -130,7 +130,7 @@ func (u *NameUndo) FromView(view *NameView) NameUndo {
 		}
 
 		sort.Slice(remaining, func(i, j int) bool {
-			return bytes.Compare(remaining[i][:], remaining[j][:]) < 0
+			return compareBytes(remaining[i][:], remaining[j][:]) < 0
 		})
 
 		for _, hash := range remaining {
@@ -162,7 +162,7 @@ func (u NameUndo) MarshalBinary() ([]byte, error) {
 		buf = append(buf, entry.NameHash[:]...)
 		delta, err := entry.Delta.MarshalBinary()
 		if err != nil {
-			return nil, fmt.Errorf("primitives.NameUndo.MarshalBinary: %w", err)
+			return nil, core.Errorf("primitives.NameUndo.MarshalBinary: %w", err)
 		}
 		buf = append(buf, delta...)
 	}
@@ -175,7 +175,7 @@ func (u *NameUndo) UnmarshalBinary(data []byte) error {
 	*u = NameUndo{}
 
 	if len(data) < 4 {
-		return fmt.Errorf("primitives.NameUndo.UnmarshalBinary: short buffer")
+		return core.Errorf("primitives.NameUndo.UnmarshalBinary: short buffer")
 	}
 
 	count := binary.LittleEndian.Uint32(data[:4])
@@ -184,7 +184,7 @@ func (u *NameUndo) UnmarshalBinary(data []byte) error {
 	u.Names = make([]NameUndoEntry, 0, int(count))
 	for i := uint32(0); i < count; i++ {
 		if len(data) < len(Hash{}) {
-			return fmt.Errorf("primitives.NameUndo.UnmarshalBinary: short buffer")
+			return core.Errorf("primitives.NameUndo.UnmarshalBinary: short buffer")
 		}
 
 		var hash Hash
@@ -193,7 +193,7 @@ func (u *NameUndo) UnmarshalBinary(data []byte) error {
 
 		delta, consumed, err := decodeNameDeltaPrefix(data)
 		if err != nil {
-			return fmt.Errorf("primitives.NameUndo.UnmarshalBinary: %w", err)
+			return core.Errorf("primitives.NameUndo.UnmarshalBinary: %w", err)
 		}
 
 		u.Names = append(u.Names, NameUndoEntry{
@@ -204,7 +204,7 @@ func (u *NameUndo) UnmarshalBinary(data []byte) error {
 	}
 
 	if len(data) != 0 {
-		return fmt.Errorf("primitives.NameUndo.UnmarshalBinary: trailing data")
+		return core.Errorf("primitives.NameUndo.UnmarshalBinary: trailing data")
 	}
 
 	return nil
@@ -218,5 +218,5 @@ func decodeNameDeltaPrefix(data []byte) (NameDelta, int, error) {
 		}
 	}
 
-	return NameDelta{}, 0, fmt.Errorf("short buffer")
+	return NameDelta{}, 0, core.Errorf("short buffer")
 }

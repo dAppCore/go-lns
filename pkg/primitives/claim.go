@@ -5,7 +5,6 @@ package primitives
 import (
 	"encoding/binary"
 	"encoding/hex"
-	"fmt"
 
 	core "dappco.re/go"
 	"golang.org/x/crypto/blake2b"
@@ -113,16 +112,16 @@ func (c Claim) MarshalBinary() ([]byte, error) {
 // UnmarshalBinary decodes the claim wrapper.
 func (c *Claim) UnmarshalBinary(data []byte) error {
 	if len(data) < 2 {
-		return fmt.Errorf("primitives.Claim.UnmarshalBinary: short buffer")
+		return core.Errorf("primitives.Claim.UnmarshalBinary: short buffer")
 	}
 
 	size := binary.LittleEndian.Uint16(data[:2])
 	if int(size) > maxClaimSize {
-		return fmt.Errorf("primitives.Claim.UnmarshalBinary: claim too large")
+		return core.Errorf("primitives.Claim.UnmarshalBinary: claim too large")
 	}
 
 	if len(data) != 2+int(size) {
-		return fmt.Errorf("primitives.Claim.UnmarshalBinary: trailing data")
+		return core.Errorf("primitives.Claim.UnmarshalBinary: trailing data")
 	}
 
 	c.Blob = append(c.Blob[:0], data[2:]...)

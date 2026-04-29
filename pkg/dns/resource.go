@@ -3,15 +3,10 @@
 package dns
 
 import (
-	"bytes"
 	"encoding/base32"
 	"encoding/binary"
 	"encoding/hex"
-	"encoding/json"
-	"errors"
-	"fmt"
 	"net/netip"
-	"strings"
 
 	core "dappco.re/go"
 	"dappco.re/go/lns/pkg/covenant"
@@ -32,7 +27,33 @@ type Resource struct {
 
 // ResourceJSON represents the JSON form of a DNS resource.
 type ResourceJSON struct {
-	Records []json.RawMessage `json:"records"`
+	Records []RawMessage `json:"records"`
+}
+
+// RawMessage stores a pre-encoded JSON value inside DNS resource JSON views.
+type RawMessage []byte
+
+// MarshalJSON returns the raw JSON value without base64 encoding it.
+func (m RawMessage) MarshalJSON() ([]byte, error) {
+	if m == nil {
+		return []byte("null"), nil
+	}
+	return []byte(m), nil
+}
+
+// UnmarshalJSON stores the raw JSON value without decoding it.
+func (m *RawMessage) UnmarshalJSON(data []byte) error {
+	if m == nil {
+		return core.NewError("dns.RawMessage: nil receiver")
+	}
+	*m = append((*m)[:0], data...)
+	return nil
+}
+
+type resourceBuffer interface {
+	core.Writer
+	WriteByte(byte) error
+	WriteString(string) (int, error)
 }
 
 // DNSMessage mirrors the reference DNS response shape used by the JS helpers.
@@ -237,7 +258,7 @@ func (r SYNTH6Record) NS() string {
 
 func synthName(ip []byte) string {
 	enc := base32.HexEncoding.WithPadding(base32.NoPadding)
-	return "_" + strings.ToLower(enc.EncodeToString(ip)) + "._synth."
+	return "_" + core.Lower(enc.EncodeToString(ip)) + "._synth."
 }
 
 // HasType reports whether the resource contains at least one record of type t.
@@ -314,7 +335,7 @@ func (r *Resource) ToNS(_ string) []NSRecord {
 			continue
 		}
 
-		key := strings.ToLower(fqdn(ns.NS))
+		key := core.Lower(fqdn(ns.NS))
 		if _, ok := seen[key]; ok {
 			continue
 		}
@@ -459,7 +480,7 @@ func (r *Resource) ToZone(name string) []ResourceRecord {
 		}
 
 		if ns, ok := resourceAuthorityNS(record); ok {
-			key := strings.ToLower(fqdn(ns.NS))
+			key := core.Lower(fqdn(ns.NS))
 			if _, ok := seenNS[key]; ok {
 				continue
 			}
@@ -577,8 +598,8 @@ func (r *Resource) GetToReferral(name string, typ HSType, isTLD bool) DNSMessage
 // lookups answer directly when the resource has no NS records; DS lookups and
 // all other cases fall through to the referral/negative-answer logic.
 func (r *Resource) ToDNS(name string, typ HSType) DNSMessage {
-	name = fqdn(strings.ToLower(name))
-	labels := strings.Split(strings.TrimSuffix(name, "."), ".")
+	name = fqdn(core.Lower(name))
+	labels := core.Split(core.TrimSuffix(name, "."), ".")
 	if len(labels) > 1 {
 		return r.ToReferral(labels[len(labels)-1], typ, false)
 	}
@@ -639,7 +660,7 @@ func (r *Resource) Encode() ([]byte, error) {
 		return nil, core.E("dns.Resource.Encode", "resource is required", nil)
 	}
 
-	var buf bytes.Buffer
+	buf := core.NewBuffer()
 	buf.WriteByte(resourceEncodingVersion)
 
 	for _, record := range r.Records {
@@ -648,7 +669,7 @@ func (r *Resource) Encode() ([]byte, error) {
 		}
 
 		buf.WriteByte(byte(record.Type()))
-		if err := encodeRecord(&buf, record); err != nil {
+		if err := encodeRecord(buf, record); err != nil {
 			return nil, core.E("dns.Resource.Encode", err.Error(), nil)
 		}
 	}
@@ -680,7 +701,7 @@ func (r *Resource) Decode(raw []byte) error {
 	}
 
 	if raw[0] != resourceEncodingVersion {
-		return core.E("dns.Resource.Decode", fmt.Sprintf("unknown serialization version: %d", raw[0]), nil)
+		return core.E("dns.Resource.Decode", core.Sprintf("unknown serialization version: %d", raw[0]), nil)
 	}
 
 	r.TTL = DEFAULT_TTL
@@ -718,7 +739,7 @@ func (r *Resource) GetJSON() ResourceJSON {
 	}
 
 	jsonView := ResourceJSON{
-		Records: make([]json.RawMessage, 0, len(r.Records)),
+		Records: make([]RawMessage, 0, len(r.Records)),
 	}
 
 	for _, record := range r.Records {
@@ -726,12 +747,12 @@ func (r *Resource) GetJSON() ResourceJSON {
 			continue
 		}
 
-		raw, err := json.Marshal(resourceRecordJSON(record))
-		if err != nil {
+		raw := core.JSONMarshal(resourceRecordJSON(record))
+		if !raw.OK {
 			continue
 		}
 
-		jsonView.Records = append(jsonView.Records, raw)
+		jsonView.Records = append(jsonView.Records, RawMessage(raw.Value.([]byte)))
 	}
 
 	return jsonView
@@ -885,8 +906,8 @@ func resourceAuthorityNS(record ResourceRecord) (NSRecord, bool) {
 }
 
 func isSubdomain(parent, child string) bool {
-	parent = strings.ToLower(fqdn(parent))
-	child = strings.ToLower(fqdn(child))
+	parent = core.Lower(fqdn(parent))
+	child = core.Lower(fqdn(child))
 
 	if parent == "." {
 		return true
@@ -896,7 +917,7 @@ func isSubdomain(parent, child string) bool {
 		return true
 	}
 
-	return strings.HasSuffix(trimFQDN(child), "."+trimFQDN(parent))
+	return core.HasSuffix(trimFQDN(child), "."+trimFQDN(parent))
 }
 
 func resourceRecordSize(record ResourceRecord) int {
@@ -967,7 +988,7 @@ func resourceNameSize(name string) int {
 	}
 
 	size := 1
-	for _, label := range strings.Split(trimmed, ".") {
+	for _, label := range core.Split(trimmed, ".") {
 		size += 1 + len(label)
 	}
 	return size
@@ -977,17 +998,17 @@ type resourceRecordProbe struct {
 	Type string `json:"type"`
 }
 
-func resourceRecordFromJSON(raw json.RawMessage) (ResourceRecord, error) {
+func resourceRecordFromJSON(raw RawMessage) (ResourceRecord, error) {
 	var probe resourceRecordProbe
-	if err := json.Unmarshal(raw, &probe); err != nil {
-		return nil, core.E("dns.Resource.FromJSON", "invalid record encoding", err)
+	if r := core.JSONUnmarshal(raw, &probe); !r.OK {
+		return nil, core.E("dns.Resource.FromJSON", "invalid record encoding", r.Value.(error))
 	}
 
 	switch probe.Type {
 	case "DS":
 		var jsonRecord DSRecordJSON
-		if err := json.Unmarshal(raw, &jsonRecord); err != nil {
-			return nil, core.E("dns.Resource.FromJSON", "invalid DS record", err)
+		if r := core.JSONUnmarshal(raw, &jsonRecord); !r.OK {
+			return nil, core.E("dns.Resource.FromJSON", "invalid DS record", r.Value.(error))
 		}
 		var record DSRecord
 		if err := record.FromJSON(jsonRecord); err != nil {
@@ -996,8 +1017,8 @@ func resourceRecordFromJSON(raw json.RawMessage) (ResourceRecord, error) {
 		return record, nil
 	case "NS":
 		var jsonRecord NSRecordJSON
-		if err := json.Unmarshal(raw, &jsonRecord); err != nil {
-			return nil, core.E("dns.Resource.FromJSON", "invalid NS record", err)
+		if r := core.JSONUnmarshal(raw, &jsonRecord); !r.OK {
+			return nil, core.E("dns.Resource.FromJSON", "invalid NS record", r.Value.(error))
 		}
 		var record NSRecord
 		if err := record.FromJSON(jsonRecord); err != nil {
@@ -1006,8 +1027,8 @@ func resourceRecordFromJSON(raw json.RawMessage) (ResourceRecord, error) {
 		return record, nil
 	case "GLUE4":
 		var jsonRecord GLUE4RecordJSON
-		if err := json.Unmarshal(raw, &jsonRecord); err != nil {
-			return nil, core.E("dns.Resource.FromJSON", "invalid GLUE4 record", err)
+		if r := core.JSONUnmarshal(raw, &jsonRecord); !r.OK {
+			return nil, core.E("dns.Resource.FromJSON", "invalid GLUE4 record", r.Value.(error))
 		}
 		var record GLUE4Record
 		if err := record.FromJSON(jsonRecord); err != nil {
@@ -1016,8 +1037,8 @@ func resourceRecordFromJSON(raw json.RawMessage) (ResourceRecord, error) {
 		return record, nil
 	case "GLUE6":
 		var jsonRecord GLUE6RecordJSON
-		if err := json.Unmarshal(raw, &jsonRecord); err != nil {
-			return nil, core.E("dns.Resource.FromJSON", "invalid GLUE6 record", err)
+		if r := core.JSONUnmarshal(raw, &jsonRecord); !r.OK {
+			return nil, core.E("dns.Resource.FromJSON", "invalid GLUE6 record", r.Value.(error))
 		}
 		var record GLUE6Record
 		if err := record.FromJSON(jsonRecord); err != nil {
@@ -1026,8 +1047,8 @@ func resourceRecordFromJSON(raw json.RawMessage) (ResourceRecord, error) {
 		return record, nil
 	case "SYNTH4":
 		var jsonRecord SYNTH4RecordJSON
-		if err := json.Unmarshal(raw, &jsonRecord); err != nil {
-			return nil, core.E("dns.Resource.FromJSON", "invalid SYNTH4 record", err)
+		if r := core.JSONUnmarshal(raw, &jsonRecord); !r.OK {
+			return nil, core.E("dns.Resource.FromJSON", "invalid SYNTH4 record", r.Value.(error))
 		}
 		var record SYNTH4Record
 		if err := record.FromJSON(jsonRecord); err != nil {
@@ -1036,8 +1057,8 @@ func resourceRecordFromJSON(raw json.RawMessage) (ResourceRecord, error) {
 		return record, nil
 	case "SYNTH6":
 		var jsonRecord SYNTH6RecordJSON
-		if err := json.Unmarshal(raw, &jsonRecord); err != nil {
-			return nil, core.E("dns.Resource.FromJSON", "invalid SYNTH6 record", err)
+		if r := core.JSONUnmarshal(raw, &jsonRecord); !r.OK {
+			return nil, core.E("dns.Resource.FromJSON", "invalid SYNTH6 record", r.Value.(error))
 		}
 		var record SYNTH6Record
 		if err := record.FromJSON(jsonRecord); err != nil {
@@ -1046,8 +1067,8 @@ func resourceRecordFromJSON(raw json.RawMessage) (ResourceRecord, error) {
 		return record, nil
 	case "TXT":
 		var jsonRecord TXTRecordJSON
-		if err := json.Unmarshal(raw, &jsonRecord); err != nil {
-			return nil, core.E("dns.Resource.FromJSON", "invalid TXT record", err)
+		if r := core.JSONUnmarshal(raw, &jsonRecord); !r.OK {
+			return nil, core.E("dns.Resource.FromJSON", "invalid TXT record", r.Value.(error))
 		}
 		var record TXTRecord
 		if err := record.FromJSON(jsonRecord); err != nil {
@@ -1066,7 +1087,7 @@ func (r DSRecord) GetJSON() DSRecordJSON {
 		KeyTag:     r.KeyTag,
 		Algorithm:  r.Algorithm,
 		DigestType: r.DigestType,
-		Digest:     fmt.Sprintf("%x", r.Digest),
+		Digest:     core.Sprintf("%x", r.Digest),
 	}
 }
 
@@ -1220,7 +1241,7 @@ func (r *TXTRecord) FromJSON(jsonView TXTRecordJSON) error {
 	return nil
 }
 
-func encodeRecord(buf *bytes.Buffer, record ResourceRecord) error {
+func encodeRecord(buf resourceBuffer, record ResourceRecord) error {
 	switch rr := record.(type) {
 	case DSRecord:
 		return encodeDSRecord(buf, rr)
@@ -1251,13 +1272,13 @@ func encodeRecord(buf *bytes.Buffer, record ResourceRecord) error {
 	case *TXTRecord:
 		return encodeTXTRecord(buf, *rr)
 	default:
-		return errors.New("unknown record type")
+		return core.NewError("unknown record type")
 	}
 }
 
-func encodeDSRecord(buf *bytes.Buffer, record DSRecord) error {
+func encodeDSRecord(buf resourceBuffer, record DSRecord) error {
 	if len(record.Digest) > 255 {
-		return errors.New("ds digest exceeds maximum size")
+		return core.NewError("ds digest exceeds maximum size")
 	}
 
 	if err := binary.Write(buf, binary.BigEndian, record.KeyTag); err != nil {
@@ -1271,13 +1292,13 @@ func encodeDSRecord(buf *bytes.Buffer, record DSRecord) error {
 	return nil
 }
 
-func encodeNSRecord(buf *bytes.Buffer, record NSRecord) error {
+func encodeNSRecord(buf resourceBuffer, record NSRecord) error {
 	return writeName(buf, record.NS)
 }
 
-func encodeGLUE4Record(buf *bytes.Buffer, record GLUE4Record) error {
+func encodeGLUE4Record(buf resourceBuffer, record GLUE4Record) error {
 	if !record.Address.Is4() {
-		return errors.New("glue4 address must be ipv4")
+		return core.NewError("glue4 address must be ipv4")
 	}
 
 	if err := writeName(buf, record.NS); err != nil {
@@ -1289,9 +1310,9 @@ func encodeGLUE4Record(buf *bytes.Buffer, record GLUE4Record) error {
 	return nil
 }
 
-func encodeGLUE6Record(buf *bytes.Buffer, record GLUE6Record) error {
+func encodeGLUE6Record(buf resourceBuffer, record GLUE6Record) error {
 	if !record.Address.Is6() {
-		return errors.New("glue6 address must be ipv6")
+		return core.NewError("glue6 address must be ipv6")
 	}
 
 	if err := writeName(buf, record.NS); err != nil {
@@ -1303,9 +1324,9 @@ func encodeGLUE6Record(buf *bytes.Buffer, record GLUE6Record) error {
 	return nil
 }
 
-func encodeSYNTH4Record(buf *bytes.Buffer, record SYNTH4Record) error {
+func encodeSYNTH4Record(buf resourceBuffer, record SYNTH4Record) error {
 	if !record.Address.Is4() {
-		return errors.New("synth4 address must be ipv4")
+		return core.NewError("synth4 address must be ipv4")
 	}
 
 	addr := record.Address.As4()
@@ -1313,9 +1334,9 @@ func encodeSYNTH4Record(buf *bytes.Buffer, record SYNTH4Record) error {
 	return nil
 }
 
-func encodeSYNTH6Record(buf *bytes.Buffer, record SYNTH6Record) error {
+func encodeSYNTH6Record(buf resourceBuffer, record SYNTH6Record) error {
 	if !record.Address.Is6() {
-		return errors.New("synth6 address must be ipv6")
+		return core.NewError("synth6 address must be ipv6")
 	}
 
 	addr := record.Address.As16()
@@ -1323,16 +1344,16 @@ func encodeSYNTH6Record(buf *bytes.Buffer, record SYNTH6Record) error {
 	return nil
 }
 
-func encodeTXTRecord(buf *bytes.Buffer, record TXTRecord) error {
+func encodeTXTRecord(buf resourceBuffer, record TXTRecord) error {
 	if len(record.Entries) > 255 {
-		return errors.New("txt entry count exceeds maximum size")
+		return core.NewError("txt entry count exceeds maximum size")
 	}
 
 	buf.WriteByte(byte(len(record.Entries)))
 
 	for _, entry := range record.Entries {
 		if len(entry) > 255 {
-			return errors.New("txt entry exceeds maximum size")
+			return core.NewError("txt entry exceeds maximum size")
 		}
 
 		buf.WriteByte(byte(len(entry)))
@@ -1365,12 +1386,12 @@ func decodeRecord(raw []byte, pos int, t HSType) (ResourceRecord, int, bool, err
 
 func decodeDSRecord(raw []byte, pos int) (ResourceRecord, int, bool, error) {
 	if len(raw)-pos < 5 {
-		return nil, pos, true, errors.New("truncated ds record")
+		return nil, pos, true, core.NewError("truncated ds record")
 	}
 
 	digestLen := int(raw[pos+4])
 	if len(raw)-pos < 5+digestLen {
-		return nil, pos, true, errors.New("truncated ds digest")
+		return nil, pos, true, core.NewError("truncated ds digest")
 	}
 
 	record := DSRecord{
@@ -1398,12 +1419,12 @@ func decodeGLUE4Record(raw []byte, pos int) (ResourceRecord, int, bool, error) {
 	}
 
 	if len(raw)-next < 4 {
-		return nil, pos, true, errors.New("truncated glue4 address")
+		return nil, pos, true, core.NewError("truncated glue4 address")
 	}
 
 	addr, ok := netip.AddrFromSlice(raw[next : next+4])
 	if !ok {
-		return nil, pos, true, errors.New("invalid glue4 address")
+		return nil, pos, true, core.NewError("invalid glue4 address")
 	}
 
 	return GLUE4Record{NS: name, Address: addr}, next + 4, true, nil
@@ -1416,12 +1437,12 @@ func decodeGLUE6Record(raw []byte, pos int) (ResourceRecord, int, bool, error) {
 	}
 
 	if len(raw)-next < 16 {
-		return nil, pos, true, errors.New("truncated glue6 address")
+		return nil, pos, true, core.NewError("truncated glue6 address")
 	}
 
 	addr, ok := netip.AddrFromSlice(raw[next : next+16])
 	if !ok {
-		return nil, pos, true, errors.New("invalid glue6 address")
+		return nil, pos, true, core.NewError("invalid glue6 address")
 	}
 
 	return GLUE6Record{NS: name, Address: addr}, next + 16, true, nil
@@ -1429,12 +1450,12 @@ func decodeGLUE6Record(raw []byte, pos int) (ResourceRecord, int, bool, error) {
 
 func decodeSYNTH4Record(raw []byte, pos int) (ResourceRecord, int, bool, error) {
 	if len(raw)-pos < 4 {
-		return nil, pos, true, errors.New("truncated synth4 address")
+		return nil, pos, true, core.NewError("truncated synth4 address")
 	}
 
 	addr, ok := netip.AddrFromSlice(raw[pos : pos+4])
 	if !ok {
-		return nil, pos, true, errors.New("invalid synth4 address")
+		return nil, pos, true, core.NewError("invalid synth4 address")
 	}
 
 	return SYNTH4Record{Address: addr}, pos + 4, true, nil
@@ -1442,12 +1463,12 @@ func decodeSYNTH4Record(raw []byte, pos int) (ResourceRecord, int, bool, error) 
 
 func decodeSYNTH6Record(raw []byte, pos int) (ResourceRecord, int, bool, error) {
 	if len(raw)-pos < 16 {
-		return nil, pos, true, errors.New("truncated synth6 address")
+		return nil, pos, true, core.NewError("truncated synth6 address")
 	}
 
 	addr, ok := netip.AddrFromSlice(raw[pos : pos+16])
 	if !ok {
-		return nil, pos, true, errors.New("invalid synth6 address")
+		return nil, pos, true, core.NewError("invalid synth6 address")
 	}
 
 	return SYNTH6Record{Address: addr}, pos + 16, true, nil
@@ -1455,7 +1476,7 @@ func decodeSYNTH6Record(raw []byte, pos int) (ResourceRecord, int, bool, error) 
 
 func decodeTXTRecord(raw []byte, pos int) (ResourceRecord, int, bool, error) {
 	if len(raw)-pos < 1 {
-		return nil, pos, true, errors.New("truncated txt record")
+		return nil, pos, true, core.NewError("truncated txt record")
 	}
 
 	count := int(raw[pos])
@@ -1464,13 +1485,13 @@ func decodeTXTRecord(raw []byte, pos int) (ResourceRecord, int, bool, error) {
 
 	for i := 0; i < count; i++ {
 		if len(raw)-pos < 1 {
-			return nil, pos, true, errors.New("truncated txt entry")
+			return nil, pos, true, core.NewError("truncated txt entry")
 		}
 
 		size := int(raw[pos])
 		pos++
 		if len(raw)-pos < size {
-			return nil, pos, true, errors.New("truncated txt value")
+			return nil, pos, true, core.NewError("truncated txt value")
 		}
 
 		record.Entries = append(record.Entries, string(raw[pos:pos+size]))
@@ -1480,7 +1501,7 @@ func decodeTXTRecord(raw []byte, pos int) (ResourceRecord, int, bool, error) {
 	return record, pos, true, nil
 }
 
-func writeName(buf *bytes.Buffer, name string) error {
+func writeName(buf resourceBuffer, name string) error {
 	name = fqdn(name)
 	if name == "." {
 		buf.WriteByte(0)
@@ -1493,10 +1514,10 @@ func writeName(buf *bytes.Buffer, name string) error {
 		return nil
 	}
 
-	labels := strings.Split(trimmed, ".")
+	labels := core.Split(trimmed, ".")
 	for _, label := range labels {
 		if len(label) == 0 || len(label) > covenant.MaxNameSize {
-			return fmt.Errorf("invalid dns label %q", label)
+			return core.Errorf("invalid dns label %q", label)
 		}
 
 		buf.WriteByte(byte(len(label)))
@@ -1517,20 +1538,20 @@ func readName(raw []byte, pos int) (string, int, error) {
 		return ".", next, nil
 	}
 
-	return strings.Join(labels, ".") + ".", next, nil
+	return core.Join(".", labels...) + ".", next, nil
 }
 
 func readNameLabels(raw []byte, pos, depth int, seen map[int]struct{}) ([]string, int, error) {
 	if depth > 16 {
-		return nil, pos, errors.New("dns name pointer depth exceeded")
+		return nil, pos, core.NewError("dns name pointer depth exceeded")
 	}
 
 	if pos >= len(raw) {
-		return nil, pos, errors.New("truncated dns name")
+		return nil, pos, core.NewError("truncated dns name")
 	}
 
 	if _, ok := seen[pos]; ok {
-		return nil, pos, errors.New("cyclic dns name pointer")
+		return nil, pos, core.NewError("cyclic dns name pointer")
 	}
 	seen[pos] = struct{}{}
 
@@ -1539,7 +1560,7 @@ func readNameLabels(raw []byte, pos, depth int, seen map[int]struct{}) ([]string
 
 	for {
 		if pos >= len(raw) {
-			return nil, origPos, errors.New("truncated dns name")
+			return nil, origPos, core.NewError("truncated dns name")
 		}
 
 		size := raw[pos]
@@ -1548,7 +1569,7 @@ func readNameLabels(raw []byte, pos, depth int, seen map[int]struct{}) ([]string
 		switch size & 0xc0 {
 		case 0xc0:
 			if pos >= len(raw) {
-				return nil, origPos, errors.New("truncated dns name pointer")
+				return nil, origPos, core.NewError("truncated dns name pointer")
 			}
 
 			offset := int(size&0x3f)<<8 | int(raw[pos])
@@ -1566,15 +1587,15 @@ func readNameLabels(raw []byte, pos, depth int, seen map[int]struct{}) ([]string
 				return labels, pos, nil
 			}
 		default:
-			return nil, origPos, errors.New("unsupported dns name label encoding")
+			return nil, origPos, core.NewError("unsupported dns name label encoding")
 		}
 
 		if size > covenant.MaxNameSize {
-			return nil, origPos, errors.New("dns label exceeds maximum size")
+			return nil, origPos, core.NewError("dns label exceeds maximum size")
 		}
 
 		if len(raw)-pos < int(size) {
-			return nil, origPos, errors.New("truncated dns label")
+			return nil, origPos, core.NewError("truncated dns label")
 		}
 
 		labels = append(labels, string(raw[pos:pos+int(size)]))

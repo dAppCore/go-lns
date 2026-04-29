@@ -2,8 +2,6 @@
 
 package primitives
 
-import "bytes"
-
 // Delta returns the cached sparse delta, allocating it on demand.
 func (ns *NameState) Delta() *NameDelta {
 	if ns.delta == nil {
@@ -178,7 +176,7 @@ func (ns *NameState) setData(data []byte) *NameState {
 		data = []byte{}
 	}
 
-	if bytes.Equal(ns.Data, data) {
+	if equalBytes(ns.Data, data) {
 		return ns
 	}
 

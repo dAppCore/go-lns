@@ -6,10 +6,8 @@ import (
 	"context"
 	"crypto/sha3"
 	"encoding/hex"
-	"encoding/json"
 	"slices"
 	"strconv"
-	"strings"
 	"time"
 
 	core "dappco.re/go"
@@ -308,17 +306,17 @@ func walletDraftID(wallet *walletpkg.Wallet, draft *nameDraftTx, note string) (p
 		Draft:  draft,
 	}
 
-	raw, err := json.Marshal(payload)
-	if err != nil {
-		return primitives.Hash{}, "", core.E("lns.wallet.send", "marshal draft id payload", err)
+	raw := core.JSONMarshal(payload)
+	if !raw.OK {
+		return primitives.Hash{}, "", core.E("lns.wallet.send", "marshal draft id payload", raw.Value.(error))
 	}
 
-	hash := primitives.Hash(sha3.Sum256(raw))
+	hash := primitives.Hash(sha3.Sum256(raw.Value.([]byte)))
 	return hash, hex.EncodeToString(hash[:]), nil
 }
 
 func noteForWalletSend(options core.Options) string {
-	return strings.TrimSpace(actionStringFromAny(actionOptionValue(options, "note")))
+	return core.Trim(actionStringFromAny(actionOptionValue(options, "note")))
 }
 
 func (s *Service) handleChainHeight(_ context.Context, options core.Options) core.Result {
@@ -456,25 +454,25 @@ func (s *Service) bridgeFromOptions(options core.Options) (*dnspkg.Bridge, error
 }
 
 func chainClientFromOptions(options core.Options) (*chainpkg.Client, error) {
-	url := strings.TrimSpace(actionStringFromAny(actionOptionValue(options, "chain_url", "hsd_url", "url")))
+	url := core.Trim(actionStringFromAny(actionOptionValue(options, "chain_url", "hsd_url", "url")))
 	if url == "" {
 		return nil, core.E("lns.chain", "chain_url is required", nil)
 	}
 
-	apiKey := strings.TrimSpace(actionStringFromAny(actionOptionValue(options, "api_key", "hsd_api_key")))
+	apiKey := core.Trim(actionStringFromAny(actionOptionValue(options, "api_key", "hsd_api_key")))
 	return chainpkg.NewClient(url, chainpkg.WithAPIKey(apiKey)), nil
 }
 
 func bridgeConfigFromOptions(options core.Options) (dnspkg.BridgeConfig, bool) {
-	chainURL := strings.TrimSpace(actionStringFromAny(actionOptionValue(options, "chain_url", "hsd_url", "url")))
+	chainURL := core.Trim(actionStringFromAny(actionOptionValue(options, "chain_url", "hsd_url", "url")))
 	if chainURL == "" {
 		return dnspkg.BridgeConfig{}, false
 	}
 
 	config := dnspkg.BridgeConfig{
 		ChainURL:      chainURL,
-		AliasURL:      strings.TrimSpace(actionStringFromAny(actionOptionValue(options, "alias_url", "daemon_url"))),
-		APIKey:        strings.TrimSpace(actionStringFromAny(actionOptionValue(options, "api_key", "hsd_api_key"))),
+		AliasURL:      core.Trim(actionStringFromAny(actionOptionValue(options, "alias_url", "daemon_url"))),
+		APIKey:        core.Trim(actionStringFromAny(actionOptionValue(options, "api_key", "hsd_api_key"))),
 		DNSAddr:       dnsListenAddr(options),
 		CheckInterval: bridgeCheckInterval(options),
 		KnownNames:    actionStringSliceValue(actionOptionValue(options, "known_names", "names")),
@@ -484,11 +482,11 @@ func bridgeConfigFromOptions(options core.Options) (dnspkg.BridgeConfig, bool) {
 }
 
 func dnsListenAddr(options core.Options) string {
-	if addr := strings.TrimSpace(actionStringFromAny(actionOptionValue(options, "dns_addr", "dns_listen"))); addr != "" {
+	if addr := core.Trim(actionStringFromAny(actionOptionValue(options, "dns_addr", "dns_listen"))); addr != "" {
 		return addr
 	}
-	if port := strings.TrimSpace(actionStringFromAny(actionOptionValue(options, "dns_port"))); port != "" {
-		if strings.HasPrefix(port, ":") {
+	if port := core.Trim(actionStringFromAny(actionOptionValue(options, "dns_port"))); port != "" {
+		if core.HasPrefix(port, ":") {
 			return port
 		}
 		return ":" + port
@@ -500,7 +498,7 @@ func bridgeCheckInterval(options core.Options) time.Duration {
 	if seconds, ok := actionUint32Value(options, "check_interval", "check_seconds"); ok {
 		return time.Duration(seconds) * time.Second
 	}
-	if text := strings.TrimSpace(actionStringFromAny(actionOptionValue(options, "check_interval"))); text != "" {
+	if text := core.Trim(actionStringFromAny(actionOptionValue(options, "check_interval"))); text != "" {
 		if duration, err := time.ParseDuration(text); err == nil {
 			return duration
 		}
@@ -518,7 +516,7 @@ func actionStringSliceValue(value any) []string {
 	case []any:
 		out := make([]string, 0, len(typed))
 		for _, item := range typed {
-			if text := strings.TrimSpace(actionStringFromAny(item)); text != "" {
+			if text := core.Trim(actionStringFromAny(item)); text != "" {
 				out = append(out, text)
 			}
 		}
@@ -527,10 +525,10 @@ func actionStringSliceValue(value any) []string {
 		if typed == "" {
 			return nil
 		}
-		parts := strings.Split(typed, ",")
+		parts := core.Split(typed, ",")
 		out := make([]string, 0, len(parts))
 		for _, part := range parts {
-			if text := strings.TrimSpace(part); text != "" {
+			if text := core.Trim(part); text != "" {
 				out = append(out, text)
 			}
 		}
@@ -549,13 +547,13 @@ func bridgeConfigsEqual(left, right dnspkg.BridgeConfig) bool {
 		slices.Equal(left.KnownNames, right.KnownNames)
 }
 
-func decodeRawJSON(raw json.RawMessage) any {
+func decodeRawJSON(raw []byte) any {
 	if len(raw) == 0 {
 		return nil
 	}
 
 	var decoded any
-	if err := json.Unmarshal(raw, &decoded); err == nil {
+	if r := core.JSONUnmarshal(raw, &decoded); r.OK {
 		return decoded
 	}
 

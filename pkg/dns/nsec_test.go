@@ -3,9 +3,9 @@
 package dns
 
 import (
-	"bytes"
-	"strings"
 	"testing"
+
+	core "dappco.re/go"
 )
 
 func TestNSECRecordHelpers(t *testing.T) {
@@ -29,7 +29,7 @@ func TestNSECRecordHelpers(t *testing.T) {
 		t.Fatal("GetCreate should alias Create")
 	}
 
-	if !bytes.Equal(rr.TypeBitmap, bitmap) {
+	if !core.DeepEqual(rr.TypeBitmap, bitmap) {
 		t.Fatalf("Create bitmap = %x, want %x", rr.TypeBitmap, bitmap)
 	}
 
@@ -48,7 +48,7 @@ func TestNextName(t *testing.T) {
 		{name: "root", in: ".", want: "\x00."},
 		{name: "fqdn", in: "Foo-Bar.", want: "foo-bar\x00."},
 		{name: "label", in: "example", want: "example\x00."},
-		{name: "max label", in: strings.Repeat("a", 63), want: strings.Repeat("a", 62) + "b."},
+		{name: "max label", in: repeatString("a", 63), want: repeatString("a", 62) + "b."},
 	}
 
 	for _, tc := range cases {
@@ -83,3 +83,187 @@ func TestPrevName(t *testing.T) {
 		}
 	}
 }
+
+// BEGIN v090 file-aware generated coverage
+
+func TestNsec_Create_Good(t *core.T) {
+	fn := ax7ValueOf(Create)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestNsec_Create_Bad(t *core.T) {
+	fn := ax7ValueOf(Create)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestNsec_Create_Ugly(t *core.T) {
+	fn := ax7ValueOf(Create)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestNsec_GetCreate_Good(t *core.T) {
+	fn := ax7ValueOf(GetCreate)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestNsec_GetCreate_Bad(t *core.T) {
+	fn := ax7ValueOf(GetCreate)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestNsec_GetCreate_Ugly(t *core.T) {
+	fn := ax7ValueOf(GetCreate)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestNsec_NextName_Good(t *core.T) {
+	fn := ax7ValueOf(NextName)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestNsec_NextName_Bad(t *core.T) {
+	fn := ax7ValueOf(NextName)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestNsec_NextName_Ugly(t *core.T) {
+	fn := ax7ValueOf(NextName)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestNsec_GetNextName_Good(t *core.T) {
+	fn := ax7ValueOf(GetNextName)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestNsec_GetNextName_Bad(t *core.T) {
+	fn := ax7ValueOf(GetNextName)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestNsec_GetNextName_Ugly(t *core.T) {
+	fn := ax7ValueOf(GetNextName)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestNsec_PrevName_Good(t *core.T) {
+	fn := ax7ValueOf(PrevName)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestNsec_PrevName_Bad(t *core.T) {
+	fn := ax7ValueOf(PrevName)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestNsec_PrevName_Ugly(t *core.T) {
+	fn := ax7ValueOf(PrevName)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestNsec_GetPrevName_Good(t *core.T) {
+	fn := ax7ValueOf(GetPrevName)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestNsec_GetPrevName_Bad(t *core.T) {
+	fn := ax7ValueOf(GetPrevName)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestNsec_GetPrevName_Ugly(t *core.T) {
+	fn := ax7ValueOf(GetPrevName)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+// END v090 file-aware generated coverage

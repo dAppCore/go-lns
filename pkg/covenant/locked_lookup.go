@@ -10,10 +10,7 @@
 package covenant
 
 import (
-	"bytes"
 	"encoding/hex"
-	"encoding/json"
-	"path/filepath"
 	"runtime"
 	"sort"
 	"sync"
@@ -443,7 +440,7 @@ func (c *LockedCatalog) sortedHashes() []primitives.Hash {
 	}
 
 	sort.Slice(hashes, func(i, j int) bool {
-		return bytes.Compare(hashes[i][:], hashes[j][:]) < 0
+		return compareBytes(hashes[i][:], hashes[j][:]) < 0
 	})
 
 	return hashes
@@ -473,9 +470,9 @@ func loadLockedCatalog() (*LockedCatalog, error) {
 		return nil, err
 	}
 
-	var raw map[string]json.RawMessage
-	if err := json.Unmarshal(data, &raw); err != nil {
-		return nil, core.E("covenant.loadLockedCatalog", "failed to decode locked catalog", err)
+	var raw map[string]jsonraw
+	if r := core.JSONUnmarshal(data, &raw); !r.OK {
+		return nil, core.E("covenant.loadLockedCatalog", "failed to decode locked catalog", r.Value.(error))
 	}
 
 	catalog := &LockedCatalog{
@@ -503,10 +500,10 @@ func loadLockedCatalog() (*LockedCatalog, error) {
 	return catalog, nil
 }
 
-func parseLockedEntry(hash primitives.Hash, raw json.RawMessage) (LockedName, error) {
-	var fields []json.RawMessage
-	if err := json.Unmarshal(raw, &fields); err != nil {
-		return LockedName{}, core.E("covenant.parseLockedEntry", "failed to decode locked entry", err)
+func parseLockedEntry(hash primitives.Hash, raw jsonraw) (LockedName, error) {
+	var fields []jsonraw
+	if r := core.JSONUnmarshal(raw, &fields); !r.OK {
+		return LockedName{}, core.E("covenant.parseLockedEntry", "failed to decode locked entry", r.Value.(error))
 	}
 
 	if len(fields) != 2 {
@@ -514,8 +511,8 @@ func parseLockedEntry(hash primitives.Hash, raw json.RawMessage) (LockedName, er
 	}
 
 	var target string
-	if err := json.Unmarshal(fields[0], &target); err != nil {
-		return LockedName{}, core.E("covenant.parseLockedEntry", "failed to decode target", err)
+	if r := core.JSONUnmarshal(fields[0], &target); !r.OK {
+		return LockedName{}, core.E("covenant.parseLockedEntry", "failed to decode target", r.Value.(error))
 	}
 
 	parts := core.SplitN(target, ".", 2)
@@ -539,10 +536,10 @@ func parseLockedEntry(hash primitives.Hash, raw json.RawMessage) (LockedName, er
 	return item, nil
 }
 
-func parseLockedUint(raw json.RawMessage) (uint64, error) {
+func parseLockedUint(raw jsonraw) (uint64, error) {
 	var num uint64
-	if err := json.Unmarshal(raw, &num); err != nil {
-		return 0, err
+	if r := core.JSONUnmarshal(raw, &num); !r.OK {
+		return 0, r.Value.(error)
 	}
 
 	return num, nil
@@ -578,14 +575,14 @@ func readLockedData() ([]byte, error) {
 
 func lockedDataPaths() []string {
 	paths := []string{
-		filepath.Join("docs", "js-covenants", "lockup.json"),
+		core.PathJoin("docs", "js-covenants", "lockup.json"),
 	}
 
 	if _, file, _, ok := runtime.Caller(0); ok {
-		base := filepath.Dir(file)
+		base := core.PathDir(file)
 		paths = append(paths,
-			filepath.Join(base, "..", "..", "docs", "js-covenants", "lockup.json"),
-			filepath.Join(base, "..", "..", "..", "docs", "js-covenants", "lockup.json"),
+			core.PathJoin(base, "..", "..", "docs", "js-covenants", "lockup.json"),
+			core.PathJoin(base, "..", "..", "..", "docs", "js-covenants", "lockup.json"),
 		)
 	}
 

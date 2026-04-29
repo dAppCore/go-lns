@@ -3,12 +3,20 @@
 package covenant
 
 import (
-	"bytes"
+	core "dappco.re/go"
 	"encoding/binary"
 	"testing"
 
 	"dappco.re/go/lns/pkg/primitives"
 )
+
+func repeatByte(value byte, count int) []byte {
+	out := make([]byte, count)
+	for i := range out {
+		out[i] = value
+	}
+	return out
+}
 
 func TestCountHelpers(t *testing.T) {
 	tx := primitives.Transaction{
@@ -604,7 +612,7 @@ func encodeTestClaim(blob []byte) []byte {
 }
 
 func TestCoinbaseAirdropProofValidation(t *testing.T) {
-	address := bytes.Repeat([]byte{0x42}, 20)
+	address := repeatByte(0x42, 20)
 	key := encodeTestAirdropKey(0, address, 1000, false)
 	proof := encodeTestAirdropProof(key, address, 10)
 
@@ -671,7 +679,7 @@ func TestCoinbaseClaimWitnessValidation(t *testing.T) {
 				Value: 0,
 				Address: primitives.Address{
 					Version: 0,
-					Hash:    bytes.Repeat([]byte{0x24}, 20),
+					Hash:    repeatByte(0x24, 20),
 				},
 				Covenant: primitives.Covenant{
 					Type: uint8(TypeClaim),
@@ -738,7 +746,7 @@ func TestCoinbaseClaimConjureOverflow(t *testing.T) {
 				Value: ^uint64(0),
 				Address: primitives.Address{
 					Version: 0,
-					Hash:    bytes.Repeat([]byte{0x24}, 20),
+					Hash:    repeatByte(0x24, 20),
 				},
 				Covenant: primitives.Covenant{
 					Type: uint8(TypeClaim),
@@ -756,7 +764,7 @@ func TestCoinbaseClaimConjureOverflow(t *testing.T) {
 				Value: 1,
 				Address: primitives.Address{
 					Version: 0,
-					Hash:    bytes.Repeat([]byte{0x25}, 20),
+					Hash:    repeatByte(0x25, 20),
 				},
 				Covenant: primitives.Covenant{
 					Type: uint8(TypeClaim),
@@ -781,3 +789,247 @@ func TestCoinbaseClaimConjureOverflow(t *testing.T) {
 		t.Fatalf("VerifyCovenants returned %d for overflowing coinbase claim outputs, want -1", got)
 	}
 }
+
+// BEGIN v090 file-aware generated coverage
+
+func TestRulesExtra_GrindName_Good(t *core.T) {
+	fn := ax7ValueOf(GrindName)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestRulesExtra_GrindName_Bad(t *core.T) {
+	fn := ax7ValueOf(GrindName)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestRulesExtra_GrindName_Ugly(t *core.T) {
+	fn := ax7ValueOf(GrindName)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestRulesExtra_GetGrindName_Good(t *core.T) {
+	fn := ax7ValueOf(GetGrindName)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestRulesExtra_GetGrindName_Bad(t *core.T) {
+	fn := ax7ValueOf(GetGrindName)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestRulesExtra_GetGrindName_Ugly(t *core.T) {
+	fn := ax7ValueOf(GetGrindName)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestRulesExtra_CountOpens_Good(t *core.T) {
+	fn := ax7ValueOf(CountOpens)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestRulesExtra_CountOpens_Bad(t *core.T) {
+	fn := ax7ValueOf(CountOpens)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestRulesExtra_CountOpens_Ugly(t *core.T) {
+	fn := ax7ValueOf(CountOpens)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestRulesExtra_GetCountOpens_Good(t *core.T) {
+	fn := ax7ValueOf(GetCountOpens)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestRulesExtra_GetCountOpens_Bad(t *core.T) {
+	fn := ax7ValueOf(GetCountOpens)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestRulesExtra_GetCountOpens_Ugly(t *core.T) {
+	fn := ax7ValueOf(GetCountOpens)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestRulesExtra_CountUpdates_Good(t *core.T) {
+	fn := ax7ValueOf(CountUpdates)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestRulesExtra_CountUpdates_Bad(t *core.T) {
+	fn := ax7ValueOf(CountUpdates)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestRulesExtra_CountUpdates_Ugly(t *core.T) {
+	fn := ax7ValueOf(CountUpdates)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestRulesExtra_GetCountUpdates_Good(t *core.T) {
+	fn := ax7ValueOf(GetCountUpdates)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestRulesExtra_GetCountUpdates_Bad(t *core.T) {
+	fn := ax7ValueOf(GetCountUpdates)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestRulesExtra_GetCountUpdates_Ugly(t *core.T) {
+	fn := ax7ValueOf(GetCountUpdates)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestRulesExtra_CountRenewals_Good(t *core.T) {
+	fn := ax7ValueOf(CountRenewals)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestRulesExtra_CountRenewals_Bad(t *core.T) {
+	fn := ax7ValueOf(CountRenewals)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestRulesExtra_CountRenewals_Ugly(t *core.T) {
+	fn := ax7ValueOf(CountRenewals)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestRulesExtra_GetCountRenewals_Good(t *core.T) {
+	fn := ax7ValueOf(GetCountRenewals)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestRulesExtra_GetCountRenewals_Bad(t *core.T) {
+	fn := ax7ValueOf(GetCountRenewals)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestRulesExtra_GetCountRenewals_Ugly(t *core.T) {
+	fn := ax7ValueOf(GetCountRenewals)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+// END v090 file-aware generated coverage

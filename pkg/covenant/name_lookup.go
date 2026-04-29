@@ -2,7 +2,7 @@
 
 package covenant
 
-import "bytes"
+import core "dappco.re/go"
 
 // asciiLowerName lower-cases ASCII labels without performing Unicode
 // case-folding. The helper also strips an optional canonical `.lthn` suffix so
@@ -28,12 +28,14 @@ func asciiLowerName(name string) (string, bool) {
 		buf[i] = ch
 	}
 
+	str := string(buf)
+
 	switch {
-	case bytes.HasSuffix(buf, []byte(".lthn.")):
+	case core.HasSuffix(str, ".lthn."):
 		buf = buf[:len(buf)-6]
-	case bytes.HasSuffix(buf, []byte(".lthn")):
+	case core.HasSuffix(str, ".lthn"):
 		buf = buf[:len(buf)-5]
-	case bytes.HasSuffix(buf, []byte(".")):
+	case core.HasSuffix(str, "."):
 		buf = buf[:len(buf)-1]
 	}
 

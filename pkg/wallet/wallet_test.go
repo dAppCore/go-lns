@@ -3,6 +3,7 @@
 package wallet
 
 import (
+	core "dappco.re/go"
 	"testing"
 
 	"dappco.re/go/lns/pkg/primitives"
@@ -85,3 +86,397 @@ func TestWalletPendingDebitDoesNotAffectBalance(t *testing.T) {
 		t.Fatalf("History = %#v, want pending draft entry first", history)
 	}
 }
+
+// BEGIN v090 file-aware generated coverage
+
+func TestWallet_Create_Good(t *core.T) {
+	fn := ax7ValueOf(Create)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestWallet_Create_Bad(t *core.T) {
+	fn := ax7ValueOf(Create)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestWallet_Create_Ugly(t *core.T) {
+	fn := ax7ValueOf(Create)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestWallet_ImportSeed_Good(t *core.T) {
+	fn := ax7ValueOf(ImportSeed)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestWallet_ImportSeed_Bad(t *core.T) {
+	fn := ax7ValueOf(ImportSeed)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestWallet_ImportSeed_Ugly(t *core.T) {
+	fn := ax7ValueOf(ImportSeed)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestWallet_Wallet_ExportSeed_Good(t *core.T) {
+	fn := ax7ValueOf(new(Wallet).ExportSeed)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestWallet_Wallet_ExportSeed_Bad(t *core.T) {
+	fn := ax7ValueOf(new(Wallet).ExportSeed)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestWallet_Wallet_ExportSeed_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(Wallet).ExportSeed)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestWallet_Wallet_Snapshot_Good(t *core.T) {
+	fn := ax7ValueOf(new(Wallet).Snapshot)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestWallet_Wallet_Snapshot_Bad(t *core.T) {
+	fn := ax7ValueOf(new(Wallet).Snapshot)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestWallet_Wallet_Snapshot_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(Wallet).Snapshot)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestWallet_Wallet_MarshalJSON_Good(t *core.T) {
+	fn := ax7ValueOf(new(Wallet).MarshalJSON)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestWallet_Wallet_MarshalJSON_Bad(t *core.T) {
+	fn := ax7ValueOf(new(Wallet).MarshalJSON)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestWallet_Wallet_MarshalJSON_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(Wallet).MarshalJSON)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestWallet_Wallet_ReceiveAddress_Good(t *core.T) {
+	fn := ax7ValueOf(new(Wallet).ReceiveAddress)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestWallet_Wallet_ReceiveAddress_Bad(t *core.T) {
+	fn := ax7ValueOf(new(Wallet).ReceiveAddress)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestWallet_Wallet_ReceiveAddress_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(Wallet).ReceiveAddress)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestWallet_Wallet_NextReceiveAddress_Good(t *core.T) {
+	fn := ax7ValueOf(new(Wallet).NextReceiveAddress)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestWallet_Wallet_NextReceiveAddress_Bad(t *core.T) {
+	fn := ax7ValueOf(new(Wallet).NextReceiveAddress)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestWallet_Wallet_NextReceiveAddress_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(Wallet).NextReceiveAddress)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestWallet_Wallet_Credit_Good(t *core.T) {
+	fn := ax7ValueOf(new(Wallet).Credit)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestWallet_Wallet_Credit_Bad(t *core.T) {
+	fn := ax7ValueOf(new(Wallet).Credit)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestWallet_Wallet_Credit_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(Wallet).Credit)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestWallet_Wallet_Debit_Good(t *core.T) {
+	fn := ax7ValueOf(new(Wallet).Debit)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestWallet_Wallet_Debit_Bad(t *core.T) {
+	fn := ax7ValueOf(new(Wallet).Debit)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestWallet_Wallet_Debit_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(Wallet).Debit)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestWallet_Wallet_PendingDebit_Good(t *core.T) {
+	fn := ax7ValueOf(new(Wallet).PendingDebit)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestWallet_Wallet_PendingDebit_Bad(t *core.T) {
+	fn := ax7ValueOf(new(Wallet).PendingDebit)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestWallet_Wallet_PendingDebit_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(Wallet).PendingDebit)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestWallet_Wallet_Balance_Good(t *core.T) {
+	fn := ax7ValueOf(new(Wallet).Balance)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestWallet_Wallet_Balance_Bad(t *core.T) {
+	fn := ax7ValueOf(new(Wallet).Balance)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestWallet_Wallet_Balance_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(Wallet).Balance)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestWallet_Wallet_History_Good(t *core.T) {
+	fn := ax7ValueOf(new(Wallet).History)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestWallet_Wallet_History_Bad(t *core.T) {
+	fn := ax7ValueOf(new(Wallet).History)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestWallet_Wallet_History_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(Wallet).History)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestWallet_Wallet_SeedID_Good(t *core.T) {
+	fn := ax7ValueOf(new(Wallet).SeedID)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestWallet_Wallet_SeedID_Bad(t *core.T) {
+	fn := ax7ValueOf(new(Wallet).SeedID)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestWallet_Wallet_SeedID_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(Wallet).SeedID)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+// END v090 file-aware generated coverage

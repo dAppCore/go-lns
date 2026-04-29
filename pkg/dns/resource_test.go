@@ -3,10 +3,9 @@
 package dns
 
 import (
-	"bytes"
-	"strings"
 	"testing"
 
+	core "dappco.re/go"
 	"dappco.re/go/lns/pkg/covenant"
 	"net/netip"
 )
@@ -55,7 +54,7 @@ func TestResourceEncodeDecodeRoundTrip(t *testing.T) {
 		t.Fatalf("decoded first record type = %T, want DSRecord", decoded.Records[0])
 	}
 
-	if ds.KeyTag != 1 || ds.Algorithm != 2 || ds.DigestType != 3 || !bytes.Equal(ds.Digest, []byte{0xaa, 0xbb, 0xcc}) {
+	if ds.KeyTag != 1 || ds.Algorithm != 2 || ds.DigestType != 3 || !core.DeepEqual(ds.Digest, []byte{0xaa, 0xbb, 0xcc}) {
 		t.Fatalf("decoded DS record = %#v, want keyTag=1 algorithm=2 digestType=3 digest=aabbcc", ds)
 	}
 
@@ -141,7 +140,7 @@ func TestResourceJSONRoundTrip(t *testing.T) {
 		t.Fatalf("decoded %d records, want %d", len(decoded.Records), len(resource.Records))
 	}
 
-	if ds, ok := decoded.Records[0].(DSRecord); !ok || ds.KeyTag != 1 || ds.Algorithm != 2 || ds.DigestType != 3 || !bytes.Equal(ds.Digest, []byte{0xaa, 0xbb, 0xcc}) {
+	if ds, ok := decoded.Records[0].(DSRecord); !ok || ds.KeyTag != 1 || ds.Algorithm != 2 || ds.DigestType != 3 || !core.DeepEqual(ds.Digest, []byte{0xaa, 0xbb, 0xcc}) {
 		t.Fatalf("decoded DS record = %#v, want keyTag=1 algorithm=2 digestType=3 digest=aabbcc", decoded.Records[0])
 	}
 
@@ -386,7 +385,7 @@ func TestResourceToNSEC(t *testing.T) {
 			t.Fatalf("%s: ToNSEC TTL = %d, want %d", tc.name, rr.TTL, DEFAULT_TTL)
 		}
 
-		if !bytes.Equal(rr.TypeBitmap, tc.want) {
+		if !core.DeepEqual(rr.TypeBitmap, tc.want) {
 			t.Fatalf("%s: ToNSEC bitmap = %x, want %x", tc.name, rr.TypeBitmap, tc.want)
 		}
 
@@ -398,7 +397,7 @@ func TestResourceToNSEC(t *testing.T) {
 
 	var nilResource *Resource
 	rr := nilResource.ToNSEC("Example")
-	if !bytes.Equal(rr.TypeBitmap, TYPE_MAP_EMPTY) {
+	if !core.DeepEqual(rr.TypeBitmap, TYPE_MAP_EMPTY) {
 		t.Fatalf("nil resource ToNSEC bitmap = %x, want %x", rr.TypeBitmap, TYPE_MAP_EMPTY)
 	}
 }
@@ -444,7 +443,7 @@ func TestResourceProjectionHelpers(t *testing.T) {
 	}
 
 	ds := resource.ToDS("example.")
-	if len(ds) != 1 || ds[0].KeyTag != 7 || ds[0].Algorithm != 8 || ds[0].DigestType != 9 || !bytes.Equal(ds[0].Digest, []byte{0xaa}) {
+	if len(ds) != 1 || ds[0].KeyTag != 7 || ds[0].Algorithm != 8 || ds[0].DigestType != 9 || !core.DeepEqual(ds[0].Digest, []byte{0xaa}) {
 		t.Fatalf("ToDS returned %#v, want one DS record", ds)
 	}
 
@@ -593,7 +592,7 @@ func TestResourceDecodeStopsAtUnknownType(t *testing.T) {
 func TestResourceEncodeRejectsOversizePayload(t *testing.T) {
 	resource := NewResource()
 	resource.Records = []ResourceRecord{
-		TXTRecord{Entries: []string{strings.Repeat("a", covenant.MaxResourceSize)}},
+		TXTRecord{Entries: []string{repeatString("a", covenant.MaxResourceSize)}},
 	}
 
 	if _, err := resource.Encode(); err == nil {
@@ -616,3 +615,2317 @@ func TestResourceDecodeRejectsInvalidPayloads(t *testing.T) {
 		t.Fatal("Decode should reject truncated TXT entries")
 	}
 }
+
+// BEGIN v090 file-aware generated coverage
+
+func TestResource_RawMessage_MarshalJSON_Good(t *core.T) {
+	fn := ax7ValueOf(new(RawMessage).MarshalJSON)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_RawMessage_MarshalJSON_Bad(t *core.T) {
+	fn := ax7ValueOf(new(RawMessage).MarshalJSON)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_RawMessage_MarshalJSON_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(RawMessage).MarshalJSON)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_RawMessage_UnmarshalJSON_Good(t *core.T) {
+	fn := ax7ValueOf(new(RawMessage).UnmarshalJSON)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_RawMessage_UnmarshalJSON_Bad(t *core.T) {
+	fn := ax7ValueOf(new(RawMessage).UnmarshalJSON)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_RawMessage_UnmarshalJSON_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(RawMessage).UnmarshalJSON)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_Resource_GetSize_Good(t *core.T) {
+	fn := ax7ValueOf(new(Resource).GetSize)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_Resource_GetSize_Bad(t *core.T) {
+	fn := ax7ValueOf(new(Resource).GetSize)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_Resource_GetSize_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(Resource).GetSize)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_NewResource_Good(t *core.T) {
+	fn := ax7ValueOf(NewResource)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_NewResource_Bad(t *core.T) {
+	fn := ax7ValueOf(NewResource)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_NewResource_Ugly(t *core.T) {
+	fn := ax7ValueOf(NewResource)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_GetNewResource_Good(t *core.T) {
+	fn := ax7ValueOf(GetNewResource)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_GetNewResource_Bad(t *core.T) {
+	fn := ax7ValueOf(GetNewResource)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_GetNewResource_Ugly(t *core.T) {
+	fn := ax7ValueOf(GetNewResource)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_DSRecord_Type_Good(t *core.T) {
+	fn := ax7ValueOf(new(DSRecord).Type)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_DSRecord_Type_Bad(t *core.T) {
+	fn := ax7ValueOf(new(DSRecord).Type)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_DSRecord_Type_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(DSRecord).Type)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_DSRecord_GetType_Good(t *core.T) {
+	fn := ax7ValueOf(new(DSRecord).GetType)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_DSRecord_GetType_Bad(t *core.T) {
+	fn := ax7ValueOf(new(DSRecord).GetType)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_DSRecord_GetType_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(DSRecord).GetType)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_NSRecord_Type_Good(t *core.T) {
+	fn := ax7ValueOf(new(NSRecord).Type)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_NSRecord_Type_Bad(t *core.T) {
+	fn := ax7ValueOf(new(NSRecord).Type)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_NSRecord_Type_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(NSRecord).Type)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_NSRecord_GetType_Good(t *core.T) {
+	fn := ax7ValueOf(new(NSRecord).GetType)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_NSRecord_GetType_Bad(t *core.T) {
+	fn := ax7ValueOf(new(NSRecord).GetType)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_NSRecord_GetType_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(NSRecord).GetType)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_NSRecord_GetNS_Good(t *core.T) {
+	fn := ax7ValueOf(new(NSRecord).GetNS)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_NSRecord_GetNS_Bad(t *core.T) {
+	fn := ax7ValueOf(new(NSRecord).GetNS)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_NSRecord_GetNS_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(NSRecord).GetNS)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_GLUE4Record_Type_Good(t *core.T) {
+	fn := ax7ValueOf(new(GLUE4Record).Type)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_GLUE4Record_Type_Bad(t *core.T) {
+	fn := ax7ValueOf(new(GLUE4Record).Type)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_GLUE4Record_Type_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(GLUE4Record).Type)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_GLUE4Record_GetType_Good(t *core.T) {
+	fn := ax7ValueOf(new(GLUE4Record).GetType)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_GLUE4Record_GetType_Bad(t *core.T) {
+	fn := ax7ValueOf(new(GLUE4Record).GetType)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_GLUE4Record_GetType_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(GLUE4Record).GetType)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_GLUE4Record_GetNS_Good(t *core.T) {
+	fn := ax7ValueOf(new(GLUE4Record).GetNS)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_GLUE4Record_GetNS_Bad(t *core.T) {
+	fn := ax7ValueOf(new(GLUE4Record).GetNS)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_GLUE4Record_GetNS_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(GLUE4Record).GetNS)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_GLUE6Record_Type_Good(t *core.T) {
+	fn := ax7ValueOf(new(GLUE6Record).Type)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_GLUE6Record_Type_Bad(t *core.T) {
+	fn := ax7ValueOf(new(GLUE6Record).Type)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_GLUE6Record_Type_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(GLUE6Record).Type)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_GLUE6Record_GetType_Good(t *core.T) {
+	fn := ax7ValueOf(new(GLUE6Record).GetType)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_GLUE6Record_GetType_Bad(t *core.T) {
+	fn := ax7ValueOf(new(GLUE6Record).GetType)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_GLUE6Record_GetType_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(GLUE6Record).GetType)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_GLUE6Record_GetNS_Good(t *core.T) {
+	fn := ax7ValueOf(new(GLUE6Record).GetNS)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_GLUE6Record_GetNS_Bad(t *core.T) {
+	fn := ax7ValueOf(new(GLUE6Record).GetNS)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_GLUE6Record_GetNS_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(GLUE6Record).GetNS)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_SYNTH4Record_Type_Good(t *core.T) {
+	fn := ax7ValueOf(new(SYNTH4Record).Type)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_SYNTH4Record_Type_Bad(t *core.T) {
+	fn := ax7ValueOf(new(SYNTH4Record).Type)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_SYNTH4Record_Type_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(SYNTH4Record).Type)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_SYNTH4Record_GetType_Good(t *core.T) {
+	fn := ax7ValueOf(new(SYNTH4Record).GetType)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_SYNTH4Record_GetType_Bad(t *core.T) {
+	fn := ax7ValueOf(new(SYNTH4Record).GetType)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_SYNTH4Record_GetType_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(SYNTH4Record).GetType)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_SYNTH4Record_GetNS_Good(t *core.T) {
+	fn := ax7ValueOf(new(SYNTH4Record).GetNS)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_SYNTH4Record_GetNS_Bad(t *core.T) {
+	fn := ax7ValueOf(new(SYNTH4Record).GetNS)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_SYNTH4Record_GetNS_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(SYNTH4Record).GetNS)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_SYNTH6Record_Type_Good(t *core.T) {
+	fn := ax7ValueOf(new(SYNTH6Record).Type)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_SYNTH6Record_Type_Bad(t *core.T) {
+	fn := ax7ValueOf(new(SYNTH6Record).Type)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_SYNTH6Record_Type_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(SYNTH6Record).Type)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_SYNTH6Record_GetType_Good(t *core.T) {
+	fn := ax7ValueOf(new(SYNTH6Record).GetType)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_SYNTH6Record_GetType_Bad(t *core.T) {
+	fn := ax7ValueOf(new(SYNTH6Record).GetType)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_SYNTH6Record_GetType_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(SYNTH6Record).GetType)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_SYNTH6Record_GetNS_Good(t *core.T) {
+	fn := ax7ValueOf(new(SYNTH6Record).GetNS)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_SYNTH6Record_GetNS_Bad(t *core.T) {
+	fn := ax7ValueOf(new(SYNTH6Record).GetNS)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_SYNTH6Record_GetNS_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(SYNTH6Record).GetNS)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_TXTRecord_Type_Good(t *core.T) {
+	fn := ax7ValueOf(new(TXTRecord).Type)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_TXTRecord_Type_Bad(t *core.T) {
+	fn := ax7ValueOf(new(TXTRecord).Type)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_TXTRecord_Type_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(TXTRecord).Type)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_TXTRecord_GetType_Good(t *core.T) {
+	fn := ax7ValueOf(new(TXTRecord).GetType)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_TXTRecord_GetType_Bad(t *core.T) {
+	fn := ax7ValueOf(new(TXTRecord).GetType)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_TXTRecord_GetType_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(TXTRecord).GetType)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_SYNTH4Record_NS_Good(t *core.T) {
+	fn := ax7ValueOf(new(SYNTH4Record).NS)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_SYNTH4Record_NS_Bad(t *core.T) {
+	fn := ax7ValueOf(new(SYNTH4Record).NS)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_SYNTH4Record_NS_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(SYNTH4Record).NS)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_SYNTH6Record_NS_Good(t *core.T) {
+	fn := ax7ValueOf(new(SYNTH6Record).NS)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_SYNTH6Record_NS_Bad(t *core.T) {
+	fn := ax7ValueOf(new(SYNTH6Record).NS)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_SYNTH6Record_NS_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(SYNTH6Record).NS)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_Resource_HasType_Good(t *core.T) {
+	fn := ax7ValueOf(new(Resource).HasType)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_Resource_HasType_Bad(t *core.T) {
+	fn := ax7ValueOf(new(Resource).HasType)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_Resource_HasType_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(Resource).HasType)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_Resource_GetHasType_Good(t *core.T) {
+	fn := ax7ValueOf(new(Resource).GetHasType)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_Resource_GetHasType_Bad(t *core.T) {
+	fn := ax7ValueOf(new(Resource).GetHasType)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_Resource_GetHasType_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(Resource).GetHasType)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_Resource_HasNS_Good(t *core.T) {
+	fn := ax7ValueOf(new(Resource).HasNS)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_Resource_HasNS_Bad(t *core.T) {
+	fn := ax7ValueOf(new(Resource).HasNS)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_Resource_HasNS_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(Resource).HasNS)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_Resource_GetHasNS_Good(t *core.T) {
+	fn := ax7ValueOf(new(Resource).GetHasNS)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_Resource_GetHasNS_Bad(t *core.T) {
+	fn := ax7ValueOf(new(Resource).GetHasNS)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_Resource_GetHasNS_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(Resource).GetHasNS)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_Resource_HasDS_Good(t *core.T) {
+	fn := ax7ValueOf(new(Resource).HasDS)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_Resource_HasDS_Bad(t *core.T) {
+	fn := ax7ValueOf(new(Resource).HasDS)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_Resource_HasDS_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(Resource).HasDS)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_Resource_GetHasDS_Good(t *core.T) {
+	fn := ax7ValueOf(new(Resource).GetHasDS)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_Resource_GetHasDS_Bad(t *core.T) {
+	fn := ax7ValueOf(new(Resource).GetHasDS)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_Resource_GetHasDS_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(Resource).GetHasDS)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_Resource_ToNS_Good(t *core.T) {
+	fn := ax7ValueOf(new(Resource).ToNS)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_Resource_ToNS_Bad(t *core.T) {
+	fn := ax7ValueOf(new(Resource).ToNS)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_Resource_ToNS_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(Resource).ToNS)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_Resource_GetToNS_Good(t *core.T) {
+	fn := ax7ValueOf(new(Resource).GetToNS)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_Resource_GetToNS_Bad(t *core.T) {
+	fn := ax7ValueOf(new(Resource).GetToNS)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_Resource_GetToNS_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(Resource).GetToNS)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_Resource_ToGlue_Good(t *core.T) {
+	fn := ax7ValueOf(new(Resource).ToGlue)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_Resource_ToGlue_Bad(t *core.T) {
+	fn := ax7ValueOf(new(Resource).ToGlue)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_Resource_ToGlue_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(Resource).ToGlue)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_Resource_GetToGlue_Good(t *core.T) {
+	fn := ax7ValueOf(new(Resource).GetToGlue)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_Resource_GetToGlue_Bad(t *core.T) {
+	fn := ax7ValueOf(new(Resource).GetToGlue)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_Resource_GetToGlue_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(Resource).GetToGlue)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_Resource_ToDS_Good(t *core.T) {
+	fn := ax7ValueOf(new(Resource).ToDS)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_Resource_ToDS_Bad(t *core.T) {
+	fn := ax7ValueOf(new(Resource).ToDS)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_Resource_ToDS_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(Resource).ToDS)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_Resource_GetToDS_Good(t *core.T) {
+	fn := ax7ValueOf(new(Resource).GetToDS)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_Resource_GetToDS_Bad(t *core.T) {
+	fn := ax7ValueOf(new(Resource).GetToDS)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_Resource_GetToDS_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(Resource).GetToDS)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_Resource_ToTXT_Good(t *core.T) {
+	fn := ax7ValueOf(new(Resource).ToTXT)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_Resource_ToTXT_Bad(t *core.T) {
+	fn := ax7ValueOf(new(Resource).ToTXT)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_Resource_ToTXT_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(Resource).ToTXT)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_Resource_GetToTXT_Good(t *core.T) {
+	fn := ax7ValueOf(new(Resource).GetToTXT)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_Resource_GetToTXT_Bad(t *core.T) {
+	fn := ax7ValueOf(new(Resource).GetToTXT)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_Resource_GetToTXT_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(Resource).GetToTXT)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_Resource_ToZone_Good(t *core.T) {
+	fn := ax7ValueOf(new(Resource).ToZone)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_Resource_ToZone_Bad(t *core.T) {
+	fn := ax7ValueOf(new(Resource).ToZone)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_Resource_ToZone_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(Resource).ToZone)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_Resource_GetToZone_Good(t *core.T) {
+	fn := ax7ValueOf(new(Resource).GetToZone)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_Resource_GetToZone_Bad(t *core.T) {
+	fn := ax7ValueOf(new(Resource).GetToZone)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_Resource_GetToZone_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(Resource).GetToZone)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_Resource_ToReferral_Good(t *core.T) {
+	fn := ax7ValueOf(new(Resource).ToReferral)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_Resource_ToReferral_Bad(t *core.T) {
+	fn := ax7ValueOf(new(Resource).ToReferral)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_Resource_ToReferral_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(Resource).ToReferral)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_Resource_GetToReferral_Good(t *core.T) {
+	fn := ax7ValueOf(new(Resource).GetToReferral)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_Resource_GetToReferral_Bad(t *core.T) {
+	fn := ax7ValueOf(new(Resource).GetToReferral)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_Resource_GetToReferral_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(Resource).GetToReferral)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_Resource_ToDNS_Good(t *core.T) {
+	fn := ax7ValueOf(new(Resource).ToDNS)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_Resource_ToDNS_Bad(t *core.T) {
+	fn := ax7ValueOf(new(Resource).ToDNS)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_Resource_ToDNS_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(Resource).ToDNS)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_Resource_GetToDNS_Good(t *core.T) {
+	fn := ax7ValueOf(new(Resource).GetToDNS)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_Resource_GetToDNS_Bad(t *core.T) {
+	fn := ax7ValueOf(new(Resource).GetToDNS)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_Resource_GetToDNS_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(Resource).GetToDNS)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_Resource_ToNSEC_Good(t *core.T) {
+	fn := ax7ValueOf(new(Resource).ToNSEC)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_Resource_ToNSEC_Bad(t *core.T) {
+	fn := ax7ValueOf(new(Resource).ToNSEC)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_Resource_ToNSEC_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(Resource).ToNSEC)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_Resource_GetToNSEC_Good(t *core.T) {
+	fn := ax7ValueOf(new(Resource).GetToNSEC)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_Resource_GetToNSEC_Bad(t *core.T) {
+	fn := ax7ValueOf(new(Resource).GetToNSEC)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_Resource_GetToNSEC_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(Resource).GetToNSEC)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_Resource_Encode_Good(t *core.T) {
+	fn := ax7ValueOf(new(Resource).Encode)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_Resource_Encode_Bad(t *core.T) {
+	fn := ax7ValueOf(new(Resource).Encode)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_Resource_Encode_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(Resource).Encode)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_Resource_GetEncode_Good(t *core.T) {
+	fn := ax7ValueOf(new(Resource).GetEncode)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_Resource_GetEncode_Bad(t *core.T) {
+	fn := ax7ValueOf(new(Resource).GetEncode)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_Resource_GetEncode_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(Resource).GetEncode)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_Resource_Decode_Good(t *core.T) {
+	fn := ax7ValueOf(new(Resource).Decode)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_Resource_Decode_Bad(t *core.T) {
+	fn := ax7ValueOf(new(Resource).Decode)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_Resource_Decode_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(Resource).Decode)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_Resource_GetDecode_Good(t *core.T) {
+	fn := ax7ValueOf(new(Resource).GetDecode)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_Resource_GetDecode_Bad(t *core.T) {
+	fn := ax7ValueOf(new(Resource).GetDecode)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_Resource_GetDecode_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(Resource).GetDecode)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_Resource_GetJSON_Good(t *core.T) {
+	fn := ax7ValueOf(new(Resource).GetJSON)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_Resource_GetJSON_Bad(t *core.T) {
+	fn := ax7ValueOf(new(Resource).GetJSON)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_Resource_GetJSON_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(Resource).GetJSON)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_Resource_FromJSON_Good(t *core.T) {
+	fn := ax7ValueOf(new(Resource).FromJSON)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_Resource_FromJSON_Bad(t *core.T) {
+	fn := ax7ValueOf(new(Resource).FromJSON)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_Resource_FromJSON_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(Resource).FromJSON)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_DSRecord_GetSize_Good(t *core.T) {
+	fn := ax7ValueOf(new(DSRecord).GetSize)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_DSRecord_GetSize_Bad(t *core.T) {
+	fn := ax7ValueOf(new(DSRecord).GetSize)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_DSRecord_GetSize_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(DSRecord).GetSize)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_NSRecord_GetSize_Good(t *core.T) {
+	fn := ax7ValueOf(new(NSRecord).GetSize)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_NSRecord_GetSize_Bad(t *core.T) {
+	fn := ax7ValueOf(new(NSRecord).GetSize)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_NSRecord_GetSize_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(NSRecord).GetSize)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_GLUE4Record_GetSize_Good(t *core.T) {
+	fn := ax7ValueOf(new(GLUE4Record).GetSize)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_GLUE4Record_GetSize_Bad(t *core.T) {
+	fn := ax7ValueOf(new(GLUE4Record).GetSize)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_GLUE4Record_GetSize_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(GLUE4Record).GetSize)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_GLUE6Record_GetSize_Good(t *core.T) {
+	fn := ax7ValueOf(new(GLUE6Record).GetSize)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_GLUE6Record_GetSize_Bad(t *core.T) {
+	fn := ax7ValueOf(new(GLUE6Record).GetSize)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_GLUE6Record_GetSize_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(GLUE6Record).GetSize)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_SYNTH4Record_GetSize_Good(t *core.T) {
+	fn := ax7ValueOf(new(SYNTH4Record).GetSize)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_SYNTH4Record_GetSize_Bad(t *core.T) {
+	fn := ax7ValueOf(new(SYNTH4Record).GetSize)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_SYNTH4Record_GetSize_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(SYNTH4Record).GetSize)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_SYNTH6Record_GetSize_Good(t *core.T) {
+	fn := ax7ValueOf(new(SYNTH6Record).GetSize)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_SYNTH6Record_GetSize_Bad(t *core.T) {
+	fn := ax7ValueOf(new(SYNTH6Record).GetSize)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_SYNTH6Record_GetSize_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(SYNTH6Record).GetSize)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_TXTRecord_GetSize_Good(t *core.T) {
+	fn := ax7ValueOf(new(TXTRecord).GetSize)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_TXTRecord_GetSize_Bad(t *core.T) {
+	fn := ax7ValueOf(new(TXTRecord).GetSize)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_TXTRecord_GetSize_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(TXTRecord).GetSize)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_DecodeResource_Good(t *core.T) {
+	fn := ax7ValueOf(DecodeResource)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_DecodeResource_Bad(t *core.T) {
+	fn := ax7ValueOf(DecodeResource)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_DecodeResource_Ugly(t *core.T) {
+	fn := ax7ValueOf(DecodeResource)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_GetDecodeResource_Good(t *core.T) {
+	fn := ax7ValueOf(GetDecodeResource)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_GetDecodeResource_Bad(t *core.T) {
+	fn := ax7ValueOf(GetDecodeResource)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_GetDecodeResource_Ugly(t *core.T) {
+	fn := ax7ValueOf(GetDecodeResource)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_DSRecord_GetJSON_Good(t *core.T) {
+	fn := ax7ValueOf(new(DSRecord).GetJSON)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_DSRecord_GetJSON_Bad(t *core.T) {
+	fn := ax7ValueOf(new(DSRecord).GetJSON)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_DSRecord_GetJSON_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(DSRecord).GetJSON)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_DSRecord_FromJSON_Good(t *core.T) {
+	fn := ax7ValueOf(new(DSRecord).FromJSON)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_DSRecord_FromJSON_Bad(t *core.T) {
+	fn := ax7ValueOf(new(DSRecord).FromJSON)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_DSRecord_FromJSON_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(DSRecord).FromJSON)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_NSRecord_GetJSON_Good(t *core.T) {
+	fn := ax7ValueOf(new(NSRecord).GetJSON)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_NSRecord_GetJSON_Bad(t *core.T) {
+	fn := ax7ValueOf(new(NSRecord).GetJSON)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_NSRecord_GetJSON_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(NSRecord).GetJSON)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_NSRecord_FromJSON_Good(t *core.T) {
+	fn := ax7ValueOf(new(NSRecord).FromJSON)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_NSRecord_FromJSON_Bad(t *core.T) {
+	fn := ax7ValueOf(new(NSRecord).FromJSON)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_NSRecord_FromJSON_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(NSRecord).FromJSON)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_GLUE4Record_GetJSON_Good(t *core.T) {
+	fn := ax7ValueOf(new(GLUE4Record).GetJSON)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_GLUE4Record_GetJSON_Bad(t *core.T) {
+	fn := ax7ValueOf(new(GLUE4Record).GetJSON)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_GLUE4Record_GetJSON_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(GLUE4Record).GetJSON)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_GLUE4Record_FromJSON_Good(t *core.T) {
+	fn := ax7ValueOf(new(GLUE4Record).FromJSON)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_GLUE4Record_FromJSON_Bad(t *core.T) {
+	fn := ax7ValueOf(new(GLUE4Record).FromJSON)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_GLUE4Record_FromJSON_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(GLUE4Record).FromJSON)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_GLUE6Record_GetJSON_Good(t *core.T) {
+	fn := ax7ValueOf(new(GLUE6Record).GetJSON)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_GLUE6Record_GetJSON_Bad(t *core.T) {
+	fn := ax7ValueOf(new(GLUE6Record).GetJSON)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_GLUE6Record_GetJSON_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(GLUE6Record).GetJSON)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_GLUE6Record_FromJSON_Good(t *core.T) {
+	fn := ax7ValueOf(new(GLUE6Record).FromJSON)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_GLUE6Record_FromJSON_Bad(t *core.T) {
+	fn := ax7ValueOf(new(GLUE6Record).FromJSON)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_GLUE6Record_FromJSON_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(GLUE6Record).FromJSON)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_SYNTH4Record_GetJSON_Good(t *core.T) {
+	fn := ax7ValueOf(new(SYNTH4Record).GetJSON)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_SYNTH4Record_GetJSON_Bad(t *core.T) {
+	fn := ax7ValueOf(new(SYNTH4Record).GetJSON)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_SYNTH4Record_GetJSON_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(SYNTH4Record).GetJSON)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_SYNTH4Record_FromJSON_Good(t *core.T) {
+	fn := ax7ValueOf(new(SYNTH4Record).FromJSON)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_SYNTH4Record_FromJSON_Bad(t *core.T) {
+	fn := ax7ValueOf(new(SYNTH4Record).FromJSON)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_SYNTH4Record_FromJSON_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(SYNTH4Record).FromJSON)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_SYNTH6Record_GetJSON_Good(t *core.T) {
+	fn := ax7ValueOf(new(SYNTH6Record).GetJSON)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_SYNTH6Record_GetJSON_Bad(t *core.T) {
+	fn := ax7ValueOf(new(SYNTH6Record).GetJSON)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_SYNTH6Record_GetJSON_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(SYNTH6Record).GetJSON)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_SYNTH6Record_FromJSON_Good(t *core.T) {
+	fn := ax7ValueOf(new(SYNTH6Record).FromJSON)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_SYNTH6Record_FromJSON_Bad(t *core.T) {
+	fn := ax7ValueOf(new(SYNTH6Record).FromJSON)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_SYNTH6Record_FromJSON_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(SYNTH6Record).FromJSON)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_TXTRecord_GetJSON_Good(t *core.T) {
+	fn := ax7ValueOf(new(TXTRecord).GetJSON)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_TXTRecord_GetJSON_Bad(t *core.T) {
+	fn := ax7ValueOf(new(TXTRecord).GetJSON)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_TXTRecord_GetJSON_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(TXTRecord).GetJSON)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_TXTRecord_FromJSON_Good(t *core.T) {
+	fn := ax7ValueOf(new(TXTRecord).FromJSON)
+	args := ax7Args(fn.Type(), "good")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_TXTRecord_FromJSON_Bad(t *core.T) {
+	fn := ax7ValueOf(new(TXTRecord).FromJSON)
+	args := ax7Args(fn.Type(), "bad")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+func TestResource_TXTRecord_FromJSON_Ugly(t *core.T) {
+	fn := ax7ValueOf(new(TXTRecord).FromJSON)
+	args := ax7Args(fn.Type(), "ugly")
+	outCount := -1
+	core.AssertNotPanics(t, func() {
+		outCount = len(ax7Invoke(fn, args))
+	})
+	core.AssertEqual(t, fn.Type().NumOut(), outCount)
+}
+
+// END v090 file-aware generated coverage
