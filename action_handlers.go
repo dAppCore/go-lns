@@ -17,12 +17,34 @@ import (
 	"dappco.re/go/lns/pkg/primitives"
 )
 
+const (
+	actionNameRegister    = "lns.name.register"
+	actionNameRenew       = "lns.name.renew"
+	actionNameTransfer    = "lns.name.transfer"
+	actionNameUpdate      = "lns.name.update"
+	actionNameRevoke      = "lns.name.revoke"
+	actionNameDNSServe    = "lns.dns.serve"
+	actionNameDNSDiscover = "lns.dns.discover"
+	actionNameWalletSend  = "lns.wallet.send"
+	actionNameVPNDiscover = "lns.vpn.discover"
+	actionNameVPNConnect  = "lns.vpn.connect"
+	actionOpBridge        = "lns.bridge"
+	actionOpResource      = "lns.action.resource"
+	actionOpHash          = "lns.action.hash"
+
+	errInvalidName          = "invalid name"
+	errNameRequired         = "name is required"
+	errResourceRequired     = "resource is required"
+	errWalletNotInitialized = "wallet is not initialized"
+	vpnModeLocalSession     = "local-session"
+)
+
 var actionNames = []string{
-	"lns.name.register",
-	"lns.name.renew",
-	"lns.name.transfer",
-	"lns.name.update",
-	"lns.name.revoke",
+	actionNameRegister,
+	actionNameRenew,
+	actionNameTransfer,
+	actionNameUpdate,
+	actionNameRevoke,
 	"lns.name.lookup",
 	"lns.name.auction",
 	"lns.name.available",
@@ -30,12 +52,12 @@ var actionNames = []string{
 	"lns.dns.resolve.txt",
 	"lns.dns.resolve.all",
 	"lns.dns.reverse",
-	"lns.dns.serve",
+	actionNameDNSServe,
 	"lns.dns.health",
-	"lns.dns.discover",
+	actionNameDNSDiscover,
 	"lns.wallet.create",
 	"lns.wallet.balance",
-	"lns.wallet.send",
+	actionNameWalletSend,
 	"lns.wallet.receive",
 	"lns.wallet.history",
 	"lns.wallet.import",
@@ -45,8 +67,8 @@ var actionNames = []string{
 	"lns.chain.sync",
 	"lns.chain.status",
 	"lns.chain.peers",
-	"lns.vpn.discover",
-	"lns.vpn.connect",
+	actionNameVPNDiscover,
+	actionNameVPNConnect,
 	"lns.vpn.status",
 	"lns.vpn.disconnect",
 }
@@ -213,11 +235,11 @@ func (s *Service) registerActions() core.Result {
 	}
 
 	c := s.Core()
-	c.Action("lns.name.register", s.handleNameRegister).Description = "Prepare an LNS name registration request"
-	c.Action("lns.name.renew", s.handleNameRenew).Description = "Prepare an LNS name renewal request"
-	c.Action("lns.name.transfer", s.handleNameTransfer).Description = "Prepare an LNS name transfer request"
-	c.Action("lns.name.update", s.handleNameUpdate).Description = "Prepare an LNS DNS resource update request"
-	c.Action("lns.name.revoke", s.handleNameRevoke).Description = "Prepare an LNS name revocation request"
+	c.Action(actionNameRegister, s.handleNameRegister).Description = "Prepare an LNS name registration request"
+	c.Action(actionNameRenew, s.handleNameRenew).Description = "Prepare an LNS name renewal request"
+	c.Action(actionNameTransfer, s.handleNameTransfer).Description = "Prepare an LNS name transfer request"
+	c.Action(actionNameUpdate, s.handleNameUpdate).Description = "Prepare an LNS DNS resource update request"
+	c.Action(actionNameRevoke, s.handleNameRevoke).Description = "Prepare an LNS name revocation request"
 	c.Action("lns.name.lookup", s.handleNameLookup).Description = "Inspect canonical name status and catalog availability"
 	c.Action("lns.name.auction", s.handleNameAuction).Description = "Report rollout and auction gating data for a name"
 	c.Action("lns.name.available", s.handleNameAvailable).Description = "Check whether a name is available from the current local rule view"
@@ -225,12 +247,12 @@ func (s *Service) registerActions() core.Result {
 	c.Action("lns.dns.resolve.txt", s.handleDNSResolveTXT).Description = "Project TXT records from an LNS resource payload"
 	c.Action("lns.dns.resolve.all", s.handleDNSResolveAll).Description = "Project the full zone-order record set from an LNS resource payload"
 	c.Action("lns.dns.reverse", s.handleDNSReverse).Description = "Project PTR-style reverse matches from local resource payloads"
-	c.Action("lns.dns.serve", s.handleDNSServe).Description = "Start the live DNS bridge service"
+	c.Action(actionNameDNSServe, s.handleDNSServe).Description = "Start the live DNS bridge service"
 	c.Action("lns.dns.health", s.handleDNSHealth).Description = "Report local DNS action availability and implementation status"
-	c.Action("lns.dns.discover", s.handleDNSDiscover).Description = "Refresh the live DNS cache from the chain"
+	c.Action(actionNameDNSDiscover, s.handleDNSDiscover).Description = "Refresh the live DNS cache from the chain"
 	c.Action("lns.wallet.create", s.handleWalletCreate).Description = "Create a deterministic local LNS wallet seed"
 	c.Action("lns.wallet.balance", s.handleWalletBalance).Description = "Return the local LNS wallet balance view"
-	c.Action("lns.wallet.send", s.handleWalletSend).Description = "Construct and submit a sidechain wallet spend"
+	c.Action(actionNameWalletSend, s.handleWalletSend).Description = "Construct and submit a sidechain wallet spend"
 	c.Action("lns.wallet.receive", s.handleWalletReceive).Description = "Return the current or next receive address"
 	c.Action("lns.wallet.history", s.handleWalletHistory).Description = "Return the local LNS wallet history"
 	c.Action("lns.wallet.import", s.handleWalletImport).Description = "Import a deterministic LNS wallet seed"
@@ -240,8 +262,8 @@ func (s *Service) registerActions() core.Result {
 	c.Action("lns.chain.sync", s.handleChainSync).Description = "Refresh the live LNS cache from alias discovery and sidechain resources"
 	c.Action("lns.chain.status", s.handleChainStatus).Description = "Return sidechain and cache status"
 	c.Action("lns.chain.peers", s.handleChainPeers).Description = "Return the raw sidechain peer list"
-	c.Action("lns.vpn.discover", s.handleVPNDiscover).Description = "Discover VPN-capable gateways from alias metadata and TXT records"
-	c.Action("lns.vpn.connect", s.handleVPNConnect).Description = "Select a VPN gateway for the local LNS session"
+	c.Action(actionNameVPNDiscover, s.handleVPNDiscover).Description = "Discover VPN-capable gateways from alias metadata and TXT records"
+	c.Action(actionNameVPNConnect, s.handleVPNConnect).Description = "Select a VPN gateway for the local LNS session"
 	c.Action("lns.vpn.status", s.handleVPNStatus).Description = "Report the local VPN gateway session state"
 	c.Action("lns.vpn.disconnect", s.handleVPNDisconnect).Description = "Clear the local VPN gateway session state"
 	return okResult()
@@ -309,13 +331,13 @@ func (s *Service) handleNameRegister(_ context.Context, options core.Options) co
 		return core.Fail(err)
 	}
 	if !lookup.Valid {
-		return core.Fail(core.E("lns.name.register", "invalid name", nil))
+		return core.Fail(core.E(actionNameRegister, errInvalidName, nil))
 	}
 	if !lookup.Available {
-		return core.Fail(core.E("lns.name.register", "name is not available", nil))
+		return core.Fail(core.E(actionNameRegister, "name is not available", nil))
 	}
 
-	plan := newNameActionPlan("lns.name.register", lookup)
+	plan := newNameActionPlan(actionNameRegister, lookup)
 	rawName := []byte(lookup.Canonical)
 	ownerAddress, ownerWarning := s.nameDraftAddress(options, "address", "owner", "owner_address")
 	if ownerWarning != "" {
@@ -325,7 +347,7 @@ func (s *Service) handleNameRegister(_ context.Context, options core.Options) co
 
 	resource, jsonView, size, err := actionOptionalResourceValue(options)
 	if err != nil {
-		return core.Fail(core.E("lns.name.register", "invalid resource", err))
+		return core.Fail(core.E(actionNameRegister, "invalid resource", err))
 	}
 	plan.Resource = jsonView
 	plan.ResourceSize = size
@@ -337,7 +359,7 @@ func (s *Service) handleNameRegister(_ context.Context, options core.Options) co
 
 	nonce, ok, err := actionHashValue(options, "nonce")
 	if err != nil {
-		return core.Fail(core.E("lns.name.register", "invalid nonce", err))
+		return core.Fail(core.E(actionNameRegister, "invalid nonce", err))
 	}
 	if !ok {
 		nonce, err = randomActionHash()
@@ -354,7 +376,7 @@ func (s *Service) handleNameRegister(_ context.Context, options core.Options) co
 
 	blockHash, blockHashSet, err := actionHashValue(options, "block_hash", "blockHash")
 	if err != nil {
-		return core.Fail(core.E("lns.name.register", "invalid block hash", err))
+		return core.Fail(core.E(actionNameRegister, "invalid block hash", err))
 	}
 	if blockHashSet {
 		plan.BlockHash = &blockHash
@@ -434,14 +456,14 @@ func (s *Service) handleNameRegister(_ context.Context, options core.Options) co
 }
 
 func (s *Service) handleNameRenew(_ context.Context, options core.Options) core.Result {
-	plan, err := s.prepareLinkedNameAction("lns.name.renew", options)
+	plan, err := s.prepareLinkedNameAction(actionNameRenew, options)
 	if err != nil {
 		return core.Fail(err)
 	}
 
 	blockHash, ok, err := actionHashValue(options, "block_hash", "blockHash")
 	if err != nil {
-		return core.Fail(core.E("lns.name.renew", "invalid block hash", err))
+		return core.Fail(core.E(actionNameRenew, "invalid block hash", err))
 	}
 	if !ok {
 		plan.Warnings = append(plan.Warnings, "block_hash was not provided; the RENEW draft uses a zero hash placeholder.")
@@ -473,17 +495,17 @@ func (s *Service) handleNameRenew(_ context.Context, options core.Options) core.
 }
 
 func (s *Service) handleNameTransfer(_ context.Context, options core.Options) core.Result {
-	plan, err := s.prepareLinkedNameAction("lns.name.transfer", options)
+	plan, err := s.prepareLinkedNameAction(actionNameTransfer, options)
 	if err != nil {
 		return core.Fail(err)
 	}
 
 	address, ok := actionAddressValue(options, "address", "recipient", "to")
 	if !ok {
-		return core.Fail(core.E("lns.name.transfer", "recipient address is required", nil))
+		return core.Fail(core.E(actionNameTransfer, "recipient address is required", nil))
 	}
 	if !address.IsValid() {
-		return core.Fail(core.E("lns.name.transfer", "recipient address is invalid", nil))
+		return core.Fail(core.E(actionNameTransfer, "recipient address is invalid", nil))
 	}
 	plan.Address = &address
 	outputValue, _ := actionUint64Value(options, "transfer_value", "value")
@@ -506,14 +528,14 @@ func (s *Service) handleNameTransfer(_ context.Context, options core.Options) co
 }
 
 func (s *Service) handleNameUpdate(_ context.Context, options core.Options) core.Result {
-	plan, err := s.prepareLinkedNameAction("lns.name.update", options)
+	plan, err := s.prepareLinkedNameAction(actionNameUpdate, options)
 	if err != nil {
 		return core.Fail(err)
 	}
 
 	resource, jsonView, size, err := actionOptionalResourceValue(options)
 	if err != nil {
-		return core.Fail(core.E("lns.name.update", "invalid resource", err))
+		return core.Fail(core.E(actionNameUpdate, "invalid resource", err))
 	}
 	plan.Resource = jsonView
 	plan.ResourceSize = size
@@ -543,7 +565,7 @@ func (s *Service) handleNameUpdate(_ context.Context, options core.Options) core
 }
 
 func (s *Service) handleNameRevoke(_ context.Context, options core.Options) core.Result {
-	plan, err := s.prepareLinkedNameAction("lns.name.revoke", options)
+	plan, err := s.prepareLinkedNameAction(actionNameRevoke, options)
 	if err != nil {
 		return core.Fail(err)
 	}
@@ -644,19 +666,11 @@ func (s *Service) handleDNSReverse(ctx context.Context, options core.Options) co
 	}
 
 	if actionOptionValue(options, "resources", "resource", "resource_json") == nil {
-		if bridge, err := s.bridgeFromOptions(options); err == nil && bridge != nil {
-			if bridge.Health().Names == 0 {
-				_, _ = bridge.Discover(ctx)
-			}
-
-			names := bridge.Reverse(address)
-			sort.Strings(names)
-			return core.Ok(
-				dnsReverseResult{
-					Address: address.String(),
-					Names:   names,
-				})
-
+		if names, ok := s.reverseNamesFromBridge(ctx, options, address); ok {
+			return core.Ok(dnsReverseResult{
+				Address: address.String(),
+				Names:   names,
+			})
 		}
 	}
 
@@ -670,22 +684,7 @@ func (s *Service) handleDNSReverse(ctx context.Context, options core.Options) co
 
 	for zone, resource := range resources {
 		for _, record := range resource.ToGlue(zone) {
-			switch rr := record.(type) {
-			case GLUE4Record:
-				if rr.Address == address {
-					if _, ok := seen[rr.NS]; !ok {
-						seen[rr.NS] = struct{}{}
-						names = append(names, rr.NS)
-					}
-				}
-			case GLUE6Record:
-				if rr.Address == address {
-					if _, ok := seen[rr.NS]; !ok {
-						seen[rr.NS] = struct{}{}
-						names = append(names, rr.NS)
-					}
-				}
-			}
+			names = appendReverseMatch(names, seen, record, address)
 		}
 	}
 
@@ -697,6 +696,43 @@ func (s *Service) handleDNSReverse(ctx context.Context, options core.Options) co
 			Names:   names,
 		})
 
+}
+
+func (s *Service) reverseNamesFromBridge(ctx context.Context, options core.Options, address netip.Addr) ([]string, bool) {
+	bridge, err := s.bridgeFromOptions(options)
+	if err != nil || bridge == nil {
+		return nil, false
+	}
+	if bridge.Health().Names == 0 {
+		_, _ = bridge.Discover(ctx)
+	}
+
+	names := bridge.Reverse(address)
+	sort.Strings(names)
+	return names, true
+}
+
+func appendReverseMatch(names []string, seen map[string]struct{}, record ResourceRecord, address netip.Addr) []string {
+	ns, ok := glueRecordNameForAddress(record, address)
+	if !ok {
+		return names
+	}
+	if _, exists := seen[ns]; exists {
+		return names
+	}
+	seen[ns] = struct{}{}
+	return append(names, ns)
+}
+
+func glueRecordNameForAddress(record ResourceRecord, address netip.Addr) (string, bool) {
+	switch rr := record.(type) {
+	case GLUE4Record:
+		return rr.NS, rr.Address == address
+	case GLUE6Record:
+		return rr.NS, rr.Address == address
+	default:
+		return "", false
+	}
 }
 
 func (s *Service) handleDNSHealth(_ context.Context, options core.Options) core.Result {
@@ -739,10 +775,10 @@ func (s *Service) handleDNSHealth(_ context.Context, options core.Options) core.
 func (s *Service) handleDNSServe(_ context.Context, options core.Options) core.Result {
 	bridge, err := s.bridgeFromOptions(options)
 	if err != nil {
-		return core.Fail(core.E("lns.dns.serve", "chain_url is required", err))
+		return core.Fail(core.E(actionNameDNSServe, "chain_url is required", err))
 	}
-	if err := bridge.Serve(nil); err != nil {
-		return core.Fail(core.E("lns.dns.serve", "start live DNS bridge", err))
+	if err := bridge.Serve(context.Background()); err != nil {
+		return core.Fail(core.E(actionNameDNSServe, "start live DNS bridge", err))
 	}
 	return core.Ok(bridge.Health())
 }
@@ -750,12 +786,12 @@ func (s *Service) handleDNSServe(_ context.Context, options core.Options) core.R
 func (s *Service) handleDNSDiscover(ctx context.Context, options core.Options) core.Result {
 	bridge, err := s.bridgeFromOptions(options)
 	if err != nil {
-		return core.Fail(core.E("lns.dns.discover", "chain_url is required", err))
+		return core.Fail(core.E(actionNameDNSDiscover, "chain_url is required", err))
 	}
 
 	report, err := bridge.Discover(ctx)
 	if err != nil {
-		return core.Fail(core.E("lns.dns.discover", "refresh live DNS cache", err))
+		return core.Fail(core.E(actionNameDNSDiscover, "refresh live DNS cache", err))
 	}
 
 	return core.Ok(report)
@@ -779,7 +815,7 @@ func (s *Service) handleVPNConnect(ctx context.Context, options core.Options) co
 	filter := actionStringFromAny(actionOptionValue(options, "name", "gateway", "_input"))
 	gateway, ok := selectVPNGateway(gateways, filter)
 	if !ok {
-		return core.Fail(core.E("lns.vpn.connect", "gateway was not found", nil))
+		return core.Fail(core.E(actionNameVPNConnect, "gateway was not found", nil))
 	}
 
 	status := s.setVPNConnection(gateway)
@@ -798,7 +834,7 @@ func (s *Service) handleVPNDisconnect(_ context.Context, _ core.Options) core.Re
 func (s *Service) lookupNameAction(options core.Options) (nameLookupResult, error) {
 	input := actionOptionValue(options, "name", "label", "_input")
 	if input == nil {
-		return nameLookupResult{}, core.E("lns.action.name", "name is required", nil)
+		return nameLookupResult{}, core.E("lns.action.name", errNameRequired, nil)
 	}
 
 	result := nameLookupResult{
@@ -860,19 +896,6 @@ func (s *Service) lookupNameAction(options core.Options) (nameLookupResult, erro
 	return result, nil
 }
 
-func unsupportedAction(operation string, options core.Options, reason string) core.Result {
-	if input := actionOptionValue(options, "name", "_input"); input != nil {
-		switch input.(type) {
-		case string, []byte:
-			if !Verify(input) {
-				return core.Fail(core.E(operation, "invalid name", nil))
-			}
-		}
-	}
-
-	return core.Fail(core.E(operation, reason, nil))
-}
-
 func newNameActionPlan(action string, lookup nameLookupResult) nameActionPlanResult {
 	plan := nameActionPlanResult{
 		Action:             action,
@@ -901,7 +924,7 @@ func (s *Service) prepareLinkedNameAction(operation string, options core.Options
 		return nameActionPlanResult{}, err
 	}
 	if !lookup.Valid {
-		return nameActionPlanResult{}, core.E(operation, "invalid name", nil)
+		return nameActionPlanResult{}, core.E(operation, errInvalidName, nil)
 	}
 
 	plan := newNameActionPlan(operation, lookup)
@@ -1065,12 +1088,12 @@ func dnsLookupInputs(options core.Options) (string, string, *Resource, error) {
 func dnsLookupNames(options core.Options) (string, string, error) {
 	zoneValue := actionOptionValue(options, "name", "zone", "_input")
 	if zoneValue == nil {
-		return "", "", core.E("lns.action.dns", "name is required", nil)
+		return "", "", core.E("lns.action.dns", errNameRequired, nil)
 	}
 
 	zone := dnsFQDN(actionStringFromAny(zoneValue))
 	if zone == "." {
-		return "", "", core.E("lns.action.dns", "name is required", nil)
+		return "", "", core.E("lns.action.dns", errNameRequired, nil)
 	}
 
 	host := zone
@@ -1097,7 +1120,7 @@ func (s *Service) dnsActionInputs(ctx context.Context, options core.Options) (st
 
 	bridge, err := s.bridgeFromOptions(options)
 	if err != nil {
-		return "", "", nil, core.E("lns.action.resource", "resource is required", nil)
+		return "", "", nil, core.E(actionOpResource, errResourceRequired, nil)
 	}
 
 	if bridge.Health().Names == 0 {
@@ -1143,7 +1166,7 @@ func dnsReverseResources(options core.Options) (map[string]*Resource, error) {
 func actionResourceValue(options core.Options, keys ...string) (*Resource, error) {
 	value := actionOptionValue(options, keys...)
 	if value == nil {
-		return nil, core.E("lns.action.resource", "resource is required", nil)
+		return nil, core.E(actionOpResource, errResourceRequired, nil)
 	}
 
 	return resourceFromAny(value)
@@ -1153,7 +1176,7 @@ func resourceFromAny(value any) (*Resource, error) {
 	switch typed := value.(type) {
 	case *Resource:
 		if typed == nil {
-			return nil, core.E("lns.action.resource", "resource is required", nil)
+			return nil, core.E(actionOpResource, errResourceRequired, nil)
 		}
 		return typed, nil
 	case Resource:
@@ -1172,18 +1195,18 @@ func resourceFromAny(value any) (*Resource, error) {
 	case map[string]any:
 		raw := core.JSONMarshal(typed)
 		if !raw.OK {
-			return nil, core.E("lns.action.resource", "invalid resource JSON", raw.Value.(error))
+			return nil, core.E(actionOpResource, "invalid resource JSON", raw.Value.(error))
 		}
 		return resourceFromJSONBytes(raw.Value.([]byte))
 	default:
-		return nil, core.E("lns.action.resource", "unsupported resource value", nil)
+		return nil, core.E(actionOpResource, "unsupported resource value", nil)
 	}
 }
 
 func resourceFromJSONBytes(raw []byte) (*Resource, error) {
 	var jsonView ResourceJSON
 	if r := core.JSONUnmarshal(raw, &jsonView); !r.OK {
-		return nil, core.E("lns.action.resource", "invalid resource JSON", r.Value.(error))
+		return nil, core.E(actionOpResource, "invalid resource JSON", r.Value.(error))
 	}
 
 	resource := NewResource()
@@ -1244,7 +1267,7 @@ func hashFromAny(value any) (primitives.Hash, bool, error) {
 		}
 		raw, err := hex.DecodeString(core.Trim(string(typed)))
 		if err != nil || len(raw) != 32 {
-			return primitives.Hash{}, false, core.E("lns.action.hash", "invalid hash encoding", err)
+			return primitives.Hash{}, false, core.E(actionOpHash, "invalid hash encoding", err)
 		}
 		var hash primitives.Hash
 		copy(hash[:], raw)
@@ -1252,7 +1275,7 @@ func hashFromAny(value any) (primitives.Hash, bool, error) {
 	case string:
 		raw, err := hex.DecodeString(core.Trim(typed))
 		if err != nil || len(raw) != 32 {
-			return primitives.Hash{}, false, core.E("lns.action.hash", "invalid hash encoding", err)
+			return primitives.Hash{}, false, core.E(actionOpHash, "invalid hash encoding", err)
 		}
 		var hash primitives.Hash
 		copy(hash[:], raw)
@@ -1261,14 +1284,14 @@ func hashFromAny(value any) (primitives.Hash, bool, error) {
 		if value == nil {
 			return primitives.Hash{}, false, nil
 		}
-		return primitives.Hash{}, false, core.E("lns.action.hash", "unsupported hash value", nil)
+		return primitives.Hash{}, false, core.E(actionOpHash, "unsupported hash value", nil)
 	}
 }
 
 func randomActionHash() (primitives.Hash, error) {
 	var hash primitives.Hash
 	if _, err := rand.Read(hash[:]); err != nil {
-		return primitives.Hash{}, core.E("lns.action.hash", "random source failure", err)
+		return primitives.Hash{}, core.E(actionOpHash, "random source failure", err)
 	}
 	return hash, nil
 }
@@ -1381,40 +1404,34 @@ func nameRulesFromAny(value any) (NameRules, bool) {
 		return typed, true
 	case map[string]any:
 		rules := NameRules{}
-		if v, ok := actionUint32FromAny(typed["rollout_interval"]); ok {
-			rules.RolloutInterval = v
-		} else if v, ok := actionUint32FromAny(typed["rolloutInterval"]); ok {
-			rules.RolloutInterval = v
-		}
-		if v, ok := actionUint32FromAny(typed["auction_start"]); ok {
-			rules.AuctionStart = v
-		} else if v, ok := actionUint32FromAny(typed["auctionStart"]); ok {
-			rules.AuctionStart = v
-		}
-		if v, ok := actionUint32FromAny(typed["claim_period"]); ok {
-			rules.ClaimPeriod = v
-		} else if v, ok := actionUint32FromAny(typed["claimPeriod"]); ok {
-			rules.ClaimPeriod = v
-		}
-		if v, ok := actionUint32FromAny(typed["alexa_lockup_period"]); ok {
-			rules.AlexaLockupPeriod = v
-		} else if v, ok := actionUint32FromAny(typed["alexaLockupPeriod"]); ok {
-			rules.AlexaLockupPeriod = v
-		}
-		if v, ok := actionBoolFromAny(typed["no_rollout"]); ok {
-			rules.NoRollout = v
-		} else if v, ok := actionBoolFromAny(typed["noRollout"]); ok {
-			rules.NoRollout = v
-		}
-		if v, ok := actionBoolFromAny(typed["no_reserved"]); ok {
-			rules.NoReserved = v
-		} else if v, ok := actionBoolFromAny(typed["noReserved"]); ok {
-			rules.NoReserved = v
-		}
+		rules.RolloutInterval = actionUint32MapValue(typed, "rollout_interval", "rolloutInterval")
+		rules.AuctionStart = actionUint32MapValue(typed, "auction_start", "auctionStart")
+		rules.ClaimPeriod = actionUint32MapValue(typed, "claim_period", "claimPeriod")
+		rules.AlexaLockupPeriod = actionUint32MapValue(typed, "alexa_lockup_period", "alexaLockupPeriod")
+		rules.NoRollout = actionBoolMapValue(typed, "no_rollout", "noRollout")
+		rules.NoReserved = actionBoolMapValue(typed, "no_reserved", "noReserved")
 		return rules, true
 	default:
 		return NameRules{}, false
 	}
+}
+
+func actionUint32MapValue(values map[string]any, keys ...string) uint32 {
+	for _, key := range keys {
+		if v, ok := actionUint32FromAny(values[key]); ok {
+			return v
+		}
+	}
+	return 0
+}
+
+func actionBoolMapValue(values map[string]any, keys ...string) bool {
+	for _, key := range keys {
+		if v, ok := actionBoolFromAny(values[key]); ok {
+			return v
+		}
+	}
+	return false
 }
 
 func actionOptionValue(options core.Options, keys ...string) any {
@@ -1585,40 +1602,16 @@ func (s *Service) vpnGatewaysFromOptions(ctx context.Context, options core.Optio
 
 func (s *Service) vpnRecordsFromOptions(ctx context.Context, options core.Options) ([]dnspkg.NameRecord, error) {
 	if value := actionOptionValue(options, "resources"); value != nil {
-		resources, err := actionResourcesValue(value)
-		if err != nil {
-			return nil, err
-		}
-
-		names := make([]string, 0, len(resources))
-		for zone := range resources {
-			names = append(names, zone)
-		}
-		sort.Strings(names)
-
-		records := make([]dnspkg.NameRecord, 0, len(names))
-		for _, zone := range names {
-			label := core.TrimSuffix(core.TrimSuffix(core.Lower(zone), ".lthn."), ".lthn")
-			records = append(records, dnspkg.NameRecord{Name: label, Resource: resources[zone], Source: "resource"})
-		}
-		return records, nil
+		return vpnRecordsFromResourceMap(value)
 	}
 
 	if value := actionOptionValue(options, "resource", "resource_json"); value != nil {
-		resource, err := resourceFromAny(value)
-		if err != nil {
-			return nil, err
-		}
-		label, ok := canonicalizeName(actionOptionValue(options, "name", "zone", "_input"))
-		if !ok {
-			return nil, core.E("lns.vpn.discover", "name is required with resource", nil)
-		}
-		return []dnspkg.NameRecord{{Name: label, Resource: resource, Source: "resource"}}, nil
+		return vpnRecordFromResource(value, options)
 	}
 
 	bridge, err := s.bridgeFromOptions(options)
 	if err != nil {
-		return nil, core.E("lns.vpn.discover", "chain_url or resource data is required", err)
+		return nil, core.E(actionNameVPNDiscover, "chain_url or resource data is required", err)
 	}
 	if bridge.Health().Names == 0 {
 		if _, err := bridge.Discover(ctx); err != nil {
@@ -1627,11 +1620,40 @@ func (s *Service) vpnRecordsFromOptions(ctx context.Context, options core.Option
 	}
 
 	snapshot := bridge.Records()
-	records := make([]dnspkg.NameRecord, 0, len(snapshot))
-	for _, record := range snapshot {
-		records = append(records, record)
+	records := append([]dnspkg.NameRecord(nil), snapshot...)
+	return records, nil
+}
+
+func vpnRecordsFromResourceMap(value any) ([]dnspkg.NameRecord, error) {
+	resources, err := actionResourcesValue(value)
+	if err != nil {
+		return nil, err
+	}
+
+	names := make([]string, 0, len(resources))
+	for zone := range resources {
+		names = append(names, zone)
+	}
+	sort.Strings(names)
+
+	records := make([]dnspkg.NameRecord, 0, len(names))
+	for _, zone := range names {
+		label := core.TrimSuffix(core.TrimSuffix(core.Lower(zone), ".lthn."), ".lthn")
+		records = append(records, dnspkg.NameRecord{Name: label, Resource: resources[zone], Source: "resource"})
 	}
 	return records, nil
+}
+
+func vpnRecordFromResource(value any, options core.Options) ([]dnspkg.NameRecord, error) {
+	resource, err := resourceFromAny(value)
+	if err != nil {
+		return nil, err
+	}
+	label, ok := canonicalizeName(actionOptionValue(options, "name", "zone", "_input"))
+	if !ok {
+		return nil, core.E(actionNameVPNDiscover, "name is required with resource", nil)
+	}
+	return []dnspkg.NameRecord{{Name: label, Resource: resource, Source: "resource"}}, nil
 }
 
 func vpnGatewayFromRecord(record dnspkg.NameRecord) (vpnGatewayResult, bool) {
@@ -1782,9 +1804,6 @@ func selectVPNGateway(gateways []vpnGatewayResult, filter string) (vpnGatewayRes
 		return vpnGatewayResult{}, false
 	}
 	if filter == "" {
-		if len(gateways) == 1 {
-			return gateways[0], true
-		}
 		return gateways[0], true
 	}
 
@@ -1799,14 +1818,14 @@ func selectVPNGateway(gateways []vpnGatewayResult, filter string) (vpnGatewayRes
 
 func (s *Service) setVPNConnection(gateway vpnGatewayResult) vpnStatusResult {
 	if s == nil {
-		return vpnStatusResult{Connected: false, Mode: "local-session"}
+		return vpnStatusResult{Connected: false, Mode: vpnModeLocalSession}
 	}
 
 	status := vpnStatusResult{
 		Connected: true,
 		Gateway:   &gateway,
 		Since:     time.Now().UTC().Format(time.RFC3339),
-		Mode:      "local-session",
+		Mode:      vpnModeLocalSession,
 	}
 
 	s.vpnMu.Lock()
@@ -1821,7 +1840,7 @@ func (s *Service) setVPNConnection(gateway vpnGatewayResult) vpnStatusResult {
 func (s *Service) currentVPNStatus() vpnStatusResult {
 	status := vpnStatusResult{
 		Connected: false,
-		Mode:      "local-session",
+		Mode:      vpnModeLocalSession,
 		Notes:     []string{"No VPN gateway is currently selected."},
 	}
 
@@ -1847,7 +1866,7 @@ func (s *Service) currentVPNStatus() vpnStatusResult {
 func (s *Service) clearVPNConnection() vpnStatusResult {
 	status := vpnStatusResult{
 		Connected: false,
-		Mode:      "local-session",
+		Mode:      vpnModeLocalSession,
 		Notes:     []string{"VPN gateway selection was cleared."},
 	}
 

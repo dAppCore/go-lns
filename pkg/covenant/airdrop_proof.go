@@ -18,6 +18,8 @@ const (
 	faucetLeaves       = 1358
 	maxAirdropProofLen = 3400
 	airdropKeyAddress  = 4
+	opDecodeAirdrop    = "covenant.decodeAirdropProof"
+	errShortBuffer     = "short buffer"
 )
 
 type airdropProof struct {
@@ -40,7 +42,7 @@ type airdropKey struct {
 
 func decodeAirdropProof(data []byte) (*airdropProof, error) {
 	if len(data) > maxAirdropProofLen {
-		return nil, core.E("covenant.decodeAirdropProof", "proof too large", nil)
+		return nil, core.E(opDecodeAirdrop, "proof too large", nil)
 	}
 
 	proof := &airdropProof{}
@@ -48,96 +50,96 @@ func decodeAirdropProof(data []byte) (*airdropProof, error) {
 	var err error
 
 	if proof.index, n, err = readProofU32(data); err != nil {
-		return nil, core.E("covenant.decodeAirdropProof", "failed to decode index", err)
+		return nil, core.E(opDecodeAirdrop, "failed to decode index", err)
 	}
 	data = data[n:]
 
 	var count uint8
 	if count, n, err = readProofU8(data); err != nil {
-		return nil, core.E("covenant.decodeAirdropProof", "failed to decode proof length", err)
+		return nil, core.E(opDecodeAirdrop, "failed to decode proof length", err)
 	}
 	data = data[n:]
 
 	if int(count) > airdropDepth {
-		return nil, core.E("covenant.decodeAirdropProof", "invalid proof depth", nil)
+		return nil, core.E(opDecodeAirdrop, "invalid proof depth", nil)
 	}
 
 	proof.proof = make([][]byte, 0, count)
 	for i := 0; i < int(count); i++ {
 		var hash []byte
 		if hash, n, err = readProofBytes(data, 32); err != nil {
-			return nil, core.E("covenant.decodeAirdropProof", "failed to decode proof hash", err)
+			return nil, core.E(opDecodeAirdrop, "failed to decode proof hash", err)
 		}
 		data = data[n:]
 		proof.proof = append(proof.proof, hash)
 	}
 
 	if proof.subindex, n, err = readProofU8(data); err != nil {
-		return nil, core.E("covenant.decodeAirdropProof", "failed to decode subindex", err)
+		return nil, core.E(opDecodeAirdrop, "failed to decode subindex", err)
 	}
 	data = data[n:]
 
 	var total uint8
 	if total, n, err = readProofU8(data); err != nil {
-		return nil, core.E("covenant.decodeAirdropProof", "failed to decode subproof length", err)
+		return nil, core.E(opDecodeAirdrop, "failed to decode subproof length", err)
 	}
 	data = data[n:]
 
 	if int(total) > airdropSubdepth {
-		return nil, core.E("covenant.decodeAirdropProof", "invalid subproof depth", nil)
+		return nil, core.E(opDecodeAirdrop, "invalid subproof depth", nil)
 	}
 
 	proof.subproof = make([][]byte, 0, total)
 	for i := 0; i < int(total); i++ {
 		var hash []byte
 		if hash, n, err = readProofBytes(data, 32); err != nil {
-			return nil, core.E("covenant.decodeAirdropProof", "failed to decode subproof hash", err)
+			return nil, core.E(opDecodeAirdrop, "failed to decode subproof hash", err)
 		}
 		data = data[n:]
 		proof.subproof = append(proof.subproof, hash)
 	}
 
 	if proof.key, n, err = readProofVarBytes(data); err != nil {
-		return nil, core.E("covenant.decodeAirdropProof", "failed to decode key", err)
+		return nil, core.E(opDecodeAirdrop, "failed to decode key", err)
 	}
 	data = data[n:]
 
 	if len(proof.key) == 0 {
-		return nil, core.E("covenant.decodeAirdropProof", "missing key", nil)
+		return nil, core.E(opDecodeAirdrop, "missing key", nil)
 	}
 
 	if proof.version, n, err = readProofU8(data); err != nil {
-		return nil, core.E("covenant.decodeAirdropProof", "failed to decode version", err)
+		return nil, core.E(opDecodeAirdrop, "failed to decode version", err)
 	}
 	data = data[n:]
 
 	var size uint8
 	if size, n, err = readProofU8(data); err != nil {
-		return nil, core.E("covenant.decodeAirdropProof", "failed to decode address length", err)
+		return nil, core.E(opDecodeAirdrop, "failed to decode address length", err)
 	}
 	data = data[n:]
 
 	if size < 2 || size > 40 {
-		return nil, core.E("covenant.decodeAirdropProof", "invalid address length", nil)
+		return nil, core.E(opDecodeAirdrop, "invalid address length", nil)
 	}
 
 	if proof.address, n, err = readProofBytes(data, int(size)); err != nil {
-		return nil, core.E("covenant.decodeAirdropProof", "failed to decode address", err)
+		return nil, core.E(opDecodeAirdrop, "failed to decode address", err)
 	}
 	data = data[n:]
 
 	if proof.fee, n, err = readProofVarint(data); err != nil {
-		return nil, core.E("covenant.decodeAirdropProof", "failed to decode fee", err)
+		return nil, core.E(opDecodeAirdrop, "failed to decode fee", err)
 	}
 	data = data[n:]
 
 	if proof.signature, n, err = readProofVarBytes(data); err != nil {
-		return nil, core.E("covenant.decodeAirdropProof", "failed to decode signature", err)
+		return nil, core.E(opDecodeAirdrop, "failed to decode signature", err)
 	}
 	data = data[n:]
 
 	if len(data) != 0 {
-		return nil, core.E("covenant.decodeAirdropProof", "trailing data", nil)
+		return nil, core.E(opDecodeAirdrop, "trailing data", nil)
 	}
 
 	return proof, nil
@@ -274,7 +276,7 @@ func (p *airdropProof) size() int {
 
 func readProofU8(src []byte) (uint8, int, error) {
 	if len(src) < 1 {
-		return 0, 0, core.E("covenant.decodeAirdropProof", "short buffer", nil)
+		return 0, 0, core.E(opDecodeAirdrop, errShortBuffer, nil)
 	}
 
 	return src[0], 1, nil
@@ -282,7 +284,7 @@ func readProofU8(src []byte) (uint8, int, error) {
 
 func readProofU32(src []byte) (uint32, int, error) {
 	if len(src) < 4 {
-		return 0, 0, core.E("covenant.decodeAirdropProof", "short buffer", nil)
+		return 0, 0, core.E(opDecodeAirdrop, errShortBuffer, nil)
 	}
 
 	return binary.LittleEndian.Uint32(src[:4]), 4, nil
@@ -290,7 +292,7 @@ func readProofU32(src []byte) (uint32, int, error) {
 
 func readProofBytes(src []byte, n int) ([]byte, int, error) {
 	if n < 0 || len(src) < n {
-		return nil, 0, core.E("covenant.decodeAirdropProof", "short buffer", nil)
+		return nil, 0, core.E(opDecodeAirdrop, errShortBuffer, nil)
 	}
 
 	buf := make([]byte, n)
@@ -300,7 +302,7 @@ func readProofBytes(src []byte, n int) ([]byte, int, error) {
 
 func readProofVarint(src []byte) (uint64, int, error) {
 	if len(src) == 0 {
-		return 0, 0, core.E("covenant.decodeAirdropProof", "short buffer", nil)
+		return 0, 0, core.E(opDecodeAirdrop, errShortBuffer, nil)
 	}
 
 	switch prefix := src[0]; {
@@ -308,17 +310,17 @@ func readProofVarint(src []byte) (uint64, int, error) {
 		return uint64(prefix), 1, nil
 	case prefix == 0xfd:
 		if len(src) < 3 {
-			return 0, 0, core.E("covenant.decodeAirdropProof", "short buffer", nil)
+			return 0, 0, core.E(opDecodeAirdrop, errShortBuffer, nil)
 		}
 		return uint64(binary.LittleEndian.Uint16(src[1:3])), 3, nil
 	case prefix == 0xfe:
 		if len(src) < 5 {
-			return 0, 0, core.E("covenant.decodeAirdropProof", "short buffer", nil)
+			return 0, 0, core.E(opDecodeAirdrop, errShortBuffer, nil)
 		}
 		return uint64(binary.LittleEndian.Uint32(src[1:5])), 5, nil
 	default:
 		if len(src) < 9 {
-			return 0, 0, core.E("covenant.decodeAirdropProof", "short buffer", nil)
+			return 0, 0, core.E(opDecodeAirdrop, errShortBuffer, nil)
 		}
 		return binary.LittleEndian.Uint64(src[1:9]), 9, nil
 	}
@@ -331,7 +333,7 @@ func readProofVarBytes(src []byte) ([]byte, int, error) {
 	}
 
 	if uint64(len(src[consumed:])) < n {
-		return nil, 0, core.E("covenant.decodeAirdropProof", "short buffer", nil)
+		return nil, 0, core.E(opDecodeAirdrop, errShortBuffer, nil)
 	}
 
 	end := consumed + int(n)

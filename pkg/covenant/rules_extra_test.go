@@ -84,7 +84,7 @@ func TestGrindName(t *testing.T) {
 
 	hash, err := HashString(name)
 	if err != nil {
-		t.Fatalf("HashString returned error: %v", err)
+		t.Fatalf(testHashStringErr, err)
 	}
 
 	if !HasRollout(hash, 100, rules) {
@@ -110,15 +110,15 @@ func TestGrindName(t *testing.T) {
 }
 
 func TestNameSetHelpers(t *testing.T) {
-	hash, err := HashString("example-name")
+	hash, err := HashString(testExampleName)
 	if err != nil {
-		t.Fatalf("HashString returned error: %v", err)
+		t.Fatalf(testHashStringErr, err)
 	}
 
 	tx := primitives.Transaction{
 		Outputs: []primitives.Output{
-			{Covenant: primitives.Covenant{Type: uint8(TypeOpen), Items: [][]byte{hash[:], []byte{0, 0, 0, 0}, []byte("example-name")}}},
-			{Covenant: primitives.Covenant{Type: uint8(TypeBid), Items: [][]byte{hash[:], []byte{1, 0, 0, 0}, []byte("example-name"), make([]byte, 32)}}},
+			{Covenant: primitives.Covenant{Type: uint8(TypeOpen), Items: [][]byte{hash[:], []byte{0, 0, 0, 0}, []byte(testExampleName)}}},
+			{Covenant: primitives.Covenant{Type: uint8(TypeBid), Items: [][]byte{hash[:], []byte{1, 0, 0, 0}, []byte(testExampleName), make([]byte, 32)}}},
 		},
 	}
 
@@ -160,9 +160,9 @@ func TestNameSetHelpers(t *testing.T) {
 }
 
 func TestHasSaneCovenants(t *testing.T) {
-	hash, err := HashString("example-name")
+	hash, err := HashString(testExampleName)
 	if err != nil {
-		t.Fatalf("HashString returned error: %v", err)
+		t.Fatalf(testHashStringErr, err)
 	}
 
 	valid := primitives.Transaction{
@@ -171,7 +171,7 @@ func TestHasSaneCovenants(t *testing.T) {
 			{Prevout: primitives.Outpoint{TxHash: primitives.Hash{2}, Index: 0}},
 		},
 		Outputs: []primitives.Output{
-			{Covenant: primitives.Covenant{Type: uint8(TypeOpen), Items: [][]byte{hash[:], []byte{0, 0, 0, 0}, []byte("example-name")}}},
+			{Covenant: primitives.Covenant{Type: uint8(TypeOpen), Items: [][]byte{hash[:], []byte{0, 0, 0, 0}, []byte(testExampleName)}}},
 			{Covenant: primitives.Covenant{Type: uint8(TypeRegister), Items: [][]byte{hash[:], []byte{1, 0, 0, 0}, []byte("record"), make([]byte, 32)}}},
 		},
 	}
@@ -186,7 +186,7 @@ func TestHasSaneCovenants(t *testing.T) {
 
 	invalid := primitives.Transaction{
 		Outputs: []primitives.Output{
-			{Covenant: primitives.Covenant{Type: uint8(TypeOpen), Items: [][]byte{hash[:], []byte{1, 0, 0, 0}, []byte("example-name")}}},
+			{Covenant: primitives.Covenant{Type: uint8(TypeOpen), Items: [][]byte{hash[:], []byte{1, 0, 0, 0}, []byte(testExampleName)}}},
 		},
 	}
 
@@ -204,7 +204,7 @@ func TestHasSaneCovenants(t *testing.T) {
 			{Covenant: primitives.Covenant{Type: uint8(TypeClaim), Items: [][]byte{
 				hash[:],
 				make([]byte, 4),
-				[]byte("example-name"),
+				[]byte(testExampleName),
 				[]byte{0},
 				make([]byte, 32),
 				make([]byte, 4),
@@ -242,9 +242,9 @@ func (v testCoinView) GetOutput(prevout primitives.Outpoint) (primitives.Output,
 }
 
 func TestVerifyCovenants(t *testing.T) {
-	hash, err := HashString("example-name")
+	hash, err := HashString(testExampleName)
 	if err != nil {
-		t.Fatalf("HashString returned error: %v", err)
+		t.Fatalf(testHashStringErr, err)
 	}
 
 	var prevHash primitives.Hash
@@ -269,7 +269,7 @@ func TestVerifyCovenants(t *testing.T) {
 	finalizeCovenant.Items = [][]byte{
 		hash[:],
 		make([]byte, 4),
-		[]byte("example-name"),
+		[]byte(testExampleName),
 		[]byte{0},
 		make([]byte, 4),
 		make([]byte, 4),
@@ -311,7 +311,7 @@ func TestVerifyCovenants(t *testing.T) {
 	}
 
 	if got := VerifyCovenants(tx, view, 100, Network{}); got != 0 {
-		t.Fatalf("VerifyCovenants returned %d, want 0", got)
+		t.Fatalf(testVerifyCovenantsZero, got)
 	}
 
 	if got := GetVerifyCovenants(tx, view, 100, Network{}); got != 0 {
@@ -329,9 +329,9 @@ func TestVerifyCovenants(t *testing.T) {
 }
 
 func TestVerifyCovenantsBidReveal(t *testing.T) {
-	hash, err := HashString("example-name")
+	hash, err := HashString(testExampleName)
 	if err != nil {
-		t.Fatalf("HashString returned error: %v", err)
+		t.Fatalf(testHashStringErr, err)
 	}
 
 	var prevHash primitives.Hash
@@ -352,7 +352,7 @@ func TestVerifyCovenantsBidReveal(t *testing.T) {
 		Items: [][]byte{
 			hash[:],
 			[]byte{100, 0, 0, 0},
-			[]byte("example-name"),
+			[]byte(testExampleName),
 			bidBlind[:],
 		},
 	}
@@ -388,7 +388,7 @@ func TestVerifyCovenantsBidReveal(t *testing.T) {
 	}
 
 	if got := VerifyCovenants(tx, view, 100, Network{}); got != 0 {
-		t.Fatalf("VerifyCovenants returned %d, want 0", got)
+		t.Fatalf(testVerifyCovenantsZero, got)
 	}
 
 	tx.Outputs[0].Covenant.Items[2][0] ^= 1
@@ -398,9 +398,9 @@ func TestVerifyCovenantsBidReveal(t *testing.T) {
 }
 
 func TestVerifyCovenantsRejectsInvalidStructure(t *testing.T) {
-	hash, err := HashString("example-name")
+	hash, err := HashString(testExampleName)
 	if err != nil {
-		t.Fatalf("HashString returned error: %v", err)
+		t.Fatalf(testHashStringErr, err)
 	}
 
 	var prevHash primitives.Hash
@@ -417,7 +417,7 @@ func TestVerifyCovenantsRejectsInvalidStructure(t *testing.T) {
 					Items: [][]byte{
 						hash[:],
 						[]byte{1, 0, 0, 0},
-						[]byte("example-name"),
+						[]byte(testExampleName),
 					},
 				},
 			},
@@ -461,9 +461,9 @@ func TestHasSaneCovenantsRejectsOversizedUnknownCovenants(t *testing.T) {
 }
 
 func TestVerifyCovenantsCoinbaseLinkedOutputs(t *testing.T) {
-	reservedHash, err := HashString("reserved")
+	reservedHash, err := HashString(testReservedLabel)
 	if err != nil {
-		t.Fatalf("HashString returned error: %v", err)
+		t.Fatalf(testHashStringErr, err)
 	}
 
 	makeClaim := func(blockHeight uint32) primitives.Covenant {
@@ -474,7 +474,7 @@ func TestVerifyCovenantsCoinbaseLinkedOutputs(t *testing.T) {
 		items := [][]byte{
 			claimHash[:],
 			make([]byte, 4),
-			[]byte("reserved"),
+			[]byte(testReservedLabel),
 			[]byte{0},
 			blockHash[:],
 			make([]byte, 4),
@@ -502,7 +502,7 @@ func TestVerifyCovenantsCoinbaseLinkedOutputs(t *testing.T) {
 		}
 
 		if got := VerifyCovenants(tx, testCoinView{coins: map[primitives.Outpoint]primitives.Output{}}, 100, Network{}); got != 0 {
-			t.Fatalf("VerifyCovenants returned %d, want 0", got)
+			t.Fatalf(testVerifyCovenantsZero, got)
 		}
 	})
 
@@ -654,9 +654,9 @@ func TestCoinbaseAirdropProofValidation(t *testing.T) {
 }
 
 func TestCoinbaseClaimWitnessValidation(t *testing.T) {
-	reservedHash, err := HashString("reserved")
+	reservedHash, err := HashString(testReservedLabel)
 	if err != nil {
-		t.Fatalf("HashString returned error: %v", err)
+		t.Fatalf(testHashStringErr, err)
 	}
 
 	var claimHash primitives.Hash
@@ -686,7 +686,7 @@ func TestCoinbaseClaimWitnessValidation(t *testing.T) {
 					Items: [][]byte{
 						claimHash[:],
 						blockHeight,
-						[]byte("reserved"),
+						[]byte(testReservedLabel),
 						[]byte{0},
 						make([]byte, 32),
 						blockHeight,
@@ -717,9 +717,9 @@ func TestCoinbaseClaimWitnessValidation(t *testing.T) {
 }
 
 func TestCoinbaseClaimConjureOverflow(t *testing.T) {
-	reservedHash, err := HashString("reserved")
+	reservedHash, err := HashString(testReservedLabel)
 	if err != nil {
-		t.Fatalf("HashString returned error: %v", err)
+		t.Fatalf(testHashStringErr, err)
 	}
 
 	var claimHash primitives.Hash
@@ -753,7 +753,7 @@ func TestCoinbaseClaimConjureOverflow(t *testing.T) {
 					Items: [][]byte{
 						claimHash[:],
 						blockHeight,
-						[]byte("reserved"),
+						[]byte(testReservedLabel),
 						[]byte{0},
 						make([]byte, 32),
 						blockHeight,
@@ -771,7 +771,7 @@ func TestCoinbaseClaimConjureOverflow(t *testing.T) {
 					Items: [][]byte{
 						claimHash[:],
 						blockHeight,
-						[]byte("reserved"),
+						[]byte(testReservedLabel),
 						[]byte{0},
 						make([]byte, 32),
 						blockHeight,

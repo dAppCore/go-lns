@@ -63,7 +63,7 @@ func TestLiveDNSActionsDiscoverServeAndResolve(t *testing.T) {
 			writeActionTestJSON(t, w, map[string]any{
 				"result": map[string]any{
 					"records": []map[string]any{
-						{"type": "GLUE4", "ns": "charon.lthn.", "address": "192.0.2.10"},
+						{"type": "GLUE4", "ns": testCharonFQDN, "address": testLiveIPv4},
 						{"type": "TXT", "txt": []string{"hello"}},
 					},
 				},
@@ -77,7 +77,7 @@ func TestLiveDNSActionsDiscoverServeAndResolve(t *testing.T) {
 	c := core.New()
 	svc := NewService(c)
 	if result := svc.OnStartup(context.Background()); !result.OK {
-		t.Fatalf("OnStartup returned %#v, want OK", result)
+		t.Fatalf(testOnStartupOK, result)
 	}
 
 	options := core.NewOptions(
@@ -86,7 +86,7 @@ func TestLiveDNSActionsDiscoverServeAndResolve(t *testing.T) {
 		core.Option{Key: "dns_addr", Value: "127.0.0.1:0"},
 	)
 
-	discoverResult := c.Action("lns.dns.discover").Run(context.Background(), options)
+	discoverResult := c.Action(actionNameDNSDiscover).Run(context.Background(), options)
 	if !discoverResult.OK {
 		t.Fatalf("lns.dns.discover returned %#v, want OK", discoverResult)
 	}
@@ -100,7 +100,7 @@ func TestLiveDNSActionsDiscoverServeAndResolve(t *testing.T) {
 	}
 
 	resolveResult := c.Action("lns.dns.resolve").Run(context.Background(), core.NewOptions(
-		core.Option{Key: "name", Value: "charon.lthn"},
+		core.Option{Key: "name", Value: testCharonName},
 		core.Option{Key: "chain_url", Value: chainServer.URL},
 		core.Option{Key: "alias_url", Value: aliasServer.URL},
 	))
@@ -112,12 +112,12 @@ func TestLiveDNSActionsDiscoverServeAndResolve(t *testing.T) {
 	if !ok {
 		t.Fatalf("lns.dns.resolve returned %T, want dnsResolveResult", resolveResult.Value)
 	}
-	if len(resolve.Records4) != 1 || len(resolve.Addresses) != 1 || resolve.Addresses[0] != "192.0.2.10" {
+	if len(resolve.Records4) != 1 || len(resolve.Addresses) != 1 || resolve.Addresses[0] != testLiveIPv4 {
 		t.Fatalf("resolve = %#v, want one IPv4 address from live bridge", resolve)
 	}
 
 	reverseResult := c.Action("lns.dns.reverse").Run(context.Background(), core.NewOptions(
-		core.Option{Key: "ip", Value: "192.0.2.10"},
+		core.Option{Key: "ip", Value: testLiveIPv4},
 		core.Option{Key: "chain_url", Value: chainServer.URL},
 		core.Option{Key: "alias_url", Value: aliasServer.URL},
 	))
@@ -129,11 +129,11 @@ func TestLiveDNSActionsDiscoverServeAndResolve(t *testing.T) {
 	if !ok {
 		t.Fatalf("lns.dns.reverse returned %T, want dnsReverseResult", reverseResult.Value)
 	}
-	if len(reverse.Names) != 1 || reverse.Names[0] != "charon.lthn." {
+	if len(reverse.Names) != 1 || reverse.Names[0] != testCharonFQDN {
 		t.Fatalf("reverse = %#v, want charon.lthn.", reverse)
 	}
 
-	serveResult := c.Action("lns.dns.serve").Run(context.Background(), options)
+	serveResult := c.Action(actionNameDNSServe).Run(context.Background(), options)
 	if !serveResult.OK {
 		t.Fatalf("lns.dns.serve returned %#v, want OK", serveResult)
 	}
@@ -171,18 +171,18 @@ func TestDNSReverseWithExplicitResourceStillWorks(t *testing.T) {
 	c := core.New()
 	svc := NewService(c)
 	if result := svc.OnStartup(context.Background()); !result.OK {
-		t.Fatalf("OnStartup returned %#v, want OK", result)
+		t.Fatalf(testOnStartupOK, result)
 	}
 
 	resource := NewResource()
 	resource.Records = []ResourceRecord{
-		GLUE4Record{NS: "charon.lthn.", Address: netip.MustParseAddr("192.0.2.10")},
+		GLUE4Record{NS: testCharonFQDN, Address: netip.MustParseAddr(testLiveIPv4)},
 	}
 
 	result := c.Action("lns.dns.reverse").Run(context.Background(), core.NewOptions(
-		core.Option{Key: "name", Value: "charon.lthn"},
+		core.Option{Key: "name", Value: testCharonName},
 		core.Option{Key: "resource", Value: resource},
-		core.Option{Key: "ip", Value: "192.0.2.10"},
+		core.Option{Key: "ip", Value: testLiveIPv4},
 	))
 	if !result.OK {
 		t.Fatalf("lns.dns.reverse returned %#v, want OK", result)

@@ -70,21 +70,21 @@ func (ns NameState) GetFormat(height uint32, rules NameStateRules) NameStateJSON
 // FromJSON populates the name state from its JSON representation.
 func (ns *NameState) FromJSON(json NameStateJSON) error {
 	if len(json.Name) > nameStateJSONMaxSize {
-		return core.E("primitives.NameState.FromJSON", "invalid name length", nil)
+		return core.E(opNameStateFromJSON, "invalid name length", nil)
 	}
 
 	if len(json.NameHash) != len(Hash{})*2 {
-		return core.E("primitives.NameState.FromJSON", "invalid name hash length", nil)
+		return core.E(opNameStateFromJSON, "invalid name hash length", nil)
 	}
 
 	nameHash, err := hex.DecodeString(json.NameHash)
 	if err != nil {
-		return core.E("primitives.NameState.FromJSON", "invalid name hash encoding", err)
+		return core.E(opNameStateFromJSON, "invalid name hash encoding", err)
 	}
 
 	data, err := hex.DecodeString(json.Data)
 	if err != nil {
-		return core.E("primitives.NameState.FromJSON", "invalid data encoding", err)
+		return core.E(opNameStateFromJSON, "invalid data encoding", err)
 	}
 
 	if err := ns.Owner.FromJSON(json.Owner); err != nil {

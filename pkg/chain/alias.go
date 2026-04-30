@@ -9,6 +9,8 @@ import (
 	core "dappco.re/go"
 )
 
+const opGetAliases = "chain.AliasClient.GetAliases"
+
 // Alias describes a main-chain alias entry used for LNS discovery.
 type Alias struct {
 	Name    string
@@ -62,34 +64,34 @@ func NewAliasClient(url string, opts ...AliasClientOption) *AliasClient {
 // GetAliases returns all main-chain aliases.
 func (c *AliasClient) GetAliases() ([]Alias, error) {
 	if c == nil || c.url == "" {
-		return nil, core.E("chain.AliasClient.GetAliases", "url is required", nil)
+		return nil, core.E(opGetAliases, "url is required", nil)
 	}
 
 	body := []byte(`{"jsonrpc":"2.0","id":"0","method":"get_all_alias_details","params":{}}`)
 	request, err := http.NewRequest(http.MethodPost, c.url, core.NewBuffer(body))
 	if err != nil {
-		return nil, core.E("chain.AliasClient.GetAliases", "build request", err)
+		return nil, core.E(opGetAliases, "build request", err)
 	}
 
 	request.Header.Set("Content-Type", "application/json")
 
 	response, err := c.httpClient.Do(request)
 	if err != nil {
-		return nil, core.E("chain.AliasClient.GetAliases", "perform request", err)
+		return nil, core.E(opGetAliases, "perform request", err)
 	}
 
 	read := core.ReadAll(response.Body)
 	if !read.OK {
 		err, _ := read.Value.(error)
-		return nil, core.E("chain.AliasClient.GetAliases", "read response", err)
+		return nil, core.E(opGetAliases, "read response", err)
 	}
 	raw, ok := read.Value.(string)
 	if !ok {
-		return nil, core.E("chain.AliasClient.GetAliases", "read response", nil)
+		return nil, core.E(opGetAliases, "read response", nil)
 	}
 
 	if response.StatusCode != http.StatusOK {
-		return nil, core.E("chain.AliasClient.GetAliases", "unexpected status", nil)
+		return nil, core.E(opGetAliases, "unexpected status", nil)
 	}
 
 	var payload struct {
@@ -105,7 +107,7 @@ func (c *AliasClient) GetAliases() ([]Alias, error) {
 	decoded := core.JSONUnmarshal([]byte(raw), &payload)
 	if !decoded.OK {
 		err, _ := decoded.Value.(error)
-		return nil, core.E("chain.AliasClient.GetAliases", "decode response", err)
+		return nil, core.E(opGetAliases, "decode response", err)
 	}
 
 	aliases := make([]Alias, 0, len(payload.Result.Aliases))

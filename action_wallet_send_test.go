@@ -16,17 +16,17 @@ func TestWalletSendReturnsDraftPlan(t *testing.T) {
 	c := core.New()
 	svc := NewService(c)
 	if result := svc.OnStartup(context.Background()); !result.OK {
-		t.Fatalf("OnStartup returned %#v, want OK", result)
+		t.Fatalf(testOnStartupOK, result)
 	}
 
 	wallet, err := walletpkg.ImportSeed("000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f")
 	if err != nil {
-		t.Fatalf("ImportSeed returned error: %v", err)
+		t.Fatalf(testImportSeedErr, err)
 	}
 	wallet.Credit(1000, false, 10, primitives.Hash{1}, "funding")
 	svc.wallet = wallet
 
-	result := c.Action("lns.wallet.send").Run(context.Background(), core.NewOptions(
+	result := c.Action(actionNameWalletSend).Run(context.Background(), core.NewOptions(
 		core.Option{Key: "amount", Value: 200},
 		core.Option{Key: "address", Value: Address{Version: 0, Hash: []byte{
 			2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
@@ -34,12 +34,12 @@ func TestWalletSendReturnsDraftPlan(t *testing.T) {
 		}}},
 	))
 	if !result.OK {
-		t.Fatalf("lns.wallet.send returned %#v, want OK", result)
+		t.Fatalf(testWalletSendOK, result)
 	}
 
 	plan, ok := result.Value.(walletSendPlanResult)
 	if !ok {
-		t.Fatalf("lns.wallet.send returned %T, want walletSendPlanResult", result.Value)
+		t.Fatalf(testWalletSendPlanType, result.Value)
 	}
 
 	if !plan.SufficientFunds || plan.Confirmed != 1000 || plan.Amount != 200 {
@@ -55,7 +55,7 @@ func TestWalletSendReturnsDraftPlan(t *testing.T) {
 		t.Fatalf("wallet send plan = %#v, want deterministic draft ID", plan)
 	}
 
-	second := c.Action("lns.wallet.send").Run(context.Background(), core.NewOptions(
+	second := c.Action(actionNameWalletSend).Run(context.Background(), core.NewOptions(
 		core.Option{Key: "amount", Value: 200},
 		core.Option{Key: "address", Value: Address{Version: 0, Hash: []byte{
 			2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
@@ -79,38 +79,38 @@ func TestWalletSendCanRecordPendingHistoryEntry(t *testing.T) {
 	c := core.New()
 	svc := NewService(c)
 	if result := svc.OnStartup(context.Background()); !result.OK {
-		t.Fatalf("OnStartup returned %#v, want OK", result)
+		t.Fatalf(testOnStartupOK, result)
 	}
 
 	wallet, err := walletpkg.ImportSeed("000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f")
 	if err != nil {
-		t.Fatalf("ImportSeed returned error: %v", err)
+		t.Fatalf(testImportSeedErr, err)
 	}
 	wallet.Credit(1000, false, 10, primitives.Hash{1}, "funding")
 	svc.wallet = wallet
 
-	result := c.Action("lns.wallet.send").Run(context.Background(), core.NewOptions(
+	result := c.Action(actionNameWalletSend).Run(context.Background(), core.NewOptions(
 		core.Option{Key: "amount", Value: 200},
 		core.Option{Key: "record_history", Value: true},
-		core.Option{Key: "note", Value: "queued send"},
+		core.Option{Key: "note", Value: testQueuedSendNote},
 		core.Option{Key: "address", Value: Address{Version: 0, Hash: []byte{
 			2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
 			2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
 		}}},
 	))
 	if !result.OK {
-		t.Fatalf("lns.wallet.send returned %#v, want OK", result)
+		t.Fatalf(testWalletSendOK, result)
 	}
 
 	plan, ok := result.Value.(walletSendPlanResult)
 	if !ok {
-		t.Fatalf("lns.wallet.send returned %T, want walletSendPlanResult", result.Value)
+		t.Fatalf(testWalletSendPlanType, result.Value)
 	}
 	if !plan.Recorded || plan.PendingEntry == nil || !plan.PendingEntry.Pending {
 		t.Fatalf("wallet send plan = %#v, want recorded pending entry", plan)
 	}
-	if plan.PendingEntry.Note != "queued send" {
-		t.Fatalf("pending entry = %#v, want note %q", plan.PendingEntry, "queued send")
+	if plan.PendingEntry.Note != testQueuedSendNote {
+		t.Fatalf("pending entry = %#v, want note %q", plan.PendingEntry, testQueuedSendNote)
 	}
 	if got := hex.EncodeToString(plan.PendingEntry.Hash[:]); got != plan.DraftID {
 		t.Fatalf("pending entry hash = %q, want draft ID %q", got, plan.DraftID)
@@ -131,17 +131,17 @@ func TestWalletSendCanSuppressAutoChange(t *testing.T) {
 	c := core.New()
 	svc := NewService(c)
 	if result := svc.OnStartup(context.Background()); !result.OK {
-		t.Fatalf("OnStartup returned %#v, want OK", result)
+		t.Fatalf(testOnStartupOK, result)
 	}
 
 	wallet, err := walletpkg.ImportSeed("000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f")
 	if err != nil {
-		t.Fatalf("ImportSeed returned error: %v", err)
+		t.Fatalf(testImportSeedErr, err)
 	}
 	wallet.Credit(1000, false, 10, primitives.Hash{1}, "funding")
 	svc.wallet = wallet
 
-	result := c.Action("lns.wallet.send").Run(context.Background(), core.NewOptions(
+	result := c.Action(actionNameWalletSend).Run(context.Background(), core.NewOptions(
 		core.Option{Key: "amount", Value: 200},
 		core.Option{Key: "no_change", Value: true},
 		core.Option{Key: "address", Value: Address{Version: 0, Hash: []byte{
@@ -150,12 +150,12 @@ func TestWalletSendCanSuppressAutoChange(t *testing.T) {
 		}}},
 	))
 	if !result.OK {
-		t.Fatalf("lns.wallet.send returned %#v, want OK", result)
+		t.Fatalf(testWalletSendOK, result)
 	}
 
 	plan, ok := result.Value.(walletSendPlanResult)
 	if !ok {
-		t.Fatalf("lns.wallet.send returned %T, want walletSendPlanResult", result.Value)
+		t.Fatalf(testWalletSendPlanType, result.Value)
 	}
 	if plan.Draft == nil || len(plan.Draft.Transaction.Outputs) != 1 {
 		t.Fatalf("wallet send draft = %#v, want recipient-only draft output", plan.Draft)
@@ -169,10 +169,10 @@ func TestWalletSendRequiresWallet(t *testing.T) {
 	c := core.New()
 	svc := NewService(c)
 	if result := svc.OnStartup(context.Background()); !result.OK {
-		t.Fatalf("OnStartup returned %#v, want OK", result)
+		t.Fatalf(testOnStartupOK, result)
 	}
 
-	result := c.Action("lns.wallet.send").Run(context.Background(), core.NewOptions(
+	result := c.Action(actionNameWalletSend).Run(context.Background(), core.NewOptions(
 		core.Option{Key: "amount", Value: 200},
 		core.Option{Key: "address", Value: Address{Version: 0, Hash: []byte{
 			2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
@@ -187,7 +187,7 @@ func TestWalletSendRequiresWallet(t *testing.T) {
 	if !ok {
 		t.Fatalf("lns.wallet.send returned %T, want error", result.Value)
 	}
-	if got := core.Operation(err); got != "lns.wallet.send" {
-		t.Fatalf("wallet.send error operation = %q, want %q", got, "lns.wallet.send")
+	if got := core.Operation(err); got != actionNameWalletSend {
+		t.Fatalf("wallet.send error operation = %q, want %q", got, actionNameWalletSend)
 	}
 }

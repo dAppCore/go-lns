@@ -22,6 +22,11 @@ var defaultKnownNames = []string{
 	"support", "trade", "trading",
 }
 
+const (
+	lthnFQDNSuffix    = ".lthn."
+	dnsWriteFailedMsg = "DNS response write failed"
+)
+
 // NameRecord is a cached DNS view for a single .lthn name.
 type NameRecord struct {
 	Name     string
@@ -175,7 +180,7 @@ func (b *Bridge) Lookup(name string) (*NameRecord, bool) {
 		return nil, false
 	}
 
-	name = core.TrimSuffix(core.TrimSuffix(core.Lower(core.Trim(name)), ".lthn."), ".lthn")
+	name = core.TrimSuffix(core.TrimSuffix(core.Lower(core.Trim(name)), lthnFQDNSuffix), ".lthn")
 	if name == "" {
 		return nil, false
 	}
@@ -290,7 +295,7 @@ func (b *Bridge) Serve(ctx context.Context) error {
 	if err != nil {
 		return core.E("dns.Bridge.Serve", "bind udp", err)
 	}
-	packetConn.Close()
+	_ = packetConn.Close()
 
 	udpServer := &miekgdns.Server{Addr: b.cfg.DNSAddr, Net: "udp", Handler: handler}
 	tcpServer := &miekgdns.Server{Addr: b.cfg.DNSAddr, Net: "tcp", Handler: handler}
@@ -401,7 +406,7 @@ func (record *NameRecord) FQDN() string {
 	if record == nil || record.Name == "" {
 		return "lthn."
 	}
-	return core.Lower(record.Name) + ".lthn."
+	return core.Lower(record.Name) + lthnFQDNSuffix
 }
 
 // Addresses4 returns IPv4 glue addresses for the record.
@@ -522,9 +527,9 @@ func dnsFQDN(name string) string {
 func aliasRecordHost(name, host string) string {
 	host = core.Trim(host)
 	if host == "" || host == "@" {
-		return core.Lower(name) + ".lthn."
+		return core.Lower(name) + lthnFQDNSuffix
 	}
-	if core.HasSuffix(core.Lower(host), ".lthn.") {
+	if core.HasSuffix(core.Lower(host), lthnFQDNSuffix) {
 		return core.Lower(host)
 	}
 	return dnsFQDN(host)
@@ -552,7 +557,7 @@ func (b *Bridge) handleDNS(writer miekgdns.ResponseWriter, request *miekgdns.Msg
 	if len(request.Question) == 0 {
 		reply.SetRcode(request, miekgdns.RcodeFormatError)
 		if err := writer.WriteMsg(reply); err != nil {
-			core.Warn("DNS response write failed", "err", err)
+			core.Warn(dnsWriteFailedMsg, "err", err)
 		}
 		return
 	}
@@ -567,7 +572,7 @@ func (b *Bridge) handleDNS(writer miekgdns.ResponseWriter, request *miekgdns.Msg
 	if !ok {
 		reply.SetRcode(request, miekgdns.RcodeRefused)
 		if err := writer.WriteMsg(reply); err != nil {
-			core.Warn("DNS response write failed", "err", err)
+			core.Warn(dnsWriteFailedMsg, "err", err)
 		}
 		return
 	}
@@ -579,7 +584,7 @@ func (b *Bridge) handleDNS(writer miekgdns.ResponseWriter, request *miekgdns.Msg
 			reply.Ns = []miekgdns.RR{b.soaRecord()}
 		}
 		if err := writer.WriteMsg(reply); err != nil {
-			core.Warn("DNS response write failed", "err", err)
+			core.Warn(dnsWriteFailedMsg, "err", err)
 		}
 		return
 	}
@@ -589,7 +594,7 @@ func (b *Bridge) handleDNS(writer miekgdns.ResponseWriter, request *miekgdns.Msg
 		reply.SetRcode(request, miekgdns.RcodeNameError)
 		reply.Ns = []miekgdns.RR{b.soaRecord()}
 		if err := writer.WriteMsg(reply); err != nil {
-			core.Warn("DNS response write failed", "err", err)
+			core.Warn(dnsWriteFailedMsg, "err", err)
 		}
 		return
 	}
@@ -639,7 +644,7 @@ func (b *Bridge) handleDNS(writer miekgdns.ResponseWriter, request *miekgdns.Msg
 	}
 
 	if err := writer.WriteMsg(reply); err != nil {
-		core.Warn("DNS response write failed", "err", err)
+		core.Warn(dnsWriteFailedMsg, "err", err)
 	}
 }
 
@@ -648,7 +653,7 @@ func (b *Bridge) handlePTR(writer miekgdns.ResponseWriter, reply *miekgdns.Msg, 
 	if ip == "" {
 		reply.SetRcode(reply, miekgdns.RcodeNameError)
 		if err := writer.WriteMsg(reply); err != nil {
-			core.Warn("DNS response write failed", "err", err)
+			core.Warn(dnsWriteFailedMsg, "err", err)
 		}
 		return
 	}
@@ -665,7 +670,7 @@ func (b *Bridge) handlePTR(writer miekgdns.ResponseWriter, reply *miekgdns.Msg, 
 	}
 
 	if err := writer.WriteMsg(reply); err != nil {
-		core.Warn("DNS response write failed", "err", err)
+		core.Warn(dnsWriteFailedMsg, "err", err)
 	}
 }
 

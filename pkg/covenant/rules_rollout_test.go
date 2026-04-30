@@ -49,9 +49,9 @@ func TestGetRolloutAndHasRollout(t *testing.T) {
 }
 
 func TestIsReserved(t *testing.T) {
-	hash, err := HashString("reserved")
+	hash, err := HashString(testReservedLabel)
 	if err != nil {
-		t.Fatalf("HashString returned error: %v", err)
+		t.Fatalf(testHashStringErr, err)
 	}
 
 	rules := NameRules{
@@ -77,14 +77,14 @@ func TestIsReserved(t *testing.T) {
 }
 
 func TestIsLockedUp(t *testing.T) {
-	rootHash, err := HashString("nec")
+	rootHash, err := HashString(testLockedLabel)
 	if err != nil {
-		t.Fatalf("HashString returned error: %v", err)
+		t.Fatalf(testHashStringErr, err)
 	}
 
 	nonRootHash, err := HashString("openclassrooms")
 	if err != nil {
-		t.Fatalf("HashString returned error: %v", err)
+		t.Fatalf(testHashStringErr, err)
 	}
 
 	rules := NameRules{

@@ -9,6 +9,8 @@ import (
 	"dappco.re/go/lns/pkg/primitives"
 )
 
+const testImportSeedErr = "ImportSeed returned error: %v"
+
 func TestWalletCreateImportExportRoundTrip(t *testing.T) {
 	first, err := Create()
 	if err != nil {
@@ -22,7 +24,7 @@ func TestWalletCreateImportExportRoundTrip(t *testing.T) {
 
 	second, err := ImportSeed(seed)
 	if err != nil {
-		t.Fatalf("ImportSeed returned error: %v", err)
+		t.Fatalf(testImportSeedErr, err)
 	}
 
 	if got, want := second.ExportSeed(), seed; got != want {
@@ -37,7 +39,7 @@ func TestWalletCreateImportExportRoundTrip(t *testing.T) {
 func TestWalletBalanceHistoryAndReceive(t *testing.T) {
 	wallet, err := ImportSeed("000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f")
 	if err != nil {
-		t.Fatalf("ImportSeed returned error: %v", err)
+		t.Fatalf(testImportSeedErr, err)
 	}
 
 	firstAddress := wallet.ReceiveAddress()
@@ -67,7 +69,7 @@ func TestWalletBalanceHistoryAndReceive(t *testing.T) {
 func TestWalletPendingDebitDoesNotAffectBalance(t *testing.T) {
 	wallet, err := ImportSeed("000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f")
 	if err != nil {
-		t.Fatalf("ImportSeed returned error: %v", err)
+		t.Fatalf(testImportSeedErr, err)
 	}
 
 	wallet.Credit(100, false, 10, primitives.Hash{1}, "credit")

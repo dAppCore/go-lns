@@ -12,7 +12,15 @@ import (
 	"dappco.re/go/lns/pkg/covenant"
 )
 
-const resourceEncodingVersion = 0
+const (
+	resourceEncodingVersion = 0
+	synthSuffix             = "._synth."
+	opResourceFromChain     = "dns.resourceFromChainResource"
+	opResourceEncode        = "dns.Resource.Encode"
+	opResourceDecode        = "dns.Resource.Decode"
+	opResourceFromJSON      = "dns.Resource.FromJSON"
+	errResourceRequired     = "resource is required"
+)
 
 // ResourceRecord is a DNS resource payload item.
 type ResourceRecord interface {
@@ -239,7 +247,7 @@ func (r TXTRecord) GetType() HSType { return r.Type() }
 // NS returns the synthesized target host for a SYNTH4 record.
 func (r SYNTH4Record) NS() string {
 	if !r.Address.Is4() {
-		return "._synth."
+		return synthSuffix
 	}
 
 	addr := r.Address.As4()
@@ -249,7 +257,7 @@ func (r SYNTH4Record) NS() string {
 // NS returns the synthesized target host for a SYNTH6 record.
 func (r SYNTH6Record) NS() string {
 	if !r.Address.Is6() {
-		return "._synth."
+		return synthSuffix
 	}
 
 	addr := r.Address.As16()
@@ -258,7 +266,7 @@ func (r SYNTH6Record) NS() string {
 
 func synthName(ip []byte) string {
 	enc := base32.HexEncoding.WithPadding(base32.NoPadding)
-	return "_" + core.Lower(enc.EncodeToString(ip)) + "._synth."
+	return "_" + core.Lower(enc.EncodeToString(ip)) + synthSuffix
 }
 
 // HasType reports whether the resource contains at least one record of type t.
@@ -657,7 +665,7 @@ func (r *Resource) GetToNSEC(name string) NSECRecord {
 // Encode serializes the resource payload in the reference binary format.
 func (r *Resource) Encode() ([]byte, error) {
 	if r == nil {
-		return nil, core.E("dns.Resource.Encode", "resource is required", nil)
+		return nil, core.E(opResourceEncode, errResourceRequired, nil)
 	}
 
 	buf := core.NewBuffer()
@@ -665,17 +673,17 @@ func (r *Resource) Encode() ([]byte, error) {
 
 	for _, record := range r.Records {
 		if record == nil {
-			return nil, core.E("dns.Resource.Encode", "record is required", nil)
+			return nil, core.E(opResourceEncode, "record is required", nil)
 		}
 
 		buf.WriteByte(byte(record.Type()))
 		if err := encodeRecord(buf, record); err != nil {
-			return nil, core.E("dns.Resource.Encode", err.Error(), nil)
+			return nil, core.E(opResourceEncode, err.Error(), nil)
 		}
 	}
 
 	if buf.Len() > covenant.MaxResourceSize {
-		return nil, core.E("dns.Resource.Encode", "resource exceeds maximum size", nil)
+		return nil, core.E(opResourceEncode, "resource exceeds maximum size", nil)
 	}
 
 	return buf.Bytes(), nil
@@ -689,19 +697,19 @@ func (r *Resource) GetEncode() ([]byte, error) {
 // Decode populates the resource from the reference binary format.
 func (r *Resource) Decode(raw []byte) error {
 	if r == nil {
-		return core.E("dns.Resource.Decode", "resource is required", nil)
+		return core.E(opResourceDecode, errResourceRequired, nil)
 	}
 
 	if len(raw) == 0 {
-		return core.E("dns.Resource.Decode", "resource payload is required", nil)
+		return core.E(opResourceDecode, "resource payload is required", nil)
 	}
 
 	if len(raw) > covenant.MaxResourceSize {
-		return core.E("dns.Resource.Decode", "resource exceeds maximum size", nil)
+		return core.E(opResourceDecode, "resource exceeds maximum size", nil)
 	}
 
 	if raw[0] != resourceEncodingVersion {
-		return core.E("dns.Resource.Decode", core.Sprintf("unknown serialization version: %d", raw[0]), nil)
+		return core.E(opResourceDecode, core.Sprintf("unknown serialization version: %d", raw[0]), nil)
 	}
 
 	r.TTL = DEFAULT_TTL
@@ -714,7 +722,7 @@ func (r *Resource) Decode(raw []byte) error {
 
 		record, next, known, err := decodeRecord(raw, pos, t)
 		if err != nil {
-			return core.E("dns.Resource.Decode", err.Error(), nil)
+			return core.E(opResourceDecode, err.Error(), nil)
 		}
 		if !known {
 			break
@@ -761,7 +769,7 @@ func (r *Resource) GetJSON() ResourceJSON {
 // FromJSON populates the resource from its JSON representation.
 func (r *Resource) FromJSON(jsonView ResourceJSON) error {
 	if r == nil {
-		return core.E("dns.Resource.FromJSON", "resource is required", nil)
+		return core.E(opResourceFromJSON, errResourceRequired, nil)
 	}
 
 	r.TTL = DEFAULT_TTL
@@ -1001,14 +1009,14 @@ type resourceRecordProbe struct {
 func resourceRecordFromJSON(raw RawMessage) (ResourceRecord, error) {
 	var probe resourceRecordProbe
 	if r := core.JSONUnmarshal(raw, &probe); !r.OK {
-		return nil, core.E("dns.Resource.FromJSON", "invalid record encoding", r.Value.(error))
+		return nil, core.E(opResourceFromJSON, "invalid record encoding", r.Value.(error))
 	}
 
 	switch probe.Type {
 	case "DS":
 		var jsonRecord DSRecordJSON
 		if r := core.JSONUnmarshal(raw, &jsonRecord); !r.OK {
-			return nil, core.E("dns.Resource.FromJSON", "invalid DS record", r.Value.(error))
+			return nil, core.E(opResourceFromJSON, "invalid DS record", r.Value.(error))
 		}
 		var record DSRecord
 		if err := record.FromJSON(jsonRecord); err != nil {
@@ -1018,7 +1026,7 @@ func resourceRecordFromJSON(raw RawMessage) (ResourceRecord, error) {
 	case "NS":
 		var jsonRecord NSRecordJSON
 		if r := core.JSONUnmarshal(raw, &jsonRecord); !r.OK {
-			return nil, core.E("dns.Resource.FromJSON", "invalid NS record", r.Value.(error))
+			return nil, core.E(opResourceFromJSON, "invalid NS record", r.Value.(error))
 		}
 		var record NSRecord
 		if err := record.FromJSON(jsonRecord); err != nil {
@@ -1028,7 +1036,7 @@ func resourceRecordFromJSON(raw RawMessage) (ResourceRecord, error) {
 	case "GLUE4":
 		var jsonRecord GLUE4RecordJSON
 		if r := core.JSONUnmarshal(raw, &jsonRecord); !r.OK {
-			return nil, core.E("dns.Resource.FromJSON", "invalid GLUE4 record", r.Value.(error))
+			return nil, core.E(opResourceFromJSON, "invalid GLUE4 record", r.Value.(error))
 		}
 		var record GLUE4Record
 		if err := record.FromJSON(jsonRecord); err != nil {
@@ -1038,7 +1046,7 @@ func resourceRecordFromJSON(raw RawMessage) (ResourceRecord, error) {
 	case "GLUE6":
 		var jsonRecord GLUE6RecordJSON
 		if r := core.JSONUnmarshal(raw, &jsonRecord); !r.OK {
-			return nil, core.E("dns.Resource.FromJSON", "invalid GLUE6 record", r.Value.(error))
+			return nil, core.E(opResourceFromJSON, "invalid GLUE6 record", r.Value.(error))
 		}
 		var record GLUE6Record
 		if err := record.FromJSON(jsonRecord); err != nil {
@@ -1048,7 +1056,7 @@ func resourceRecordFromJSON(raw RawMessage) (ResourceRecord, error) {
 	case "SYNTH4":
 		var jsonRecord SYNTH4RecordJSON
 		if r := core.JSONUnmarshal(raw, &jsonRecord); !r.OK {
-			return nil, core.E("dns.Resource.FromJSON", "invalid SYNTH4 record", r.Value.(error))
+			return nil, core.E(opResourceFromJSON, "invalid SYNTH4 record", r.Value.(error))
 		}
 		var record SYNTH4Record
 		if err := record.FromJSON(jsonRecord); err != nil {
@@ -1058,7 +1066,7 @@ func resourceRecordFromJSON(raw RawMessage) (ResourceRecord, error) {
 	case "SYNTH6":
 		var jsonRecord SYNTH6RecordJSON
 		if r := core.JSONUnmarshal(raw, &jsonRecord); !r.OK {
-			return nil, core.E("dns.Resource.FromJSON", "invalid SYNTH6 record", r.Value.(error))
+			return nil, core.E(opResourceFromJSON, "invalid SYNTH6 record", r.Value.(error))
 		}
 		var record SYNTH6Record
 		if err := record.FromJSON(jsonRecord); err != nil {
@@ -1068,7 +1076,7 @@ func resourceRecordFromJSON(raw RawMessage) (ResourceRecord, error) {
 	case "TXT":
 		var jsonRecord TXTRecordJSON
 		if r := core.JSONUnmarshal(raw, &jsonRecord); !r.OK {
-			return nil, core.E("dns.Resource.FromJSON", "invalid TXT record", r.Value.(error))
+			return nil, core.E(opResourceFromJSON, "invalid TXT record", r.Value.(error))
 		}
 		var record TXTRecord
 		if err := record.FromJSON(jsonRecord); err != nil {
@@ -1076,7 +1084,7 @@ func resourceRecordFromJSON(raw RawMessage) (ResourceRecord, error) {
 		}
 		return record, nil
 	default:
-		return nil, core.E("dns.Resource.FromJSON", "unknown record type", nil)
+		return nil, core.E(opResourceFromJSON, "unknown record type", nil)
 	}
 }
 
@@ -1285,10 +1293,10 @@ func encodeDSRecord(buf resourceBuffer, record DSRecord) error {
 		return err
 	}
 
-	buf.WriteByte(record.Algorithm)
-	buf.WriteByte(record.DigestType)
-	buf.WriteByte(byte(len(record.Digest)))
-	buf.Write(record.Digest)
+	_ = buf.WriteByte(record.Algorithm)
+	_ = buf.WriteByte(record.DigestType)
+	_ = buf.WriteByte(byte(len(record.Digest)))
+	_, _ = buf.Write(record.Digest)
 	return nil
 }
 
@@ -1306,7 +1314,7 @@ func encodeGLUE4Record(buf resourceBuffer, record GLUE4Record) error {
 	}
 
 	addr := record.Address.As4()
-	buf.Write(addr[:])
+	_, _ = buf.Write(addr[:])
 	return nil
 }
 
@@ -1320,7 +1328,7 @@ func encodeGLUE6Record(buf resourceBuffer, record GLUE6Record) error {
 	}
 
 	addr := record.Address.As16()
-	buf.Write(addr[:])
+	_, _ = buf.Write(addr[:])
 	return nil
 }
 
@@ -1330,7 +1338,7 @@ func encodeSYNTH4Record(buf resourceBuffer, record SYNTH4Record) error {
 	}
 
 	addr := record.Address.As4()
-	buf.Write(addr[:])
+	_, _ = buf.Write(addr[:])
 	return nil
 }
 
@@ -1340,7 +1348,7 @@ func encodeSYNTH6Record(buf resourceBuffer, record SYNTH6Record) error {
 	}
 
 	addr := record.Address.As16()
-	buf.Write(addr[:])
+	_, _ = buf.Write(addr[:])
 	return nil
 }
 
@@ -1349,15 +1357,15 @@ func encodeTXTRecord(buf resourceBuffer, record TXTRecord) error {
 		return core.NewError("txt entry count exceeds maximum size")
 	}
 
-	buf.WriteByte(byte(len(record.Entries)))
+	_ = buf.WriteByte(byte(len(record.Entries)))
 
 	for _, entry := range record.Entries {
 		if len(entry) > 255 {
 			return core.NewError("txt entry exceeds maximum size")
 		}
 
-		buf.WriteByte(byte(len(entry)))
-		buf.WriteString(entry)
+		_ = buf.WriteByte(byte(len(entry)))
+		_, _ = buf.WriteString(entry)
 	}
 
 	return nil
@@ -1504,13 +1512,13 @@ func decodeTXTRecord(raw []byte, pos int) (ResourceRecord, int, bool, error) {
 func writeName(buf resourceBuffer, name string) error {
 	name = fqdn(name)
 	if name == "." {
-		buf.WriteByte(0)
+		_ = buf.WriteByte(0)
 		return nil
 	}
 
 	trimmed := trimFQDN(name)
 	if trimmed == "" {
-		buf.WriteByte(0)
+		_ = buf.WriteByte(0)
 		return nil
 	}
 
@@ -1520,11 +1528,11 @@ func writeName(buf resourceBuffer, name string) error {
 			return core.Errorf("invalid dns label %q", label)
 		}
 
-		buf.WriteByte(byte(len(label)))
-		buf.WriteString(label)
+		_ = buf.WriteByte(byte(len(label)))
+		_, _ = buf.WriteString(label)
 	}
 
-	buf.WriteByte(0)
+	_ = buf.WriteByte(0)
 	return nil
 }
 

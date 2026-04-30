@@ -9,20 +9,45 @@ import (
 	"dappco.re/go/lns/pkg/primitives"
 )
 
+const (
+	testFooBarLTHN       = "Foo-Bar.lthn"
+	testFooBarLabel      = "foo-bar"
+	testFooBarDottedLTHN = "foo.bar.lthn"
+	testReturnErrFormat  = "%s returned error: %v"
+	testReturnHashFormat = "%s returned %x, want %x"
+	testAcceptCanonical  = "%s should accept canonical names"
+	testRoot1            = "root-1"
+	testLiveIPv4         = "192.0.2.10"
+	testNS1Example       = "ns1.example."
+	testNS2Example       = "ns2.example."
+	testIPv4Example1     = "192.0.2.1"
+	testIPv6Example1     = "2001:db8::1"
+	testIPv4Example9     = "198.51.100.9"
+	testIPv6Example9     = "2001:db8::9"
+	testEncodeErr        = "Encode returned error: %v"
+	testSynth4Name       = "_oopm828._synth."
+	testSynth6Name       = "_400gre00000000000000000014._synth."
+	testGetTypeFormat    = "%s GetType() = %d, want %d"
+	testGetNSFormat      = "%s GetNS() = %q, want %q"
+	testExampleNext      = "example\x00."
+	testNS2Other         = "ns2.other."
+	testExampleFQDN      = "example."
+)
+
 func TestResolve(t *testing.T) {
 	svc := NewService()
 
-	got, err := svc.Resolve("Foo-Bar.lthn")
+	got, err := svc.Resolve(testFooBarLTHN)
 	if err != nil {
 		t.Fatalf("Resolve returned error: %v", err)
 	}
 
-	want := core.SHA3_256([]byte("foo-bar"))
+	want := core.SHA3_256([]byte(testFooBarLabel))
 	if got != want {
 		t.Fatalf("Resolve returned %x, want %x", got, want)
 	}
 
-	got, err = svc.Resolve([]byte("Foo-Bar.lthn"))
+	got, err = svc.Resolve([]byte(testFooBarLTHN))
 	if err != nil {
 		t.Fatalf("Resolve([]byte) returned error: %v", err)
 	}
@@ -35,12 +60,12 @@ func TestResolve(t *testing.T) {
 func TestResolveNameAliases(t *testing.T) {
 	svc := NewService()
 
-	got, err := svc.ResolveName("Foo-Bar.lthn")
+	got, err := svc.ResolveName(testFooBarLTHN)
 	if err != nil {
 		t.Fatalf("ResolveName returned error: %v", err)
 	}
 
-	want := core.SHA3_256([]byte("foo-bar"))
+	want := core.SHA3_256([]byte(testFooBarLabel))
 	if got != want {
 		t.Fatalf("ResolveName returned %x, want %x", got, want)
 	}
@@ -52,7 +77,7 @@ func TestResolveNameAliases(t *testing.T) {
 
 func TestServiceGetAliases(t *testing.T) {
 	svc := NewService()
-	want := core.SHA3_256([]byte("foo-bar"))
+	want := core.SHA3_256([]byte(testFooBarLabel))
 
 	resolveCases := []struct {
 		name string
@@ -75,18 +100,18 @@ func TestServiceGetAliases(t *testing.T) {
 	}
 
 	for _, tc := range resolveCases {
-		input := any("Foo-Bar.lthn")
+		input := any(testFooBarLTHN)
 		if tc.name == "GetResolveBinary" || tc.name == "GetHashBinary" || tc.name == "GetResolveByBinary" || tc.name == "GetHashByBinary" {
-			input = []byte("Foo-Bar.lthn")
+			input = []byte(testFooBarLTHN)
 		}
 
 		got, err := tc.fn(input)
 		if err != nil {
-			t.Fatalf("%s returned error: %v", tc.name, err)
+			t.Fatalf(testReturnErrFormat, tc.name, err)
 		}
 
 		if got != want {
-			t.Fatalf("%s returned %x, want %x", tc.name, got, want)
+			t.Fatalf(testReturnHashFormat, tc.name, got, want)
 		}
 	}
 
@@ -104,49 +129,49 @@ func TestServiceGetAliases(t *testing.T) {
 	}
 
 	for _, tc := range verifyCases {
-		input := any("Foo-Bar.lthn")
+		input := any(testFooBarLTHN)
 		if tc.name == "GetVerifyBinary" || tc.name == "GetVerifyByBinary" {
-			input = []byte("Foo-Bar.lthn")
+			input = []byte(testFooBarLTHN)
 		}
 
 		if !tc.fn(input) {
-			t.Fatalf("%s should accept canonical names", tc.name)
+			t.Fatalf(testAcceptCanonical, tc.name)
 		}
 	}
 }
 
 func TestPackageGetAliases(t *testing.T) {
-	want := core.SHA3_256([]byte("foo-bar"))
+	want := core.SHA3_256([]byte(testFooBarLabel))
 
 	resolveCases := []struct {
 		name  string
 		input any
 		fn    func(any) (primitives.Hash, error)
 	}{
-		{name: "GetResolve", input: "Foo-Bar.lthn", fn: GetResolve},
-		{name: "GetHash", input: "Foo-Bar.lthn", fn: GetHash},
-		{name: "GetResolveString", input: "Foo-Bar.lthn", fn: func(name any) (primitives.Hash, error) { return GetResolveString(name.(string)) }},
-		{name: "GetResolveBinary", input: []byte("Foo-Bar.lthn"), fn: func(name any) (primitives.Hash, error) { return GetResolveBinary(name.([]byte)) }},
-		{name: "GetHashString", input: "Foo-Bar.lthn", fn: func(name any) (primitives.Hash, error) { return GetHashString(name.(string)) }},
-		{name: "GetHashBinary", input: []byte("Foo-Bar.lthn"), fn: func(name any) (primitives.Hash, error) { return GetHashBinary(name.([]byte)) }},
-		{name: "GetResolveName", input: "Foo-Bar.lthn", fn: GetResolveName},
-		{name: "GetHashName", input: "Foo-Bar.lthn", fn: GetHashName},
-		{name: "GetResolveByString", input: "Foo-Bar.lthn", fn: func(name any) (primitives.Hash, error) { return GetResolveByString(name.(string)) }},
-		{name: "GetResolveByBinary", input: []byte("Foo-Bar.lthn"), fn: func(name any) (primitives.Hash, error) { return GetResolveByBinary(name.([]byte)) }},
-		{name: "GetResolveByName", input: "Foo-Bar.lthn", fn: GetResolveByName},
-		{name: "GetHashByString", input: "Foo-Bar.lthn", fn: func(name any) (primitives.Hash, error) { return GetHashByString(name.(string)) }},
-		{name: "GetHashByBinary", input: []byte("Foo-Bar.lthn"), fn: func(name any) (primitives.Hash, error) { return GetHashByBinary(name.([]byte)) }},
-		{name: "GetHashByName", input: "Foo-Bar.lthn", fn: GetHashByName},
+		{name: "GetResolve", input: testFooBarLTHN, fn: GetResolve},
+		{name: "GetHash", input: testFooBarLTHN, fn: GetHash},
+		{name: "GetResolveString", input: testFooBarLTHN, fn: func(name any) (primitives.Hash, error) { return GetResolveString(name.(string)) }},
+		{name: "GetResolveBinary", input: []byte(testFooBarLTHN), fn: func(name any) (primitives.Hash, error) { return GetResolveBinary(name.([]byte)) }},
+		{name: "GetHashString", input: testFooBarLTHN, fn: func(name any) (primitives.Hash, error) { return GetHashString(name.(string)) }},
+		{name: "GetHashBinary", input: []byte(testFooBarLTHN), fn: func(name any) (primitives.Hash, error) { return GetHashBinary(name.([]byte)) }},
+		{name: "GetResolveName", input: testFooBarLTHN, fn: GetResolveName},
+		{name: "GetHashName", input: testFooBarLTHN, fn: GetHashName},
+		{name: "GetResolveByString", input: testFooBarLTHN, fn: func(name any) (primitives.Hash, error) { return GetResolveByString(name.(string)) }},
+		{name: "GetResolveByBinary", input: []byte(testFooBarLTHN), fn: func(name any) (primitives.Hash, error) { return GetResolveByBinary(name.([]byte)) }},
+		{name: "GetResolveByName", input: testFooBarLTHN, fn: GetResolveByName},
+		{name: "GetHashByString", input: testFooBarLTHN, fn: func(name any) (primitives.Hash, error) { return GetHashByString(name.(string)) }},
+		{name: "GetHashByBinary", input: []byte(testFooBarLTHN), fn: func(name any) (primitives.Hash, error) { return GetHashByBinary(name.([]byte)) }},
+		{name: "GetHashByName", input: testFooBarLTHN, fn: GetHashByName},
 	}
 
 	for _, tc := range resolveCases {
 		got, err := tc.fn(tc.input)
 		if err != nil {
-			t.Fatalf("%s returned error: %v", tc.name, err)
+			t.Fatalf(testReturnErrFormat, tc.name, err)
 		}
 
 		if got != want {
-			t.Fatalf("%s returned %x, want %x", tc.name, got, want)
+			t.Fatalf(testReturnHashFormat, tc.name, got, want)
 		}
 	}
 
@@ -155,18 +180,18 @@ func TestPackageGetAliases(t *testing.T) {
 		input any
 		fn    func(any) bool
 	}{
-		{name: "GetVerify", input: "Foo-Bar.lthn", fn: GetVerify},
-		{name: "GetVerifyString", input: "Foo-Bar.lthn", fn: func(name any) bool { return GetVerifyString(name.(string)) }},
-		{name: "GetVerifyBinary", input: []byte("Foo-Bar.lthn"), fn: func(name any) bool { return GetVerifyBinary(name.([]byte)) }},
-		{name: "GetVerifyName", input: "Foo-Bar.lthn", fn: GetVerifyName},
-		{name: "GetVerifyByString", input: "Foo-Bar.lthn", fn: func(name any) bool { return GetVerifyByString(name.(string)) }},
-		{name: "GetVerifyByBinary", input: []byte("Foo-Bar.lthn"), fn: func(name any) bool { return GetVerifyByBinary(name.([]byte)) }},
-		{name: "GetVerifyByName", input: "Foo-Bar.lthn", fn: GetVerifyByName},
+		{name: "GetVerify", input: testFooBarLTHN, fn: GetVerify},
+		{name: "GetVerifyString", input: testFooBarLTHN, fn: func(name any) bool { return GetVerifyString(name.(string)) }},
+		{name: "GetVerifyBinary", input: []byte(testFooBarLTHN), fn: func(name any) bool { return GetVerifyBinary(name.([]byte)) }},
+		{name: "GetVerifyName", input: testFooBarLTHN, fn: GetVerifyName},
+		{name: "GetVerifyByString", input: testFooBarLTHN, fn: func(name any) bool { return GetVerifyByString(name.(string)) }},
+		{name: "GetVerifyByBinary", input: []byte(testFooBarLTHN), fn: func(name any) bool { return GetVerifyByBinary(name.([]byte)) }},
+		{name: "GetVerifyByName", input: testFooBarLTHN, fn: GetVerifyByName},
 	}
 
 	for _, tc := range verifyCases {
 		if !tc.fn(tc.input) {
-			t.Fatalf("%s should accept canonical names", tc.name)
+			t.Fatalf(testAcceptCanonical, tc.name)
 		}
 	}
 }
@@ -174,17 +199,17 @@ func TestPackageGetAliases(t *testing.T) {
 func TestHashAliases(t *testing.T) {
 	svc := NewService()
 
-	got, err := svc.Hash("Foo-Bar.lthn")
+	got, err := svc.Hash(testFooBarLTHN)
 	if err != nil {
 		t.Fatalf("Hash returned error: %v", err)
 	}
 
-	want := core.SHA3_256([]byte("foo-bar"))
+	want := core.SHA3_256([]byte(testFooBarLabel))
 	if got != want {
 		t.Fatalf("Hash returned %x, want %x", got, want)
 	}
 
-	got, err = svc.HashString("Foo-Bar.lthn")
+	got, err = svc.HashString(testFooBarLTHN)
 	if err != nil {
 		t.Fatalf("HashString returned error: %v", err)
 	}
@@ -193,7 +218,7 @@ func TestHashAliases(t *testing.T) {
 		t.Fatalf("HashString returned %x, want %x", got, want)
 	}
 
-	got, err = svc.HashBinary([]byte("Foo-Bar.lthn"))
+	got, err = svc.HashBinary([]byte(testFooBarLTHN))
 	if err != nil {
 		t.Fatalf("HashBinary returned error: %v", err)
 	}
@@ -202,7 +227,7 @@ func TestHashAliases(t *testing.T) {
 		t.Fatalf("HashBinary returned %x, want %x", got, want)
 	}
 
-	got, err = svc.HashName("Foo-Bar.lthn")
+	got, err = svc.HashName(testFooBarLTHN)
 	if err != nil {
 		t.Fatalf("HashName returned error: %v", err)
 	}
@@ -211,7 +236,7 @@ func TestHashAliases(t *testing.T) {
 		t.Fatalf("HashName returned %x, want %x", got, want)
 	}
 
-	got, err = svc.HashByName([]byte("Foo-Bar.lthn"))
+	got, err = svc.HashByName([]byte(testFooBarLTHN))
 	if err != nil {
 		t.Fatalf("HashByName returned error: %v", err)
 	}
@@ -228,12 +253,12 @@ func TestHashAliases(t *testing.T) {
 func TestResolveByNameAliases(t *testing.T) {
 	svc := NewService()
 
-	got, err := svc.ResolveByName("Foo-Bar.lthn")
+	got, err := svc.ResolveByName(testFooBarLTHN)
 	if err != nil {
 		t.Fatalf("ResolveByName returned error: %v", err)
 	}
 
-	want := core.SHA3_256([]byte("foo-bar"))
+	want := core.SHA3_256([]byte(testFooBarLabel))
 	if got != want {
 		t.Fatalf("ResolveByName returned %x, want %x", got, want)
 	}
@@ -246,17 +271,17 @@ func TestResolveByNameAliases(t *testing.T) {
 func TestResolveStringAndBinary(t *testing.T) {
 	svc := NewService()
 
-	got, err := svc.ResolveString("Foo-Bar.lthn")
+	got, err := svc.ResolveString(testFooBarLTHN)
 	if err != nil {
 		t.Fatalf("ResolveString returned error: %v", err)
 	}
 
-	want := core.SHA3_256([]byte("foo-bar"))
+	want := core.SHA3_256([]byte(testFooBarLabel))
 	if got != want {
 		t.Fatalf("ResolveString returned %x, want %x", got, want)
 	}
 
-	got, err = svc.ResolveBinary([]byte("Foo-Bar.lthn"))
+	got, err = svc.ResolveBinary([]byte(testFooBarLTHN))
 	if err != nil {
 		t.Fatalf("ResolveBinary returned error: %v", err)
 	}
@@ -269,17 +294,17 @@ func TestResolveStringAndBinary(t *testing.T) {
 func TestResolveByStringAndBinaryAliases(t *testing.T) {
 	svc := NewService()
 
-	got, err := svc.ResolveByString("Foo-Bar.lthn")
+	got, err := svc.ResolveByString(testFooBarLTHN)
 	if err != nil {
 		t.Fatalf("ResolveByString returned error: %v", err)
 	}
 
-	want := core.SHA3_256([]byte("foo-bar"))
+	want := core.SHA3_256([]byte(testFooBarLabel))
 	if got != want {
 		t.Fatalf("ResolveByString returned %x, want %x", got, want)
 	}
 
-	got, err = svc.ResolveByBinary([]byte("Foo-Bar.lthn"))
+	got, err = svc.ResolveByBinary([]byte(testFooBarLTHN))
 	if err != nil {
 		t.Fatalf("ResolveByBinary returned error: %v", err)
 	}
@@ -292,9 +317,9 @@ func TestResolveByStringAndBinaryAliases(t *testing.T) {
 func TestHashByStringAndBinaryAliases(t *testing.T) {
 	svc := NewService()
 
-	want := core.SHA3_256([]byte("foo-bar"))
+	want := core.SHA3_256([]byte(testFooBarLabel))
 
-	got, err := svc.HashByString("Foo-Bar.lthn")
+	got, err := svc.HashByString(testFooBarLTHN)
 	if err != nil {
 		t.Fatalf("HashByString returned error: %v", err)
 	}
@@ -303,7 +328,7 @@ func TestHashByStringAndBinaryAliases(t *testing.T) {
 		t.Fatalf("HashByString returned %x, want %x", got, want)
 	}
 
-	got, err = svc.HashByBinary([]byte("Foo-Bar.lthn"))
+	got, err = svc.HashByBinary([]byte(testFooBarLTHN))
 	if err != nil {
 		t.Fatalf("HashByBinary returned error: %v", err)
 	}
@@ -320,7 +345,7 @@ func TestResolveRejectsInvalidNames(t *testing.T) {
 		"",
 		" foo-bar.lthn",
 		"foo-bar.lthn ",
-		"foo.bar.lthn",
+		testFooBarDottedLTHN,
 		"foo..lthn",
 		"foo.lthn..",
 		"foo-",
@@ -341,19 +366,19 @@ func TestResolveRejectsInvalidNames(t *testing.T) {
 func TestVerifyStringAndBinary(t *testing.T) {
 	svc := NewService()
 
-	if !svc.VerifyString("Foo-Bar.lthn") {
+	if !svc.VerifyString(testFooBarLTHN) {
 		t.Fatal("VerifyString should accept canonical names")
 	}
 
-	if svc.VerifyString("foo.bar.lthn") {
+	if svc.VerifyString(testFooBarDottedLTHN) {
 		t.Fatal("VerifyString should reject malformed names")
 	}
 
-	if !svc.VerifyBinary([]byte("Foo-Bar.lthn")) {
+	if !svc.VerifyBinary([]byte(testFooBarLTHN)) {
 		t.Fatal("VerifyBinary should accept canonical names")
 	}
 
-	if svc.VerifyBinary([]byte("foo.bar.lthn")) {
+	if svc.VerifyBinary([]byte(testFooBarDottedLTHN)) {
 		t.Fatal("VerifyBinary should reject malformed names")
 	}
 }
@@ -361,19 +386,19 @@ func TestVerifyStringAndBinary(t *testing.T) {
 func TestVerifyByStringAndBinaryAliases(t *testing.T) {
 	svc := NewService()
 
-	if !svc.VerifyByString("Foo-Bar.lthn") {
+	if !svc.VerifyByString(testFooBarLTHN) {
 		t.Fatal("VerifyByString should accept canonical names")
 	}
 
-	if svc.VerifyByString("foo.bar.lthn") {
+	if svc.VerifyByString(testFooBarDottedLTHN) {
 		t.Fatal("VerifyByString should reject malformed names")
 	}
 
-	if !svc.VerifyByBinary([]byte("Foo-Bar.lthn")) {
+	if !svc.VerifyByBinary([]byte(testFooBarLTHN)) {
 		t.Fatal("VerifyByBinary should accept canonical names")
 	}
 
-	if svc.VerifyByBinary([]byte("foo.bar.lthn")) {
+	if svc.VerifyByBinary([]byte(testFooBarDottedLTHN)) {
 		t.Fatal("VerifyByBinary should reject malformed names")
 	}
 }
@@ -385,9 +410,9 @@ func TestVerify(t *testing.T) {
 		name any
 		ok   bool
 	}{
-		{name: "Foo-Bar.lthn", ok: true},
-		{name: []byte("Foo-Bar.lthn"), ok: true},
-		{name: "foo.bar.lthn", ok: false},
+		{name: testFooBarLTHN, ok: true},
+		{name: []byte(testFooBarLTHN), ok: true},
+		{name: testFooBarDottedLTHN, ok: false},
 		{name: "foo-", ok: false},
 		{name: 123, ok: false},
 	}
@@ -402,11 +427,11 @@ func TestVerify(t *testing.T) {
 func TestVerifyNameAliases(t *testing.T) {
 	svc := NewService()
 
-	if !svc.VerifyName("Foo-Bar.lthn") {
+	if !svc.VerifyName(testFooBarLTHN) {
 		t.Fatal("VerifyName should accept canonical names")
 	}
 
-	if svc.VerifyName("foo.bar.lthn") {
+	if svc.VerifyName(testFooBarDottedLTHN) {
 		t.Fatal("VerifyName should reject malformed names")
 	}
 
@@ -418,11 +443,11 @@ func TestVerifyNameAliases(t *testing.T) {
 func TestVerifyByNameAliases(t *testing.T) {
 	svc := NewService()
 
-	if !svc.VerifyByName("Foo-Bar.lthn") {
+	if !svc.VerifyByName(testFooBarLTHN) {
 		t.Fatal("VerifyByName should accept canonical names")
 	}
 
-	if svc.VerifyByName("foo.bar.lthn") {
+	if svc.VerifyByName(testFooBarDottedLTHN) {
 		t.Fatal("VerifyByName should reject malformed names")
 	}
 
@@ -478,7 +503,7 @@ func TestServiceName(t *testing.T) {
 }
 
 func TestPackageLevelResolveAndVerifyAliases(t *testing.T) {
-	want := core.SHA3_256([]byte("foo-bar"))
+	want := core.SHA3_256([]byte(testFooBarLabel))
 
 	resolveCases := []struct {
 		name string
@@ -501,18 +526,18 @@ func TestPackageLevelResolveAndVerifyAliases(t *testing.T) {
 	}
 
 	for _, tc := range resolveCases {
-		input := any("Foo-Bar.lthn")
+		input := any(testFooBarLTHN)
 		if tc.name == "ResolveBinary" || tc.name == "HashBinary" || tc.name == "ResolveByBinary" || tc.name == "HashByBinary" {
-			input = []byte("Foo-Bar.lthn")
+			input = []byte(testFooBarLTHN)
 		}
 
 		got, err := tc.fn(input)
 		if err != nil {
-			t.Fatalf("%s returned error: %v", tc.name, err)
+			t.Fatalf(testReturnErrFormat, tc.name, err)
 		}
 
 		if got != want {
-			t.Fatalf("%s returned %x, want %x", tc.name, got, want)
+			t.Fatalf(testReturnHashFormat, tc.name, got, want)
 		}
 	}
 
@@ -538,19 +563,19 @@ func TestPackageLevelResolveAndVerifyAliases(t *testing.T) {
 	}
 
 	for _, tc := range verifyCases {
-		input := any("Foo-Bar.lthn")
+		input := any(testFooBarLTHN)
 		if tc.name == "VerifyBinary" || tc.name == "VerifyByBinary" {
-			input = []byte("Foo-Bar.lthn")
+			input = []byte(testFooBarLTHN)
 		}
 
 		if !tc.fn(input) {
-			t.Fatalf("%s should accept canonical names", tc.name)
+			t.Fatalf(testAcceptCanonical, tc.name)
 		}
 
 		if tc.name == "VerifyBinary" || tc.name == "VerifyByBinary" {
-			input = []byte("foo.bar.lthn")
+			input = []byte(testFooBarDottedLTHN)
 		} else {
-			input = "foo.bar.lthn"
+			input = testFooBarDottedLTHN
 		}
 
 		if tc.fn(input) {

@@ -664,11 +664,11 @@ func resolveCanonicalName(method string, name any) (primitives.Hash, error) {
 	case string, []byte:
 		normalized, ok := canonicalizeName(v)
 		if !ok {
-			return primitives.Hash{}, core.E(method, "invalid name", nil)
+			return primitives.Hash{}, core.E(method, errInvalidName, nil)
 		}
 
 		if !covenant.VerifyString(normalized) {
-			return primitives.Hash{}, core.E(method, "invalid name", nil)
+			return primitives.Hash{}, core.E(method, errInvalidName, nil)
 		}
 
 		return primitives.Hash(core.SHA3_256([]byte(normalized))), nil

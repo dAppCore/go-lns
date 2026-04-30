@@ -503,26 +503,26 @@ func loadLockedCatalog() (*LockedCatalog, error) {
 func parseLockedEntry(hash primitives.Hash, raw jsonraw) (LockedName, error) {
 	var fields []jsonraw
 	if r := core.JSONUnmarshal(raw, &fields); !r.OK {
-		return LockedName{}, core.E("covenant.parseLockedEntry", "failed to decode locked entry", r.Value.(error))
+		return LockedName{}, core.E(opParseLockedEntry, "failed to decode locked entry", r.Value.(error))
 	}
 
 	if len(fields) != 2 {
-		return LockedName{}, core.E("covenant.parseLockedEntry", "invalid entry size", nil)
+		return LockedName{}, core.E(opParseLockedEntry, "invalid entry size", nil)
 	}
 
 	var target string
 	if r := core.JSONUnmarshal(fields[0], &target); !r.OK {
-		return LockedName{}, core.E("covenant.parseLockedEntry", "failed to decode target", r.Value.(error))
+		return LockedName{}, core.E(opParseLockedEntry, "failed to decode target", r.Value.(error))
 	}
 
 	parts := core.SplitN(target, ".", 2)
 	if len(parts) != 2 || len(parts[0]) == 0 {
-		return LockedName{}, core.E("covenant.parseLockedEntry", "invalid target", nil)
+		return LockedName{}, core.E(opParseLockedEntry, "invalid target", nil)
 	}
 
 	flags, err := parseLockedUint(fields[1])
 	if err != nil {
-		return LockedName{}, core.E("covenant.parseLockedEntry", "failed to decode flags", err)
+		return LockedName{}, core.E(opParseLockedEntry, "failed to decode flags", err)
 	}
 
 	item := LockedName{
@@ -575,14 +575,14 @@ func readLockedData() ([]byte, error) {
 
 func lockedDataPaths() []string {
 	paths := []string{
-		core.PathJoin("docs", "js-covenants", "lockup.json"),
+		core.PathJoin("docs", covenantReferenceDir, lockedDataFile),
 	}
 
 	if _, file, _, ok := runtime.Caller(0); ok {
 		base := core.PathDir(file)
 		paths = append(paths,
-			core.PathJoin(base, "..", "..", "docs", "js-covenants", "lockup.json"),
-			core.PathJoin(base, "..", "..", "..", "docs", "js-covenants", "lockup.json"),
+			core.PathJoin(base, "..", "..", "docs", covenantReferenceDir, lockedDataFile),
+			core.PathJoin(base, "..", "..", "..", "docs", covenantReferenceDir, lockedDataFile),
 		)
 	}
 

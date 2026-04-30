@@ -12,6 +12,8 @@ import (
 	core "dappco.re/go"
 )
 
+const opRawCall = "chain.Client.RawCall"
+
 // Client is a JSON-RPC client for the LNS sidechain daemon.
 type Client struct {
 	url        string
@@ -132,7 +134,7 @@ type NameResource struct {
 // RawCall executes a JSON-RPC call and returns the raw `result` payload.
 func (c *Client) RawCall(method string, params any) ([]byte, error) {
 	if c == nil || c.url == "" {
-		return nil, core.E("chain.Client.RawCall", "url is required", nil)
+		return nil, core.E(opRawCall, "url is required", nil)
 	}
 
 	body := core.JSONMarshal(rpcRequest{
@@ -142,12 +144,12 @@ func (c *Client) RawCall(method string, params any) ([]byte, error) {
 		Params:  params,
 	})
 	if !body.OK {
-		return nil, core.E("chain.Client.RawCall", "marshal request", body.Value.(error))
+		return nil, core.E(opRawCall, "marshal request", body.Value.(error))
 	}
 
 	request, err := http.NewRequest(http.MethodPost, c.url, core.NewBuffer(body.Value.([]byte)))
 	if err != nil {
-		return nil, core.E("chain.Client.RawCall", "build request", err)
+		return nil, core.E(opRawCall, "build request", err)
 	}
 
 	request.Header.Set("Content-Type", "application/json")
@@ -157,26 +159,26 @@ func (c *Client) RawCall(method string, params any) ([]byte, error) {
 
 	response, err := c.httpClient.Do(request)
 	if err != nil {
-		return nil, core.E("chain.Client.RawCall", method, err)
+		return nil, core.E(opRawCall, method, err)
 	}
-	defer response.Body.Close()
+	defer func() { _ = response.Body.Close() }()
 
 	raw, err := io.ReadAll(response.Body)
 	if err != nil {
-		return nil, core.E("chain.Client.RawCall", "read response", err)
+		return nil, core.E(opRawCall, "read response", err)
 	}
 
 	if response.StatusCode != http.StatusOK {
-		return nil, core.E("chain.Client.RawCall", core.Sprintf("%s http %d", method, response.StatusCode), nil)
+		return nil, core.E(opRawCall, core.Sprintf("%s http %d", method, response.StatusCode), nil)
 	}
 
 	var decoded rpcResponse
 	if r := core.JSONUnmarshal(raw, &decoded); !r.OK {
-		return nil, core.E("chain.Client.RawCall", "decode response", r.Value.(error))
+		return nil, core.E(opRawCall, "decode response", r.Value.(error))
 	}
 
 	if decoded.Error != nil {
-		return nil, core.E("chain.Client.RawCall", method, decoded.Error)
+		return nil, core.E(opRawCall, method, decoded.Error)
 	}
 
 	return []byte(decoded.Result), nil

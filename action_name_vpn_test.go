@@ -15,7 +15,7 @@ func TestNameLinkedActionsReturnDraftPlans(t *testing.T) {
 	c := core.New()
 	svc := NewService(c)
 	if result := svc.OnStartup(context.Background()); !result.OK {
-		t.Fatalf("OnStartup returned %#v, want OK", result)
+		t.Fatalf(testOnStartupOK, result)
 	}
 
 	resource := NewResource()
@@ -23,8 +23,8 @@ func TestNameLinkedActionsReturnDraftPlans(t *testing.T) {
 		TXTRecord{Entries: []string{"hello"}},
 	}
 
-	updateResult := c.Action("lns.name.update").Run(context.Background(), core.NewOptions(
-		core.Option{Key: "name", Value: "charon.lthn"},
+	updateResult := c.Action(actionNameUpdate).Run(context.Background(), core.NewOptions(
+		core.Option{Key: "name", Value: testCharonName},
 		core.Option{Key: "height", Value: 125},
 		core.Option{Key: "resource", Value: resource},
 	))
@@ -43,8 +43,8 @@ func TestNameLinkedActionsReturnDraftPlans(t *testing.T) {
 		t.Fatalf("update draft = %#v, want one-output draft transaction", updatePlan.Steps[0].Draft)
 	}
 
-	renewResult := c.Action("lns.name.renew").Run(context.Background(), core.NewOptions(
-		core.Option{Key: "name", Value: "charon.lthn"},
+	renewResult := c.Action(actionNameRenew).Run(context.Background(), core.NewOptions(
+		core.Option{Key: "name", Value: testCharonName},
 		core.Option{Key: "height", Value: 125},
 		core.Option{Key: "block_hash", Value: "2222222222222222222222222222222222222222222222222222222222222222"},
 	))
@@ -63,8 +63,8 @@ func TestNameLinkedActionsReturnDraftPlans(t *testing.T) {
 		t.Fatalf("renew draft = %#v, want fee placeholder", renewPlan.Steps[0].Draft)
 	}
 
-	transferResult := c.Action("lns.name.transfer").Run(context.Background(), core.NewOptions(
-		core.Option{Key: "name", Value: "charon.lthn"},
+	transferResult := c.Action(actionNameTransfer).Run(context.Background(), core.NewOptions(
+		core.Option{Key: "name", Value: testCharonName},
 		core.Option{Key: "height", Value: 125},
 		core.Option{Key: "address", Value: Address{Version: 0, Hash: []byte{
 			1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
@@ -85,8 +85,8 @@ func TestNameLinkedActionsReturnDraftPlans(t *testing.T) {
 		t.Fatalf("transfer draft = %#v, want zero-value placeholder output by default", transferPlan.Steps[0].Draft)
 	}
 
-	revokeResult := c.Action("lns.name.revoke").Run(context.Background(), core.NewOptions(
-		core.Option{Key: "name", Value: "charon.lthn"},
+	revokeResult := c.Action(actionNameRevoke).Run(context.Background(), core.NewOptions(
+		core.Option{Key: "name", Value: testCharonName},
 		core.Option{Key: "height", Value: 125},
 	))
 	if !revokeResult.OK {
@@ -129,7 +129,7 @@ func TestVPNActionsDiscoverAndTrackSession(t *testing.T) {
 			writeActionTestJSON(t, w, map[string]any{
 				"result": map[string]any{
 					"records": []map[string]any{
-						{"type": "GLUE4", "ns": "charon.lthn.", "address": "192.0.2.10"},
+						{"type": "GLUE4", "ns": testCharonFQDN, "address": testLiveIPv4},
 						{"type": "TXT", "txt": []string{"vpn=wireguard", "endpoint=198.51.100.20:51820"}},
 					},
 				},
@@ -143,7 +143,7 @@ func TestVPNActionsDiscoverAndTrackSession(t *testing.T) {
 	c := core.New()
 	svc := NewService(c)
 	if result := svc.OnStartup(context.Background()); !result.OK {
-		t.Fatalf("OnStartup returned %#v, want OK", result)
+		t.Fatalf(testOnStartupOK, result)
 	}
 
 	options := core.NewOptions(
@@ -151,7 +151,7 @@ func TestVPNActionsDiscoverAndTrackSession(t *testing.T) {
 		core.Option{Key: "alias_url", Value: aliasServer.URL},
 	)
 
-	discoverResult := c.Action("lns.vpn.discover").Run(context.Background(), options)
+	discoverResult := c.Action(actionNameVPNDiscover).Run(context.Background(), options)
 	if !discoverResult.OK {
 		t.Fatalf("lns.vpn.discover returned %#v, want OK", discoverResult)
 	}
@@ -164,10 +164,10 @@ func TestVPNActionsDiscoverAndTrackSession(t *testing.T) {
 		t.Fatalf("vpn discover = %#v, want one charon gateway", discovered)
 	}
 
-	connectResult := c.Action("lns.vpn.connect").Run(context.Background(), core.NewOptions(
+	connectResult := c.Action(actionNameVPNConnect).Run(context.Background(), core.NewOptions(
 		core.Option{Key: "chain_url", Value: chainServer.URL},
 		core.Option{Key: "alias_url", Value: aliasServer.URL},
-		core.Option{Key: "name", Value: "charon.lthn"},
+		core.Option{Key: "name", Value: testCharonName},
 	))
 	if !connectResult.OK {
 		t.Fatalf("lns.vpn.connect returned %#v, want OK", connectResult)

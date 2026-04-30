@@ -269,7 +269,7 @@ func HasSaneCovenants(tx primitives.Transaction) bool {
 				return false
 			}
 
-			if cov.Len() != 3 || len(cov.Items[0]) != 32 || len(cov.Items[1]) != 4 || len(cov.Items[2]) != 32 {
+			if !covenantItemLengths(cov, 32, 4, 32) {
 				return false
 			}
 
@@ -278,7 +278,7 @@ func HasSaneCovenants(tx primitives.Transaction) bool {
 				return false
 			}
 
-			if cov.Len() != 2 || len(cov.Items[0]) != 32 || len(cov.Items[1]) != 4 {
+			if !covenantItemLengths(cov, 32, 4) {
 				return false
 			}
 
@@ -305,7 +305,7 @@ func HasSaneCovenants(tx primitives.Transaction) bool {
 				return false
 			}
 
-			if cov.Len() != 3 || len(cov.Items[0]) != 32 || len(cov.Items[1]) != 4 || len(cov.Items[2]) != 32 {
+			if !covenantItemLengths(cov, 32, 4, 32) {
 				return false
 			}
 
@@ -343,7 +343,7 @@ func HasSaneCovenants(tx primitives.Transaction) bool {
 				return false
 			}
 
-			if cov.Len() != 2 || len(cov.Items[0]) != 32 || len(cov.Items[1]) != 4 {
+			if !covenantItemLengths(cov, 32, 4) {
 				return false
 			}
 
@@ -354,6 +354,18 @@ func HasSaneCovenants(tx primitives.Transaction) bool {
 		}
 	}
 
+	return true
+}
+
+func covenantItemLengths(cov primitives.Covenant, lengths ...int) bool {
+	if cov.Len() != len(lengths) {
+		return false
+	}
+	for i, length := range lengths {
+		if len(cov.Items[i]) != length {
+			return false
+		}
+	}
 	return true
 }
 

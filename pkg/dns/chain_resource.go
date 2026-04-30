@@ -21,13 +21,13 @@ func resourceFromChainResource(resource *chainpkg.NameResource) (*Resource, erro
 		case "GLUE4":
 			address, err := netip.ParseAddr(record.Address)
 			if err != nil {
-				return nil, core.E("dns.resourceFromChainResource", "parse GLUE4 address", err)
+				return nil, core.E(opResourceFromChain, "parse GLUE4 address", err)
 			}
 			result.Records = append(result.Records, GLUE4Record{NS: dnsFQDN(record.NS), Address: address})
 		case "GLUE6":
 			address, err := netip.ParseAddr(record.Address)
 			if err != nil {
-				return nil, core.E("dns.resourceFromChainResource", "parse GLUE6 address", err)
+				return nil, core.E(opResourceFromChain, "parse GLUE6 address", err)
 			}
 			result.Records = append(result.Records, GLUE6Record{NS: dnsFQDN(record.NS), Address: address})
 		case "TXT":
@@ -37,7 +37,7 @@ func resourceFromChainResource(resource *chainpkg.NameResource) (*Resource, erro
 		case "DS":
 			digest, err := hex.DecodeString(record.Digest)
 			if err != nil {
-				return nil, core.E("dns.resourceFromChainResource", "decode DS digest", err)
+				return nil, core.E(opResourceFromChain, "decode DS digest", err)
 			}
 			result.Records = append(result.Records, DSRecord{
 				KeyTag:     record.KeyTag,

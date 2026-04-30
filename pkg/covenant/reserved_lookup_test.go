@@ -9,14 +9,28 @@ import (
 	"dappco.re/go/lns/pkg/primitives"
 )
 
+const (
+	testReservedLabel       = "reserved"
+	testLockedLabel         = "nec"
+	testReservedLTHN        = "reserved.lthn"
+	testLockedLTHN          = "nec.lthn"
+	testUnknownName         = "does-not-exist"
+	testFooBarLabel         = "foo-bar"
+	testExampleName         = "example-name"
+	testHashStringErr       = "HashString returned error: %v"
+	testItemNameFormat      = "item.Name = %q, want %q"
+	testItemHashFormat      = "item.Hash = %x, want %x"
+	testVerifyCovenantsZero = "VerifyCovenants returned %d, want 0"
+)
+
 func TestReservedLookupByName(t *testing.T) {
 	item, ok := GetReservedName("RESERVED")
 	if !ok {
 		t.Fatal("GetReservedName should find the reserved reference entry")
 	}
 
-	if item.Name != "reserved" {
-		t.Fatalf("item.Name = %q, want %q", item.Name, "reserved")
+	if item.Name != testReservedLabel {
+		t.Fatalf(testItemNameFormat, item.Name, testReservedLabel)
 	}
 
 	if item.Target != "reserved.com." {
@@ -33,9 +47,9 @@ func TestReservedLookupByName(t *testing.T) {
 }
 
 func TestReservedLookupByHash(t *testing.T) {
-	hash, err := HashString("reserved")
+	hash, err := HashString(testReservedLabel)
 	if err != nil {
-		t.Fatalf("HashString returned error: %v", err)
+		t.Fatalf(testHashStringErr, err)
 	}
 
 	item, ok := GetReservedHash(hash)
@@ -44,7 +58,7 @@ func TestReservedLookupByHash(t *testing.T) {
 	}
 
 	if item.Hash != hash {
-		t.Fatalf("item.Hash = %x, want %x", item.Hash, hash)
+		t.Fatalf(testItemHashFormat, item.Hash, hash)
 	}
 
 	if !DefaultReservedCatalog().Has(hash) {
@@ -53,9 +67,9 @@ func TestReservedLookupByHash(t *testing.T) {
 }
 
 func TestReservedLookupByHashCatalogAlias(t *testing.T) {
-	hash, err := HashString("reserved")
+	hash, err := HashString(testReservedLabel)
 	if err != nil {
-		t.Fatalf("HashString returned error: %v", err)
+		t.Fatalf(testHashStringErr, err)
 	}
 
 	catalog := DefaultReservedCatalog()
@@ -74,7 +88,7 @@ func TestReservedLookupByHashCatalogAlias(t *testing.T) {
 	}
 
 	if item.Hash != hash {
-		t.Fatalf("item.Hash = %x, want %x", item.Hash, hash)
+		t.Fatalf(testItemHashFormat, item.Hash, hash)
 	}
 
 	if !catalog.GetHasByName("RESERVED") {
@@ -83,9 +97,9 @@ func TestReservedLookupByHashCatalogAlias(t *testing.T) {
 }
 
 func TestReservedLookupByHashAlias(t *testing.T) {
-	hash, err := HashString("reserved")
+	hash, err := HashString(testReservedLabel)
 	if err != nil {
-		t.Fatalf("HashString returned error: %v", err)
+		t.Fatalf(testHashStringErr, err)
 	}
 
 	item, ok := GetReservedByHash(hash)
@@ -94,7 +108,7 @@ func TestReservedLookupByHashAlias(t *testing.T) {
 	}
 
 	if item.Hash != hash {
-		t.Fatalf("item.Hash = %x, want %x", item.Hash, hash)
+		t.Fatalf(testItemHashFormat, item.Hash, hash)
 	}
 }
 
@@ -104,8 +118,8 @@ func TestReservedLookupStringAndBinaryAliases(t *testing.T) {
 		t.Fatal("GetReservedString should find the reserved reference entry")
 	}
 
-	if item.Name != "reserved" {
-		t.Fatalf("item.Name = %q, want %q", item.Name, "reserved")
+	if item.Name != testReservedLabel {
+		t.Fatalf(testItemNameFormat, item.Name, testReservedLabel)
 	}
 
 	item, ok = GetReservedBinary([]byte("RESERVED"))
@@ -113,15 +127,15 @@ func TestReservedLookupStringAndBinaryAliases(t *testing.T) {
 		t.Fatal("GetReservedBinary should find the reserved reference entry")
 	}
 
-	if item.Name != "reserved" {
-		t.Fatalf("item.Name = %q, want %q", item.Name, "reserved")
+	if item.Name != testReservedLabel {
+		t.Fatalf(testItemNameFormat, item.Name, testReservedLabel)
 	}
 
 	if !HasReservedString("RESERVED") {
 		t.Fatal("HasReservedString should report reserved catalog labels")
 	}
 
-	if !GetHasReservedName("reserved.lthn") {
+	if !GetHasReservedName(testReservedLTHN) {
 		t.Fatal("GetHasReservedName should accept canonical .lthn names")
 	}
 
@@ -165,24 +179,24 @@ func TestReservedLookupStringAndBinaryAliases(t *testing.T) {
 		t.Fatal("GetHasReservedByBinary should report reserved catalog labels")
 	}
 
-	item, ok = GetReservedName("reserved.lthn")
+	item, ok = GetReservedName(testReservedLTHN)
 	if !ok {
 		t.Fatal("GetReservedName should accept canonical .lthn names")
 	}
 
-	if item.Name != "reserved" {
-		t.Fatalf("item.Name = %q, want %q", item.Name, "reserved")
+	if item.Name != testReservedLabel {
+		t.Fatalf(testItemNameFormat, item.Name, testReservedLabel)
 	}
 
-	if !HasReservedName("reserved.lthn") {
+	if !HasReservedName(testReservedLTHN) {
 		t.Fatal("HasReservedName should accept canonical .lthn names")
 	}
 }
 
 func TestReservedLookupHasByHashAlias(t *testing.T) {
-	hash, err := HashString("reserved")
+	hash, err := HashString(testReservedLabel)
 	if err != nil {
-		t.Fatalf("HashString returned error: %v", err)
+		t.Fatalf(testHashStringErr, err)
 	}
 
 	if !HasReservedHash(hash) {
@@ -215,19 +229,19 @@ func TestReservedLookupHasByHashAlias(t *testing.T) {
 }
 
 func TestReservedLookupRejectsUnknownNames(t *testing.T) {
-	if HasReservedName("does-not-exist") {
+	if HasReservedName(testUnknownName) {
 		t.Fatal("unknown names should not be reported as reserved")
 	}
 
-	if _, ok := GetReservedName("does-not-exist"); ok {
+	if _, ok := GetReservedName(testUnknownName); ok {
 		t.Fatal("GetReservedName should return false for unknown names")
 	}
 
-	if HasReservedByName("does-not-exist") {
+	if HasReservedByName(testUnknownName) {
 		t.Fatal("unknown names should not be reported as reserved by name")
 	}
 
-	if _, ok := GetReservedByName("does-not-exist"); ok {
+	if _, ok := GetReservedByName(testUnknownName); ok {
 		t.Fatal("GetReservedByName should return false for unknown names")
 	}
 }
@@ -294,13 +308,13 @@ func TestReservedCatalogHelpers(t *testing.T) {
 		t.Fatal("catalog should return an entry by name")
 	}
 
-	hash, err := HashString("reserved")
+	hash, err := HashString(testReservedLabel)
 	if err != nil {
-		t.Fatalf("HashString returned error: %v", err)
+		t.Fatalf(testHashStringErr, err)
 	}
 
 	if item.Hash != hash {
-		t.Fatalf("item.Hash = %x, want %x", item.Hash, hash)
+		t.Fatalf(testItemHashFormat, item.Hash, hash)
 	}
 
 	entries := catalog.Entries()
@@ -366,7 +380,7 @@ func TestReservedCatalogGetByNameSkipsSyntaxValidation(t *testing.T) {
 	}
 
 	if item.Hash != hash {
-		t.Fatalf("item.Hash = %x, want %x", item.Hash, hash)
+		t.Fatalf(testItemHashFormat, item.Hash, hash)
 	}
 }
 

@@ -19,8 +19,16 @@ import (
 	"dappco.re/go/lns/pkg/primitives"
 )
 
-const reservedZeroHash = "0000000000000000000000000000000000000000000000000000000000000000"
-const reservedCatalogPrefixSize = 28
+const (
+	reservedZeroHash          = "0000000000000000000000000000000000000000000000000000000000000000"
+	reservedCatalogPrefixSize = 28
+	covenantReferenceDir      = "js-covenants"
+	reservedDataFile          = "names.json"
+	lockedDataFile            = "lockup.json"
+	opParseReservedEntry      = "covenant.parseReservedEntry"
+	opParseLockedEntry        = "covenant.parseLockedEntry"
+	opGrindName               = "covenant.GrindName"
+)
 
 // ReservedName describes a name entry from the JS reserved-name reference data.
 //
@@ -599,33 +607,33 @@ func parseReservedMeta(raw jsonraw) (reservedCatalogMeta, error) {
 func parseReservedEntry(hash primitives.Hash, raw jsonraw, meta reservedCatalogMeta) (ReservedName, error) {
 	var fields []jsonraw
 	if r := core.JSONUnmarshal(raw, &fields); !r.OK {
-		return ReservedName{}, core.E("covenant.parseReservedEntry", "failed to decode reserved entry", r.Value.(error))
+		return ReservedName{}, core.E(opParseReservedEntry, "failed to decode reserved entry", r.Value.(error))
 	}
 
 	if len(fields) < 2 || len(fields) > 3 {
-		return ReservedName{}, core.E("covenant.parseReservedEntry", "invalid entry size", nil)
+		return ReservedName{}, core.E(opParseReservedEntry, "invalid entry size", nil)
 	}
 
 	var target string
 	if r := core.JSONUnmarshal(fields[0], &target); !r.OK {
-		return ReservedName{}, core.E("covenant.parseReservedEntry", "failed to decode target", r.Value.(error))
+		return ReservedName{}, core.E(opParseReservedEntry, "failed to decode target", r.Value.(error))
 	}
 
 	parts := core.SplitN(target, ".", 2)
 	if len(parts) != 2 || len(parts[0]) == 0 {
-		return ReservedName{}, core.E("covenant.parseReservedEntry", "invalid target", nil)
+		return ReservedName{}, core.E(opParseReservedEntry, "invalid target", nil)
 	}
 
 	flags, err := parseReservedUint(fields[1])
 	if err != nil {
-		return ReservedName{}, core.E("covenant.parseReservedEntry", "failed to decode flags", err)
+		return ReservedName{}, core.E(opParseReservedEntry, "failed to decode flags", err)
 	}
 
 	var custom uint64
 	if len(fields) == 3 {
 		custom, err = parseReservedUint(fields[2])
 		if err != nil {
-			return ReservedName{}, core.E("covenant.parseReservedEntry", "failed to decode custom value", err)
+			return ReservedName{}, core.E(opParseReservedEntry, "failed to decode custom value", err)
 		}
 	}
 
@@ -699,14 +707,14 @@ func readReservedData() ([]byte, error) {
 
 func reservedDataPaths() []string {
 	paths := []string{
-		core.PathJoin("docs", "js-covenants", "names.json"),
+		core.PathJoin("docs", covenantReferenceDir, reservedDataFile),
 	}
 
 	if _, file, _, ok := runtime.Caller(0); ok {
 		base := core.PathDir(file)
 		paths = append(paths,
-			core.PathJoin(base, "..", "..", "docs", "js-covenants", "names.json"),
-			core.PathJoin(base, "..", "..", "..", "docs", "js-covenants", "names.json"),
+			core.PathJoin(base, "..", "..", "docs", covenantReferenceDir, reservedDataFile),
+			core.PathJoin(base, "..", "..", "..", "docs", covenantReferenceDir, reservedDataFile),
 		)
 	}
 

@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: EUPL-1.2
 
+//nolint:unused
 package chain
 
 import (

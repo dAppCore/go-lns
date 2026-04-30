@@ -57,7 +57,7 @@ func TestBridgeDiscoverAndReverse(t *testing.T) {
 		switch request.Method {
 		case "getblockchaininfo":
 			writeDNSTestJSON(t, w, map[string]any{
-				"result": map[string]any{"blocks": 50, "treeroot": "root-1"},
+				"result": map[string]any{"blocks": 50, "treeroot": testRoot1},
 			})
 		case "getnameresource":
 			name := request.Params[0].(string)
@@ -65,7 +65,7 @@ func TestBridgeDiscoverAndReverse(t *testing.T) {
 				writeDNSTestJSON(t, w, map[string]any{
 					"result": map[string]any{
 						"records": []map[string]any{
-							{"type": "GLUE4", "ns": "charon.lthn.", "address": "192.0.2.10"},
+							{"type": "GLUE4", "ns": "charon.lthn.", "address": testLiveIPv4},
 							{"type": "TXT", "txt": []string{"hello"}},
 						},
 					},
@@ -93,7 +93,7 @@ func TestBridgeDiscoverAndReverse(t *testing.T) {
 		t.Fatalf("Discover returned error: %v", err)
 	}
 
-	if report.TreeRoot != "root-1" || report.Names != 2 || report.Aliases != 2 {
+	if report.TreeRoot != testRoot1 || report.Names != 2 || report.Aliases != 2 {
 		t.Fatalf("Discover report = %#v", report)
 	}
 
@@ -101,7 +101,7 @@ func TestBridgeDiscoverAndReverse(t *testing.T) {
 	if !ok {
 		t.Fatal("Lookup(charon) should succeed")
 	}
-	if got := record.Addresses4(); len(got) != 1 || got[0] != "192.0.2.10" {
+	if got := record.Addresses4(); len(got) != 1 || got[0] != testLiveIPv4 {
 		t.Fatalf("charon addresses = %#v, want 192.0.2.10", got)
 	}
 
@@ -109,20 +109,20 @@ func TestBridgeDiscoverAndReverse(t *testing.T) {
 	if !ok {
 		t.Fatal("Lookup(trade) should use alias dns= fallback")
 	}
-	if got := fallback.Addresses4(); len(got) != 1 || got[0] != "198.51.100.9" {
+	if got := fallback.Addresses4(); len(got) != 1 || got[0] != testIPv4Example9 {
 		t.Fatalf("trade addresses = %#v, want 198.51.100.9", got)
 	}
 	if got := fallback.TXT(); len(got) != 1 || got[0] != "fallback" {
 		t.Fatalf("trade TXT = %#v, want fallback", got)
 	}
 
-	names := bridge.Reverse(netip.MustParseAddr("192.0.2.10"))
+	names := bridge.Reverse(netip.MustParseAddr(testLiveIPv4))
 	if len(names) != 1 || names[0] != "charon.lthn." {
 		t.Fatalf("Reverse = %#v, want charon.lthn.", names)
 	}
 
 	health := bridge.Health()
-	if !health.Live || health.Names != 2 || health.TreeRoot != "root-1" {
+	if !health.Live || health.Names != 2 || health.TreeRoot != testRoot1 {
 		t.Fatalf("Health = %#v", health)
 	}
 }

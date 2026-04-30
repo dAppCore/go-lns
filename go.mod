@@ -2,7 +2,7 @@ module dappco.re/go/lns
 
 go 1.26.0
 
-require dappco.re/go v0.8.0-alpha.2.0.20260425063147-a72df4a8d755
+require dappco.re/go v0.9.0
 
 require (
 	github.com/miekg/dns v1.1.72
@@ -16,5 +16,3 @@ require (
 	golang.org/x/sys v0.42.0 // indirect
 	golang.org/x/tools v0.40.0 // indirect
 )
-
-replace dappco.re/go => ../go

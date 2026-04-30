@@ -16,39 +16,39 @@ import (
 )
 
 func TestPackageResolveAndVerifyAliases(t *testing.T) {
-	want := primitives.Hash(sha3.Sum256([]byte("foo-bar")))
+	want := primitives.Hash(sha3.Sum256([]byte(testFooBarLabel)))
 
 	resolveCases := []struct {
 		name  string
 		input any
 		fn    func(any) (primitives.Hash, error)
 	}{
-		{name: "Resolve", input: "Foo-Bar.lthn", fn: Resolve},
-		{name: "GetResolve", input: "Foo-Bar.lthn", fn: GetResolve},
-		{name: "Hash", input: "Foo-Bar.lthn", fn: Hash},
-		{name: "GetHash", input: "Foo-Bar.lthn", fn: GetHash},
-		{name: "GetResolveString", input: "Foo-Bar.lthn", fn: func(name any) (primitives.Hash, error) { return GetResolveString(name.(string)) }},
-		{name: "GetResolveBinary", input: []byte("Foo-Bar.lthn"), fn: func(name any) (primitives.Hash, error) { return GetResolveBinary(name.([]byte)) }},
-		{name: "ResolveName", input: "Foo-Bar.lthn", fn: ResolveName},
-		{name: "GetResolveName", input: "Foo-Bar.lthn", fn: GetResolveName},
-		{name: "HashName", input: "Foo-Bar.lthn", fn: HashName},
-		{name: "GetHashName", input: "Foo-Bar.lthn", fn: GetHashName},
-		{name: "ResolveByName", input: "Foo-Bar.lthn", fn: ResolveByName},
-		{name: "GetResolveByName", input: "Foo-Bar.lthn", fn: GetResolveByName},
-		{name: "HashByName", input: "Foo-Bar.lthn", fn: HashByName},
-		{name: "GetHashByName", input: "Foo-Bar.lthn", fn: GetHashByName},
-		{name: "ResolveByString", input: "Foo-Bar.lthn", fn: func(name any) (primitives.Hash, error) { return ResolveByString(name.(string)) }},
-		{name: "GetResolveByString", input: "Foo-Bar.lthn", fn: func(name any) (primitives.Hash, error) { return GetResolveByString(name.(string)) }},
-		{name: "ResolveByBinary", input: []byte("Foo-Bar.lthn"), fn: func(name any) (primitives.Hash, error) { return ResolveByBinary(name.([]byte)) }},
-		{name: "GetResolveByBinary", input: []byte("Foo-Bar.lthn"), fn: func(name any) (primitives.Hash, error) { return GetResolveByBinary(name.([]byte)) }},
-		{name: "HashString", input: "Foo-Bar.lthn", fn: func(name any) (primitives.Hash, error) { return HashString(name.(string)) }},
-		{name: "GetHashString", input: "Foo-Bar.lthn", fn: func(name any) (primitives.Hash, error) { return GetHashString(name.(string)) }},
-		{name: "HashBinary", input: []byte("Foo-Bar.lthn"), fn: func(name any) (primitives.Hash, error) { return HashBinary(name.([]byte)) }},
-		{name: "GetHashBinary", input: []byte("Foo-Bar.lthn"), fn: func(name any) (primitives.Hash, error) { return GetHashBinary(name.([]byte)) }},
-		{name: "HashByString", input: "Foo-Bar.lthn", fn: func(name any) (primitives.Hash, error) { return HashByString(name.(string)) }},
-		{name: "GetHashByString", input: "Foo-Bar.lthn", fn: func(name any) (primitives.Hash, error) { return GetHashByString(name.(string)) }},
-		{name: "HashByBinary", input: []byte("Foo-Bar.lthn"), fn: func(name any) (primitives.Hash, error) { return HashByBinary(name.([]byte)) }},
-		{name: "GetHashByBinary", input: []byte("Foo-Bar.lthn"), fn: func(name any) (primitives.Hash, error) { return GetHashByBinary(name.([]byte)) }},
+		{name: "Resolve", input: testFooBarLTHN, fn: Resolve},
+		{name: "GetResolve", input: testFooBarLTHN, fn: GetResolve},
+		{name: "Hash", input: testFooBarLTHN, fn: Hash},
+		{name: "GetHash", input: testFooBarLTHN, fn: GetHash},
+		{name: "GetResolveString", input: testFooBarLTHN, fn: func(name any) (primitives.Hash, error) { return GetResolveString(name.(string)) }},
+		{name: "GetResolveBinary", input: []byte(testFooBarLTHN), fn: func(name any) (primitives.Hash, error) { return GetResolveBinary(name.([]byte)) }},
+		{name: "ResolveName", input: testFooBarLTHN, fn: ResolveName},
+		{name: "GetResolveName", input: testFooBarLTHN, fn: GetResolveName},
+		{name: "HashName", input: testFooBarLTHN, fn: HashName},
+		{name: "GetHashName", input: testFooBarLTHN, fn: GetHashName},
+		{name: "ResolveByName", input: testFooBarLTHN, fn: ResolveByName},
+		{name: "GetResolveByName", input: testFooBarLTHN, fn: GetResolveByName},
+		{name: "HashByName", input: testFooBarLTHN, fn: HashByName},
+		{name: "GetHashByName", input: testFooBarLTHN, fn: GetHashByName},
+		{name: "ResolveByString", input: testFooBarLTHN, fn: func(name any) (primitives.Hash, error) { return ResolveByString(name.(string)) }},
+		{name: "GetResolveByString", input: testFooBarLTHN, fn: func(name any) (primitives.Hash, error) { return GetResolveByString(name.(string)) }},
+		{name: "ResolveByBinary", input: []byte(testFooBarLTHN), fn: func(name any) (primitives.Hash, error) { return ResolveByBinary(name.([]byte)) }},
+		{name: "GetResolveByBinary", input: []byte(testFooBarLTHN), fn: func(name any) (primitives.Hash, error) { return GetResolveByBinary(name.([]byte)) }},
+		{name: "HashString", input: testFooBarLTHN, fn: func(name any) (primitives.Hash, error) { return HashString(name.(string)) }},
+		{name: "GetHashString", input: testFooBarLTHN, fn: func(name any) (primitives.Hash, error) { return GetHashString(name.(string)) }},
+		{name: "HashBinary", input: []byte(testFooBarLTHN), fn: func(name any) (primitives.Hash, error) { return HashBinary(name.([]byte)) }},
+		{name: "GetHashBinary", input: []byte(testFooBarLTHN), fn: func(name any) (primitives.Hash, error) { return GetHashBinary(name.([]byte)) }},
+		{name: "HashByString", input: testFooBarLTHN, fn: func(name any) (primitives.Hash, error) { return HashByString(name.(string)) }},
+		{name: "GetHashByString", input: testFooBarLTHN, fn: func(name any) (primitives.Hash, error) { return GetHashByString(name.(string)) }},
+		{name: "HashByBinary", input: []byte(testFooBarLTHN), fn: func(name any) (primitives.Hash, error) { return HashByBinary(name.([]byte)) }},
+		{name: "GetHashByBinary", input: []byte(testFooBarLTHN), fn: func(name any) (primitives.Hash, error) { return GetHashByBinary(name.([]byte)) }},
 	}
 
 	for _, tc := range resolveCases {
@@ -62,13 +62,13 @@ func TestPackageResolveAndVerifyAliases(t *testing.T) {
 		}
 	}
 
-	if got, err := ResolveString("Foo-Bar.lthn"); err != nil {
+	if got, err := ResolveString(testFooBarLTHN); err != nil {
 		t.Fatalf("ResolveString returned error: %v", err)
 	} else if got != want {
 		t.Fatalf("ResolveString returned %x, want %x", got, want)
 	}
 
-	if got, err := ResolveBinary([]byte("Foo-Bar.lthn")); err != nil {
+	if got, err := ResolveBinary([]byte(testFooBarLTHN)); err != nil {
 		t.Fatalf("ResolveBinary returned error: %v", err)
 	} else if got != want {
 		t.Fatalf("ResolveBinary returned %x, want %x", got, want)
@@ -101,13 +101,13 @@ func TestPackageResolveAndVerifyAliases(t *testing.T) {
 		}
 	}
 
-	if got, err := HashString("Foo-Bar.lthn"); err != nil {
-		t.Fatalf("HashString returned error: %v", err)
+	if got, err := HashString(testFooBarLTHN); err != nil {
+		t.Fatalf(testHashStringErr, err)
 	} else if got != want {
 		t.Fatalf("HashString returned %x, want %x", got, want)
 	}
 
-	if got, err := HashBinary([]byte("Foo-Bar.lthn")); err != nil {
+	if got, err := HashBinary([]byte(testFooBarLTHN)); err != nil {
 		t.Fatalf("HashBinary returned error: %v", err)
 	} else if got != want {
 		t.Fatalf("HashBinary returned %x, want %x", got, want)
@@ -119,20 +119,20 @@ func TestPackageResolveAndVerifyAliases(t *testing.T) {
 		badInput any
 		fn       func(any) bool
 	}{
-		{name: "Verify", input: "Foo-Bar.lthn", badInput: "foo.bar.lthn", fn: Verify},
-		{name: "GetVerify", input: "Foo-Bar.lthn", badInput: "foo.bar.lthn", fn: GetVerify},
-		{name: "VerifyName", input: "Foo-Bar.lthn", badInput: "foo.bar.lthn", fn: VerifyName},
-		{name: "GetVerifyName", input: "Foo-Bar.lthn", badInput: "foo.bar.lthn", fn: GetVerifyName},
-		{name: "VerifyByName", input: "Foo-Bar.lthn", badInput: "foo.bar.lthn", fn: VerifyByName},
-		{name: "GetVerifyByName", input: "Foo-Bar.lthn", badInput: "foo.bar.lthn", fn: GetVerifyByName},
-		{name: "VerifyString", input: "Foo-Bar.lthn", badInput: "foo.bar.lthn", fn: func(name any) bool { return VerifyString(name.(string)) }},
-		{name: "GetVerifyString", input: "Foo-Bar.lthn", badInput: "foo.bar.lthn", fn: func(name any) bool { return GetVerifyString(name.(string)) }},
-		{name: "VerifyBinary", input: []byte("Foo-Bar.lthn"), badInput: []byte("foo.bar.lthn"), fn: func(name any) bool { return VerifyBinary(name.([]byte)) }},
-		{name: "GetVerifyBinary", input: []byte("Foo-Bar.lthn"), badInput: []byte("foo.bar.lthn"), fn: func(name any) bool { return GetVerifyBinary(name.([]byte)) }},
-		{name: "VerifyByString", input: "Foo-Bar.lthn", badInput: "foo.bar.lthn", fn: func(name any) bool { return VerifyByString(name.(string)) }},
-		{name: "GetVerifyByString", input: "Foo-Bar.lthn", badInput: "foo.bar.lthn", fn: func(name any) bool { return GetVerifyByString(name.(string)) }},
-		{name: "VerifyByBinary", input: []byte("Foo-Bar.lthn"), badInput: []byte("foo.bar.lthn"), fn: func(name any) bool { return VerifyByBinary(name.([]byte)) }},
-		{name: "GetVerifyByBinary", input: []byte("Foo-Bar.lthn"), badInput: []byte("foo.bar.lthn"), fn: func(name any) bool { return GetVerifyByBinary(name.([]byte)) }},
+		{name: "Verify", input: testFooBarLTHN, badInput: testFooBarDottedLTHN, fn: Verify},
+		{name: "GetVerify", input: testFooBarLTHN, badInput: testFooBarDottedLTHN, fn: GetVerify},
+		{name: "VerifyName", input: testFooBarLTHN, badInput: testFooBarDottedLTHN, fn: VerifyName},
+		{name: "GetVerifyName", input: testFooBarLTHN, badInput: testFooBarDottedLTHN, fn: GetVerifyName},
+		{name: "VerifyByName", input: testFooBarLTHN, badInput: testFooBarDottedLTHN, fn: VerifyByName},
+		{name: "GetVerifyByName", input: testFooBarLTHN, badInput: testFooBarDottedLTHN, fn: GetVerifyByName},
+		{name: "VerifyString", input: testFooBarLTHN, badInput: testFooBarDottedLTHN, fn: func(name any) bool { return VerifyString(name.(string)) }},
+		{name: "GetVerifyString", input: testFooBarLTHN, badInput: testFooBarDottedLTHN, fn: func(name any) bool { return GetVerifyString(name.(string)) }},
+		{name: "VerifyBinary", input: []byte(testFooBarLTHN), badInput: []byte(testFooBarDottedLTHN), fn: func(name any) bool { return VerifyBinary(name.([]byte)) }},
+		{name: "GetVerifyBinary", input: []byte(testFooBarLTHN), badInput: []byte(testFooBarDottedLTHN), fn: func(name any) bool { return GetVerifyBinary(name.([]byte)) }},
+		{name: "VerifyByString", input: testFooBarLTHN, badInput: testFooBarDottedLTHN, fn: func(name any) bool { return VerifyByString(name.(string)) }},
+		{name: "GetVerifyByString", input: testFooBarLTHN, badInput: testFooBarDottedLTHN, fn: func(name any) bool { return GetVerifyByString(name.(string)) }},
+		{name: "VerifyByBinary", input: []byte(testFooBarLTHN), badInput: []byte(testFooBarDottedLTHN), fn: func(name any) bool { return VerifyByBinary(name.([]byte)) }},
+		{name: "GetVerifyByBinary", input: []byte(testFooBarLTHN), badInput: []byte(testFooBarDottedLTHN), fn: func(name any) bool { return GetVerifyByBinary(name.([]byte)) }},
 	}
 
 	for _, tc := range verifyCases {
@@ -145,31 +145,31 @@ func TestPackageResolveAndVerifyAliases(t *testing.T) {
 		}
 	}
 
-	if !VerifyString("Foo-Bar.lthn") {
+	if !VerifyString(testFooBarLTHN) {
 		t.Fatal("VerifyString should accept canonical names")
 	}
 
-	if VerifyString("foo.bar.lthn") {
+	if VerifyString(testFooBarDottedLTHN) {
 		t.Fatal("VerifyString should reject malformed names")
 	}
 
-	if !VerifyBinary([]byte("Foo-Bar.lthn")) {
+	if !VerifyBinary([]byte(testFooBarLTHN)) {
 		t.Fatal("VerifyBinary should accept canonical names")
 	}
 
-	if VerifyBinary([]byte("foo.bar.lthn")) {
+	if VerifyBinary([]byte(testFooBarDottedLTHN)) {
 		t.Fatal("VerifyBinary should reject malformed names")
 	}
 
-	if !VerifyByString("Foo-Bar.lthn") {
+	if !VerifyByString(testFooBarLTHN) {
 		t.Fatal("VerifyByString should accept canonical names")
 	}
 
-	if !VerifyByBinary([]byte("Foo-Bar.lthn")) {
+	if !VerifyByBinary([]byte(testFooBarLTHN)) {
 		t.Fatal("VerifyByBinary should accept canonical names")
 	}
 
-	if !GetHasReserved("RESERVED.lthn") {
+	if !GetHasReserved(testReservedUpperLTHN) {
 		t.Fatal("GetHasReserved should report reserved canonical names")
 	}
 
@@ -181,7 +181,7 @@ func TestPackageResolveAndVerifyAliases(t *testing.T) {
 		t.Fatal("GetHasReservedBinary should report reserved catalog labels")
 	}
 
-	if !GetHasLocked("NEC.lthn") {
+	if !GetHasLocked(testNECUpperLTHN) {
 		t.Fatal("GetHasLocked should report locked canonical names")
 	}
 
@@ -195,7 +195,7 @@ func TestPackageResolveAndVerifyAliases(t *testing.T) {
 
 	reservedHash, err := covenant.HashString("reserved")
 	if err != nil {
-		t.Fatalf("HashString returned error: %v", err)
+		t.Fatalf(testHashStringErr, err)
 	}
 
 	if !GetHasReservedHash(reservedHash) {
@@ -204,7 +204,7 @@ func TestPackageResolveAndVerifyAliases(t *testing.T) {
 
 	lockedHash, err := covenant.HashString("nec")
 	if err != nil {
-		t.Fatalf("HashString returned error: %v", err)
+		t.Fatalf(testHashStringErr, err)
 	}
 
 	if !GetHasLockedHash(lockedHash) {
@@ -271,19 +271,19 @@ func TestPackageClaimAlias(t *testing.T) {
 }
 
 func TestPackageNSECAliases(t *testing.T) {
-	if got := NextName("ExAmPle."); got != "example\x00." {
+	if got := NextName(testExampleMixedFQDN); got != testExampleNextFQDN {
 		t.Fatalf("NextName returned %q", got)
 	}
 
-	if got := GetNextName("ExAmPle."); got != "example\x00." {
+	if got := GetNextName(testExampleMixedFQDN); got != testExampleNextFQDN {
 		t.Fatalf("GetNextName returned %q", got)
 	}
 
-	if got := PrevName("ExAmPle."); got != "exampld\xff." {
+	if got := PrevName(testExampleMixedFQDN); got != "exampld\xff." {
 		t.Fatalf("PrevName returned %q", got)
 	}
 
-	if got := GetPrevName("ExAmPle."); got != "exampld\xff." {
+	if got := GetPrevName(testExampleMixedFQDN); got != "exampld\xff." {
 		t.Fatalf("GetPrevName returned %q", got)
 	}
 
@@ -543,17 +543,17 @@ func TestPackageCatalogFallbacksWhenNil(t *testing.T) {
 }
 
 func TestLookupCatalogNamePreservesDottedLabels(t *testing.T) {
-	hash := primitives.Hash(sha3.Sum256([]byte("foo.bar")))
+	hash := primitives.Hash(sha3.Sum256([]byte(testFooBarDotted)))
 
 	byLabel := map[string]string{
-		"foo.bar": "label",
+		testFooBarDotted: "label",
 	}
 	byHash := map[primitives.Hash]string{
 		hash: "hash",
 	}
 
 	got, ok := lookupCatalogName(
-		"foo.bar",
+		testFooBarDotted,
 		func(name string) (string, bool) {
 			item, ok := byLabel[name]
 			return item, ok
@@ -568,7 +568,7 @@ func TestLookupCatalogNamePreservesDottedLabels(t *testing.T) {
 	}
 
 	got, ok = lookupCatalogName(
-		"FOO.BAR.LTHN",
+		testFooBarUpperLTHN,
 		func(name string) (string, bool) {
 			item, ok := byLabel[name]
 			return item, ok
@@ -583,7 +583,7 @@ func TestLookupCatalogNamePreservesDottedLabels(t *testing.T) {
 	}
 
 	got, ok = LookupCatalogName(
-		"foo.bar",
+		testFooBarDotted,
 		func(name string) (string, bool) {
 			item, ok := byLabel[name]
 			return item, ok
@@ -598,7 +598,7 @@ func TestLookupCatalogNamePreservesDottedLabels(t *testing.T) {
 	}
 
 	got, ok = GetLookupCatalogName(
-		"FOO.BAR.LTHN",
+		testFooBarUpperLTHN,
 		func(name string) (string, bool) {
 			item, ok := byLabel[name]
 			return item, ok
@@ -613,7 +613,7 @@ func TestLookupCatalogNamePreservesDottedLabels(t *testing.T) {
 	}
 
 	if !HasLookupCatalogName(
-		"foo.bar",
+		testFooBarDotted,
 		func(name string) (string, bool) {
 			item, ok := byLabel[name]
 			return item, ok
@@ -627,7 +627,7 @@ func TestLookupCatalogNamePreservesDottedLabels(t *testing.T) {
 	}
 
 	if !GetHasLookupCatalogName(
-		"FOO.BAR.LTHN",
+		testFooBarUpperLTHN,
 		func(name string) (string, bool) {
 			item, ok := byLabel[name]
 			return item, ok
@@ -643,7 +643,7 @@ func TestLookupCatalogNamePreservesDottedLabels(t *testing.T) {
 	svc := NewService(nil)
 
 	gotAny, ok := svc.LookupCatalogName(
-		"foo.bar",
+		testFooBarDotted,
 		func(name string) (any, bool) {
 			item, ok := byLabel[name]
 			return any(item), ok
@@ -662,7 +662,7 @@ func TestLookupCatalogNamePreservesDottedLabels(t *testing.T) {
 	}
 
 	gotAny, ok = svc.GetLookupCatalogName(
-		"FOO.BAR.LTHN",
+		testFooBarUpperLTHN,
 		func(name string) (any, bool) {
 			item, ok := byLabel[name]
 			return any(item), ok
@@ -681,7 +681,7 @@ func TestLookupCatalogNamePreservesDottedLabels(t *testing.T) {
 	}
 
 	if !svc.HasLookupCatalogName(
-		"foo.bar",
+		testFooBarDotted,
 		func(name string) (any, bool) {
 			item, ok := byLabel[name]
 			return any(item), ok
@@ -695,7 +695,7 @@ func TestLookupCatalogNamePreservesDottedLabels(t *testing.T) {
 	}
 
 	if !svc.GetHasLookupCatalogName(
-		"FOO.BAR.LTHN",
+		testFooBarUpperLTHN,
 		func(name string) (any, bool) {
 			item, ok := byLabel[name]
 			return any(item), ok
@@ -942,7 +942,7 @@ func TestPackageResourceAliases(t *testing.T) {
 	}
 
 	nsec := resource.ToNSEC("Example")
-	if nsec.Name != "Example." || nsec.NextDomain != "example\x00." || nsec.TTL != DEFAULT_TTL {
+	if nsec.Name != "Example." || nsec.NextDomain != testExampleNextFQDN || nsec.TTL != DEFAULT_TTL {
 		t.Fatalf("Resource.ToNSEC returned %+v", nsec)
 	}
 
@@ -1018,14 +1018,14 @@ func TestPackageCatalogTypeAliases(t *testing.T) {
 }
 
 func TestPackageNameSetHelpers(t *testing.T) {
-	hash, err := HashString("example-name")
+	hash, err := HashString(testExampleName)
 	if err != nil {
-		t.Fatalf("HashString returned error: %v", err)
+		t.Fatalf(testHashStringErr, err)
 	}
 
 	tx := primitives.Transaction{
 		Outputs: []primitives.Output{
-			{Covenant: primitives.Covenant{Type: uint8(covenant.TypeOpen), Items: [][]byte{hash[:], []byte{0, 0, 0, 0}, []byte("example-name")}}},
+			{Covenant: primitives.Covenant{Type: uint8(covenant.TypeOpen), Items: [][]byte{hash[:], []byte{0, 0, 0, 0}, []byte(testExampleName)}}},
 		},
 	}
 
@@ -1057,9 +1057,9 @@ func TestPackageNameSetHelpers(t *testing.T) {
 }
 
 func TestPackageHasSaneCovenants(t *testing.T) {
-	hash, err := HashString("example-name")
+	hash, err := HashString(testExampleName)
 	if err != nil {
-		t.Fatalf("HashString returned error: %v", err)
+		t.Fatalf(testHashStringErr, err)
 	}
 
 	valid := primitives.Transaction{
@@ -1067,7 +1067,7 @@ func TestPackageHasSaneCovenants(t *testing.T) {
 			{Prevout: primitives.Outpoint{TxHash: primitives.Hash{1}, Index: 0}},
 		},
 		Outputs: []primitives.Output{
-			{Covenant: primitives.Covenant{Type: uint8(covenant.TypeOpen), Items: [][]byte{hash[:], []byte{0, 0, 0, 0}, []byte("example-name")}}},
+			{Covenant: primitives.Covenant{Type: uint8(covenant.TypeOpen), Items: [][]byte{hash[:], []byte{0, 0, 0, 0}, []byte(testExampleName)}}},
 		},
 	}
 
@@ -1143,7 +1143,7 @@ func TestPackageGrindAndCountHelpers(t *testing.T) {
 
 	hash, err := covenant.HashString(name)
 	if err != nil {
-		t.Fatalf("HashString returned error: %v", err)
+		t.Fatalf(testHashStringErr, err)
 	}
 
 	if !HasRollout(hash, 100, rules) {
@@ -1172,7 +1172,7 @@ func TestPackageRolloutHelpers(t *testing.T) {
 
 	hash, err := covenant.HashString("reserved")
 	if err != nil {
-		t.Fatalf("HashString returned error: %v", err)
+		t.Fatalf(testHashStringErr, err)
 	}
 
 	if !IsReserved(hash, 99, rules) {
@@ -1185,7 +1185,7 @@ func TestPackageRolloutHelpers(t *testing.T) {
 
 	rootHash, err := covenant.HashString("nec")
 	if err != nil {
-		t.Fatalf("HashString returned error: %v", err)
+		t.Fatalf(testHashStringErr, err)
 	}
 
 	if !IsLockedUp(rootHash, 100, rules) {
@@ -1265,9 +1265,9 @@ func (v packageTestCoinView) GetOutput(prevout primitives.Outpoint) (primitives.
 }
 
 func TestPackageVerifyCovenants(t *testing.T) {
-	hash, err := covenant.HashString("example-name")
+	hash, err := covenant.HashString(testExampleName)
 	if err != nil {
-		t.Fatalf("HashString returned error: %v", err)
+		t.Fatalf(testHashStringErr, err)
 	}
 
 	var prevHash primitives.Hash
@@ -1294,7 +1294,7 @@ func TestPackageVerifyCovenants(t *testing.T) {
 		Items: [][]byte{
 			hash[:],
 			make([]byte, 4),
-			[]byte("example-name"),
+			[]byte(testExampleName),
 			[]byte{0},
 			make([]byte, 4),
 			make([]byte, 4),
@@ -1570,11 +1570,11 @@ func TestPackageCatalogAliases(t *testing.T) {
 		t.Fatal("LockedValues aliases should expose catalog values")
 	}
 
-	if _, ok := GetReserved("RESERVED.lthn"); !ok {
+	if _, ok := GetReserved(testReservedUpperLTHN); !ok {
 		t.Fatal("GetReserved should find the reserved reference entry")
 	}
 
-	if !HasReserved("reserved.lthn") || !HasReservedByName("reserved") || !HasReservedName("reserved") {
+	if !HasReserved(testReservedLTHN) || !HasReservedByName("reserved") || !HasReservedName("reserved") {
 		t.Fatal("reserved lookup aliases should report reserved names")
 	}
 
@@ -1586,11 +1586,11 @@ func TestPackageCatalogAliases(t *testing.T) {
 		t.Fatal("GetReservedByBinary should find the reserved catalog label")
 	}
 
-	if _, ok := GetLocked("NEC.lthn"); !ok {
+	if _, ok := GetLocked(testNECUpperLTHN); !ok {
 		t.Fatal("GetLocked should find the locked reference entry")
 	}
 
-	if !HasLocked("nec.lthn") || !HasLockedByName("nec") || !HasLockedName("nec") {
+	if !HasLocked(testNECLTHN) || !HasLockedByName("nec") || !HasLockedName("nec") {
 		t.Fatal("locked lookup aliases should report locked names")
 	}
 

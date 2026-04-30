@@ -10,27 +10,55 @@ import (
 	core "dappco.re/go"
 )
 
+const (
+	testOnStartupOK        = "OnStartup returned %#v, want OK"
+	testImportSeedErr      = "ImportSeed returned error: %v"
+	testCharonName         = "charon.lthn"
+	testCharonFQDN         = "charon.lthn."
+	testLiveIPv4           = "192.0.2.10"
+	testWalletSendOK       = "lns.wallet.send returned %#v, want OK"
+	testWalletSendPlanType = "lns.wallet.send returned %T, want walletSendPlanResult"
+	testQueuedSendNote     = "queued send"
+	testFooBarLTHN         = "Foo-Bar.lthn"
+	testFooBarLabel        = "foo-bar"
+	testFooBarDotted       = "foo.bar"
+	testFooBarDottedLTHN   = "foo.bar.lthn"
+	testFooBarUpperLTHN    = "FOO.BAR.LTHN"
+	testKelvinFooLTHN      = "Kfoo.lthn"
+	testReservedUpperLTHN  = "RESERVED.lthn"
+	testReservedLTHN       = "reserved.lthn"
+	testNECUpperLTHN       = "NEC.lthn"
+	testNECLTHN            = "nec.lthn"
+	testHashStringErr      = "HashString returned error: %v"
+	testExampleName        = "example-name"
+	testExampleMixedFQDN   = "ExAmPle."
+	testExampleNextFQDN    = "example\x00."
+	testItemNameFormat     = "item.Name = %q, want %q"
+	testReservedHashAlias  = "ReservedCatalog should expose hash lookup aliases"
+	testLockedHashAlias    = "LockedCatalog should expose hash lookup aliases"
+)
+
 func TestServiceOnStartupRegistersActionSlice(t *testing.T) {
 	c := core.New()
 	svc := NewService(c)
 
 	if result := svc.OnStartup(context.Background()); !result.OK {
-		t.Fatalf("OnStartup returned %#v, want OK", result)
+		t.Fatalf(testOnStartupOK, result)
 	}
 
 	for _, name := range []string{
 		"lns.name.lookup",
 		"lns.name.available",
 		"lns.name.auction",
-		"lns.name.register",
+		actionNameRegister,
 		"lns.dns.resolve",
 		"lns.dns.resolve.txt",
 		"lns.dns.resolve.all",
 		"lns.dns.reverse",
 		"lns.dns.health",
-		"lns.dns.discover",
-		"lns.vpn.discover",
-		"lns.vpn.connect",
+		actionNameDNSDiscover,
+		actionNameVPNDiscover,
+		actionNameVPNConnect,
 		"lns.vpn.status",
 		"lns.vpn.disconnect",
 	} {
@@ -44,11 +72,11 @@ func TestNameActionsExposeCatalogAndRuleState(t *testing.T) {
 	c := core.New()
 	svc := NewService(c)
 	if result := svc.OnStartup(context.Background()); !result.OK {
-		t.Fatalf("OnStartup returned %#v, want OK", result)
+		t.Fatalf(testOnStartupOK, result)
 	}
 
 	lookupResult := c.Action("lns.name.lookup").Run(context.Background(), core.NewOptions(
-		core.Option{Key: "name", Value: "reserved.lthn"},
+		core.Option{Key: "name", Value: testReservedLTHN},
 	))
 	if !lookupResult.OK {
 		t.Fatalf("lns.name.lookup returned %#v, want OK", lookupResult)
@@ -80,7 +108,7 @@ func TestNameActionsExposeCatalogAndRuleState(t *testing.T) {
 	}
 
 	auctionResult := c.Action("lns.name.auction").Run(context.Background(), core.NewOptions(
-		core.Option{Key: "name", Value: "nec.lthn"},
+		core.Option{Key: "name", Value: testNECLTHN},
 		core.Option{Key: "height", Value: 150},
 		core.Option{Key: "rules", Value: NameRules{
 			NoRollout:         true,
@@ -106,18 +134,18 @@ func TestDNSActionsProjectResourcePayloads(t *testing.T) {
 	c := core.New()
 	svc := NewService(c)
 	if result := svc.OnStartup(context.Background()); !result.OK {
-		t.Fatalf("OnStartup returned %#v, want OK", result)
+		t.Fatalf(testOnStartupOK, result)
 	}
 
 	resource := NewResource()
 	resource.Records = []ResourceRecord{
-		GLUE4Record{NS: "charon.lthn.", Address: netip.MustParseAddr("192.0.2.10")},
-		GLUE6Record{NS: "charon.lthn.", Address: netip.MustParseAddr("2001:db8::10")},
+		GLUE4Record{NS: testCharonFQDN, Address: netip.MustParseAddr(testLiveIPv4)},
+		GLUE6Record{NS: testCharonFQDN, Address: netip.MustParseAddr("2001:db8::10")},
 		TXTRecord{Entries: []string{"hello"}},
 	}
 
 	resolveResult := c.Action("lns.dns.resolve").Run(context.Background(), core.NewOptions(
-		core.Option{Key: "name", Value: "charon.lthn"},
+		core.Option{Key: "name", Value: testCharonName},
 		core.Option{Key: "resource", Value: resource},
 	))
 	if !resolveResult.OK {
@@ -134,7 +162,7 @@ func TestDNSActionsProjectResourcePayloads(t *testing.T) {
 	}
 
 	txtResult := c.Action("lns.dns.resolve.txt").Run(context.Background(), core.NewOptions(
-		core.Option{Key: "name", Value: "charon.lthn"},
+		core.Option{Key: "name", Value: testCharonName},
 		core.Option{Key: "resource", Value: resource},
 	))
 	if !txtResult.OK {
@@ -151,7 +179,7 @@ func TestDNSActionsProjectResourcePayloads(t *testing.T) {
 	}
 
 	allResult := c.Action("lns.dns.resolve.all").Run(context.Background(), core.NewOptions(
-		core.Option{Key: "name", Value: "charon.lthn"},
+		core.Option{Key: "name", Value: testCharonName},
 		core.Option{Key: "resource", Value: resource},
 	))
 	if !allResult.OK {
@@ -168,9 +196,9 @@ func TestDNSActionsProjectResourcePayloads(t *testing.T) {
 	}
 
 	reverseResult := c.Action("lns.dns.reverse").Run(context.Background(), core.NewOptions(
-		core.Option{Key: "name", Value: "charon.lthn"},
+		core.Option{Key: "name", Value: testCharonName},
 		core.Option{Key: "resource", Value: resource},
-		core.Option{Key: "ip", Value: "192.0.2.10"},
+		core.Option{Key: "ip", Value: testLiveIPv4},
 	))
 	if !reverseResult.OK {
 		t.Fatalf("lns.dns.reverse returned %#v, want OK", reverseResult)
@@ -181,7 +209,7 @@ func TestDNSActionsProjectResourcePayloads(t *testing.T) {
 		t.Fatalf("lns.dns.reverse returned %T, want dnsReverseResult", reverseResult.Value)
 	}
 
-	if len(reverse.Names) != 1 || reverse.Names[0] != "charon.lthn." {
+	if len(reverse.Names) != 1 || reverse.Names[0] != testCharonFQDN {
 		t.Fatalf("reverse = %#v, want charon.lthn.", reverse)
 	}
 
@@ -204,10 +232,10 @@ func TestNameRegisterActionReturnsDraftPlan(t *testing.T) {
 	c := core.New()
 	svc := NewService(c)
 	if result := svc.OnStartup(context.Background()); !result.OK {
-		t.Fatalf("OnStartup returned %#v, want OK", result)
+		t.Fatalf(testOnStartupOK, result)
 	}
 
-	registerResult := c.Action("lns.name.register").Run(context.Background(), core.NewOptions(
+	registerResult := c.Action(actionNameRegister).Run(context.Background(), core.NewOptions(
 		core.Option{Key: "name", Value: "free-name.lthn"},
 		core.Option{Key: "height", Value: 100},
 		core.Option{Key: "bid_value", Value: 5000},
@@ -227,7 +255,7 @@ func TestNameRegisterActionReturnsDraftPlan(t *testing.T) {
 		t.Fatalf("lns.name.register returned %T, want nameActionPlanResult", registerResult.Value)
 	}
 
-	if plan.Action != "lns.name.register" || !plan.Available || len(plan.Steps) != 4 {
+	if plan.Action != actionNameRegister || !plan.Available || len(plan.Steps) != 4 {
 		t.Fatalf("register plan = %#v, want available four-step draft", plan)
 	}
 
@@ -246,10 +274,10 @@ func TestUnsupportedDNSDiscoverStillReturnsExplicitErrorsWithoutSource(t *testin
 	c := core.New()
 	svc := NewService(c)
 	if result := svc.OnStartup(context.Background()); !result.OK {
-		t.Fatalf("OnStartup returned %#v, want OK", result)
+		t.Fatalf(testOnStartupOK, result)
 	}
 
-	discoverResult := c.Action("lns.dns.discover").Run(context.Background(), core.NewOptions())
+	discoverResult := c.Action(actionNameDNSDiscover).Run(context.Background(), core.NewOptions())
 	if discoverResult.OK {
 		t.Fatal("lns.dns.discover should fail without a chain_url")
 	}
@@ -259,7 +287,7 @@ func TestUnsupportedDNSDiscoverStillReturnsExplicitErrorsWithoutSource(t *testin
 		t.Fatalf("lns.dns.discover returned %T, want error", discoverResult.Value)
 	}
 
-	if got := core.Operation(err); got != "lns.dns.discover" {
-		t.Fatalf("lns.dns.discover error operation = %q, want %q", got, "lns.dns.discover")
+	if got := core.Operation(err); got != actionNameDNSDiscover {
+		t.Fatalf("lns.dns.discover error operation = %q, want %q", got, actionNameDNSDiscover)
 	}
 }

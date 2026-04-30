@@ -7,6 +7,8 @@ import (
 	"testing"
 )
 
+const testPointerMismatch = "%s pointer mismatch: got %v want %v"
+
 func TestNameDeltaHelpers(t *testing.T) {
 	if got := (NameDelta{}).IsNull(); !got {
 		t.Fatal("zero delta should be null")
@@ -106,7 +108,7 @@ func assertNameDeltaEqual(t *testing.T, got, want NameDelta) {
 		case got == nil && want == nil:
 			return
 		case got == nil || want == nil:
-			t.Fatalf("%s pointer mismatch: got %v want %v", name, got, want)
+			t.Fatalf(testPointerMismatch, name, got, want)
 		case *got != *want:
 			t.Fatalf("%s = %d, want %d", name, *got, *want)
 		}
@@ -118,7 +120,7 @@ func assertNameDeltaEqual(t *testing.T, got, want NameDelta) {
 		case got == nil && want == nil:
 			return
 		case got == nil || want == nil:
-			t.Fatalf("%s pointer mismatch: got %v want %v", name, got, want)
+			t.Fatalf(testPointerMismatch, name, got, want)
 		case *got != *want:
 			t.Fatalf("%s = %d, want %d", name, *got, *want)
 		}
@@ -130,7 +132,7 @@ func assertNameDeltaEqual(t *testing.T, got, want NameDelta) {
 		case got == nil && want == nil:
 			return
 		case got == nil || want == nil:
-			t.Fatalf("%s pointer mismatch: got %v want %v", name, got, want)
+			t.Fatalf(testPointerMismatch, name, got, want)
 		case *got != *want:
 			t.Fatalf("%s = %v, want %v", name, *got, *want)
 		}

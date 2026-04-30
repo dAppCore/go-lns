@@ -25,16 +25,16 @@ func (o Outpoint) GetJSON() OutpointJSON {
 // FromJSON populates the outpoint from its JSON representation.
 func (o *Outpoint) FromJSON(json OutpointJSON) error {
 	if len(json.Hash) != len(Hash{})*2 {
-		return core.E("primitives.Outpoint.FromJSON", "invalid hash length", nil)
+		return core.E(opOutpointFromJSON, "invalid hash length", nil)
 	}
 
 	raw, err := hex.DecodeString(json.Hash)
 	if err != nil {
-		return core.E("primitives.Outpoint.FromJSON", "invalid hash encoding", err)
+		return core.E(opOutpointFromJSON, "invalid hash encoding", err)
 	}
 
 	if len(raw) != len(Hash{}) {
-		return core.E("primitives.Outpoint.FromJSON", "invalid hash length", nil)
+		return core.E(opOutpointFromJSON, "invalid hash length", nil)
 	}
 
 	copy(o.TxHash[:], raw)

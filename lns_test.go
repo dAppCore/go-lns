@@ -17,7 +17,7 @@ import (
 func TestServiceLifecycleHooks(t *testing.T) {
 	svc := &Service{}
 
-	if got := svc.OnStartup(nil); !got.OK {
+	if got := svc.OnStartup(context.Background()); !got.OK {
 		t.Fatalf("OnStartup returned %#v, want OK", got)
 	}
 
@@ -25,7 +25,7 @@ func TestServiceLifecycleHooks(t *testing.T) {
 		t.Fatalf("GetOnStartup returned %#v, want OK", got)
 	}
 
-	if got := svc.OnShutdown(nil); !got.OK {
+	if got := svc.OnShutdown(context.Background()); !got.OK {
 		t.Fatalf("OnShutdown returned %#v, want OK", got)
 	}
 
@@ -35,7 +35,7 @@ func TestServiceLifecycleHooks(t *testing.T) {
 
 	var nilSvc *Service
 
-	if got := nilSvc.OnStartup(nil); !got.OK {
+	if got := nilSvc.OnStartup(context.Background()); !got.OK {
 		t.Fatalf("nil OnStartup returned %#v, want OK", got)
 	}
 
@@ -43,7 +43,7 @@ func TestServiceLifecycleHooks(t *testing.T) {
 		t.Fatalf("nil GetOnStartup returned %#v, want OK", got)
 	}
 
-	if got := nilSvc.OnShutdown(nil); !got.OK {
+	if got := nilSvc.OnShutdown(context.Background()); !got.OK {
 		t.Fatalf("nil OnShutdown returned %#v, want OK", got)
 	}
 
@@ -77,17 +77,17 @@ func TestServiceHandleIPCEvents(t *testing.T) {
 func TestServiceResolve(t *testing.T) {
 	svc := &Service{}
 
-	got, err := svc.Resolve("Foo-Bar.lthn")
+	got, err := svc.Resolve(testFooBarLTHN)
 	if err != nil {
 		t.Fatalf("Resolve returned error: %v", err)
 	}
 
-	want := sha3.Sum256([]byte("foo-bar"))
+	want := sha3.Sum256([]byte(testFooBarLabel))
 	if got != want {
 		t.Fatalf("Resolve returned %x, want %x", got, want)
 	}
 
-	got, err = svc.Resolve([]byte("Foo-Bar.lthn"))
+	got, err = svc.Resolve([]byte(testFooBarLTHN))
 	if err != nil {
 		t.Fatalf("Resolve([]byte) returned error: %v", err)
 	}
@@ -96,7 +96,7 @@ func TestServiceResolve(t *testing.T) {
 		t.Fatalf("Resolve([]byte) returned %x, want %x", got, want)
 	}
 
-	got, err = svc.GetResolve("Foo-Bar.lthn")
+	got, err = svc.GetResolve(testFooBarLTHN)
 	if err != nil {
 		t.Fatalf("GetResolve returned error: %v", err)
 	}
@@ -109,17 +109,17 @@ func TestServiceResolve(t *testing.T) {
 func TestServiceResolveStringAndBinary(t *testing.T) {
 	svc := &Service{}
 
-	got, err := svc.ResolveString("Foo-Bar.lthn")
+	got, err := svc.ResolveString(testFooBarLTHN)
 	if err != nil {
 		t.Fatalf("ResolveString returned error: %v", err)
 	}
 
-	want := primitives.Hash(sha3.Sum256([]byte("foo-bar")))
+	want := primitives.Hash(sha3.Sum256([]byte(testFooBarLabel)))
 	if got != want {
 		t.Fatalf("ResolveString returned %x, want %x", got, want)
 	}
 
-	got, err = svc.ResolveBinary([]byte("Foo-Bar.lthn"))
+	got, err = svc.ResolveBinary([]byte(testFooBarLTHN))
 	if err != nil {
 		t.Fatalf("ResolveBinary returned error: %v", err)
 	}
@@ -132,7 +132,7 @@ func TestServiceResolveStringAndBinary(t *testing.T) {
 func TestServiceGetResolverAliases(t *testing.T) {
 	svc := &Service{}
 
-	want := primitives.Hash(sha3.Sum256([]byte("foo-bar")))
+	want := primitives.Hash(sha3.Sum256([]byte(testFooBarLabel)))
 
 	resolveCases := []struct {
 		name string
@@ -153,10 +153,10 @@ func TestServiceGetResolverAliases(t *testing.T) {
 	}
 
 	for _, tc := range resolveCases {
-		var input any = "Foo-Bar.lthn"
+		var input any = testFooBarLTHN
 		switch tc.name {
 		case "GetResolveBinary", "GetResolveByBinary", "GetHashBinary", "GetHashByBinary":
-			input = []byte("Foo-Bar.lthn")
+			input = []byte(testFooBarLTHN)
 		}
 
 		got, err := tc.fn(input)
@@ -177,12 +177,12 @@ func TestServiceResolveRejectsInvalidNames(t *testing.T) {
 		"",
 		" foo-bar.lthn",
 		"foo-bar.lthn ",
-		"foo.bar.lthn",
+		testFooBarDottedLTHN,
 		"foo..lthn",
 		"foo.lthn..",
 		"foo-",
 		"test.lthn",
-		"Kfoo.lthn",
+		testKelvinFooLTHN,
 	}
 
 	for _, name := range cases {
@@ -243,11 +243,11 @@ func TestServiceVerify(t *testing.T) {
 		name any
 		ok   bool
 	}{
-		{name: "Foo-Bar.lthn", ok: true},
-		{name: []byte("Foo-Bar.lthn"), ok: true},
-		{name: "foo.bar.lthn", ok: false},
+		{name: testFooBarLTHN, ok: true},
+		{name: []byte(testFooBarLTHN), ok: true},
+		{name: testFooBarDottedLTHN, ok: false},
 		{name: "foo-", ok: false},
-		{name: "Kfoo.lthn", ok: false},
+		{name: testKelvinFooLTHN, ok: false},
 		{name: 123, ok: false},
 	}
 
@@ -261,27 +261,27 @@ func TestServiceVerify(t *testing.T) {
 func TestServiceVerifyStringAndBinary(t *testing.T) {
 	svc := &Service{}
 
-	if !svc.VerifyString("Foo-Bar.lthn") {
+	if !svc.VerifyString(testFooBarLTHN) {
 		t.Fatal("VerifyString should accept canonical names")
 	}
 
-	if svc.VerifyString("foo.bar.lthn") {
+	if svc.VerifyString(testFooBarDottedLTHN) {
 		t.Fatal("VerifyString should reject malformed names")
 	}
 
-	if !svc.VerifyBinary([]byte("Foo-Bar.lthn")) {
+	if !svc.VerifyBinary([]byte(testFooBarLTHN)) {
 		t.Fatal("VerifyBinary should accept canonical names")
 	}
 
-	if svc.VerifyBinary([]byte("foo.bar.lthn")) {
+	if svc.VerifyBinary([]byte(testFooBarDottedLTHN)) {
 		t.Fatal("VerifyBinary should reject malformed names")
 	}
 
-	if svc.VerifyString("Kfoo.lthn") {
+	if svc.VerifyString(testKelvinFooLTHN) {
 		t.Fatal("VerifyString should reject non-ASCII names")
 	}
 
-	if svc.VerifyBinary([]byte("Kfoo.lthn")) {
+	if svc.VerifyBinary([]byte(testKelvinFooLTHN)) {
 		t.Fatal("VerifyBinary should reject non-ASCII names")
 	}
 }
@@ -289,7 +289,7 @@ func TestServiceVerifyStringAndBinary(t *testing.T) {
 func TestServiceHasAliasMirrors(t *testing.T) {
 	svc := &Service{}
 
-	if !svc.GetHasReserved("RESERVED.lthn") {
+	if !svc.GetHasReserved(testReservedUpperLTHN) {
 		t.Fatal("GetHasReserved should report reserved canonical names")
 	}
 
@@ -301,7 +301,7 @@ func TestServiceHasAliasMirrors(t *testing.T) {
 		t.Fatal("GetHasReservedHash should report reserved canonical hashes")
 	}
 
-	if !svc.GetHasLocked("NEC.lthn") {
+	if !svc.GetHasLocked(testNECUpperLTHN) {
 		t.Fatal("GetHasLocked should report locked canonical names")
 	}
 
@@ -340,12 +340,12 @@ func TestServiceGetVerifyAliases(t *testing.T) {
 		input any
 		fn    func(any) bool
 	}{
-		{name: "GetVerifyName", input: "Foo-Bar.lthn", fn: svc.GetVerifyName},
-		{name: "GetVerifyByName", input: "Foo-Bar.lthn", fn: svc.GetVerifyByName},
-		{name: "GetVerifyString", input: "Foo-Bar.lthn", fn: func(name any) bool { return svc.GetVerifyString(name.(string)) }},
-		{name: "GetVerifyBinary", input: []byte("Foo-Bar.lthn"), fn: func(name any) bool { return svc.GetVerifyBinary(name.([]byte)) }},
-		{name: "GetVerifyByString", input: "Foo-Bar.lthn", fn: func(name any) bool { return svc.GetVerifyByString(name.(string)) }},
-		{name: "GetVerifyByBinary", input: []byte("Foo-Bar.lthn"), fn: func(name any) bool { return svc.GetVerifyByBinary(name.([]byte)) }},
+		{name: "GetVerifyName", input: testFooBarLTHN, fn: svc.GetVerifyName},
+		{name: "GetVerifyByName", input: testFooBarLTHN, fn: svc.GetVerifyByName},
+		{name: "GetVerifyString", input: testFooBarLTHN, fn: func(name any) bool { return svc.GetVerifyString(name.(string)) }},
+		{name: "GetVerifyBinary", input: []byte(testFooBarLTHN), fn: func(name any) bool { return svc.GetVerifyBinary(name.([]byte)) }},
+		{name: "GetVerifyByString", input: testFooBarLTHN, fn: func(name any) bool { return svc.GetVerifyByString(name.(string)) }},
+		{name: "GetVerifyByBinary", input: []byte(testFooBarLTHN), fn: func(name any) bool { return svc.GetVerifyByBinary(name.([]byte)) }},
 	}
 
 	for _, tc := range verifyCases {
@@ -358,12 +358,12 @@ func TestServiceGetVerifyAliases(t *testing.T) {
 func TestServiceResolveNameAliases(t *testing.T) {
 	svc := &Service{}
 
-	got, err := svc.ResolveName("Foo-Bar.lthn")
+	got, err := svc.ResolveName(testFooBarLTHN)
 	if err != nil {
 		t.Fatalf("ResolveName returned error: %v", err)
 	}
 
-	want := primitives.Hash(sha3.Sum256([]byte("foo-bar")))
+	want := primitives.Hash(sha3.Sum256([]byte(testFooBarLabel)))
 	if got != want {
 		t.Fatalf("ResolveName returned %x, want %x", got, want)
 	}
@@ -376,26 +376,26 @@ func TestServiceResolveNameAliases(t *testing.T) {
 func TestServiceHashAliases(t *testing.T) {
 	svc := &Service{}
 
-	got, err := svc.Hash("Foo-Bar.lthn")
+	got, err := svc.Hash(testFooBarLTHN)
 	if err != nil {
 		t.Fatalf("Hash returned error: %v", err)
 	}
 
-	want := primitives.Hash(sha3.Sum256([]byte("foo-bar")))
+	want := primitives.Hash(sha3.Sum256([]byte(testFooBarLabel)))
 	if got != want {
 		t.Fatalf("Hash returned %x, want %x", got, want)
 	}
 
-	got, err = svc.HashString("Foo-Bar.lthn")
+	got, err = svc.HashString(testFooBarLTHN)
 	if err != nil {
-		t.Fatalf("HashString returned error: %v", err)
+		t.Fatalf(testHashStringErr, err)
 	}
 
 	if got != want {
 		t.Fatalf("HashString returned %x, want %x", got, want)
 	}
 
-	got, err = svc.HashBinary([]byte("Foo-Bar.lthn"))
+	got, err = svc.HashBinary([]byte(testFooBarLTHN))
 	if err != nil {
 		t.Fatalf("HashBinary returned error: %v", err)
 	}
@@ -404,7 +404,7 @@ func TestServiceHashAliases(t *testing.T) {
 		t.Fatalf("HashBinary returned %x, want %x", got, want)
 	}
 
-	got, err = svc.HashName("Foo-Bar.lthn")
+	got, err = svc.HashName(testFooBarLTHN)
 	if err != nil {
 		t.Fatalf("HashName returned error: %v", err)
 	}
@@ -413,7 +413,7 @@ func TestServiceHashAliases(t *testing.T) {
 		t.Fatalf("HashName returned %x, want %x", got, want)
 	}
 
-	got, err = svc.GetHash("Foo-Bar.lthn")
+	got, err = svc.GetHash(testFooBarLTHN)
 	if err != nil {
 		t.Fatalf("GetHash returned error: %v", err)
 	}
@@ -422,7 +422,7 @@ func TestServiceHashAliases(t *testing.T) {
 		t.Fatalf("GetHash returned %x, want %x", got, want)
 	}
 
-	got, err = svc.HashByName([]byte("Foo-Bar.lthn"))
+	got, err = svc.HashByName([]byte(testFooBarLTHN))
 	if err != nil {
 		t.Fatalf("HashByName returned error: %v", err)
 	}
@@ -439,9 +439,9 @@ func TestServiceHashAliases(t *testing.T) {
 func TestServiceGetHashAndVerifyAliases(t *testing.T) {
 	svc := &Service{}
 
-	want := primitives.Hash(sha3.Sum256([]byte("foo-bar")))
+	want := primitives.Hash(sha3.Sum256([]byte(testFooBarLabel)))
 
-	got, err := svc.GetHash("Foo-Bar.lthn")
+	got, err := svc.GetHash(testFooBarLTHN)
 	if err != nil {
 		t.Fatalf("GetHash returned error: %v", err)
 	}
@@ -450,11 +450,11 @@ func TestServiceGetHashAndVerifyAliases(t *testing.T) {
 		t.Fatalf("GetHash returned %x, want %x", got, want)
 	}
 
-	if !svc.GetVerify("Foo-Bar.lthn") {
+	if !svc.GetVerify(testFooBarLTHN) {
 		t.Fatal("GetVerify should accept canonical names")
 	}
 
-	if svc.GetVerify("foo.bar.lthn") {
+	if svc.GetVerify(testFooBarDottedLTHN) {
 		t.Fatal("GetVerify should reject malformed names")
 	}
 
@@ -582,9 +582,9 @@ func TestServiceConstantGetters(t *testing.T) {
 func TestServiceHashByStringAndBinaryAliases(t *testing.T) {
 	svc := &Service{}
 
-	want := primitives.Hash(sha3.Sum256([]byte("foo-bar")))
+	want := primitives.Hash(sha3.Sum256([]byte(testFooBarLabel)))
 
-	got, err := svc.HashByString("Foo-Bar.lthn")
+	got, err := svc.HashByString(testFooBarLTHN)
 	if err != nil {
 		t.Fatalf("HashByString returned error: %v", err)
 	}
@@ -593,7 +593,7 @@ func TestServiceHashByStringAndBinaryAliases(t *testing.T) {
 		t.Fatalf("HashByString returned %x, want %x", got, want)
 	}
 
-	got, err = svc.HashByBinary([]byte("Foo-Bar.lthn"))
+	got, err = svc.HashByBinary([]byte(testFooBarLTHN))
 	if err != nil {
 		t.Fatalf("HashByBinary returned error: %v", err)
 	}
@@ -606,12 +606,12 @@ func TestServiceHashByStringAndBinaryAliases(t *testing.T) {
 func TestServiceResolveByNameAliases(t *testing.T) {
 	svc := &Service{}
 
-	got, err := svc.ResolveByName("Foo-Bar.lthn")
+	got, err := svc.ResolveByName(testFooBarLTHN)
 	if err != nil {
 		t.Fatalf("ResolveByName returned error: %v", err)
 	}
 
-	want := primitives.Hash(sha3.Sum256([]byte("foo-bar")))
+	want := primitives.Hash(sha3.Sum256([]byte(testFooBarLabel)))
 	if got != want {
 		t.Fatalf("ResolveByName returned %x, want %x", got, want)
 	}
@@ -624,11 +624,11 @@ func TestServiceResolveByNameAliases(t *testing.T) {
 func TestServiceVerifyNameAliases(t *testing.T) {
 	svc := &Service{}
 
-	if !svc.VerifyName("Foo-Bar.lthn") {
+	if !svc.VerifyName(testFooBarLTHN) {
 		t.Fatal("VerifyName should accept canonical names")
 	}
 
-	if svc.VerifyName("foo.bar.lthn") {
+	if svc.VerifyName(testFooBarDottedLTHN) {
 		t.Fatal("VerifyName should reject malformed names")
 	}
 
@@ -640,9 +640,9 @@ func TestServiceVerifyNameAliases(t *testing.T) {
 func TestServiceResolveByStringAndBinaryAliases(t *testing.T) {
 	svc := &Service{}
 
-	want := primitives.Hash(sha3.Sum256([]byte("foo-bar")))
+	want := primitives.Hash(sha3.Sum256([]byte(testFooBarLabel)))
 
-	got, err := svc.ResolveByString("Foo-Bar.lthn")
+	got, err := svc.ResolveByString(testFooBarLTHN)
 	if err != nil {
 		t.Fatalf("ResolveByString returned error: %v", err)
 	}
@@ -651,7 +651,7 @@ func TestServiceResolveByStringAndBinaryAliases(t *testing.T) {
 		t.Fatalf("ResolveByString returned %x, want %x", got, want)
 	}
 
-	got, err = svc.ResolveByBinary([]byte("Foo-Bar.lthn"))
+	got, err = svc.ResolveByBinary([]byte(testFooBarLTHN))
 	if err != nil {
 		t.Fatalf("ResolveByBinary returned error: %v", err)
 	}
@@ -664,19 +664,19 @@ func TestServiceResolveByStringAndBinaryAliases(t *testing.T) {
 func TestServiceVerifyByStringAndBinaryAliases(t *testing.T) {
 	svc := &Service{}
 
-	if !svc.VerifyByString("Foo-Bar.lthn") {
+	if !svc.VerifyByString(testFooBarLTHN) {
 		t.Fatal("VerifyByString should accept canonical names")
 	}
 
-	if svc.VerifyByString("foo.bar.lthn") {
+	if svc.VerifyByString(testFooBarDottedLTHN) {
 		t.Fatal("VerifyByString should reject malformed names")
 	}
 
-	if !svc.VerifyByBinary([]byte("Foo-Bar.lthn")) {
+	if !svc.VerifyByBinary([]byte(testFooBarLTHN)) {
 		t.Fatal("VerifyByBinary should accept canonical names")
 	}
 
-	if svc.VerifyByBinary([]byte("foo.bar.lthn")) {
+	if svc.VerifyByBinary([]byte(testFooBarDottedLTHN)) {
 		t.Fatal("VerifyByBinary should reject malformed names")
 	}
 }
@@ -684,11 +684,11 @@ func TestServiceVerifyByStringAndBinaryAliases(t *testing.T) {
 func TestServiceVerifyByNameAliases(t *testing.T) {
 	svc := &Service{}
 
-	if !svc.VerifyByName("Foo-Bar.lthn") {
+	if !svc.VerifyByName(testFooBarLTHN) {
 		t.Fatal("VerifyByName should accept canonical names")
 	}
 
-	if svc.VerifyByName("foo.bar.lthn") {
+	if svc.VerifyByName(testFooBarDottedLTHN) {
 		t.Fatal("VerifyByName should reject malformed names")
 	}
 
@@ -782,7 +782,7 @@ func TestServiceRolloutHelpers(t *testing.T) {
 
 	reservedHash, err := covenant.HashString("reserved")
 	if err != nil {
-		t.Fatalf("HashString returned error: %v", err)
+		t.Fatalf(testHashStringErr, err)
 	}
 
 	if !svc.IsReserved(reservedHash, 99, rules) {
@@ -795,7 +795,7 @@ func TestServiceRolloutHelpers(t *testing.T) {
 
 	rootHash, err := covenant.HashString("nec")
 	if err != nil {
-		t.Fatalf("HashString returned error: %v", err)
+		t.Fatalf(testHashStringErr, err)
 	}
 
 	if !svc.IsLockedUp(rootHash, 100, rules) {
@@ -872,7 +872,7 @@ func TestServiceGrindAndCountHelpers(t *testing.T) {
 
 	hash, err := covenant.HashString(name)
 	if err != nil {
-		t.Fatalf("HashString returned error: %v", err)
+		t.Fatalf(testHashStringErr, err)
 	}
 
 	if !svc.HasRollout(hash, 100, rules) {
@@ -924,19 +924,19 @@ func TestServiceUtilityAliases(t *testing.T) {
 		t.Fatal("GetNewNameView should alias NewNameView")
 	}
 
-	if got := svc.NextName("ExAmPle."); got != "example\x00." {
+	if got := svc.NextName(testExampleMixedFQDN); got != testExampleNextFQDN {
 		t.Fatalf("NextName returned %q", got)
 	}
 
-	if got := svc.GetNextName("ExAmPle."); got != "example\x00." {
+	if got := svc.GetNextName(testExampleMixedFQDN); got != testExampleNextFQDN {
 		t.Fatalf("GetNextName returned %q", got)
 	}
 
-	if got := svc.PrevName("ExAmPle."); got != "exampld\xff." {
+	if got := svc.PrevName(testExampleMixedFQDN); got != "exampld\xff." {
 		t.Fatalf("PrevName returned %q", got)
 	}
 
-	if got := svc.GetPrevName("ExAmPle."); got != "exampld\xff." {
+	if got := svc.GetPrevName(testExampleMixedFQDN); got != "exampld\xff." {
 		t.Fatalf("GetPrevName returned %q", got)
 	}
 
@@ -1275,13 +1275,13 @@ func TestRegisterWithOptions(t *testing.T) {
 func TestServiceGetReserved(t *testing.T) {
 	svc := &Service{}
 
-	item, ok := svc.GetReserved("RESERVED.lthn")
+	item, ok := svc.GetReserved(testReservedUpperLTHN)
 	if !ok {
 		t.Fatal("GetReserved should find the reserved reference entry")
 	}
 
 	if item.Name != "reserved" {
-		t.Fatalf("item.Name = %q, want %q", item.Name, "reserved")
+		t.Fatalf(testItemNameFormat, item.Name, "reserved")
 	}
 
 	if item.Target != "reserved.com." {
@@ -1290,14 +1290,14 @@ func TestServiceGetReserved(t *testing.T) {
 
 	hash, err := covenant.HashString("reserved")
 	if err != nil {
-		t.Fatalf("HashString returned error: %v", err)
+		t.Fatalf(testHashStringErr, err)
 	}
 
 	if item.Hash != hash {
 		t.Fatalf("item.Hash = %x, want %x", item.Hash, hash)
 	}
 
-	if _, ok := svc.GetReserved([]byte("reserved.lthn")); !ok {
+	if _, ok := svc.GetReserved([]byte(testReservedLTHN)); !ok {
 		t.Fatal("GetReserved([]byte) should find the reserved reference entry")
 	}
 
@@ -1309,11 +1309,11 @@ func TestServiceGetReserved(t *testing.T) {
 func TestServiceHasReserved(t *testing.T) {
 	svc := &Service{}
 
-	if !svc.HasReserved("RESERVED.lthn") {
+	if !svc.HasReserved(testReservedUpperLTHN) {
 		t.Fatal("HasReserved should report canonical reserved names")
 	}
 
-	if !svc.HasReserved([]byte("reserved.lthn")) {
+	if !svc.HasReserved([]byte(testReservedLTHN)) {
 		t.Fatal("HasReserved([]byte) should report canonical reserved names")
 	}
 
@@ -1335,14 +1335,14 @@ func TestServiceGetReservedByName(t *testing.T) {
 	}
 
 	if item.Name != "reserved" {
-		t.Fatalf("item.Name = %q, want %q", item.Name, "reserved")
+		t.Fatalf(testItemNameFormat, item.Name, "reserved")
 	}
 
 	if _, ok := svc.GetReservedByName([]byte("reserved")); !ok {
 		t.Fatal("GetReservedByName([]byte) should find the reserved reference entry")
 	}
 
-	if _, ok := svc.GetReservedByName("RESERVED.lthn"); !ok {
+	if _, ok := svc.GetReservedByName(testReservedUpperLTHN); !ok {
 		t.Fatal("GetReservedByName should also accept canonical reserved names")
 	}
 
@@ -1360,7 +1360,7 @@ func TestServiceGetReservedStringAndBinary(t *testing.T) {
 	}
 
 	if item.Name != "reserved" {
-		t.Fatalf("item.Name = %q, want %q", item.Name, "reserved")
+		t.Fatalf(testItemNameFormat, item.Name, "reserved")
 	}
 
 	item, ok = svc.GetReservedBinary([]byte("reserved"))
@@ -1369,7 +1369,7 @@ func TestServiceGetReservedStringAndBinary(t *testing.T) {
 	}
 
 	if item.Name != "reserved" {
-		t.Fatalf("item.Name = %q, want %q", item.Name, "reserved")
+		t.Fatalf(testItemNameFormat, item.Name, "reserved")
 	}
 
 	if !svc.HasReservedString("reserved") {
@@ -1380,19 +1380,19 @@ func TestServiceGetReservedStringAndBinary(t *testing.T) {
 		t.Fatal("HasReservedBinary should report reserved catalog labels")
 	}
 
-	if _, ok := svc.GetReservedString("RESERVED.lthn"); !ok {
+	if _, ok := svc.GetReservedString(testReservedUpperLTHN); !ok {
 		t.Fatal("GetReservedString should also accept canonical reserved names")
 	}
 
-	if _, ok := svc.GetReservedBinary([]byte("reserved.lthn")); !ok {
+	if _, ok := svc.GetReservedBinary([]byte(testReservedLTHN)); !ok {
 		t.Fatal("GetReservedBinary should also accept canonical reserved names")
 	}
 
-	if !svc.HasReservedString("reserved.lthn") {
+	if !svc.HasReservedString(testReservedLTHN) {
 		t.Fatal("HasReservedString should report canonical reserved names")
 	}
 
-	if !svc.HasReservedBinary([]byte("RESERVED.lthn")) {
+	if !svc.HasReservedBinary([]byte(testReservedUpperLTHN)) {
 		t.Fatal("HasReservedBinary should report canonical reserved names")
 	}
 }
@@ -1406,7 +1406,7 @@ func TestServiceGetReservedByStringAndBinary(t *testing.T) {
 	}
 
 	if item.Name != "reserved" {
-		t.Fatalf("item.Name = %q, want %q", item.Name, "reserved")
+		t.Fatalf(testItemNameFormat, item.Name, "reserved")
 	}
 
 	item, ok = svc.GetReservedByBinary([]byte("reserved"))
@@ -1415,7 +1415,7 @@ func TestServiceGetReservedByStringAndBinary(t *testing.T) {
 	}
 
 	if item.Name != "reserved" {
-		t.Fatalf("item.Name = %q, want %q", item.Name, "reserved")
+		t.Fatalf(testItemNameFormat, item.Name, "reserved")
 	}
 
 	if !svc.HasReservedByString("reserved") {
@@ -1438,7 +1438,7 @@ func TestServiceHasReservedByName(t *testing.T) {
 		t.Fatal("HasReservedByName([]byte) should report reserved catalog labels")
 	}
 
-	if !svc.HasReservedByName("reserved.lthn") {
+	if !svc.HasReservedByName(testReservedLTHN) {
 		t.Fatal("HasReservedByName should report canonical reserved names")
 	}
 
@@ -1460,23 +1460,23 @@ func TestServiceReservedNameAliases(t *testing.T) {
 	}
 
 	if item.Name != "reserved" {
-		t.Fatalf("item.Name = %q, want %q", item.Name, "reserved")
+		t.Fatalf(testItemNameFormat, item.Name, "reserved")
 	}
 
-	item, ok = svc.GetReservedName("RESERVED.lthn")
+	item, ok = svc.GetReservedName(testReservedUpperLTHN)
 	if !ok {
 		t.Fatal("GetReservedName should also accept canonical reserved names")
 	}
 
 	if item.Name != "reserved" {
-		t.Fatalf("item.Name = %q, want %q", item.Name, "reserved")
+		t.Fatalf(testItemNameFormat, item.Name, "reserved")
 	}
 
 	if !svc.HasReservedName("reserved") {
 		t.Fatal("HasReservedName should report reserved catalog labels")
 	}
 
-	if !svc.HasReservedName("reserved.lthn") {
+	if !svc.HasReservedName(testReservedLTHN) {
 		t.Fatal("HasReservedName should report canonical reserved names")
 	}
 }
@@ -1486,7 +1486,7 @@ func TestServiceGetReservedHash(t *testing.T) {
 
 	hash, err := covenant.HashString("reserved")
 	if err != nil {
-		t.Fatalf("HashString returned error: %v", err)
+		t.Fatalf(testHashStringErr, err)
 	}
 
 	item, ok := svc.GetReservedHash(hash)
@@ -1495,7 +1495,7 @@ func TestServiceGetReservedHash(t *testing.T) {
 	}
 
 	if item.Name != "reserved" {
-		t.Fatalf("item.Name = %q, want %q", item.Name, "reserved")
+		t.Fatalf(testItemNameFormat, item.Name, "reserved")
 	}
 
 	if !svc.HasReservedHash(hash) {
@@ -1512,7 +1512,7 @@ func TestServiceGetReservedByHash(t *testing.T) {
 
 	hash, err := covenant.HashString("reserved")
 	if err != nil {
-		t.Fatalf("HashString returned error: %v", err)
+		t.Fatalf(testHashStringErr, err)
 	}
 
 	item, ok := svc.GetReservedByHash(hash)
@@ -1521,7 +1521,7 @@ func TestServiceGetReservedByHash(t *testing.T) {
 	}
 
 	if item.Name != "reserved" {
-		t.Fatalf("item.Name = %q, want %q", item.Name, "reserved")
+		t.Fatalf(testItemNameFormat, item.Name, "reserved")
 	}
 
 	if !svc.HasReservedByHash(hash) {
@@ -1536,13 +1536,13 @@ func TestServiceGetReservedByHash(t *testing.T) {
 func TestServiceGetLocked(t *testing.T) {
 	svc := &Service{}
 
-	item, ok := svc.GetLocked("NEC.lthn")
+	item, ok := svc.GetLocked(testNECUpperLTHN)
 	if !ok {
 		t.Fatal("GetLocked should find the locked reference entry")
 	}
 
 	if item.Name != "nec" {
-		t.Fatalf("item.Name = %q, want %q", item.Name, "nec")
+		t.Fatalf(testItemNameFormat, item.Name, "nec")
 	}
 
 	if item.Target != "nec." {
@@ -1553,7 +1553,7 @@ func TestServiceGetLocked(t *testing.T) {
 		t.Fatalf("unexpected flags on nec: %#v", item)
 	}
 
-	if _, ok := svc.GetLocked([]byte("nec.lthn")); !ok {
+	if _, ok := svc.GetLocked([]byte(testNECLTHN)); !ok {
 		t.Fatal("GetLocked([]byte) should find the locked reference entry")
 	}
 
@@ -1565,11 +1565,11 @@ func TestServiceGetLocked(t *testing.T) {
 func TestServiceHasLocked(t *testing.T) {
 	svc := &Service{}
 
-	if !svc.HasLocked("NEC.lthn") {
+	if !svc.HasLocked(testNECUpperLTHN) {
 		t.Fatal("HasLocked should report canonical locked names")
 	}
 
-	if !svc.HasLocked([]byte("nec.lthn")) {
+	if !svc.HasLocked([]byte(testNECLTHN)) {
 		t.Fatal("HasLocked([]byte) should report canonical locked names")
 	}
 
@@ -1591,14 +1591,14 @@ func TestServiceGetLockedByName(t *testing.T) {
 	}
 
 	if item.Name != "nec" {
-		t.Fatalf("item.Name = %q, want %q", item.Name, "nec")
+		t.Fatalf(testItemNameFormat, item.Name, "nec")
 	}
 
 	if _, ok := svc.GetLockedByName([]byte("nec")); !ok {
 		t.Fatal("GetLockedByName([]byte) should find the locked reference entry")
 	}
 
-	if _, ok := svc.GetLockedByName("NEC.lthn"); !ok {
+	if _, ok := svc.GetLockedByName(testNECUpperLTHN); !ok {
 		t.Fatal("GetLockedByName should also accept canonical locked names")
 	}
 
@@ -1616,7 +1616,7 @@ func TestServiceGetLockedStringAndBinary(t *testing.T) {
 	}
 
 	if item.Name != "nec" {
-		t.Fatalf("item.Name = %q, want %q", item.Name, "nec")
+		t.Fatalf(testItemNameFormat, item.Name, "nec")
 	}
 
 	item, ok = svc.GetLockedBinary([]byte("nec"))
@@ -1625,7 +1625,7 @@ func TestServiceGetLockedStringAndBinary(t *testing.T) {
 	}
 
 	if item.Name != "nec" {
-		t.Fatalf("item.Name = %q, want %q", item.Name, "nec")
+		t.Fatalf(testItemNameFormat, item.Name, "nec")
 	}
 
 	if !svc.HasLockedString("nec") {
@@ -1636,19 +1636,19 @@ func TestServiceGetLockedStringAndBinary(t *testing.T) {
 		t.Fatal("HasLockedBinary should report locked catalog labels")
 	}
 
-	if _, ok := svc.GetLockedString("NEC.lthn"); !ok {
+	if _, ok := svc.GetLockedString(testNECUpperLTHN); !ok {
 		t.Fatal("GetLockedString should also accept canonical locked names")
 	}
 
-	if _, ok := svc.GetLockedBinary([]byte("nec.lthn")); !ok {
+	if _, ok := svc.GetLockedBinary([]byte(testNECLTHN)); !ok {
 		t.Fatal("GetLockedBinary should also accept canonical locked names")
 	}
 
-	if !svc.HasLockedString("nec.lthn") {
+	if !svc.HasLockedString(testNECLTHN) {
 		t.Fatal("HasLockedString should report canonical locked names")
 	}
 
-	if !svc.HasLockedBinary([]byte("NEC.lthn")) {
+	if !svc.HasLockedBinary([]byte(testNECUpperLTHN)) {
 		t.Fatal("HasLockedBinary should report canonical locked names")
 	}
 }
@@ -1662,7 +1662,7 @@ func TestServiceGetLockedByStringAndBinary(t *testing.T) {
 	}
 
 	if item.Name != "nec" {
-		t.Fatalf("item.Name = %q, want %q", item.Name, "nec")
+		t.Fatalf(testItemNameFormat, item.Name, "nec")
 	}
 
 	item, ok = svc.GetLockedByBinary([]byte("nec"))
@@ -1671,7 +1671,7 @@ func TestServiceGetLockedByStringAndBinary(t *testing.T) {
 	}
 
 	if item.Name != "nec" {
-		t.Fatalf("item.Name = %q, want %q", item.Name, "nec")
+		t.Fatalf(testItemNameFormat, item.Name, "nec")
 	}
 
 	if !svc.HasLockedByString("nec") {
@@ -1694,7 +1694,7 @@ func TestServiceHasLockedByName(t *testing.T) {
 		t.Fatal("HasLockedByName([]byte) should report locked catalog labels")
 	}
 
-	if !svc.HasLockedByName("nec.lthn") {
+	if !svc.HasLockedByName(testNECLTHN) {
 		t.Fatal("HasLockedByName should report canonical locked names")
 	}
 
@@ -1716,23 +1716,23 @@ func TestServiceLockedNameAliases(t *testing.T) {
 	}
 
 	if item.Name != "nec" {
-		t.Fatalf("item.Name = %q, want %q", item.Name, "nec")
+		t.Fatalf(testItemNameFormat, item.Name, "nec")
 	}
 
-	item, ok = svc.GetLockedName("NEC.lthn")
+	item, ok = svc.GetLockedName(testNECUpperLTHN)
 	if !ok {
 		t.Fatal("GetLockedName should also accept canonical locked names")
 	}
 
 	if item.Name != "nec" {
-		t.Fatalf("item.Name = %q, want %q", item.Name, "nec")
+		t.Fatalf(testItemNameFormat, item.Name, "nec")
 	}
 
 	if !svc.HasLockedName("nec") {
 		t.Fatal("HasLockedName should report locked catalog labels")
 	}
 
-	if !svc.HasLockedName("nec.lthn") {
+	if !svc.HasLockedName(testNECLTHN) {
 		t.Fatal("HasLockedName should report canonical locked names")
 	}
 }
@@ -1742,7 +1742,7 @@ func TestServiceGetLockedHash(t *testing.T) {
 
 	hash, err := covenant.HashString("nec")
 	if err != nil {
-		t.Fatalf("HashString returned error: %v", err)
+		t.Fatalf(testHashStringErr, err)
 	}
 
 	item, ok := svc.GetLockedHash(hash)
@@ -1751,7 +1751,7 @@ func TestServiceGetLockedHash(t *testing.T) {
 	}
 
 	if item.Name != "nec" {
-		t.Fatalf("item.Name = %q, want %q", item.Name, "nec")
+		t.Fatalf(testItemNameFormat, item.Name, "nec")
 	}
 
 	if !svc.HasLockedHash(hash) {
@@ -1768,7 +1768,7 @@ func TestServiceGetLockedByHash(t *testing.T) {
 
 	hash, err := covenant.HashString("nec")
 	if err != nil {
-		t.Fatalf("HashString returned error: %v", err)
+		t.Fatalf(testHashStringErr, err)
 	}
 
 	item, ok := svc.GetLockedByHash(hash)
@@ -1777,7 +1777,7 @@ func TestServiceGetLockedByHash(t *testing.T) {
 	}
 
 	if item.Name != "nec" {
-		t.Fatalf("item.Name = %q, want %q", item.Name, "nec")
+		t.Fatalf(testItemNameFormat, item.Name, "nec")
 	}
 
 	if !svc.HasLockedByHash(hash) {
@@ -1901,15 +1901,15 @@ func TestServiceReservedCatalog(t *testing.T) {
 	}
 
 	if len(catalog.Keys()) == 0 {
-		t.Fatal("ReservedCatalog should expose hash lookup aliases")
+		t.Fatal(testReservedHashAlias)
 	}
 
 	if !catalog.HasByHash(catalog.Keys()[0]) {
-		t.Fatal("ReservedCatalog should expose hash lookup aliases")
+		t.Fatal(testReservedHashAlias)
 	}
 
 	if _, ok := catalog.GetByHash(catalog.Keys()[0]); !ok {
-		t.Fatal("ReservedCatalog should expose hash lookup aliases")
+		t.Fatal(testReservedHashAlias)
 	}
 
 	if len(catalog.Entries()) == 0 {
@@ -1997,15 +1997,15 @@ func TestServiceLockedCatalog(t *testing.T) {
 	}
 
 	if len(catalog.Keys()) == 0 {
-		t.Fatal("LockedCatalog should expose hash lookup aliases")
+		t.Fatal(testLockedHashAlias)
 	}
 
 	if !catalog.HasByHash(catalog.Keys()[0]) {
-		t.Fatal("LockedCatalog should expose hash lookup aliases")
+		t.Fatal(testLockedHashAlias)
 	}
 
 	if _, ok := catalog.GetByHash(catalog.Keys()[0]); !ok {
-		t.Fatal("LockedCatalog should expose hash lookup aliases")
+		t.Fatal(testLockedHashAlias)
 	}
 
 	if len(catalog.Entries()) == 0 {
@@ -2040,9 +2040,9 @@ func TestServiceLockedCatalog(t *testing.T) {
 func TestServiceNameSetHelpers(t *testing.T) {
 	svc := &Service{}
 
-	hash, err := svc.HashString("example-name")
+	hash, err := svc.HashString(testExampleName)
 	if err != nil {
-		t.Fatalf("HashString returned error: %v", err)
+		t.Fatalf(testHashStringErr, err)
 	}
 
 	tx := primitives.Transaction{
@@ -2050,7 +2050,7 @@ func TestServiceNameSetHelpers(t *testing.T) {
 			{Prevout: primitives.Outpoint{TxHash: primitives.Hash{1}, Index: 0}},
 		},
 		Outputs: []primitives.Output{
-			{Covenant: primitives.Covenant{Type: uint8(covenant.TypeOpen), Items: [][]byte{hash[:], []byte{0, 0, 0, 0}, []byte("example-name")}}},
+			{Covenant: primitives.Covenant{Type: uint8(covenant.TypeOpen), Items: [][]byte{hash[:], []byte{0, 0, 0, 0}, []byte(testExampleName)}}},
 		},
 	}
 
@@ -2084,9 +2084,9 @@ func TestServiceNameSetHelpers(t *testing.T) {
 func TestServiceVerifyCovenants(t *testing.T) {
 	svc := &Service{}
 
-	hash, err := covenant.HashString("example-name")
+	hash, err := covenant.HashString(testExampleName)
 	if err != nil {
-		t.Fatalf("HashString returned error: %v", err)
+		t.Fatalf(testHashStringErr, err)
 	}
 
 	var prevHash primitives.Hash
@@ -2113,7 +2113,7 @@ func TestServiceVerifyCovenants(t *testing.T) {
 		Items: [][]byte{
 			hash[:],
 			make([]byte, 4),
-			[]byte("example-name"),
+			[]byte(testExampleName),
 			[]byte{0},
 			make([]byte, 4),
 			make([]byte, 4),

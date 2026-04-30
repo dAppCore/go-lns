@@ -16,7 +16,7 @@ var grindNameChars = []byte("abcdefghijklmnopqrstuvwxyz")
 
 func randomName(size int) (string, error) {
 	if size <= 0 || size > MaxNameSize {
-		return "", core.E("covenant.GrindName", "invalid size", nil)
+		return "", core.E(opGrindName, "invalid size", nil)
 	}
 
 	buf := make([]byte, size)
@@ -24,7 +24,7 @@ func randomName(size int) (string, error) {
 	for i := 0; i < size; i++ {
 		n, err := rand.Int(rand.Reader, big.NewInt(int64(len(grindNameChars))))
 		if err != nil {
-			return "", core.E("covenant.GrindName", "random source failure", err)
+			return "", core.E(opGrindName, "random source failure", err)
 		}
 
 		buf[i] = grindNameChars[n.Int64()]
@@ -37,7 +37,7 @@ func randomName(size int) (string, error) {
 // and reservation rules. It mirrors the JS helper used by reference tests.
 func GrindName(size int, height uint32, rules NameRules) (string, error) {
 	if size <= 0 || size > MaxNameSize {
-		return "", core.E("covenant.GrindName", "invalid size", nil)
+		return "", core.E(opGrindName, "invalid size", nil)
 	}
 
 	if height < rules.AuctionStart {
@@ -70,7 +70,7 @@ func GrindName(size int, height uint32, rules NameRules) (string, error) {
 		return name, nil
 	}
 
-	return "", core.E("covenant.GrindName", "could not find available name", nil)
+	return "", core.E(opGrindName, "could not find available name", nil)
 }
 
 // GetGrindName is an alias for GrindName.

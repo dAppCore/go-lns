@@ -92,7 +92,7 @@ func (s *Service) handleWalletImport(_ context.Context, options core.Options) co
 func (s *Service) handleWalletExport(_ context.Context, _ core.Options) core.Result {
 	wallet, ok := s.currentWallet()
 	if !ok {
-		return core.Fail(core.E("lns.wallet.export", "wallet is not initialized", nil))
+		return core.Fail(core.E("lns.wallet.export", errWalletNotInitialized, nil))
 	}
 	return core.Ok(wallet.Snapshot())
 }
@@ -100,7 +100,7 @@ func (s *Service) handleWalletExport(_ context.Context, _ core.Options) core.Res
 func (s *Service) handleWalletReceive(_ context.Context, options core.Options) core.Result {
 	wallet, ok := s.currentWallet()
 	if !ok {
-		return core.Fail(core.E("lns.wallet.receive", "wallet is not initialized", nil))
+		return core.Fail(core.E("lns.wallet.receive", errWalletNotInitialized, nil))
 	}
 
 	next, _ := actionBoolValue(options, "next")
@@ -123,7 +123,7 @@ func (s *Service) handleWalletReceive(_ context.Context, options core.Options) c
 func (s *Service) handleWalletBalance(_ context.Context, _ core.Options) core.Result {
 	wallet, ok := s.currentWallet()
 	if !ok {
-		return core.Fail(core.E("lns.wallet.balance", "wallet is not initialized", nil))
+		return core.Fail(core.E("lns.wallet.balance", errWalletNotInitialized, nil))
 	}
 
 	confirmed, locked := wallet.Balance()
@@ -133,7 +133,7 @@ func (s *Service) handleWalletBalance(_ context.Context, _ core.Options) core.Re
 func (s *Service) handleWalletHistory(_ context.Context, _ core.Options) core.Result {
 	wallet, ok := s.currentWallet()
 	if !ok {
-		return core.Fail(core.E("lns.wallet.history", "wallet is not initialized", nil))
+		return core.Fail(core.E("lns.wallet.history", errWalletNotInitialized, nil))
 	}
 
 	return core.Ok(wallet.History())
@@ -142,17 +142,17 @@ func (s *Service) handleWalletHistory(_ context.Context, _ core.Options) core.Re
 func (s *Service) handleWalletSend(_ context.Context, options core.Options) core.Result {
 	wallet, ok := s.currentWallet()
 	if !ok {
-		return core.Fail(core.E("lns.wallet.send", "wallet is not initialized", nil))
+		return core.Fail(core.E(actionNameWalletSend, errWalletNotInitialized, nil))
 	}
 
 	address, ok := actionAddressValue(options, "address", "to", "recipient")
 	if !ok || !address.IsValid() {
-		return core.Fail(core.E("lns.wallet.send", "recipient address is required", nil))
+		return core.Fail(core.E(actionNameWalletSend, "recipient address is required", nil))
 	}
 
 	amount, ok := actionUint64Value(options, "amount", "value")
 	if !ok || amount == 0 {
-		return core.Fail(core.E("lns.wallet.send", "amount is required", nil))
+		return core.Fail(core.E(actionNameWalletSend, "amount is required", nil))
 	}
 
 	confirmed, locked := wallet.Balance()
@@ -290,10 +290,10 @@ func (s *Service) handleWalletSend(_ context.Context, options core.Options) core
 
 func walletDraftID(wallet *walletpkg.Wallet, draft *nameDraftTx, note string) (primitives.Hash, string, error) {
 	if wallet == nil {
-		return primitives.Hash{}, "", core.E("lns.wallet.send", "wallet is not initialized", nil)
+		return primitives.Hash{}, "", core.E(actionNameWalletSend, errWalletNotInitialized, nil)
 	}
 	if draft == nil {
-		return primitives.Hash{}, "", core.E("lns.wallet.send", "draft transaction is required", nil)
+		return primitives.Hash{}, "", core.E(actionNameWalletSend, "draft transaction is required", nil)
 	}
 
 	payload := struct {
@@ -308,7 +308,7 @@ func walletDraftID(wallet *walletpkg.Wallet, draft *nameDraftTx, note string) (p
 
 	raw := core.JSONMarshal(payload)
 	if !raw.OK {
-		return primitives.Hash{}, "", core.E("lns.wallet.send", "marshal draft id payload", raw.Value.(error))
+		return primitives.Hash{}, "", core.E(actionNameWalletSend, "marshal draft id payload", raw.Value.(error))
 	}
 
 	hash := primitives.Hash(sha3.Sum256(raw.Value.([]byte)))
@@ -424,7 +424,7 @@ func (s *Service) currentWallet() (*walletpkg.Wallet, bool) {
 
 func (s *Service) bridgeFromOptions(options core.Options) (*dnspkg.Bridge, error) {
 	if s == nil {
-		return nil, core.E("lns.bridge", "service is required", nil)
+		return nil, core.E(actionOpBridge, "service is required", nil)
 	}
 
 	config, ok := bridgeConfigFromOptions(options)
@@ -432,7 +432,7 @@ func (s *Service) bridgeFromOptions(options core.Options) (*dnspkg.Bridge, error
 		s.bridgeMu.Lock()
 		defer s.bridgeMu.Unlock()
 		if s.dnsBridge == nil {
-			return nil, core.E("lns.bridge", "chain_url is required", nil)
+			return nil, core.E(actionOpBridge, "chain_url is required", nil)
 		}
 		return s.dnsBridge, nil
 	}
@@ -443,7 +443,7 @@ func (s *Service) bridgeFromOptions(options core.Options) (*dnspkg.Bridge, error
 	if s.dnsBridge == nil || !bridgeConfigsEqual(s.bridgeConfig, config) {
 		if s.dnsBridge != nil {
 			if err := s.dnsBridge.Shutdown(); err != nil {
-				return nil, core.Wrap(err, "lns.bridge", "shutdown existing DNS bridge")
+				return nil, core.Wrap(err, actionOpBridge, "shutdown existing DNS bridge")
 			}
 		}
 		s.bridgeConfig = config

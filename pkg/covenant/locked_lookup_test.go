@@ -15,8 +15,8 @@ func TestLockedLookupByName(t *testing.T) {
 		t.Fatal("GetLockedName should find the locked reference entry")
 	}
 
-	if item.Name != "nec" {
-		t.Fatalf("item.Name = %q, want %q", item.Name, "nec")
+	if item.Name != testLockedLabel {
+		t.Fatalf(testItemNameFormat, item.Name, testLockedLabel)
 	}
 
 	if item.Target != "nec." {
@@ -29,9 +29,9 @@ func TestLockedLookupByName(t *testing.T) {
 }
 
 func TestLockedLookupByHash(t *testing.T) {
-	hash, err := HashString("nec")
+	hash, err := HashString(testLockedLabel)
 	if err != nil {
-		t.Fatalf("HashString returned error: %v", err)
+		t.Fatalf(testHashStringErr, err)
 	}
 
 	item, ok := GetLockedHash(hash)
@@ -40,7 +40,7 @@ func TestLockedLookupByHash(t *testing.T) {
 	}
 
 	if item.Hash != hash {
-		t.Fatalf("item.Hash = %x, want %x", item.Hash, hash)
+		t.Fatalf(testItemHashFormat, item.Hash, hash)
 	}
 
 	if !DefaultLockedCatalog().Has(hash) {
@@ -49,9 +49,9 @@ func TestLockedLookupByHash(t *testing.T) {
 }
 
 func TestLockedLookupByHashCatalogAlias(t *testing.T) {
-	hash, err := HashString("nec")
+	hash, err := HashString(testLockedLabel)
 	if err != nil {
-		t.Fatalf("HashString returned error: %v", err)
+		t.Fatalf(testHashStringErr, err)
 	}
 
 	catalog := DefaultLockedCatalog()
@@ -70,7 +70,7 @@ func TestLockedLookupByHashCatalogAlias(t *testing.T) {
 	}
 
 	if item.Hash != hash {
-		t.Fatalf("item.Hash = %x, want %x", item.Hash, hash)
+		t.Fatalf(testItemHashFormat, item.Hash, hash)
 	}
 
 	if !catalog.GetHasByName("NEC") {
@@ -79,9 +79,9 @@ func TestLockedLookupByHashCatalogAlias(t *testing.T) {
 }
 
 func TestLockedLookupByHashAlias(t *testing.T) {
-	hash, err := HashString("nec")
+	hash, err := HashString(testLockedLabel)
 	if err != nil {
-		t.Fatalf("HashString returned error: %v", err)
+		t.Fatalf(testHashStringErr, err)
 	}
 
 	item, ok := GetLockedByHash(hash)
@@ -90,7 +90,7 @@ func TestLockedLookupByHashAlias(t *testing.T) {
 	}
 
 	if item.Hash != hash {
-		t.Fatalf("item.Hash = %x, want %x", item.Hash, hash)
+		t.Fatalf(testItemHashFormat, item.Hash, hash)
 	}
 }
 
@@ -100,8 +100,8 @@ func TestLockedLookupStringAndBinaryAliases(t *testing.T) {
 		t.Fatal("GetLockedString should find the locked reference entry")
 	}
 
-	if item.Name != "nec" {
-		t.Fatalf("item.Name = %q, want %q", item.Name, "nec")
+	if item.Name != testLockedLabel {
+		t.Fatalf(testItemNameFormat, item.Name, testLockedLabel)
 	}
 
 	item, ok = GetLockedBinary([]byte("NEC"))
@@ -109,15 +109,15 @@ func TestLockedLookupStringAndBinaryAliases(t *testing.T) {
 		t.Fatal("GetLockedBinary should find the locked reference entry")
 	}
 
-	if item.Name != "nec" {
-		t.Fatalf("item.Name = %q, want %q", item.Name, "nec")
+	if item.Name != testLockedLabel {
+		t.Fatalf(testItemNameFormat, item.Name, testLockedLabel)
 	}
 
 	if !HasLockedString("NEC") {
 		t.Fatal("HasLockedString should report locked catalog labels")
 	}
 
-	if !GetHasLockedName("nec.lthn") {
+	if !GetHasLockedName(testLockedLTHN) {
 		t.Fatal("GetHasLockedName should accept canonical .lthn names")
 	}
 
@@ -161,24 +161,24 @@ func TestLockedLookupStringAndBinaryAliases(t *testing.T) {
 		t.Fatal("GetHasLockedByBinary should report locked catalog labels")
 	}
 
-	item, ok = GetLockedName("nec.lthn")
+	item, ok = GetLockedName(testLockedLTHN)
 	if !ok {
 		t.Fatal("GetLockedName should accept canonical .lthn names")
 	}
 
-	if item.Name != "nec" {
-		t.Fatalf("item.Name = %q, want %q", item.Name, "nec")
+	if item.Name != testLockedLabel {
+		t.Fatalf(testItemNameFormat, item.Name, testLockedLabel)
 	}
 
-	if !HasLockedName("nec.lthn") {
+	if !HasLockedName(testLockedLTHN) {
 		t.Fatal("HasLockedName should accept canonical .lthn names")
 	}
 }
 
 func TestLockedLookupHasByHashAlias(t *testing.T) {
-	hash, err := HashString("nec")
+	hash, err := HashString(testLockedLabel)
 	if err != nil {
-		t.Fatalf("HashString returned error: %v", err)
+		t.Fatalf(testHashStringErr, err)
 	}
 
 	if !HasLockedHash(hash) {
@@ -211,19 +211,19 @@ func TestLockedLookupHasByHashAlias(t *testing.T) {
 }
 
 func TestLockedLookupRejectsUnknownNames(t *testing.T) {
-	if HasLockedName("does-not-exist") {
+	if HasLockedName(testUnknownName) {
 		t.Fatal("unknown names should not be reported as locked")
 	}
 
-	if _, ok := GetLockedName("does-not-exist"); ok {
+	if _, ok := GetLockedName(testUnknownName); ok {
 		t.Fatal("GetLockedName should return false for unknown names")
 	}
 
-	if HasLockedByName("does-not-exist") {
+	if HasLockedByName(testUnknownName) {
 		t.Fatal("unknown names should not be reported as locked by name")
 	}
 
-	if _, ok := GetLockedByName("does-not-exist"); ok {
+	if _, ok := GetLockedByName(testUnknownName); ok {
 		t.Fatal("GetLockedByName should return false for unknown names")
 	}
 }
@@ -266,13 +266,13 @@ func TestLockedCatalogHelpers(t *testing.T) {
 		t.Fatal("catalog should return an entry by name")
 	}
 
-	hash, err := HashString("nec")
+	hash, err := HashString(testLockedLabel)
 	if err != nil {
-		t.Fatalf("HashString returned error: %v", err)
+		t.Fatalf(testHashStringErr, err)
 	}
 
 	if item.Hash != hash {
-		t.Fatalf("item.Hash = %x, want %x", item.Hash, hash)
+		t.Fatalf(testItemHashFormat, item.Hash, hash)
 	}
 
 	entries := catalog.Entries()
@@ -338,7 +338,7 @@ func TestLockedCatalogGetByNameSkipsSyntaxValidation(t *testing.T) {
 	}
 
 	if item.Hash != hash {
-		t.Fatalf("item.Hash = %x, want %x", item.Hash, hash)
+		t.Fatalf(testItemHashFormat, item.Hash, hash)
 	}
 }
 
