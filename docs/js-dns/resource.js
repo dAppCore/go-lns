@@ -229,7 +229,7 @@ class Resource extends Struct {
       for (const rr of zone)
         set.add(rr.type);
 
-      const types = [...set].sort();
+      const types = [...set].sort((a, b) => a.localeCompare(b));
 
       for (const type of types)
         key.signZSK(zone, type);
