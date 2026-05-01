@@ -295,7 +295,7 @@ func (b *Bridge) Serve(ctx context.Context) error {
 	if err != nil {
 		return core.E("dns.Bridge.Serve", "bind udp", err)
 	}
-	_ = packetConn.Close()
+	if cerr := packetConn.Close(); cerr != nil { _ = cerr }
 
 	udpServer := &miekgdns.Server{Addr: b.cfg.DNSAddr, Net: "udp", Handler: handler}
 	tcpServer := &miekgdns.Server{Addr: b.cfg.DNSAddr, Net: "tcp", Handler: handler}
