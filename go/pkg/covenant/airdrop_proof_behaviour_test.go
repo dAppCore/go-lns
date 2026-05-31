@@ -59,16 +59,16 @@ func (b *proofBuilder) bytes() []byte { return b.buf }
 // faucetProof builds a minimal valid faucet (non-address-key) proof.
 func faucetProof() []byte {
 	b := &proofBuilder{}
-	b.u32(0)          // index
-	b.u8(0)           // proof count
-	b.u8(0)           // subindex
-	b.u8(0)           // subproof total
-	b.varbytes([]byte{0x01}) // key (non-address: first byte != airdropKeyAddress)
-	b.u8(0)           // version
-	b.u8(2)           // address length
+	b.u32(0)                          // index
+	b.u8(0)                           // proof count
+	b.u8(0)                           // subindex
+	b.u8(0)                           // subproof total
+	b.varbytes([]byte{0x01})          // key (non-address: first byte != airdropKeyAddress)
+	b.u8(0)                           // version
+	b.u8(2)                           // address length
 	b.buf = append(b.buf, 0xaa, 0xbb) // address
-	b.varint(0)       // fee
-	b.varbytes(nil)   // signature
+	b.varint(0)                       // fee
+	b.varbytes(nil)                   // signature
 	return b.bytes()
 }
 

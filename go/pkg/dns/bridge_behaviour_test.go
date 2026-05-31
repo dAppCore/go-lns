@@ -16,8 +16,8 @@ type captureWriter struct {
 	msg *miekgdns.Msg
 }
 
-func (w *captureWriter) LocalAddr() net.Addr       { return &net.UDPAddr{} }
-func (w *captureWriter) RemoteAddr() net.Addr      { return &net.UDPAddr{} }
+func (w *captureWriter) LocalAddr() net.Addr  { return &net.UDPAddr{} }
+func (w *captureWriter) RemoteAddr() net.Addr { return &net.UDPAddr{} }
 func (w *captureWriter) WriteMsg(m *miekgdns.Msg) error {
 	w.msg = m
 	return nil
@@ -25,8 +25,8 @@ func (w *captureWriter) WriteMsg(m *miekgdns.Msg) error {
 func (w *captureWriter) Write(b []byte) (int, error) { return len(b), nil }
 func (w *captureWriter) Close() error                { return nil }
 func (w *captureWriter) TsigStatus() error           { return nil }
-func (w *captureWriter) TsigTimersOnly(bool)          {}
-func (w *captureWriter) Hijack()                      {}
+func (w *captureWriter) TsigTimersOnly(bool)         {}
+func (w *captureWriter) Hijack()                     {}
 
 // bridgeWithRecord builds a bridge whose cache holds a single populated name.
 func bridgeWithRecord(t *testing.T, name, comment string) *Bridge {
