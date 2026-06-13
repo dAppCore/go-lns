@@ -3,9 +3,11 @@
 package wallet
 
 import (
-	core "dappco.re/go"
+	"encoding/hex"
 	"testing"
 
+	core "dappco.re/go"
+	"dappco.re/go/lns/pkg/hd"
 	"dappco.re/go/lns/pkg/primitives"
 )
 
@@ -86,6 +88,72 @@ func TestWalletPendingDebitDoesNotAffectBalance(t *testing.T) {
 	history := wallet.History()
 	if len(history) != 2 || !history[0].Pending || history[0].Hash != (primitives.Hash{9}) {
 		t.Fatalf("History = %#v, want pending draft entry first", history)
+	}
+}
+
+// TestWalletReceiveAddressUsesHDDerivation pins the wallet to the real pkg/hd
+// HSD key scheme. The expected hashes are the BLAKE2b-160 digests of the
+// compressed secp256k1 public keys derived at m/44'/5353'/0'/0/index from the
+// BIP-32 Test Vector 1 seed prefix, computed via hd.DeriveAddress. This guards
+// against a regression to the former SHA3 placeholder, whose digests differ.
+func TestWalletReceiveAddressUsesHDDerivation(t *testing.T) {
+	const seedHex = "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f"
+
+	const (
+		wantReceive0 = "52a51028e839d00c87bf588697b86347718d3e8f"
+		wantReceive1 = "a8a72fba1bb90d28e608e53d4a5d715accad5f30"
+	)
+
+	wallet, err := ImportSeed(seedHex)
+	if err != nil {
+		t.Fatalf(testImportSeedErr, err)
+	}
+
+	first := wallet.ReceiveAddress()
+	if first.Version != 0 || !first.IsPubkeyHash() {
+		t.Fatalf("ReceiveAddress = %#v, want a version-0 20-byte P2WPKH address", first)
+	}
+	if got := hex.EncodeToString(first.Hash); got != wantReceive0 {
+		t.Fatalf("receive[0] hash = %s, want %s (hd BLAKE2b-160, not the SHA3 placeholder)", got, wantReceive0)
+	}
+
+	next := wallet.NextReceiveAddress()
+	if got := hex.EncodeToString(next.Hash); got != wantReceive1 {
+		t.Fatalf("receive[1] hash = %s, want %s", got, wantReceive1)
+	}
+}
+
+// TestWalletReceiveAddressMatchesHDPath confirms the wallet derives the exact
+// same address pkg/hd produces for the equivalent BIP-44 receive path, so the
+// two code paths cannot drift.
+func TestWalletReceiveAddressMatchesHDPath(t *testing.T) {
+	wallet, err := Create()
+	if err != nil {
+		t.Fatalf("Create returned error: %v", err)
+	}
+
+	raw, err := hex.DecodeString(wallet.ExportSeed())
+	if err != nil {
+		t.Fatalf("decode exported seed: %v", err)
+	}
+
+	master, err := hd.NewMaster(raw)
+	if err != nil {
+		t.Fatalf("hd.NewMaster: %v", err)
+	}
+
+	want, err := hd.DeriveAddress(master, hd.Path{
+		CoinType: hd.CoinTypeLethean,
+		Account:  0,
+		Branch:   hd.BranchReceive,
+		Index:    0,
+	})
+	if err != nil {
+		t.Fatalf("hd.DeriveAddress: %v", err)
+	}
+
+	if got := wallet.ReceiveAddress(); !got.Equals(want) {
+		t.Fatalf("ReceiveAddress = %#v, want hd path address %#v", got, want)
 	}
 }
 

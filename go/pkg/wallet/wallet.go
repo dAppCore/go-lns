@@ -13,6 +13,7 @@ import (
 	"slices"
 
 	core "dappco.re/go"
+	"dappco.re/go/lns/pkg/hd"
 	"dappco.re/go/lns/pkg/primitives"
 )
 
@@ -105,15 +106,39 @@ func (w *Wallet) MarshalJSON() ([]byte, error) {
 }
 
 // ReceiveAddress returns the current deterministic receive address.
+//
+// The address is derived through pkg/hd using the real HSD key scheme: the
+// 32-byte seed seeds a BIP-32 master key, and the receive index selects the
+// BIP-44 external-chain address "m/44'/5353'/0'/0/receiveIndex". The result is a
+// version-0 P2WPKH primitives.Address whose 20-byte hash is the BLAKE2b-160
+// digest of the compressed secp256k1 public key. Derivation is deterministic in
+// the seed and index, so importing the same seed reproduces the same address.
 func (w *Wallet) ReceiveAddress() primitives.Address {
 	if w == nil {
 		return primitives.Address{}
 	}
-	hash := sha3.Sum256(append(w.seed[:], byte(w.receiveIndex>>24), byte(w.receiveIndex>>16), byte(w.receiveIndex>>8), byte(w.receiveIndex)))
-	return primitives.Address{
-		Version: 0,
-		Hash:    append([]byte(nil), hash[:20]...),
+	return w.deriveReceiveAddress(w.receiveIndex)
+}
+
+// deriveReceiveAddress derives the external-chain (receive) address at the given
+// index via pkg/hd. A derivation failure (cryptographically improbable for a
+// 32-byte seed) yields the zero Address, matching the nil-receiver contract.
+func (w *Wallet) deriveReceiveAddress(index uint32) primitives.Address {
+	master, err := hd.NewMaster(w.seed[:])
+	if err != nil {
+		return primitives.Address{}
 	}
+
+	addr, err := hd.DeriveAddress(master, hd.Path{
+		CoinType: hd.CoinTypeLethean,
+		Account:  0,
+		Branch:   hd.BranchReceive,
+		Index:    index,
+	})
+	if err != nil {
+		return primitives.Address{}
+	}
+	return addr
 }
 
 // NextReceiveAddress increments the receive index and returns the next address.
