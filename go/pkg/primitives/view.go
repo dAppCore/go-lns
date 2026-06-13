@@ -83,6 +83,13 @@ type NameUndoEntry struct {
 	Delta    NameDelta
 }
 
+// minNameUndoEntrySize is the smallest number of bytes a single encoded
+// NameUndoEntry can occupy on the wire: a 32-byte name hash followed by the
+// minimum NameDelta encoding (a 4-byte field mask with no optional fields set).
+// It bounds the entry count decoded from an untrusted length prefix so that a
+// crafted payload cannot drive an unbounded pre-allocation.
+const minNameUndoEntrySize = 32 + 4
+
 // NameUndo stores the deltas required to roll a name view back.
 type NameUndo struct {
 	Names []NameUndoEntry
@@ -180,6 +187,13 @@ func (u *NameUndo) UnmarshalBinary(data []byte) error {
 
 	count := binary.LittleEndian.Uint32(data[:4])
 	data = data[4:]
+
+	// Reject a length that the remaining buffer cannot possibly satisfy before
+	// allocating. Each entry needs at least minNameUndoEntrySize bytes, so a
+	// count larger than that ratio is malformed and must not drive make().
+	if uint64(count) > uint64(len(data))/minNameUndoEntrySize {
+		return core.Errorf("primitives.NameUndo.UnmarshalBinary: name count %d exceeds buffer capacity", count)
+	}
 
 	u.Names = make([]NameUndoEntry, 0, int(count))
 	for i := uint32(0); i < count; i++ {
