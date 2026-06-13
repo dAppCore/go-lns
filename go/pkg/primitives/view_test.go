@@ -155,6 +155,57 @@ func (d NameDelta) MarshalMust(t *testing.T) []byte {
 	return data
 }
 
+// TestNameUndoUnmarshalBinaryRejectsOversizedCount ensures a crafted length
+// prefix that the remaining buffer cannot satisfy is rejected with an error
+// rather than driving an unbounded allocation (DoS). The historic regression
+// fed an arbitrary string whose first four bytes decode to a ~1.7-billion entry
+// count, which previously OOM-ed the process at make([]NameUndoEntry, 0, count).
+func TestNameUndoUnmarshalBinaryRejectsOversizedCount(t *testing.T) {
+	var decoded NameUndo
+
+	if err := decoded.UnmarshalBinary([]byte("lethean.lthn")); err == nil {
+		t.Fatal("UnmarshalBinary accepted an oversized name count, want error")
+	}
+
+	if len(decoded.Names) != 0 {
+		t.Fatalf("UnmarshalBinary allocated %d entries on a rejected payload", len(decoded.Names))
+	}
+
+	// A four-byte count of 1 with no entry bytes is also impossible: one entry
+	// needs at least minNameUndoEntrySize bytes of payload.
+	oversized := []byte{0x01, 0x00, 0x00, 0x00}
+	if err := decoded.UnmarshalBinary(oversized); err == nil {
+		t.Fatal("UnmarshalBinary accepted a count without backing bytes, want error")
+	}
+}
+
+// TestNameUndoUnmarshalBinaryValidStillRoundTrips guards against the bound
+// rejecting legitimate payloads: a real encoded undo record must still decode.
+func TestNameUndoUnmarshalBinaryValidStillRoundTrips(t *testing.T) {
+	var hash Hash
+	hash[0] = 0x77
+
+	view := NewNameView()
+	ns := &NameState{NameHash: hash, Name: []byte("example"), Height: 5}
+	ns.setValue(42)
+	view.names[hash] = ns
+
+	undo := view.ToNameUndo()
+	encoded, err := undo.MarshalBinary()
+	if err != nil {
+		t.Fatalf("MarshalBinary returned error: %v", err)
+	}
+
+	var decoded NameUndo
+	if err := decoded.UnmarshalBinary(encoded); err != nil {
+		t.Fatalf("UnmarshalBinary rejected a valid payload: %v", err)
+	}
+
+	if len(decoded.Names) != 1 || decoded.Names[0].NameHash != hash {
+		t.Fatalf("decoded undo = %+v, want a single entry for hash %x", decoded.Names, hash)
+	}
+}
+
 // BEGIN v090 file-aware generated coverage
 
 func TestView_NewNameView_Good(t *core.T) {

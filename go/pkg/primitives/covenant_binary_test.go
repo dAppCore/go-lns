@@ -70,6 +70,47 @@ func TestCovenantBinaryZeroValue(t *testing.T) {
 	}
 }
 
+// TestCovenantUnmarshalBinaryRejectsOversizedItemCount ensures the varint item
+// count is bounded against the remaining buffer before allocation, so a crafted
+// prefix cannot drive an unbounded make([][]byte, 0, count) (DoS). Each item
+// needs at least one byte (its varint length prefix), so a count larger than
+// the remaining buffer is malformed.
+func TestCovenantUnmarshalBinaryRejectsOversizedItemCount(t *testing.T) {
+	// Type byte, then varint 0xfe + uint32(0xffffffff) = ~4.29 billion items,
+	// with no item bytes following.
+	payload := []byte{0x00, 0xfe, 0xff, 0xff, 0xff, 0xff}
+
+	var decoded Covenant
+	if err := decoded.UnmarshalBinary(payload); err == nil {
+		t.Fatal("UnmarshalBinary accepted an oversized item count, want error")
+	}
+
+	if decoded.Len() != 0 {
+		t.Fatalf("UnmarshalBinary allocated %d items on a rejected payload", decoded.Len())
+	}
+}
+
+// TestCovenantUnmarshalBinaryValidStillRoundTrips guards the bound against
+// rejecting legitimate covenants: a real encoded covenant must still decode.
+func TestCovenantUnmarshalBinaryValidStillRoundTrips(t *testing.T) {
+	original := Covenant{}
+	original.SetOpen(Hash{1, 2, 3}, []byte("example"))
+
+	encoded, err := original.MarshalBinary()
+	if err != nil {
+		t.Fatalf("MarshalBinary returned error: %v", err)
+	}
+
+	var decoded Covenant
+	if err := decoded.UnmarshalBinary(encoded); err != nil {
+		t.Fatalf("UnmarshalBinary rejected a valid payload: %v", err)
+	}
+
+	if decoded.Type != original.Type || decoded.Len() != original.Len() {
+		t.Fatalf("decoded covenant = %+v, want type %d with %d items", decoded, original.Type, original.Len())
+	}
+}
+
 // BEGIN v090 file-aware generated coverage
 
 func TestCovenantBinary_Covenant_MarshalBinary_Good(t *core.T) {

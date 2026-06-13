@@ -40,6 +40,13 @@ func (c *Covenant) UnmarshalBinary(data []byte) error {
 	}
 	data = data[consumed:]
 
+	// Each item is a varbytes entry that consumes at least one byte (its varint
+	// length prefix). Reject a count the remaining buffer cannot hold before
+	// allocating, so an untrusted length prefix cannot drive an unbounded make().
+	if count > uint64(len(data)) {
+		return core.Errorf("primitives.Covenant.UnmarshalBinary: item count %d exceeds buffer capacity", count)
+	}
+
 	c.Items = make([][]byte, 0, int(count))
 	for i := uint64(0); i < count; i++ {
 		item, n, err := readVarBytes(data)
