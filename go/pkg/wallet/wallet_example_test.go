@@ -2,7 +2,10 @@
 
 package wallet
 
-import core "dappco.re/go"
+import (
+	core "dappco.re/go"
+	"dappco.re/go/lns/pkg/primitives"
+)
 
 func ExampleCreate() {
 	core.Println(coverageExample(Create()))
@@ -69,4 +72,14 @@ func ExampleWallet_History() {
 func ExampleWallet_SeedID() {
 	core.Println(coverageExample(new(Wallet).SeedID()))
 	// Output: 1
+}
+
+func ExampleWallet_SpendableAddresses() {
+	core.Println(coverageExample(new(Wallet).SpendableAddresses(0)))
+	// Output: 1
+}
+
+func ExampleWallet_SigningKey() {
+	core.Println(coverageExample(new(Wallet).SigningKey(primitives.Address{}, 0)))
+	// Output: 3
 }

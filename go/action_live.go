@@ -155,6 +155,10 @@ func (s *Service) handleWalletSend(_ context.Context, options core.Options) core
 		return core.Fail(core.E(actionNameWalletSend, "amount is required", nil))
 	}
 
+	if walletSendShouldBroadcast(options) {
+		return s.broadcastWalletSend(wallet, address, amount, options)
+	}
+
 	confirmed, locked := wallet.Balance()
 	changeAddress, changePresent := actionAddressValue(options, "change_address")
 	if !changePresent || !changeAddress.IsValid() {

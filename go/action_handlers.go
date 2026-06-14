@@ -18,19 +18,22 @@ import (
 )
 
 const (
-	actionNameRegister    = "lns.name.register"
-	actionNameRenew       = "lns.name.renew"
-	actionNameTransfer    = "lns.name.transfer"
-	actionNameUpdate      = "lns.name.update"
-	actionNameRevoke      = "lns.name.revoke"
-	actionNameDNSServe    = "lns.dns.serve"
-	actionNameDNSDiscover = "lns.dns.discover"
-	actionNameWalletSend  = "lns.wallet.send"
-	actionNameVPNDiscover = "lns.vpn.discover"
-	actionNameVPNConnect  = "lns.vpn.connect"
-	actionOpBridge        = "lns.bridge"
-	actionOpResource      = "lns.action.resource"
-	actionOpHash          = "lns.action.hash"
+	actionNameRegister       = "lns.name.register"
+	actionNameRenew          = "lns.name.renew"
+	actionNameTransfer       = "lns.name.transfer"
+	actionNameUpdate         = "lns.name.update"
+	actionNameRevoke         = "lns.name.revoke"
+	actionNameDNSServe       = "lns.dns.serve"
+	actionNameDNSDiscover    = "lns.dns.discover"
+	actionNameWalletSend     = "lns.wallet.send"
+	actionNameVPNDiscover    = "lns.vpn.discover"
+	actionNameVPNConnect     = "lns.vpn.connect"
+	actionNamePeerRegister   = "lns.peer.register"
+	actionNameGossipReceive  = "lns.gossip.receive"
+	actionNameGossipAnnounce = "lns.gossip.announce"
+	actionOpBridge           = "lns.bridge"
+	actionOpResource         = "lns.action.resource"
+	actionOpHash             = "lns.action.hash"
 
 	errInvalidName          = "invalid name"
 	errNameRequired         = "name is required"
@@ -71,6 +74,11 @@ var actionNames = []string{
 	actionNameVPNConnect,
 	"lns.vpn.status",
 	"lns.vpn.disconnect",
+	actionNamePeerRegister,
+	"lns.peer.lookup",
+	"lns.peer.list",
+	actionNameGossipReceive,
+	actionNameGossipAnnounce,
 }
 
 type nameLookupResult struct {
@@ -266,6 +274,11 @@ func (s *Service) registerActions() core.Result {
 	c.Action(actionNameVPNConnect, s.handleVPNConnect).Description = "Select a VPN gateway for the local LNS session"
 	c.Action("lns.vpn.status", s.handleVPNStatus).Description = "Report the local VPN gateway session state"
 	c.Action("lns.vpn.disconnect", s.handleVPNDisconnect).Description = "Clear the local VPN gateway session state"
+	c.Action(actionNamePeerRegister, s.handlePeerRegister).Description = "Register a peer record and score it for the local registry"
+	c.Action("lns.peer.lookup", s.handlePeerLookup).Description = "Look up a registered peer by bare name"
+	c.Action("lns.peer.list", s.handlePeerList).Description = "List registered peers, optionally filtered by capability"
+	c.Action(actionNameGossipReceive, s.handleGossipReceive).Description = "Verify and merge an inbound signed gossip delta into the local cache"
+	c.Action(actionNameGossipAnnounce, s.handleGossipAnnounce).Description = "Broadcast a signed gossip delta to connected peers over the transport"
 	return okResult()
 }
 
@@ -407,6 +420,27 @@ func (s *Service) handleNameRegister(_ context.Context, options core.Options) co
 		revealValue = bidValueDraft
 	}
 
+	if nameWantsBroadcast(options) {
+		phaseCovenants := map[string]struct {
+			covenant Covenant
+			value    uint64
+		}{
+			"open":     {open, openValue},
+			"bid":      {bid, bidValueDraft},
+			"reveal":   {reveal, revealValue},
+			"register": {register, registerValue},
+		}
+		phase := core.Lower(stringOption(options, "phase", "step"))
+		if phase == "" {
+			phase = "open"
+		}
+		chosen, known := phaseCovenants[phase]
+		if !known {
+			return core.Fail(core.E(actionNameRegister, "phase must be one of open, bid, reveal, register", nil))
+		}
+		return s.broadcastNameCovenant(actionNameRegister, lookup, chosen.covenant, ownerAddress, chosen.value, options)
+	}
+
 	plan.Steps = []nameActionPlanStep{
 		{
 			Phase:        "open",
@@ -478,6 +512,15 @@ func (s *Service) handleNameRenew(_ context.Context, options core.Options) core.
 
 	var renew Covenant
 	renew.SetRenew(plan.Hash, plan.Height, blockHash)
+
+	if nameWantsBroadcast(options) {
+		lookup, lookupErr := s.lookupNameAction(options)
+		if lookupErr != nil {
+			return core.Fail(core.E(actionNameRenew, "resolve name", lookupErr))
+		}
+		return s.broadcastNameCovenant(actionNameRenew, lookup, renew, ownerAddress, outputValue, options)
+	}
+
 	plan.Steps = []nameActionPlanStep{
 		{
 			Phase:        "renew",
@@ -512,6 +555,16 @@ func (s *Service) handleNameTransfer(_ context.Context, options core.Options) co
 
 	var transfer Covenant
 	transfer.SetTransfer(plan.Hash, plan.Height, address)
+
+	if nameWantsBroadcast(options) {
+		lookup, lookupErr := s.lookupNameAction(options)
+		if lookupErr != nil {
+			return core.Fail(core.E(actionNameTransfer, "resolve name", lookupErr))
+		}
+		ownerAddress, _ := s.nameDraftAddress(options, "owner", "owner_address", "from")
+		return s.broadcastNameCovenant(actionNameTransfer, lookup, transfer, ownerAddress, outputValue, options)
+	}
+
 	plan.Steps = []nameActionPlanStep{
 		{
 			Phase:        "transfer",
@@ -548,6 +601,15 @@ func (s *Service) handleNameUpdate(_ context.Context, options core.Options) core
 
 	var update Covenant
 	update.SetUpdate(plan.Hash, plan.Height, resource)
+
+	if nameWantsBroadcast(options) {
+		lookup, lookupErr := s.lookupNameAction(options)
+		if lookupErr != nil {
+			return core.Fail(core.E(actionNameUpdate, "resolve name", lookupErr))
+		}
+		return s.broadcastNameCovenant(actionNameUpdate, lookup, update, ownerAddress, outputValue, options)
+	}
+
 	plan.Steps = []nameActionPlanStep{
 		{
 			Phase:        "update",
@@ -578,6 +640,15 @@ func (s *Service) handleNameRevoke(_ context.Context, options core.Options) core
 
 	var revoke Covenant
 	revoke.SetRevoke(plan.Hash, plan.Height)
+
+	if nameWantsBroadcast(options) {
+		lookup, lookupErr := s.lookupNameAction(options)
+		if lookupErr != nil {
+			return core.Fail(core.E(actionNameRevoke, "resolve name", lookupErr))
+		}
+		return s.broadcastNameCovenant(actionNameRevoke, lookup, revoke, ownerAddress, outputValue, options)
+	}
+
 	plan.Steps = []nameActionPlanStep{
 		{
 			Phase:        "revoke",
@@ -907,7 +978,8 @@ func newNameActionPlan(action string, lookup nameLookupResult) nameActionPlanRes
 		AvailabilityMode:   lookup.AvailabilityMode,
 		AvailabilityReason: lookup.AvailabilityReason,
 		Warnings: []string{
-			"This prep flow does not build inputs, fees, signatures, or broadcast transactions.",
+			"This is the planning view: it does not build inputs, fees, signatures, or broadcast transactions.",
+			"Pass broadcast=true (with chain_url and, for owned-name covenants, owner_outpoint) to build, sign, and broadcast a real transaction.",
 		},
 	}
 

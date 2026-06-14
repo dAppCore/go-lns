@@ -17,6 +17,16 @@ import (
 	"dappco.re/go/lns/pkg/primitives"
 )
 
+// defaultAddressGap is the forward look-ahead applied when scanning derived
+// addresses for owned coins or signing keys. It mirrors the conventional BIP-44
+// gap limit so funds sent to a freshly-derived (not-yet-recorded) address are
+// still discovered.
+const defaultAddressGap uint32 = 20
+
+// errNilWallet is the message used when an operation is attempted on a nil
+// wallet receiver.
+const errNilWallet = "wallet is not initialized"
+
 // EntryKind identifies a wallet history record.
 type EntryKind string
 
@@ -148,6 +158,113 @@ func (w *Wallet) NextReceiveAddress() primitives.Address {
 	}
 	w.receiveIndex++
 	return w.ReceiveAddress()
+}
+
+// KeyRef pairs a derived address with its derivation coordinates so a caller can
+// match a coin (by its holding address) to the key that signs it. Branch is 0
+// for receive addresses and 1 for change addresses.
+type KeyRef struct {
+	// Address is the version-0 P2WPKH address derived at Branch/Index.
+	Address primitives.Address
+	// Branch is the BIP-44 branch: 0 receive, 1 change.
+	Branch uint32
+	// Index is the address index within the branch.
+	Index uint32
+}
+
+// SpendableAddresses enumerates the wallet's owned addresses across the receive
+// and change branches, covering indices [0, receiveIndex] plus a forward gap. It
+// is the address set whose coins the wallet may spend: a caller queries the
+// daemon for coins on these addresses, selects inputs, and resolves each input's
+// signing key with SigningKey. The gap extends the scan past the current receive
+// index so funds sent to a not-yet-used address (within the gap) are still
+// found; a zero gap falls back to a small default.
+//
+//	refs := wallet.SpendableAddresses(0)
+func (w *Wallet) SpendableAddresses(gap uint32) []KeyRef {
+	if w == nil {
+		return nil
+	}
+	if gap == 0 {
+		gap = defaultAddressGap
+	}
+
+	master, err := hd.NewMaster(w.seed[:])
+	if err != nil {
+		return nil
+	}
+
+	last := w.receiveIndex + gap
+	refs := make([]KeyRef, 0, int(last+1)*2)
+	for _, branch := range []uint32{hd.BranchReceive, hd.BranchChange} {
+		for index := uint32(0); index <= last; index++ {
+			addr, err := hd.DeriveAddress(master, hd.Path{
+				CoinType: hd.CoinTypeLethean,
+				Account:  0,
+				Branch:   branch,
+				Index:    index,
+			})
+			if err != nil {
+				continue
+			}
+			refs = append(refs, KeyRef{Address: addr, Branch: branch, Index: index})
+		}
+	}
+	return refs
+}
+
+// SigningKey derives the private signing key for one of the wallet's addresses,
+// scanning the receive and change branches up to receiveIndex plus a gap to find
+// the matching derivation. It returns the 32-byte secp256k1 scalar and the
+// 33-byte compressed public key, which together produce the P2WPKH witness for a
+// coin held at addr. It fails if addr is not a derivable wallet address within
+// the scanned range.
+//
+//	priv, pub, err := wallet.SigningKey(coinAddress, 0)
+func (w *Wallet) SigningKey(addr primitives.Address, gap uint32) (priv []byte, pub []byte, err error) {
+	if w == nil {
+		return nil, nil, core.E("wallet.SigningKey", errNilWallet, nil)
+	}
+	if !addr.IsPubkeyHash() {
+		return nil, nil, core.E("wallet.SigningKey", "address is not a version-0 pubkey hash", nil)
+	}
+	if gap == 0 {
+		gap = defaultAddressGap
+	}
+
+	master, err := hd.NewMaster(w.seed[:])
+	if err != nil {
+		return nil, nil, core.E("wallet.SigningKey", "derive master key", err)
+	}
+
+	last := w.receiveIndex + gap
+	for _, branch := range []uint32{hd.BranchReceive, hd.BranchChange} {
+		for index := uint32(0); index <= last; index++ {
+			key, derr := hd.Derive(master, hd.Path{
+				CoinType: hd.CoinTypeLethean,
+				Account:  0,
+				Branch:   branch,
+				Index:    index,
+			})
+			if derr != nil {
+				continue
+			}
+			if !key.Address().Equals(addr) {
+				continue
+			}
+			privBytes, perr := key.PrivateKeyBytes()
+			if perr != nil {
+				return nil, nil, core.E("wallet.SigningKey", "extract private key", perr)
+			}
+			pubBytes, perr := key.PublicKeyBytes()
+			if perr != nil {
+				return nil, nil, core.E("wallet.SigningKey", "extract public key", perr)
+			}
+			return privBytes, pubBytes, nil
+		}
+	}
+
+	return nil, nil, core.E("wallet.SigningKey", "address is not owned by this wallet", nil)
 }
 
 // Credit records an incoming amount in local history.
