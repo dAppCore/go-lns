@@ -21,6 +21,7 @@ import (
 	"dappco.re/go/lns/internal/nameutil"
 	"dappco.re/go/lns/pkg/covenant"
 	dnspkg "dappco.re/go/lns/pkg/dns"
+	netpkg "dappco.re/go/lns/pkg/net"
 	"dappco.re/go/lns/pkg/primitives"
 	walletpkg "dappco.re/go/lns/pkg/wallet"
 )
@@ -133,6 +134,24 @@ type Service struct {
 	wallet                  *walletpkg.Wallet
 	vpnMu                   sync.Mutex
 	vpnConnection           *vpnConnectionState
+	peerMu                  sync.Mutex
+	peerRegistry            *netpkg.Registry
+}
+
+// peerRegistryHandle returns the service-scoped peer registry, lazily
+// constructing one on first use so the gossip and peer actions share a single
+// PeerRecord set and gossip Cache for the service instance.
+//
+//	reg := svc.peerRegistryHandle()
+func (s *Service) peerRegistryHandle() *netpkg.Registry {
+	s.peerMu.Lock()
+	defer s.peerMu.Unlock()
+
+	if s.peerRegistry == nil {
+		s.peerRegistry = netpkg.NewRegistry(netpkg.RegistryOptions{NodeID: ServiceName})
+	}
+
+	return s.peerRegistry
 }
 
 var (

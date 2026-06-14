@@ -114,6 +114,13 @@ func NewRegistry(opts RegistryOptions) *Registry {
 // Cache returns the registry's name-record cache.
 func (r *Registry) Cache() *Cache { return r.cache }
 
+// Transport returns the registry's gossip transport, or nil when the registry
+// runs offline (announcements are no-ops). Callers use it to distinguish a
+// genuine broadcast from a local-only accept (RFC §12.1).
+//
+//	if reg.Transport() == nil { /* offline */ }
+func (r *Registry) Transport() Transport { return r.transport }
+
 // Register validates and stores a peer record, recomputing its trust score from
 // the supplied vector via the configured scorer (Poindexter by default).
 //

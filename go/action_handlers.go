@@ -18,19 +18,22 @@ import (
 )
 
 const (
-	actionNameRegister    = "lns.name.register"
-	actionNameRenew       = "lns.name.renew"
-	actionNameTransfer    = "lns.name.transfer"
-	actionNameUpdate      = "lns.name.update"
-	actionNameRevoke      = "lns.name.revoke"
-	actionNameDNSServe    = "lns.dns.serve"
-	actionNameDNSDiscover = "lns.dns.discover"
-	actionNameWalletSend  = "lns.wallet.send"
-	actionNameVPNDiscover = "lns.vpn.discover"
-	actionNameVPNConnect  = "lns.vpn.connect"
-	actionOpBridge        = "lns.bridge"
-	actionOpResource      = "lns.action.resource"
-	actionOpHash          = "lns.action.hash"
+	actionNameRegister       = "lns.name.register"
+	actionNameRenew          = "lns.name.renew"
+	actionNameTransfer       = "lns.name.transfer"
+	actionNameUpdate         = "lns.name.update"
+	actionNameRevoke         = "lns.name.revoke"
+	actionNameDNSServe       = "lns.dns.serve"
+	actionNameDNSDiscover    = "lns.dns.discover"
+	actionNameWalletSend     = "lns.wallet.send"
+	actionNameVPNDiscover    = "lns.vpn.discover"
+	actionNameVPNConnect     = "lns.vpn.connect"
+	actionNamePeerRegister   = "lns.peer.register"
+	actionNameGossipReceive  = "lns.gossip.receive"
+	actionNameGossipAnnounce = "lns.gossip.announce"
+	actionOpBridge           = "lns.bridge"
+	actionOpResource         = "lns.action.resource"
+	actionOpHash             = "lns.action.hash"
 
 	errInvalidName          = "invalid name"
 	errNameRequired         = "name is required"
@@ -71,6 +74,11 @@ var actionNames = []string{
 	actionNameVPNConnect,
 	"lns.vpn.status",
 	"lns.vpn.disconnect",
+	actionNamePeerRegister,
+	"lns.peer.lookup",
+	"lns.peer.list",
+	actionNameGossipReceive,
+	actionNameGossipAnnounce,
 }
 
 type nameLookupResult struct {
@@ -266,6 +274,11 @@ func (s *Service) registerActions() core.Result {
 	c.Action(actionNameVPNConnect, s.handleVPNConnect).Description = "Select a VPN gateway for the local LNS session"
 	c.Action("lns.vpn.status", s.handleVPNStatus).Description = "Report the local VPN gateway session state"
 	c.Action("lns.vpn.disconnect", s.handleVPNDisconnect).Description = "Clear the local VPN gateway session state"
+	c.Action(actionNamePeerRegister, s.handlePeerRegister).Description = "Register a peer record and score it for the local registry"
+	c.Action("lns.peer.lookup", s.handlePeerLookup).Description = "Look up a registered peer by bare name"
+	c.Action("lns.peer.list", s.handlePeerList).Description = "List registered peers, optionally filtered by capability"
+	c.Action(actionNameGossipReceive, s.handleGossipReceive).Description = "Verify and merge an inbound signed gossip delta into the local cache"
+	c.Action(actionNameGossipAnnounce, s.handleGossipAnnounce).Description = "Broadcast a signed gossip delta to connected peers over the transport"
 	return okResult()
 }
 
