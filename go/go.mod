@@ -6,6 +6,7 @@ require dappco.re/go v0.10.4
 
 require (
 	dappco.re/go/store v0.10.0
+	forge.lthn.ai/Snider/Poindexter v0.0.3
 	github.com/decred/dcrd/dcrec/secp256k1/v4 v4.4.1
 	github.com/miekg/dns v1.1.72
 	golang.org/x/crypto v0.50.0
