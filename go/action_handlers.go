@@ -420,6 +420,27 @@ func (s *Service) handleNameRegister(_ context.Context, options core.Options) co
 		revealValue = bidValueDraft
 	}
 
+	if nameWantsBroadcast(options) {
+		phaseCovenants := map[string]struct {
+			covenant Covenant
+			value    uint64
+		}{
+			"open":     {open, openValue},
+			"bid":      {bid, bidValueDraft},
+			"reveal":   {reveal, revealValue},
+			"register": {register, registerValue},
+		}
+		phase := core.Lower(stringOption(options, "phase", "step"))
+		if phase == "" {
+			phase = "open"
+		}
+		chosen, known := phaseCovenants[phase]
+		if !known {
+			return core.Fail(core.E(actionNameRegister, "phase must be one of open, bid, reveal, register", nil))
+		}
+		return s.broadcastNameCovenant(actionNameRegister, lookup, chosen.covenant, ownerAddress, chosen.value, options)
+	}
+
 	plan.Steps = []nameActionPlanStep{
 		{
 			Phase:        "open",
@@ -491,6 +512,15 @@ func (s *Service) handleNameRenew(_ context.Context, options core.Options) core.
 
 	var renew Covenant
 	renew.SetRenew(plan.Hash, plan.Height, blockHash)
+
+	if nameWantsBroadcast(options) {
+		lookup, lookupErr := s.lookupNameAction(options)
+		if lookupErr != nil {
+			return core.Fail(core.E(actionNameRenew, "resolve name", lookupErr))
+		}
+		return s.broadcastNameCovenant(actionNameRenew, lookup, renew, ownerAddress, outputValue, options)
+	}
+
 	plan.Steps = []nameActionPlanStep{
 		{
 			Phase:        "renew",
@@ -525,6 +555,16 @@ func (s *Service) handleNameTransfer(_ context.Context, options core.Options) co
 
 	var transfer Covenant
 	transfer.SetTransfer(plan.Hash, plan.Height, address)
+
+	if nameWantsBroadcast(options) {
+		lookup, lookupErr := s.lookupNameAction(options)
+		if lookupErr != nil {
+			return core.Fail(core.E(actionNameTransfer, "resolve name", lookupErr))
+		}
+		ownerAddress, _ := s.nameDraftAddress(options, "owner", "owner_address", "from")
+		return s.broadcastNameCovenant(actionNameTransfer, lookup, transfer, ownerAddress, outputValue, options)
+	}
+
 	plan.Steps = []nameActionPlanStep{
 		{
 			Phase:        "transfer",
@@ -561,6 +601,15 @@ func (s *Service) handleNameUpdate(_ context.Context, options core.Options) core
 
 	var update Covenant
 	update.SetUpdate(plan.Hash, plan.Height, resource)
+
+	if nameWantsBroadcast(options) {
+		lookup, lookupErr := s.lookupNameAction(options)
+		if lookupErr != nil {
+			return core.Fail(core.E(actionNameUpdate, "resolve name", lookupErr))
+		}
+		return s.broadcastNameCovenant(actionNameUpdate, lookup, update, ownerAddress, outputValue, options)
+	}
+
 	plan.Steps = []nameActionPlanStep{
 		{
 			Phase:        "update",
@@ -591,6 +640,15 @@ func (s *Service) handleNameRevoke(_ context.Context, options core.Options) core
 
 	var revoke Covenant
 	revoke.SetRevoke(plan.Hash, plan.Height)
+
+	if nameWantsBroadcast(options) {
+		lookup, lookupErr := s.lookupNameAction(options)
+		if lookupErr != nil {
+			return core.Fail(core.E(actionNameRevoke, "resolve name", lookupErr))
+		}
+		return s.broadcastNameCovenant(actionNameRevoke, lookup, revoke, ownerAddress, outputValue, options)
+	}
+
 	plan.Steps = []nameActionPlanStep{
 		{
 			Phase:        "revoke",
@@ -920,7 +978,8 @@ func newNameActionPlan(action string, lookup nameLookupResult) nameActionPlanRes
 		AvailabilityMode:   lookup.AvailabilityMode,
 		AvailabilityReason: lookup.AvailabilityReason,
 		Warnings: []string{
-			"This prep flow does not build inputs, fees, signatures, or broadcast transactions.",
+			"This is the planning view: it does not build inputs, fees, signatures, or broadcast transactions.",
+			"Pass broadcast=true (with chain_url and, for owned-name covenants, owner_outpoint) to build, sign, and broadcast a real transaction.",
 		},
 	}
 

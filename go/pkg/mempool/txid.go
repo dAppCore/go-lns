@@ -121,6 +121,50 @@ func SerializeNoWitness(tx primitives.Transaction) ([]byte, error) {
 	return buf, nil
 }
 
+// SerializeWithWitness encodes a transaction in the full HSD witness wire form:
+// the base (non-witness) serialisation produced by SerializeNoWitness followed
+// by each input's witness stack, in input order:
+//
+//	version(4 LE) ‖ varint(inCount) ‖ inputs ‖ varint(outCount) ‖ outputs ‖
+//	locktime(4 LE) ‖ for each input: varint(itemCount) ‖ (varint(len) ‖ item)…
+//
+// This is the byte string a fully-signed transaction is hex-encoded from for the
+// daemon's sendrawtransaction RPC. The base segment is byte-identical to the
+// txid preimage, so the broadcast bytes and the txid stay consistent. It mirrors
+// the block-body transaction layout (pkg/mining marshalTxWitness) so a
+// transaction serialises identically whether it is broadcast or mined.
+//
+//	raw, err := mempool.SerializeWithWitness(tx)
+//	txhex := core.HexEncode(raw)
+func SerializeWithWitness(tx primitives.Transaction) ([]byte, error) {
+	base, err := SerializeNoWitness(tx)
+	if err != nil {
+		return nil, core.E("mempool.SerializeWithWitness", "serialise base", err)
+	}
+
+	buf := make([]byte, 0, len(base)+witnessDataSize(tx))
+	buf = append(buf, base...)
+	for i := range tx.Inputs {
+		witness := tx.Inputs[i].Witness
+		buf = appendVarint(buf, uint64(len(witness)))
+		for _, item := range witness {
+			buf = appendVarint(buf, uint64(len(item)))
+			buf = append(buf, item...)
+		}
+	}
+	return buf, nil
+}
+
+// witnessDataSize returns the serialised size of all input witness stacks, used
+// to pre-size the SerializeWithWitness buffer.
+func witnessDataSize(tx primitives.Transaction) int {
+	size := 0
+	for i := range tx.Inputs {
+		size += witnessSize(tx.Inputs[i].Witness)
+	}
+	return size
+}
+
 // TxSize returns the serialised byte size of a transaction including witnesses.
 // It is the size the pool charges against its byte budget and divides fees by to
 // derive a fee rate. The witness contributes its full length (this pool does not

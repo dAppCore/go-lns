@@ -68,3 +68,18 @@ func ExampleClient_GetPeerInfo() {
 	core.Println(coverageExample(new(Client).GetPeerInfo()))
 	// Output: 2
 }
+
+func ExampleClient_SendRawTransaction() {
+	core.Println(coverageExample(new(Client).SendRawTransaction("00aa")))
+	// Output: 2
+}
+
+func ExampleClient_GetCoinsByAddress() {
+	core.Println(coverageExample(new(Client).GetCoinsByAddress("ts1qexample")))
+	// Output: 2
+}
+
+func ExampleClient_GetNameOwner() {
+	core.Println(coverageExample(new(Client).GetNameOwner("lethean")))
+	// Output: 2
+}
