@@ -115,10 +115,7 @@ func decodeScriptNumUnsafe(data []byte) ScriptNum {
 	}
 
 	var result int64
-	n := len(data)
-	if n > 8 {
-		n = 8
-	}
+	n := min(len(data), 8)
 	for i := 0; i < n; i++ {
 		result |= int64(data[i]) << (8 * i)
 	}
@@ -139,7 +136,7 @@ func decodeScriptNumUnsafe(data []byte) ScriptNum {
 //
 //	ok := script.castToBool([]byte{0x01}) // true
 func castToBool(data []byte) bool {
-	for i := 0; i < len(data); i++ {
+	for i := range data {
 		if data[i] != 0 {
 			// Negative zero (0x80 in the top byte, rest zero) is still false.
 			if i == len(data)-1 && data[i] == 0x80 {

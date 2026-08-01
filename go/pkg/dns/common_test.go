@@ -10,7 +10,7 @@ import (
 
 func repeatString(value string, count int) string {
 	out := ""
-	for i := 0; i < count; i++ {
+	for range count {
 		out += value
 	}
 	return out

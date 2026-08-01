@@ -3,7 +3,6 @@
 package lns
 
 import (
-	"context"
 	"encoding/hex"
 	"testing"
 
@@ -23,7 +22,7 @@ func peerTestService(t *testing.T) (*core.Core, *Service) {
 	t.Helper()
 	c := core.New()
 	svc := NewService(c)
-	if result := svc.OnStartup(context.Background()); !result.OK {
+	if result := svc.OnStartup(t.Context()); !result.OK {
 		t.Fatalf(testOnStartupOK, result)
 	}
 	return c, svc
@@ -80,7 +79,7 @@ func TestPeerRegisterLookupList_Good(t *testing.T) {
 	c, _ := peerTestService(t)
 	_, _, pubHex := peerTestKey(t)
 
-	registerResult := c.Action(actionNamePeerRegister).Run(context.Background(), core.NewOptions(
+	registerResult := c.Action(actionNamePeerRegister).Run(t.Context(), core.NewOptions(
 		core.Option{Key: "name", Value: testPeerCharon},
 		core.Option{Key: "public_key", Value: pubHex},
 		core.Option{Key: "addresses", Value: []string{testPeerAddr}},
@@ -99,7 +98,7 @@ func TestPeerRegisterLookupList_Good(t *testing.T) {
 		t.Fatalf("registered peer = %#v, want scored charon", registered)
 	}
 
-	lookupResult := c.Action("lns.peer.lookup").Run(context.Background(), core.NewOptions(
+	lookupResult := c.Action("lns.peer.lookup").Run(t.Context(), core.NewOptions(
 		core.Option{Key: "name", Value: testPeerCharon},
 	))
 	if !lookupResult.OK {
@@ -113,7 +112,7 @@ func TestPeerRegisterLookupList_Good(t *testing.T) {
 		t.Fatalf("peer lookup = %#v, want found charon", lookup)
 	}
 
-	listResult := c.Action("lns.peer.list").Run(context.Background(), core.NewOptions(
+	listResult := c.Action("lns.peer.list").Run(t.Context(), core.NewOptions(
 		core.Option{Key: "cap", Value: netpkg.CapVPN},
 	))
 	if !listResult.OK {
@@ -131,7 +130,7 @@ func TestPeerRegisterLookupList_Good(t *testing.T) {
 func TestPeerLookupMissing_Good(t *testing.T) {
 	c, _ := peerTestService(t)
 
-	result := c.Action("lns.peer.lookup").Run(context.Background(), core.NewOptions(
+	result := c.Action("lns.peer.lookup").Run(t.Context(), core.NewOptions(
 		core.Option{Key: "name", Value: "ghost"},
 	))
 	if !result.OK {
@@ -149,7 +148,7 @@ func TestPeerLookupMissing_Good(t *testing.T) {
 func TestPeerRegisterRequiresKey_Bad(t *testing.T) {
 	c, _ := peerTestService(t)
 
-	result := c.Action(actionNamePeerRegister).Run(context.Background(), core.NewOptions(
+	result := c.Action(actionNamePeerRegister).Run(t.Context(), core.NewOptions(
 		core.Option{Key: "name", Value: testPeerCharon},
 	))
 	if result.OK {
@@ -163,7 +162,7 @@ func TestGossipReceiveMergesSignedDelta_Good(t *testing.T) {
 	pub, _ := hex.DecodeString(pubHex)
 	gossipJSON := signedGossipJSON(t, priv, pub, testPeerCharon, testPeerCharon)
 
-	result := c.Action(actionNameGossipReceive).Run(context.Background(), core.NewOptions(
+	result := c.Action(actionNameGossipReceive).Run(t.Context(), core.NewOptions(
 		core.Option{Key: "peer", Value: testPeerCharon},
 		core.Option{Key: "public_key", Value: pubHex},
 		core.Option{Key: "address", Value: testPeerAddr},
@@ -200,7 +199,7 @@ func TestGossipReceiveViaMessageEnvelope_Good(t *testing.T) {
 	}
 	rawPayload, _ := payload.Value.([]byte)
 
-	result := c.Action(actionNameGossipReceive).Run(context.Background(), core.NewOptions(
+	result := c.Action(actionNameGossipReceive).Run(t.Context(), core.NewOptions(
 		core.Option{Key: "public_key", Value: pubHex},
 		core.Option{Key: "message", Value: map[string]any{
 			"type":    netpkg.GossipMessageType,
@@ -234,7 +233,7 @@ func TestGossipReceiveRejectsForgedSignature_Bad(t *testing.T) {
 	gossip.Signature[0] ^= 0xff
 	forged := core.JSONMarshalString(gossip)
 
-	result := c.Action(actionNameGossipReceive).Run(context.Background(), core.NewOptions(
+	result := c.Action(actionNameGossipReceive).Run(t.Context(), core.NewOptions(
 		core.Option{Key: "peer", Value: testPeerCharon},
 		core.Option{Key: "public_key", Value: pubHex},
 		core.Option{Key: "gossip", Value: forged},
@@ -249,7 +248,7 @@ func TestGossipReceiveRequiresPublicKey_Bad(t *testing.T) {
 	priv, pub, _ := peerTestKey(t)
 	gossipJSON := signedGossipJSON(t, priv, pub, testPeerCharon, testPeerCharon)
 
-	result := c.Action(actionNameGossipReceive).Run(context.Background(), core.NewOptions(
+	result := c.Action(actionNameGossipReceive).Run(t.Context(), core.NewOptions(
 		core.Option{Key: "peer", Value: testPeerCharon},
 		core.Option{Key: "gossip", Value: gossipJSON},
 	))
@@ -265,7 +264,7 @@ func TestGossipReceiveDropsUnauthorisedRecord_Ugly(t *testing.T) {
 	// label is "charon" but the record names "stranger" (RFC §12.1 step 2).
 	gossipJSON := signedGossipJSON(t, priv, pub, testPeerCharon, "stranger")
 
-	result := c.Action(actionNameGossipReceive).Run(context.Background(), core.NewOptions(
+	result := c.Action(actionNameGossipReceive).Run(t.Context(), core.NewOptions(
 		core.Option{Key: "peer", Value: testPeerCharon},
 		core.Option{Key: "public_key", Value: pubHex},
 		core.Option{Key: "gossip", Value: gossipJSON},
@@ -289,7 +288,7 @@ func TestGossipReceiveAllowsAuthorisedName_Good(t *testing.T) {
 	// that name via authorized_names (RFC §12.1 step 2).
 	gossipJSON := signedGossipJSON(t, priv, pub, testPeerCharon, "stranger")
 
-	result := c.Action(actionNameGossipReceive).Run(context.Background(), core.NewOptions(
+	result := c.Action(actionNameGossipReceive).Run(t.Context(), core.NewOptions(
 		core.Option{Key: "peer", Value: testPeerCharon},
 		core.Option{Key: "public_key", Value: pubHex},
 		core.Option{Key: "authorized_names", Value: []string{"stranger"}},
@@ -311,7 +310,7 @@ func TestGossipReceiveRequiresPayload_Bad(t *testing.T) {
 	c, _ := peerTestService(t)
 	_, _, pubHex := peerTestKey(t)
 
-	result := c.Action(actionNameGossipReceive).Run(context.Background(), core.NewOptions(
+	result := c.Action(actionNameGossipReceive).Run(t.Context(), core.NewOptions(
 		core.Option{Key: "peer", Value: testPeerCharon},
 		core.Option{Key: "public_key", Value: pubHex},
 	))
@@ -337,7 +336,7 @@ func TestGossipReceiveViaPayloadBytes_Good(t *testing.T) {
 	}
 	raw, _ := encoded.Value.([]byte)
 
-	result := c.Action(actionNameGossipReceive).Run(context.Background(), core.NewOptions(
+	result := c.Action(actionNameGossipReceive).Run(t.Context(), core.NewOptions(
 		core.Option{Key: "peer", Value: testPeerCharon},
 		core.Option{Key: "public_key", Value: pubHex},
 		core.Option{Key: "payload", Value: raw},
@@ -357,7 +356,7 @@ func TestPeerRegisterScoresFromStringVector_Good(t *testing.T) {
 	c, _ := peerTestService(t)
 	_, _, pubHex := peerTestKey(t)
 
-	result := c.Action(actionNamePeerRegister).Run(context.Background(), core.NewOptions(
+	result := c.Action(actionNamePeerRegister).Run(t.Context(), core.NewOptions(
 		core.Option{Key: "name", Value: "scored"},
 		core.Option{Key: "public_key", Value: pubHex},
 		core.Option{Key: "uptime", Value: "86400"},
@@ -391,7 +390,7 @@ func TestGossipReceiveViaGossipObject_Good(t *testing.T) {
 		t.Fatalf("SignGossip returned error: %v", err)
 	}
 
-	result := c.Action(actionNameGossipReceive).Run(context.Background(), core.NewOptions(
+	result := c.Action(actionNameGossipReceive).Run(t.Context(), core.NewOptions(
 		core.Option{Key: "peer", Value: testPeerCharon},
 		core.Option{Key: "public_key", Value: pubHex},
 		core.Option{Key: "gossip", Value: gossip},
@@ -409,7 +408,7 @@ func TestGossipAnnounceOfflineIsHonest_Ugly(t *testing.T) {
 	priv, pub, _ := peerTestKey(t)
 	gossipJSON := signedGossipJSON(t, priv, pub, testPeerCharon, testPeerCharon)
 
-	result := c.Action(actionNameGossipAnnounce).Run(context.Background(), core.NewOptions(
+	result := c.Action(actionNameGossipAnnounce).Run(t.Context(), core.NewOptions(
 		core.Option{Key: "gossip", Value: gossipJSON},
 	))
 	if !result.OK {

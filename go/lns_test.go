@@ -3,7 +3,6 @@
 package lns
 
 import (
-	"context"
 	"crypto/sha3"
 	"encoding/binary"
 	"testing"
@@ -17,37 +16,37 @@ import (
 func TestServiceLifecycleHooks(t *testing.T) {
 	svc := &Service{}
 
-	if got := svc.OnStartup(context.Background()); !got.OK {
+	if got := svc.OnStartup(t.Context()); !got.OK {
 		t.Fatalf("OnStartup returned %#v, want OK", got)
 	}
 
-	if got := svc.GetOnStartup(context.Background()); !got.OK {
+	if got := svc.GetOnStartup(t.Context()); !got.OK {
 		t.Fatalf("GetOnStartup returned %#v, want OK", got)
 	}
 
-	if got := svc.OnShutdown(context.Background()); !got.OK {
+	if got := svc.OnShutdown(t.Context()); !got.OK {
 		t.Fatalf("OnShutdown returned %#v, want OK", got)
 	}
 
-	if got := svc.GetOnShutdown(context.Background()); !got.OK {
+	if got := svc.GetOnShutdown(t.Context()); !got.OK {
 		t.Fatalf("GetOnShutdown returned %#v, want OK", got)
 	}
 
 	var nilSvc *Service
 
-	if got := nilSvc.OnStartup(context.Background()); !got.OK {
+	if got := nilSvc.OnStartup(t.Context()); !got.OK {
 		t.Fatalf("nil OnStartup returned %#v, want OK", got)
 	}
 
-	if got := nilSvc.GetOnStartup(context.Background()); !got.OK {
+	if got := nilSvc.GetOnStartup(t.Context()); !got.OK {
 		t.Fatalf("nil GetOnStartup returned %#v, want OK", got)
 	}
 
-	if got := nilSvc.OnShutdown(context.Background()); !got.OK {
+	if got := nilSvc.OnShutdown(t.Context()); !got.OK {
 		t.Fatalf("nil OnShutdown returned %#v, want OK", got)
 	}
 
-	if got := nilSvc.GetOnShutdown(context.Background()); !got.OK {
+	if got := nilSvc.GetOnShutdown(t.Context()); !got.OK {
 		t.Fatalf("nil GetOnShutdown returned %#v, want OK", got)
 	}
 }
@@ -2050,7 +2049,7 @@ func TestServiceNameSetHelpers(t *testing.T) {
 			{Prevout: primitives.Outpoint{TxHash: primitives.Hash{1}, Index: 0}},
 		},
 		Outputs: []primitives.Output{
-			{Covenant: primitives.Covenant{Type: uint8(covenant.TypeOpen), Items: [][]byte{hash[:], []byte{0, 0, 0, 0}, []byte(testExampleName)}}},
+			{Covenant: primitives.Covenant{Type: uint8(covenant.TypeOpen), Items: [][]byte{hash[:], {0, 0, 0, 0}, []byte(testExampleName)}}},
 		},
 	}
 
@@ -2102,7 +2101,7 @@ func TestServiceVerifyCovenants(t *testing.T) {
 		Items: [][]byte{
 			hash[:],
 			make([]byte, 4),
-			[]byte{0},
+			{0},
 			committedAddress,
 		},
 	}
@@ -2114,7 +2113,7 @@ func TestServiceVerifyCovenants(t *testing.T) {
 			hash[:],
 			make([]byte, 4),
 			[]byte(testExampleName),
-			[]byte{0},
+			{0},
 			make([]byte, 4),
 			make([]byte, 4),
 			make([]byte, 32),
@@ -2150,7 +2149,7 @@ func TestServiceVerifyCovenants(t *testing.T) {
 
 	view := packageTestCoinView{
 		coins: map[primitives.Outpoint]primitives.Output{
-			primitives.Outpoint{TxHash: prevHash, Index: 0}: primitives.Output{
+			{TxHash: prevHash, Index: 0}: {
 				Value: 1000,
 				Address: primitives.Address{
 					Version: 0,

@@ -3,7 +3,6 @@
 package lns
 
 import (
-	"context"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -31,11 +30,11 @@ func TestChainHeightReturnsBlockchainInfo(t *testing.T) {
 
 	c := core.New()
 	svc := NewService(c)
-	if result := svc.OnStartup(context.Background()); !result.OK {
+	if result := svc.OnStartup(t.Context()); !result.OK {
 		t.Fatalf("OnStartup: %v", result)
 	}
 
-	result := c.Action("lns.chain.height").Run(context.Background(), core.NewOptions(
+	result := c.Action("lns.chain.height").Run(t.Context(), core.NewOptions(
 		core.Option{Key: "chain_url", Value: chainServer.URL},
 	))
 	if !result.OK {
@@ -54,11 +53,11 @@ func TestChainHeightReturnsBlockchainInfo(t *testing.T) {
 func TestChainHeightMissingURL(t *testing.T) {
 	c := core.New()
 	svc := NewService(c)
-	if result := svc.OnStartup(context.Background()); !result.OK {
+	if result := svc.OnStartup(t.Context()); !result.OK {
 		t.Fatalf("OnStartup: %v", result)
 	}
 
-	result := c.Action("lns.chain.height").Run(context.Background(), core.NewOptions())
+	result := c.Action("lns.chain.height").Run(t.Context(), core.NewOptions())
 	if result.OK {
 		t.Fatalf("lns.chain.height succeeded without chain_url, want error")
 	}
@@ -87,11 +86,11 @@ func TestChainStatusReturnsCombinedInfo(t *testing.T) {
 
 	c := core.New()
 	svc := NewService(c)
-	if result := svc.OnStartup(context.Background()); !result.OK {
+	if result := svc.OnStartup(t.Context()); !result.OK {
 		t.Fatalf("OnStartup: %v", result)
 	}
 
-	result := c.Action("lns.chain.status").Run(context.Background(), core.NewOptions(
+	result := c.Action("lns.chain.status").Run(t.Context(), core.NewOptions(
 		core.Option{Key: "chain_url", Value: chainServer.URL},
 	))
 	if !result.OK {
@@ -127,11 +126,11 @@ func TestChainPeersReturnsPeerInfo(t *testing.T) {
 
 	c := core.New()
 	svc := NewService(c)
-	if result := svc.OnStartup(context.Background()); !result.OK {
+	if result := svc.OnStartup(t.Context()); !result.OK {
 		t.Fatalf("OnStartup: %v", result)
 	}
 
-	result := c.Action("lns.chain.peers").Run(context.Background(), core.NewOptions(
+	result := c.Action("lns.chain.peers").Run(t.Context(), core.NewOptions(
 		core.Option{Key: "chain_url", Value: chainServer.URL},
 	))
 	if !result.OK {
@@ -157,11 +156,11 @@ func TestChainBlockByHash(t *testing.T) {
 
 	c := core.New()
 	svc := NewService(c)
-	if result := svc.OnStartup(context.Background()); !result.OK {
+	if result := svc.OnStartup(t.Context()); !result.OK {
 		t.Fatalf("OnStartup: %v", result)
 	}
 
-	result := c.Action("lns.chain.block").Run(context.Background(), core.NewOptions(
+	result := c.Action("lns.chain.block").Run(t.Context(), core.NewOptions(
 		core.Option{Key: "chain_url", Value: chainServer.URL},
 		core.Option{Key: "hash", Value: "abc123"},
 	))
@@ -188,11 +187,11 @@ func TestChainBlockByHeight(t *testing.T) {
 
 	c := core.New()
 	svc := NewService(c)
-	if result := svc.OnStartup(context.Background()); !result.OK {
+	if result := svc.OnStartup(t.Context()); !result.OK {
 		t.Fatalf("OnStartup: %v", result)
 	}
 
-	result := c.Action("lns.chain.block").Run(context.Background(), core.NewOptions(
+	result := c.Action("lns.chain.block").Run(t.Context(), core.NewOptions(
 		core.Option{Key: "chain_url", Value: chainServer.URL},
 		core.Option{Key: "height", Value: uint32(50)},
 	))
@@ -204,11 +203,11 @@ func TestChainBlockByHeight(t *testing.T) {
 func TestChainBlockMissingHashAndHeight(t *testing.T) {
 	c := core.New()
 	svc := NewService(c)
-	if result := svc.OnStartup(context.Background()); !result.OK {
+	if result := svc.OnStartup(t.Context()); !result.OK {
 		t.Fatalf("OnStartup: %v", result)
 	}
 
-	result := c.Action("lns.chain.block").Run(context.Background(), core.NewOptions(
+	result := c.Action("lns.chain.block").Run(t.Context(), core.NewOptions(
 		core.Option{Key: "chain_url", Value: "http://localhost:0"},
 	))
 	if result.OK {
@@ -219,11 +218,11 @@ func TestChainBlockMissingHashAndHeight(t *testing.T) {
 func TestWalletBalanceRequiresWallet(t *testing.T) {
 	c := core.New()
 	svc := NewService(c)
-	if result := svc.OnStartup(context.Background()); !result.OK {
+	if result := svc.OnStartup(t.Context()); !result.OK {
 		t.Fatalf("OnStartup: %v", result)
 	}
 
-	result := c.Action("lns.wallet.balance").Run(context.Background(), core.NewOptions())
+	result := c.Action("lns.wallet.balance").Run(t.Context(), core.NewOptions())
 	if result.OK {
 		t.Fatalf("lns.wallet.balance succeeded without wallet, want error")
 	}
@@ -232,28 +231,28 @@ func TestWalletBalanceRequiresWallet(t *testing.T) {
 func TestWalletCreateImportExportReceive(t *testing.T) {
 	c := core.New()
 	svc := NewService(c)
-	if result := svc.OnStartup(context.Background()); !result.OK {
+	if result := svc.OnStartup(t.Context()); !result.OK {
 		t.Fatalf("OnStartup: %v", result)
 	}
 
-	if result := c.Action("lns.wallet.export").Run(context.Background(), core.NewOptions()); result.OK {
+	if result := c.Action("lns.wallet.export").Run(t.Context(), core.NewOptions()); result.OK {
 		t.Fatal("lns.wallet.export succeeded without wallet, want error")
 	}
-	if result := c.Action("lns.wallet.receive").Run(context.Background(), core.NewOptions()); result.OK {
+	if result := c.Action("lns.wallet.receive").Run(t.Context(), core.NewOptions()); result.OK {
 		t.Fatal("lns.wallet.receive succeeded without wallet, want error")
 	}
 
-	created := c.Action("lns.wallet.create").Run(context.Background(), core.NewOptions())
+	created := c.Action("lns.wallet.create").Run(t.Context(), core.NewOptions())
 	if !created.OK {
 		t.Fatalf("lns.wallet.create returned %#v, want OK", created)
 	}
 
-	exported := c.Action("lns.wallet.export").Run(context.Background(), core.NewOptions())
+	exported := c.Action("lns.wallet.export").Run(t.Context(), core.NewOptions())
 	if !exported.OK {
 		t.Fatalf("lns.wallet.export returned %#v, want OK", exported)
 	}
 
-	current := c.Action("lns.wallet.receive").Run(context.Background(), core.NewOptions())
+	current := c.Action("lns.wallet.receive").Run(t.Context(), core.NewOptions())
 	if !current.OK {
 		t.Fatalf("lns.wallet.receive current returned %#v, want OK", current)
 	}
@@ -262,7 +261,7 @@ func TestWalletCreateImportExportReceive(t *testing.T) {
 		t.Fatalf("lns.wallet.receive returned %T, want walletReceiveResult", current.Value)
 	}
 
-	next := c.Action("lns.wallet.receive").Run(context.Background(), core.NewOptions(
+	next := c.Action("lns.wallet.receive").Run(t.Context(), core.NewOptions(
 		core.Option{Key: "next", Value: true},
 	))
 	if !next.OK {
@@ -276,11 +275,11 @@ func TestWalletCreateImportExportReceive(t *testing.T) {
 		t.Fatalf("receive index did not advance: current=%d next=%d", currentReceive.Index, nextReceive.Index)
 	}
 
-	if result := c.Action("lns.wallet.import").Run(context.Background(), core.NewOptions()); result.OK {
+	if result := c.Action("lns.wallet.import").Run(t.Context(), core.NewOptions()); result.OK {
 		t.Fatal("lns.wallet.import succeeded without seed, want error")
 	}
 
-	imported := c.Action("lns.wallet.import").Run(context.Background(), core.NewOptions(
+	imported := c.Action("lns.wallet.import").Run(t.Context(), core.NewOptions(
 		core.Option{Key: "seed", Value: "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f"},
 	))
 	if !imported.OK {
@@ -291,7 +290,7 @@ func TestWalletCreateImportExportReceive(t *testing.T) {
 func TestWalletBalanceReturnsBalances(t *testing.T) {
 	c := core.New()
 	svc := NewService(c)
-	if result := svc.OnStartup(context.Background()); !result.OK {
+	if result := svc.OnStartup(t.Context()); !result.OK {
 		t.Fatalf("OnStartup: %v", result)
 	}
 
@@ -302,7 +301,7 @@ func TestWalletBalanceReturnsBalances(t *testing.T) {
 	wallet.Credit(500, true, 10, primitives.Hash{1}, "funding")
 	svc.wallet = wallet
 
-	result := c.Action("lns.wallet.balance").Run(context.Background(), core.NewOptions())
+	result := c.Action("lns.wallet.balance").Run(t.Context(), core.NewOptions())
 	if !result.OK {
 		t.Fatalf("lns.wallet.balance returned %#v, want OK", result)
 	}
@@ -319,11 +318,11 @@ func TestWalletBalanceReturnsBalances(t *testing.T) {
 func TestWalletHistoryRequiresWallet(t *testing.T) {
 	c := core.New()
 	svc := NewService(c)
-	if result := svc.OnStartup(context.Background()); !result.OK {
+	if result := svc.OnStartup(t.Context()); !result.OK {
 		t.Fatalf("OnStartup: %v", result)
 	}
 
-	result := c.Action("lns.wallet.history").Run(context.Background(), core.NewOptions())
+	result := c.Action("lns.wallet.history").Run(t.Context(), core.NewOptions())
 	if result.OK {
 		t.Fatalf("lns.wallet.history succeeded without wallet, want error")
 	}
@@ -332,7 +331,7 @@ func TestWalletHistoryRequiresWallet(t *testing.T) {
 func TestWalletHistoryReturnsEntries(t *testing.T) {
 	c := core.New()
 	svc := NewService(c)
-	if result := svc.OnStartup(context.Background()); !result.OK {
+	if result := svc.OnStartup(t.Context()); !result.OK {
 		t.Fatalf("OnStartup: %v", result)
 	}
 
@@ -343,7 +342,7 @@ func TestWalletHistoryReturnsEntries(t *testing.T) {
 	wallet.Credit(100, false, 10, primitives.Hash{2}, "test deposit")
 	svc.wallet = wallet
 
-	result := c.Action("lns.wallet.history").Run(context.Background(), core.NewOptions())
+	result := c.Action("lns.wallet.history").Run(t.Context(), core.NewOptions())
 	if !result.OK {
 		t.Fatalf("lns.wallet.history returned %#v, want OK", result)
 	}
@@ -360,11 +359,11 @@ func TestWalletHistoryReturnsEntries(t *testing.T) {
 func TestChainSyncRequiresChainURL(t *testing.T) {
 	c := core.New()
 	svc := NewService(c)
-	if result := svc.OnStartup(context.Background()); !result.OK {
+	if result := svc.OnStartup(t.Context()); !result.OK {
 		t.Fatalf("OnStartup: %v", result)
 	}
 
-	result := c.Action("lns.chain.sync").Run(context.Background(), core.NewOptions())
+	result := c.Action("lns.chain.sync").Run(t.Context(), core.NewOptions())
 	if result.OK {
 		t.Fatalf("lns.chain.sync succeeded without chain_url, want error")
 	}
@@ -400,11 +399,11 @@ func TestChainSyncDiscoversKnownName(t *testing.T) {
 
 	c := core.New()
 	svc := NewService(c)
-	if result := svc.OnStartup(context.Background()); !result.OK {
+	if result := svc.OnStartup(t.Context()); !result.OK {
 		t.Fatalf("OnStartup: %v", result)
 	}
 
-	result := c.Action("lns.chain.sync").Run(context.Background(), core.NewOptions(
+	result := c.Action("lns.chain.sync").Run(t.Context(), core.NewOptions(
 		core.Option{Key: "chain_url", Value: chainServer.URL},
 		core.Option{Key: "known_names", Value: []string{"charon"}},
 	))

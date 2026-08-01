@@ -5,6 +5,7 @@ package script
 import (
 	"bytes"
 	"crypto/sha256"
+	sha30 "crypto/sha3"
 	"testing"
 
 	"golang.org/x/crypto/blake2b"
@@ -172,7 +173,7 @@ func TestEngine_Unbalanced_Bad(t *testing.T) {
 func TestEngine_OpCount_Ugly(t *testing.T) {
 	// MaxScriptOps+1 executed non-push opcodes must trip OP_COUNT.
 	ops := make([]Opcode, 0, MaxScriptOps+2)
-	for i := 0; i < MaxScriptOps+1; i++ {
+	for range MaxScriptOps + 1 {
 		ops = append(ops, OpFromOp(OP_NOP))
 	}
 	_, err := runScript(t, VerifyNone, ops...)
@@ -254,7 +255,7 @@ func assertScriptError(t *testing.T, err error, code string) {
  */
 
 func sha256Sum(b []byte) []byte { s := sha256.Sum256(b); return s[:] }
-func sha3Sum(b []byte) []byte   { s := sha3.Sum256(b); return s[:] }
+func sha3Sum(b []byte) []byte   { s := sha30.Sum256(b); return s[:] }
 
 func keccakSum(b []byte) []byte {
 	h := sha3.NewLegacyKeccak256()

@@ -175,8 +175,8 @@ func coverageReflectValue(typ reflect.Type, variant string) reflect.Value {
 }
 
 func coveragePopulateStruct(value reflect.Value, variant string) {
-	for i := 0; i < value.NumField(); i++ {
-		field := value.Field(i)
+	for _, field := range value.Fields() {
+		field := field
 		if !field.CanSet() {
 			continue
 		}

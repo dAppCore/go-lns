@@ -3,6 +3,8 @@
 package net
 
 import (
+	"slices"
+
 	core "dappco.re/go"
 )
 
@@ -72,12 +74,7 @@ type PeerRecord struct {
 //
 //	if rec.HasCapability(net.CapExit) { /* eligible as an exit node */ }
 func (r PeerRecord) HasCapability(cap Capability) bool {
-	for _, c := range r.Cap {
-		if c == cap {
-			return true
-		}
-	}
-	return false
+	return slices.Contains(r.Cap, cap)
 }
 
 // Validate reports whether the record's fields are within the bounded limits.

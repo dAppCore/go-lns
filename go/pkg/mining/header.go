@@ -42,7 +42,7 @@ func fixedBytes(src []byte, n int) []byte {
 // HSD AbstractBlock.padding and binds the PoW to the chain position.
 func padding(h primitives.BlockHeader, n int) []byte {
 	pad := make([]byte, n)
-	for i := 0; i < n; i++ {
+	for i := range n {
 		pad[i] = h.PrevBlock[i%HashSize] ^ h.TreeRoot[i%HashSize]
 	}
 	return pad

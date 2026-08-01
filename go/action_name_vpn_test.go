@@ -3,7 +3,6 @@
 package lns
 
 import (
-	"context"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -14,7 +13,7 @@ import (
 func TestNameLinkedActionsReturnDraftPlans(t *testing.T) {
 	c := core.New()
 	svc := NewService(c)
-	if result := svc.OnStartup(context.Background()); !result.OK {
+	if result := svc.OnStartup(t.Context()); !result.OK {
 		t.Fatalf(testOnStartupOK, result)
 	}
 
@@ -23,7 +22,7 @@ func TestNameLinkedActionsReturnDraftPlans(t *testing.T) {
 		TXTRecord{Entries: []string{"hello"}},
 	}
 
-	updateResult := c.Action(actionNameUpdate).Run(context.Background(), core.NewOptions(
+	updateResult := c.Action(actionNameUpdate).Run(t.Context(), core.NewOptions(
 		core.Option{Key: "name", Value: testCharonName},
 		core.Option{Key: "height", Value: 125},
 		core.Option{Key: "resource", Value: resource},
@@ -43,7 +42,7 @@ func TestNameLinkedActionsReturnDraftPlans(t *testing.T) {
 		t.Fatalf("update draft = %#v, want one-output draft transaction", updatePlan.Steps[0].Draft)
 	}
 
-	renewResult := c.Action(actionNameRenew).Run(context.Background(), core.NewOptions(
+	renewResult := c.Action(actionNameRenew).Run(t.Context(), core.NewOptions(
 		core.Option{Key: "name", Value: testCharonName},
 		core.Option{Key: "height", Value: 125},
 		core.Option{Key: "block_hash", Value: "2222222222222222222222222222222222222222222222222222222222222222"},
@@ -63,7 +62,7 @@ func TestNameLinkedActionsReturnDraftPlans(t *testing.T) {
 		t.Fatalf("renew draft = %#v, want fee placeholder", renewPlan.Steps[0].Draft)
 	}
 
-	transferResult := c.Action(actionNameTransfer).Run(context.Background(), core.NewOptions(
+	transferResult := c.Action(actionNameTransfer).Run(t.Context(), core.NewOptions(
 		core.Option{Key: "name", Value: testCharonName},
 		core.Option{Key: "height", Value: 125},
 		core.Option{Key: "address", Value: Address{Version: 0, Hash: []byte{
@@ -85,7 +84,7 @@ func TestNameLinkedActionsReturnDraftPlans(t *testing.T) {
 		t.Fatalf("transfer draft = %#v, want zero-value placeholder output by default", transferPlan.Steps[0].Draft)
 	}
 
-	revokeResult := c.Action(actionNameRevoke).Run(context.Background(), core.NewOptions(
+	revokeResult := c.Action(actionNameRevoke).Run(t.Context(), core.NewOptions(
 		core.Option{Key: "name", Value: testCharonName},
 		core.Option{Key: "height", Value: 125},
 	))
@@ -142,7 +141,7 @@ func TestVPNActionsDiscoverAndTrackSession(t *testing.T) {
 
 	c := core.New()
 	svc := NewService(c)
-	if result := svc.OnStartup(context.Background()); !result.OK {
+	if result := svc.OnStartup(t.Context()); !result.OK {
 		t.Fatalf(testOnStartupOK, result)
 	}
 
@@ -151,7 +150,7 @@ func TestVPNActionsDiscoverAndTrackSession(t *testing.T) {
 		core.Option{Key: "alias_url", Value: aliasServer.URL},
 	)
 
-	discoverResult := c.Action(actionNameVPNDiscover).Run(context.Background(), options)
+	discoverResult := c.Action(actionNameVPNDiscover).Run(t.Context(), options)
 	if !discoverResult.OK {
 		t.Fatalf("lns.vpn.discover returned %#v, want OK", discoverResult)
 	}
@@ -164,7 +163,7 @@ func TestVPNActionsDiscoverAndTrackSession(t *testing.T) {
 		t.Fatalf("vpn discover = %#v, want one charon gateway", discovered)
 	}
 
-	connectResult := c.Action(actionNameVPNConnect).Run(context.Background(), core.NewOptions(
+	connectResult := c.Action(actionNameVPNConnect).Run(t.Context(), core.NewOptions(
 		core.Option{Key: "chain_url", Value: chainServer.URL},
 		core.Option{Key: "alias_url", Value: aliasServer.URL},
 		core.Option{Key: "name", Value: testCharonName},
@@ -181,7 +180,7 @@ func TestVPNActionsDiscoverAndTrackSession(t *testing.T) {
 		t.Fatalf("vpn connect = %#v, want connected charon gateway", connected)
 	}
 
-	statusResult := c.Action("lns.vpn.status").Run(context.Background(), core.NewOptions())
+	statusResult := c.Action("lns.vpn.status").Run(t.Context(), core.NewOptions())
 	if !statusResult.OK {
 		t.Fatalf("lns.vpn.status returned %#v, want OK", statusResult)
 	}
@@ -194,7 +193,7 @@ func TestVPNActionsDiscoverAndTrackSession(t *testing.T) {
 		t.Fatalf("vpn status = %#v, want connected charon gateway", status)
 	}
 
-	disconnectResult := c.Action("lns.vpn.disconnect").Run(context.Background(), core.NewOptions())
+	disconnectResult := c.Action("lns.vpn.disconnect").Run(t.Context(), core.NewOptions())
 	if !disconnectResult.OK {
 		t.Fatalf("lns.vpn.disconnect returned %#v, want OK", disconnectResult)
 	}

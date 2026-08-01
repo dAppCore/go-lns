@@ -3,6 +3,7 @@
 package covenant
 
 import (
+	"slices"
 	"testing"
 
 	core "dappco.re/go"
@@ -301,11 +302,8 @@ func TestLockedCatalogHelpers(t *testing.T) {
 		}
 	}
 
-	for _, key := range keys {
-		if key == hash {
-			keyFound = true
-			break
-		}
+	if slices.Contains(keys, hash) {
+		keyFound = true
 	}
 
 	for _, value := range values {

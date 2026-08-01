@@ -3,11 +3,12 @@
 package mining
 
 import (
+	"crypto/sha3"
+	"hash"
 	"math/big"
 
 	core "dappco.re/go"
 	"golang.org/x/crypto/blake2b"
-	"golang.org/x/crypto/sha3"
 
 	"dappco.re/go/lns/pkg/primitives"
 )
@@ -29,7 +30,7 @@ func shareHash(h primitives.BlockHeader) (primitives.Hash, error) {
 	left.Write(data)
 	leftSum := left.Sum(nil)
 
-	sha := sha3.New256()
+	sha := hash.Hash(sha3.New256())
 	sha.Write(data)
 	sha.Write(padding(h, 8))
 	rightSum := sha.Sum(nil)
@@ -54,7 +55,7 @@ func PowHash(header primitives.BlockHeader) (primitives.Hash, error) {
 	}
 
 	mask := fixedBytes(header.Mask, maskSize)
-	for i := 0; i < HashSize; i++ {
+	for i := range HashSize {
 		hash[i] ^= mask[i]
 	}
 	return hash, nil
@@ -76,7 +77,7 @@ func Solve(header primitives.BlockHeader, target *big.Int, rounds uint32) (uint3
 	work := normalizeHeader(header)
 	nonce := work.Nonce
 
-	for i := uint32(0); i < rounds; i++ {
+	for range rounds {
 		work.Nonce = nonce
 
 		hash, err := shareHash(work)
@@ -85,7 +86,7 @@ func Solve(header primitives.BlockHeader, target *big.Int, rounds uint32) (uint3
 		}
 
 		mask := work.Mask // already normalised to 32 bytes
-		for k := 0; k < HashSize; k++ {
+		for k := range HashSize {
 			hash[k] ^= mask[k]
 		}
 

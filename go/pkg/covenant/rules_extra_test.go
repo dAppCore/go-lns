@@ -117,8 +117,8 @@ func TestNameSetHelpers(t *testing.T) {
 
 	tx := primitives.Transaction{
 		Outputs: []primitives.Output{
-			{Covenant: primitives.Covenant{Type: uint8(TypeOpen), Items: [][]byte{hash[:], []byte{0, 0, 0, 0}, []byte(testExampleName)}}},
-			{Covenant: primitives.Covenant{Type: uint8(TypeBid), Items: [][]byte{hash[:], []byte{1, 0, 0, 0}, []byte(testExampleName), make([]byte, 32)}}},
+			{Covenant: primitives.Covenant{Type: uint8(TypeOpen), Items: [][]byte{hash[:], {0, 0, 0, 0}, []byte(testExampleName)}}},
+			{Covenant: primitives.Covenant{Type: uint8(TypeBid), Items: [][]byte{hash[:], {1, 0, 0, 0}, []byte(testExampleName), make([]byte, 32)}}},
 		},
 	}
 
@@ -171,8 +171,8 @@ func TestHasSaneCovenants(t *testing.T) {
 			{Prevout: primitives.Outpoint{TxHash: primitives.Hash{2}, Index: 0}},
 		},
 		Outputs: []primitives.Output{
-			{Covenant: primitives.Covenant{Type: uint8(TypeOpen), Items: [][]byte{hash[:], []byte{0, 0, 0, 0}, []byte(testExampleName)}}},
-			{Covenant: primitives.Covenant{Type: uint8(TypeRegister), Items: [][]byte{hash[:], []byte{1, 0, 0, 0}, []byte("record"), make([]byte, 32)}}},
+			{Covenant: primitives.Covenant{Type: uint8(TypeOpen), Items: [][]byte{hash[:], {0, 0, 0, 0}, []byte(testExampleName)}}},
+			{Covenant: primitives.Covenant{Type: uint8(TypeRegister), Items: [][]byte{hash[:], {1, 0, 0, 0}, []byte("record"), make([]byte, 32)}}},
 		},
 	}
 
@@ -186,7 +186,7 @@ func TestHasSaneCovenants(t *testing.T) {
 
 	invalid := primitives.Transaction{
 		Outputs: []primitives.Output{
-			{Covenant: primitives.Covenant{Type: uint8(TypeOpen), Items: [][]byte{hash[:], []byte{1, 0, 0, 0}, []byte(testExampleName)}}},
+			{Covenant: primitives.Covenant{Type: uint8(TypeOpen), Items: [][]byte{hash[:], {1, 0, 0, 0}, []byte(testExampleName)}}},
 		},
 	}
 
@@ -205,7 +205,7 @@ func TestHasSaneCovenants(t *testing.T) {
 				hash[:],
 				make([]byte, 4),
 				[]byte(testExampleName),
-				[]byte{0},
+				{0},
 				make([]byte, 32),
 				make([]byte, 4),
 			}}},
@@ -260,7 +260,7 @@ func TestVerifyCovenants(t *testing.T) {
 	transferCovenant.Items = [][]byte{
 		hash[:],
 		make([]byte, 4),
-		[]byte{0},
+		{0},
 		committedAddress,
 	}
 
@@ -270,7 +270,7 @@ func TestVerifyCovenants(t *testing.T) {
 		hash[:],
 		make([]byte, 4),
 		[]byte(testExampleName),
-		[]byte{0},
+		{0},
 		make([]byte, 4),
 		make([]byte, 4),
 		make([]byte, 32),
@@ -299,7 +299,7 @@ func TestVerifyCovenants(t *testing.T) {
 
 	view := testCoinView{
 		coins: map[primitives.Outpoint]primitives.Output{
-			primitives.Outpoint{TxHash: prevHash, Index: 0}: primitives.Output{
+			{TxHash: prevHash, Index: 0}: {
 				Value: 1000,
 				Address: primitives.Address{
 					Version: 0,
@@ -351,7 +351,7 @@ func TestVerifyCovenantsBidReveal(t *testing.T) {
 		Type: uint8(TypeBid),
 		Items: [][]byte{
 			hash[:],
-			[]byte{100, 0, 0, 0},
+			{100, 0, 0, 0},
 			[]byte(testExampleName),
 			bidBlind[:],
 		},
@@ -361,7 +361,7 @@ func TestVerifyCovenantsBidReveal(t *testing.T) {
 		Type: uint8(TypeReveal),
 		Items: [][]byte{
 			hash[:],
-			[]byte{100, 0, 0, 0},
+			{100, 0, 0, 0},
 			nonce[:],
 		},
 	}
@@ -416,7 +416,7 @@ func TestVerifyCovenantsRejectsInvalidStructure(t *testing.T) {
 					Type: uint8(TypeOpen),
 					Items: [][]byte{
 						hash[:],
-						[]byte{1, 0, 0, 0},
+						{1, 0, 0, 0},
 						[]byte(testExampleName),
 					},
 				},
@@ -475,7 +475,7 @@ func TestVerifyCovenantsCoinbaseLinkedOutputs(t *testing.T) {
 			claimHash[:],
 			make([]byte, 4),
 			[]byte(testReservedLabel),
-			[]byte{0},
+			{0},
 			blockHash[:],
 			make([]byte, 4),
 		}
@@ -687,7 +687,7 @@ func TestCoinbaseClaimWitnessValidation(t *testing.T) {
 						claimHash[:],
 						blockHeight,
 						[]byte(testReservedLabel),
-						[]byte{0},
+						{0},
 						make([]byte, 32),
 						blockHeight,
 					},
@@ -754,7 +754,7 @@ func TestCoinbaseClaimConjureOverflow(t *testing.T) {
 						claimHash[:],
 						blockHeight,
 						[]byte(testReservedLabel),
-						[]byte{0},
+						{0},
 						make([]byte, 32),
 						blockHeight,
 					},
@@ -772,7 +772,7 @@ func TestCoinbaseClaimConjureOverflow(t *testing.T) {
 						claimHash[:],
 						blockHeight,
 						[]byte(testReservedLabel),
-						[]byte{0},
+						{0},
 						make([]byte, 32),
 						blockHeight,
 					},

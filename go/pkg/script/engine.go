@@ -5,6 +5,7 @@ package script
 import (
 	"crypto/sha1"
 	"crypto/sha256"
+	sha30 "crypto/sha3"
 
 	core "dappco.re/go"
 	"golang.org/x/crypto/blake2b"
@@ -453,17 +454,9 @@ func (s *Script) Execute(stack *Stack, flags int, ctx *execContext) error {
 			case OP_GREATERTHANOREQUAL:
 				res = boolNum(n1 >= n2)
 			case OP_MIN:
-				if n1 < n2 {
-					res = n1
-				} else {
-					res = n2
-				}
+				res = min(n1, n2)
 			case OP_MAX:
-				if n1 > n2 {
-					res = n1
-				} else {
-					res = n2
-				}
+				res = max(n1, n2)
 			}
 			stack.PushInt(res)
 			if op.Value == OP_NUMEQUALVERIFY {
@@ -763,7 +756,7 @@ func hashOp(opValue int, data []byte) ([]byte, error) {
 		sum := blake2b.Sum256(data)
 		return sum[:], nil
 	case OP_SHA3:
-		sum := sha3.Sum256(data)
+		sum := sha30.Sum256(data)
 		return sum[:], nil
 	case OP_KECCAK:
 		h := sha3.NewLegacyKeccak256()

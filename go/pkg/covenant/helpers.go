@@ -22,10 +22,7 @@ func (m *jsonraw) UnmarshalJSON(data []byte) error {
 }
 
 func compareBytes(left, right []byte) int {
-	n := len(left)
-	if len(right) < n {
-		n = len(right)
-	}
+	n := min(len(right), len(left))
 	for i := 0; i < n; i++ {
 		switch {
 		case left[i] < right[i]:

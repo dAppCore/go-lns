@@ -3,10 +3,10 @@
 package script
 
 import (
+	"crypto/sha3"
 	"encoding/binary"
 
 	core "dappco.re/go"
-	"golang.org/x/crypto/sha3"
 )
 
 // Consensus limits for the script system. They mirror the HSD protocol
@@ -365,10 +365,7 @@ func sortKeys(keys [][]byte) {
 }
 
 func compareBytes(left, right []byte) int {
-	n := len(left)
-	if len(right) < n {
-		n = len(right)
-	}
+	n := min(len(right), len(left))
 	for i := 0; i < n; i++ {
 		switch {
 		case left[i] < right[i]:

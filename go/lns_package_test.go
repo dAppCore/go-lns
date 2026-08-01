@@ -1025,7 +1025,7 @@ func TestPackageNameSetHelpers(t *testing.T) {
 
 	tx := primitives.Transaction{
 		Outputs: []primitives.Output{
-			{Covenant: primitives.Covenant{Type: uint8(covenant.TypeOpen), Items: [][]byte{hash[:], []byte{0, 0, 0, 0}, []byte(testExampleName)}}},
+			{Covenant: primitives.Covenant{Type: uint8(covenant.TypeOpen), Items: [][]byte{hash[:], {0, 0, 0, 0}, []byte(testExampleName)}}},
 		},
 	}
 
@@ -1067,7 +1067,7 @@ func TestPackageHasSaneCovenants(t *testing.T) {
 			{Prevout: primitives.Outpoint{TxHash: primitives.Hash{1}, Index: 0}},
 		},
 		Outputs: []primitives.Output{
-			{Covenant: primitives.Covenant{Type: uint8(covenant.TypeOpen), Items: [][]byte{hash[:], []byte{0, 0, 0, 0}, []byte(testExampleName)}}},
+			{Covenant: primitives.Covenant{Type: uint8(covenant.TypeOpen), Items: [][]byte{hash[:], {0, 0, 0, 0}, []byte(testExampleName)}}},
 		},
 	}
 
@@ -1283,7 +1283,7 @@ func TestPackageVerifyCovenants(t *testing.T) {
 		Items: [][]byte{
 			hash[:],
 			make([]byte, 4),
-			[]byte{0},
+			{0},
 			committedAddress,
 		},
 	}
@@ -1295,7 +1295,7 @@ func TestPackageVerifyCovenants(t *testing.T) {
 			hash[:],
 			make([]byte, 4),
 			[]byte(testExampleName),
-			[]byte{0},
+			{0},
 			make([]byte, 4),
 			make([]byte, 4),
 			make([]byte, 32),
@@ -1323,7 +1323,7 @@ func TestPackageVerifyCovenants(t *testing.T) {
 
 	view := packageTestCoinView{
 		coins: map[primitives.Outpoint]primitives.Output{
-			primitives.Outpoint{TxHash: prevHash, Index: 0}: primitives.Output{
+			{TxHash: prevHash, Index: 0}: {
 				Value: 1000,
 				Address: primitives.Address{
 					Version: 0,

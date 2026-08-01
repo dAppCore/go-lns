@@ -3,7 +3,6 @@
 package dns
 
 import (
-	"context"
 	"net/http"
 	"net/http/httptest"
 	"net/netip"
@@ -88,7 +87,7 @@ func TestBridgeDiscoverAndReverse(t *testing.T) {
 		APIKey:   "testkey",
 	})
 
-	report, err := bridge.Discover(context.Background())
+	report, err := bridge.Discover(t.Context())
 	if err != nil {
 		t.Fatalf("Discover returned error: %v", err)
 	}

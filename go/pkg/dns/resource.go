@@ -1491,7 +1491,7 @@ func decodeTXTRecord(raw []byte, pos int) (ResourceRecord, int, bool, error) {
 	pos++
 	record := TXTRecord{Entries: make([]string, 0, count)}
 
-	for i := 0; i < count; i++ {
+	for range count {
 		if len(raw)-pos < 1 {
 			return nil, pos, true, core.NewError("truncated txt entry")
 		}

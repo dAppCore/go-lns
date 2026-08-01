@@ -3,7 +3,6 @@
 package lns
 
 import (
-	"context"
 	"encoding/hex"
 	"testing"
 
@@ -36,14 +35,14 @@ func coinOption(wallet interface {
 func TestNameBroadcast_OpenPhase_Good(t *testing.T) {
 	c := core.New()
 	svc := NewService(c)
-	if result := svc.OnStartup(context.Background()); !result.OK {
+	if result := svc.OnStartup(t.Context()); !result.OK {
 		t.Fatalf(testOnStartupOK, result)
 	}
 	wallet := mustImportWriteWallet(t)
 	svc.wallet = wallet
 	daemon := newFakeDaemon(t)
 
-	result := c.Action(actionNameRegister).Run(context.Background(), core.NewOptions(
+	result := c.Action(actionNameRegister).Run(t.Context(), core.NewOptions(
 		core.Option{Key: "name", Value: testRegisterName},
 		core.Option{Key: "broadcast", Value: true},
 		core.Option{Key: "phase", Value: "open"},
@@ -75,7 +74,7 @@ func TestNameBroadcast_OpenPhase_Good(t *testing.T) {
 func TestNameBroadcast_RenewLinked_Good(t *testing.T) {
 	c := core.New()
 	svc := NewService(c)
-	if result := svc.OnStartup(context.Background()); !result.OK {
+	if result := svc.OnStartup(t.Context()); !result.OK {
 		t.Fatalf(testOnStartupOK, result)
 	}
 	wallet := mustImportWriteWallet(t)
@@ -88,7 +87,7 @@ func TestNameBroadcast_RenewLinked_Good(t *testing.T) {
 	ownerHash[0] = 21
 	ownerCoin := coinOption(wallet, 50000, 21)
 
-	result := c.Action(actionNameRenew).Run(context.Background(), core.NewOptions(
+	result := c.Action(actionNameRenew).Run(t.Context(), core.NewOptions(
 		core.Option{Key: "name", Value: testRegisterName},
 		core.Option{Key: "broadcast", Value: true},
 		core.Option{Key: "chain_url", Value: daemon.server.URL},
@@ -119,14 +118,14 @@ func TestNameBroadcast_RenewLinked_Good(t *testing.T) {
 func TestNameBroadcast_RenewMissingOwner_Bad(t *testing.T) {
 	c := core.New()
 	svc := NewService(c)
-	if result := svc.OnStartup(context.Background()); !result.OK {
+	if result := svc.OnStartup(t.Context()); !result.OK {
 		t.Fatalf(testOnStartupOK, result)
 	}
 	wallet := mustImportWriteWallet(t)
 	svc.wallet = wallet
 	daemon := newFakeDaemon(t) // getnameinfo returns nothing for an unknown name
 
-	result := c.Action(actionNameRenew).Run(context.Background(), core.NewOptions(
+	result := c.Action(actionNameRenew).Run(t.Context(), core.NewOptions(
 		core.Option{Key: "name", Value: testRegisterName},
 		core.Option{Key: "broadcast", Value: true},
 		core.Option{Key: "chain_url", Value: daemon.server.URL},
@@ -147,7 +146,7 @@ func TestNameBroadcast_RenewMissingOwner_Bad(t *testing.T) {
 func TestNameBroadcast_RenewOwnerFromDaemon_Good(t *testing.T) {
 	c := core.New()
 	svc := NewService(c)
-	if result := svc.OnStartup(context.Background()); !result.OK {
+	if result := svc.OnStartup(t.Context()); !result.OK {
 		t.Fatalf(testOnStartupOK, result)
 	}
 	wallet := mustImportWriteWallet(t)
@@ -160,7 +159,7 @@ func TestNameBroadcast_RenewOwnerFromDaemon_Good(t *testing.T) {
 	ownerHash[0] = 31
 	daemon.nameOwners[testRegisterName] = chainpkg.NameOwner{Hash: hex.EncodeToString(ownerHash[:]), Index: 31}
 
-	result := c.Action(actionNameRenew).Run(context.Background(), core.NewOptions(
+	result := c.Action(actionNameRenew).Run(t.Context(), core.NewOptions(
 		core.Option{Key: "name", Value: testRegisterName},
 		core.Option{Key: "broadcast", Value: true},
 		core.Option{Key: "chain_url", Value: daemon.server.URL},
@@ -183,14 +182,14 @@ func TestNameBroadcast_RenewOwnerFromDaemon_Good(t *testing.T) {
 func TestNameBroadcast_RegisterBadPhase_Ugly(t *testing.T) {
 	c := core.New()
 	svc := NewService(c)
-	if result := svc.OnStartup(context.Background()); !result.OK {
+	if result := svc.OnStartup(t.Context()); !result.OK {
 		t.Fatalf(testOnStartupOK, result)
 	}
 	wallet := mustImportWriteWallet(t)
 	svc.wallet = wallet
 	daemon := newFakeDaemon(t)
 
-	result := c.Action(actionNameRegister).Run(context.Background(), core.NewOptions(
+	result := c.Action(actionNameRegister).Run(t.Context(), core.NewOptions(
 		core.Option{Key: "name", Value: testRegisterName},
 		core.Option{Key: "broadcast", Value: true},
 		core.Option{Key: "phase", Value: "nonsense"},

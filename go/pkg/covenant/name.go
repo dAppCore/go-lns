@@ -82,7 +82,7 @@ func VerifyBinary(name []byte) bool {
 		return false
 	}
 
-	for i := 0; i < len(name); i++ {
+	for i := range name {
 		ch := name[i]
 
 		if ch&0x80 != 0 {

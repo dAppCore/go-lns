@@ -4,6 +4,7 @@ package net
 
 import (
 	"crypto/sha256"
+	"slices"
 
 	core "dappco.re/go"
 	"github.com/decred/dcrd/dcrec/secp256k1/v4"
@@ -61,12 +62,7 @@ func (a GossipAuthority) isAuthoritative(name string) bool {
 	if name == a.Peer {
 		return true
 	}
-	for _, n := range a.AuthorizedNames {
-		if n == name {
-			return true
-		}
-	}
-	return false
+	return slices.Contains(a.AuthorizedNames, name)
 }
 
 // gossipDigest computes the canonical signing digest for a gossip message: the

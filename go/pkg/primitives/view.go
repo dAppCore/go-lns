@@ -196,7 +196,7 @@ func (u *NameUndo) UnmarshalBinary(data []byte) error {
 	}
 
 	u.Names = make([]NameUndoEntry, 0, int(count))
-	for i := uint32(0); i < count; i++ {
+	for range count {
 		if len(data) < len(Hash{}) {
 			return core.Errorf("primitives.NameUndo.UnmarshalBinary: short buffer")
 		}

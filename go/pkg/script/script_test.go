@@ -4,9 +4,8 @@ package script
 
 import (
 	"bytes"
+	"crypto/sha3"
 	"testing"
-
-	"golang.org/x/crypto/sha3"
 )
 
 func TestScript_FromPubkeyhash_Good(t *testing.T) {

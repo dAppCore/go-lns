@@ -21,7 +21,7 @@ func randomName(size int) (string, error) {
 
 	buf := make([]byte, size)
 
-	for i := 0; i < size; i++ {
+	for i := range size {
 		n, err := rand.Int(rand.Reader, big.NewInt(int64(len(grindNameChars))))
 		if err != nil {
 			return "", core.E(opGrindName, "random source failure", err)
@@ -44,7 +44,7 @@ func GrindName(size int, height uint32, rules NameRules) (string, error) {
 		height = rules.AuctionStart
 	}
 
-	for i := 0; i < grindAttempts; i++ {
+	for range grindAttempts {
 		name, err := randomName(size)
 		if err != nil {
 			return "", err

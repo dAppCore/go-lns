@@ -3,7 +3,6 @@
 package lns
 
 import (
-	"context"
 	"encoding/hex"
 	"net/http"
 	"net/http/httptest"
@@ -401,7 +400,7 @@ func TestWritePath_gatherCoins_Bad(t *testing.T) {
 func TestWritePath_walletSendAction_Good(t *testing.T) {
 	c := core.New()
 	svc := NewService(c)
-	if result := svc.OnStartup(context.Background()); !result.OK {
+	if result := svc.OnStartup(t.Context()); !result.OK {
 		t.Fatalf(testOnStartupOK, result)
 	}
 	wallet := mustImportWriteWallet(t)
@@ -409,7 +408,7 @@ func TestWritePath_walletSendAction_Good(t *testing.T) {
 	daemon := newFakeDaemon(t)
 
 	coin := fundingCoin(wallet, 100000, 7)
-	result := c.Action(actionNameWalletSend).Run(context.Background(), core.NewOptions(
+	result := c.Action(actionNameWalletSend).Run(t.Context(), core.NewOptions(
 		core.Option{Key: "broadcast", Value: true},
 		core.Option{Key: "chain_url", Value: daemon.server.URL},
 		core.Option{Key: "amount", Value: 30000},

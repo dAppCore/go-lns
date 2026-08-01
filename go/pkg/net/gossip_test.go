@@ -184,7 +184,7 @@ func TestGossip_Merge_OversizedRecord(t *core.T) {
 	cache := NewCache()
 
 	tooLong := make([]byte, 0, MaxNameLen+10)
-	for i := 0; i < MaxNameLen+5; i++ {
+	for range MaxNameLen + 5 {
 		tooLong = append(tooLong, 'a')
 	}
 	bad := NameRecord{Name: string(tooLong), PublicKey: pub}

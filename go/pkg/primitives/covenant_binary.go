@@ -48,7 +48,7 @@ func (c *Covenant) UnmarshalBinary(data []byte) error {
 	}
 
 	c.Items = make([][]byte, 0, int(count))
-	for i := uint64(0); i < count; i++ {
+	for range count {
 		item, n, err := readVarBytes(data)
 		if err != nil {
 			return core.Errorf("primitives.Covenant.UnmarshalBinary: %w", err)

@@ -3,7 +3,6 @@
 package lns
 
 import (
-	"context"
 	"encoding/hex"
 	"testing"
 
@@ -15,7 +14,7 @@ import (
 func TestWalletSendReturnsDraftPlan(t *testing.T) {
 	c := core.New()
 	svc := NewService(c)
-	if result := svc.OnStartup(context.Background()); !result.OK {
+	if result := svc.OnStartup(t.Context()); !result.OK {
 		t.Fatalf(testOnStartupOK, result)
 	}
 
@@ -26,7 +25,7 @@ func TestWalletSendReturnsDraftPlan(t *testing.T) {
 	wallet.Credit(1000, false, 10, primitives.Hash{1}, "funding")
 	svc.wallet = wallet
 
-	result := c.Action(actionNameWalletSend).Run(context.Background(), core.NewOptions(
+	result := c.Action(actionNameWalletSend).Run(t.Context(), core.NewOptions(
 		core.Option{Key: "amount", Value: 200},
 		core.Option{Key: "address", Value: Address{Version: 0, Hash: []byte{
 			2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
@@ -55,7 +54,7 @@ func TestWalletSendReturnsDraftPlan(t *testing.T) {
 		t.Fatalf("wallet send plan = %#v, want deterministic draft ID", plan)
 	}
 
-	second := c.Action(actionNameWalletSend).Run(context.Background(), core.NewOptions(
+	second := c.Action(actionNameWalletSend).Run(t.Context(), core.NewOptions(
 		core.Option{Key: "amount", Value: 200},
 		core.Option{Key: "address", Value: Address{Version: 0, Hash: []byte{
 			2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
@@ -78,7 +77,7 @@ func TestWalletSendReturnsDraftPlan(t *testing.T) {
 func TestWalletSendCanRecordPendingHistoryEntry(t *testing.T) {
 	c := core.New()
 	svc := NewService(c)
-	if result := svc.OnStartup(context.Background()); !result.OK {
+	if result := svc.OnStartup(t.Context()); !result.OK {
 		t.Fatalf(testOnStartupOK, result)
 	}
 
@@ -89,7 +88,7 @@ func TestWalletSendCanRecordPendingHistoryEntry(t *testing.T) {
 	wallet.Credit(1000, false, 10, primitives.Hash{1}, "funding")
 	svc.wallet = wallet
 
-	result := c.Action(actionNameWalletSend).Run(context.Background(), core.NewOptions(
+	result := c.Action(actionNameWalletSend).Run(t.Context(), core.NewOptions(
 		core.Option{Key: "amount", Value: 200},
 		core.Option{Key: "record_history", Value: true},
 		core.Option{Key: "note", Value: testQueuedSendNote},
@@ -130,7 +129,7 @@ func TestWalletSendCanRecordPendingHistoryEntry(t *testing.T) {
 func TestWalletSendCanSuppressAutoChange(t *testing.T) {
 	c := core.New()
 	svc := NewService(c)
-	if result := svc.OnStartup(context.Background()); !result.OK {
+	if result := svc.OnStartup(t.Context()); !result.OK {
 		t.Fatalf(testOnStartupOK, result)
 	}
 
@@ -141,7 +140,7 @@ func TestWalletSendCanSuppressAutoChange(t *testing.T) {
 	wallet.Credit(1000, false, 10, primitives.Hash{1}, "funding")
 	svc.wallet = wallet
 
-	result := c.Action(actionNameWalletSend).Run(context.Background(), core.NewOptions(
+	result := c.Action(actionNameWalletSend).Run(t.Context(), core.NewOptions(
 		core.Option{Key: "amount", Value: 200},
 		core.Option{Key: "no_change", Value: true},
 		core.Option{Key: "address", Value: Address{Version: 0, Hash: []byte{
@@ -168,11 +167,11 @@ func TestWalletSendCanSuppressAutoChange(t *testing.T) {
 func TestWalletSendRequiresWallet(t *testing.T) {
 	c := core.New()
 	svc := NewService(c)
-	if result := svc.OnStartup(context.Background()); !result.OK {
+	if result := svc.OnStartup(t.Context()); !result.OK {
 		t.Fatalf(testOnStartupOK, result)
 	}
 
-	result := c.Action(actionNameWalletSend).Run(context.Background(), core.NewOptions(
+	result := c.Action(actionNameWalletSend).Run(t.Context(), core.NewOptions(
 		core.Option{Key: "amount", Value: 200},
 		core.Option{Key: "address", Value: Address{Version: 0, Hash: []byte{
 			2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
