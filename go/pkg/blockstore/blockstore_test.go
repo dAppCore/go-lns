@@ -19,10 +19,11 @@ import (
 func newTestStore(t *testing.T) *Store {
 	t.Helper()
 
-	storeInstance, err := store.New(":memory:")
-	if err != nil {
+	storeResult := store.New(":memory:")
+	if err := storeResult.Err(); err != nil {
 		t.Fatalf("store.New(:memory:): %v", err)
 	}
+	storeInstance := storeResult.Value.(*store.Store)
 	t.Cleanup(func() { _ = storeInstance.Close() })
 
 	scoped := store.NewScoped(storeInstance, "lns-blocks-test")
@@ -168,10 +169,11 @@ func TestBlockstore_GetBlock_Bad(t *testing.T) {
 // corruption is injected by writing a deliberately malformed value under the
 // exact key GetBlock will read, through the same scoped store.
 func TestBlockstore_GetBlock_Ugly(t *testing.T) {
-	storeInstance, err := store.New(":memory:")
-	if err != nil {
+	storeResult := store.New(":memory:")
+	if err := storeResult.Err(); err != nil {
 		t.Fatalf("store.New: %v", err)
 	}
+	storeInstance := storeResult.Value.(*store.Store)
 	t.Cleanup(func() { _ = storeInstance.Close() })
 	scoped := store.NewScoped(storeInstance, "corrupt-ns")
 	bs, err := New(scoped)
@@ -182,7 +184,7 @@ func TestBlockstore_GetBlock_Ugly(t *testing.T) {
 	hash := hashOf(0x77)
 
 	// Not valid hex: HexDecode fails -> ErrCorrupt.
-	if err := scoped.SetIn(groupBlock, hashKey(hash), "zznothex"); err != nil {
+	if err := scoped.SetIn(groupBlock, hashKey(hash), "zznothex").Err(); err != nil {
 		t.Fatalf("seed non-hex: %v", err)
 	}
 	if _, err := bs.GetBlock(hash); !errors.Is(err, ErrCorrupt) {
@@ -190,7 +192,7 @@ func TestBlockstore_GetBlock_Ugly(t *testing.T) {
 	}
 
 	// Valid hex but a record header shorter than 8 bytes: decodeRecord fails.
-	if err := scoped.SetIn(groupBlock, hashKey(hash), core.HexEncode([]byte{0x01, 0x02})); err != nil {
+	if err := scoped.SetIn(groupBlock, hashKey(hash), core.HexEncode([]byte{0x01, 0x02})).Err(); err != nil {
 		t.Fatalf("seed short record: %v", err)
 	}
 	if _, err := bs.GetBlock(hash); !errors.Is(err, ErrCorrupt) {

@@ -77,19 +77,20 @@ func TestTip_Ugly(t *testing.T) {
 // TestTip_Corrupt_Ugly checks a corrupt tip-height value is reported as
 // ErrCorrupt rather than parsed into a bogus height.
 func TestTip_Corrupt_Ugly(t *testing.T) {
-	storeInstance, err := store.New(":memory:")
-	if err != nil {
+	storeResult := store.New(":memory:")
+	if err := storeResult.Err(); err != nil {
 		t.Fatalf("store.New: %v", err)
 	}
+	storeInstance := storeResult.Value.(*store.Store)
 	t.Cleanup(func() { _ = storeInstance.Close() })
 	scoped := store.NewScoped(storeInstance, "corrupt-tip")
 	bs, _ := New(scoped)
 
 	hash := hashOf(0x42)
-	if err := scoped.SetIn(groupMeta, metaTipHash, core.HexEncode(hash[:])); err != nil {
+	if err := scoped.SetIn(groupMeta, metaTipHash, core.HexEncode(hash[:])).Err(); err != nil {
 		t.Fatalf("seed tip hash: %v", err)
 	}
-	if err := scoped.SetIn(groupMeta, metaTipHeight, "not-a-number"); err != nil {
+	if err := scoped.SetIn(groupMeta, metaTipHeight, "not-a-number").Err(); err != nil {
 		t.Fatalf("seed tip height: %v", err)
 	}
 

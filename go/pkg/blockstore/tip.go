@@ -20,8 +20,8 @@ func (s *Store) Tip() (primitives.Hash, uint32, error) {
 		return primitives.Hash{}, 0, core.E("blockstore.Tip", "read tip", ErrNilStore)
 	}
 
-	hashExists, existErr := s.scoped.ExistsIn(groupMeta, metaTipHash)
-	if existErr != nil {
+	hashExists, existResult := s.scoped.ExistsIn(groupMeta, metaTipHash)
+	if existErr := existResult.Err(); existErr != nil {
 		return primitives.Hash{}, 0, core.E("blockstore.Tip", "probe tip hash", existErr)
 	}
 	if !hashExists {
@@ -37,8 +37,8 @@ func (s *Store) Tip() (primitives.Hash, uint32, error) {
 			core.Sprintf("tip hash is %d bytes, want 32", len(rawHash)), ErrCorrupt)
 	}
 
-	heightStr, heightErr := s.scoped.GetFrom(groupMeta, metaTipHeight)
-	if heightErr != nil {
+	heightStr, heightResult := s.scoped.GetFrom(groupMeta, metaTipHeight)
+	if heightErr := heightResult.Err(); heightErr != nil {
 		return primitives.Hash{}, 0, core.E("blockstore.Tip", "read tip height", heightErr)
 	}
 	parsed := core.Atoi(core.Trim(heightStr))
@@ -65,8 +65,8 @@ func (s *Store) HasTip() (bool, error) {
 		return false, core.E("blockstore.HasTip", "probe tip", ErrNilStore)
 	}
 
-	exists, err := s.scoped.ExistsIn(groupMeta, metaTipHash)
-	if err != nil {
+	exists, existsResult := s.scoped.ExistsIn(groupMeta, metaTipHash)
+	if err := existsResult.Err(); err != nil {
 		return false, core.E("blockstore.HasTip", "probe tip", err)
 	}
 	return exists, nil
@@ -89,7 +89,7 @@ func (s *Store) SetTip(hash primitives.Hash, height uint32) error {
 	if err := s.putBytes(groupMeta, metaTipHash, hash[:]); err != nil {
 		return core.E("blockstore.SetTip", "write tip hash", err)
 	}
-	if err := s.scoped.SetIn(groupMeta, metaTipHeight, core.Itoa(int(height))); err != nil {
+	if err := s.scoped.SetIn(groupMeta, metaTipHeight, core.Itoa(int(height))).Err(); err != nil {
 		return core.E("blockstore.SetTip", "write tip height", err)
 	}
 	return nil

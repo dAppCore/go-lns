@@ -13,10 +13,11 @@ import (
 
 // exampleStore builds a block store over an in-memory go-store for the examples.
 func exampleStore() *blockstore.Store {
-	storeInstance, err := store.New(":memory:")
-	if err != nil {
+	storeResult := store.New(":memory:")
+	if err := storeResult.Err(); err != nil {
 		panic(err)
 	}
+	storeInstance := storeResult.Value.(*store.Store)
 	scoped := store.NewScoped(storeInstance, "lns-blocks-example")
 	bs, err := blockstore.New(scoped)
 	if err != nil {

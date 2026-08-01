@@ -60,8 +60,8 @@ func (s *Store) HasUndo(hash primitives.Hash) (bool, error) {
 		return false, core.E("blockstore.HasUndo", "probe undo", ErrNilStore)
 	}
 
-	exists, err := s.scoped.ExistsIn(groupUndo, hashKey(hash))
-	if err != nil {
+	exists, existsResult := s.scoped.ExistsIn(groupUndo, hashKey(hash))
+	if err := existsResult.Err(); err != nil {
 		return false, core.E("blockstore.HasUndo", "probe undo", err)
 	}
 	return exists, nil

@@ -208,7 +208,7 @@ func heightKey(height uint32) string {
 // encoding keeps every binary write in the package consistent and reversible by
 // getBytes.
 func (s *Store) putBytes(group, key string, value []byte) error {
-	if err := s.scoped.SetIn(group, key, core.HexEncode(value)); err != nil {
+	if err := s.scoped.SetIn(group, key, core.HexEncode(value)).Err(); err != nil {
 		return core.E("blockstore.putBytes", core.Sprintf("write %s/%s", group, key), err)
 	}
 	return nil
@@ -217,16 +217,16 @@ func (s *Store) putBytes(group, key string, value []byte) error {
 // getBytes reads a hex-encoded binary value from a group. It returns ErrNotFound
 // when the key is absent and ErrCorrupt when the stored string is not valid hex.
 func (s *Store) getBytes(group, key string) ([]byte, error) {
-	exists, err := s.scoped.ExistsIn(group, key)
-	if err != nil {
+	exists, existsResult := s.scoped.ExistsIn(group, key)
+	if err := existsResult.Err(); err != nil {
 		return nil, core.E("blockstore.getBytes", core.Sprintf("probe %s/%s", group, key), err)
 	}
 	if !exists {
 		return nil, core.E("blockstore.getBytes", core.Sprintf("read %s/%s", group, key), ErrNotFound)
 	}
 
-	encoded, err := s.scoped.GetFrom(group, key)
-	if err != nil {
+	encoded, getResult := s.scoped.GetFrom(group, key)
+	if err := getResult.Err(); err != nil {
 		return nil, core.E("blockstore.getBytes", core.Sprintf("read %s/%s", group, key), err)
 	}
 

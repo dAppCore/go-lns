@@ -47,17 +47,18 @@ func TestGuards_NilReceiver_Ugly(t *testing.T) {
 // whose stored record is corrupt (cannot be decoded): the bad value is removed so
 // it does not linger, even though its height cannot be matched in the index.
 func TestGuards_CorruptRecordDelete_Ugly(t *testing.T) {
-	storeInstance, err := store.New(":memory:")
-	if err != nil {
+	storeResult := store.New(":memory:")
+	if err := storeResult.Err(); err != nil {
 		t.Fatalf("store.New: %v", err)
 	}
+	storeInstance := storeResult.Value.(*store.Store)
 	t.Cleanup(func() { _ = storeInstance.Close() })
 	scoped := store.NewScoped(storeInstance, "corrupt-delete")
 	bs, _ := New(scoped)
 
 	hash := hashOf(0x70)
 	// Valid hex, but a record too short to decode (header < 8 bytes).
-	if err := scoped.SetIn(groupBlock, hashKey(hash), core.HexEncode([]byte{0x01})); err != nil {
+	if err := scoped.SetIn(groupBlock, hashKey(hash), core.HexEncode([]byte{0x01})).Err(); err != nil {
 		t.Fatalf("seed corrupt record: %v", err)
 	}
 	if has, _ := bs.HasBlock(hash); !has {
@@ -89,16 +90,17 @@ func TestGuards_PutHeaderUndoOversize_Bad(t *testing.T) {
 // TestGuards_HashAtHeightCorrupt_Ugly checks HashAtHeight rejects an index entry
 // whose stored value is not a 32-byte hash.
 func TestGuards_HashAtHeightCorrupt_Ugly(t *testing.T) {
-	storeInstance, err := store.New(":memory:")
-	if err != nil {
+	storeResult := store.New(":memory:")
+	if err := storeResult.Err(); err != nil {
 		t.Fatalf("store.New: %v", err)
 	}
+	storeInstance := storeResult.Value.(*store.Store)
 	t.Cleanup(func() { _ = storeInstance.Close() })
 	scoped := store.NewScoped(storeInstance, "corrupt-index")
 	bs, _ := New(scoped)
 
 	// A 4-byte value where a 32-byte hash is expected.
-	if err := scoped.SetIn(groupHeight, heightKey(3), core.HexEncode([]byte{1, 2, 3, 4})); err != nil {
+	if err := scoped.SetIn(groupHeight, heightKey(3), core.HexEncode([]byte{1, 2, 3, 4})).Err(); err != nil {
 		t.Fatalf("seed short index: %v", err)
 	}
 	if _, err := bs.HashAtHeight(3); !errors.Is(err, ErrCorrupt) {

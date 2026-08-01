@@ -59,8 +59,8 @@ func (s *Store) HasHeader(hash primitives.Hash) (bool, error) {
 		return false, core.E("blockstore.HasHeader", "probe header", ErrNilStore)
 	}
 
-	exists, err := s.scoped.ExistsIn(groupHeader, hashKey(hash))
-	if err != nil {
+	exists, existsResult := s.scoped.ExistsIn(groupHeader, hashKey(hash))
+	if err := existsResult.Err(); err != nil {
 		return false, core.E("blockstore.HasHeader", "probe header", err)
 	}
 	return exists, nil

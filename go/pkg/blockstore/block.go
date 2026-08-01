@@ -145,8 +145,8 @@ func (s *Store) HasBlock(hash primitives.Hash) (bool, error) {
 		return false, core.E("blockstore.HasBlock", "probe block", ErrNilStore)
 	}
 
-	exists, err := s.scoped.ExistsIn(groupBlock, hashKey(hash))
-	if err != nil {
+	exists, existsResult := s.scoped.ExistsIn(groupBlock, hashKey(hash))
+	if err := existsResult.Err(); err != nil {
 		return false, core.E("blockstore.HasBlock", "probe block", err)
 	}
 	return exists, nil
@@ -160,8 +160,8 @@ func (s *Store) HasHeight(height uint32) (bool, error) {
 		return false, core.E("blockstore.HasHeight", "probe height", ErrNilStore)
 	}
 
-	exists, err := s.scoped.ExistsIn(groupHeight, heightKey(height))
-	if err != nil {
+	exists, existsResult := s.scoped.ExistsIn(groupHeight, heightKey(height))
+	if err := existsResult.Err(); err != nil {
 		return false, core.E("blockstore.HasHeight", "probe height", err)
 	}
 	return exists, nil
@@ -215,13 +215,13 @@ func (s *Store) DeleteBlock(hash primitives.Hash) error {
 // every group held an entry.
 func (s *Store) deleteBlockBytes(hash primitives.Hash) error {
 	key := hashKey(hash)
-	if err := s.scoped.Delete(groupBlock, key); err != nil {
+	if err := s.scoped.Delete(groupBlock, key).Err(); err != nil {
 		return core.E("blockstore.deleteBlockBytes", "delete block", err)
 	}
-	if err := s.scoped.Delete(groupHeader, key); err != nil {
+	if err := s.scoped.Delete(groupHeader, key).Err(); err != nil {
 		return core.E("blockstore.deleteBlockBytes", "delete header", err)
 	}
-	if err := s.scoped.Delete(groupUndo, key); err != nil {
+	if err := s.scoped.Delete(groupUndo, key).Err(); err != nil {
 		return core.E("blockstore.deleteBlockBytes", "delete undo", err)
 	}
 	return nil
@@ -241,7 +241,7 @@ func (s *Store) deleteHeightIfMatches(height uint32, hash primitives.Hash) error
 	if indexed != hash {
 		return nil
 	}
-	if delErr := s.scoped.Delete(groupHeight, heightKey(height)); delErr != nil {
+	if delErr := s.scoped.Delete(groupHeight, heightKey(height)).Err(); delErr != nil {
 		return core.E("blockstore.deleteHeightIfMatches", "delete height index", delErr)
 	}
 	return nil
