@@ -15,8 +15,8 @@ import (
 	"sort"
 	"sync"
 
-	core "dappco.re/go"
-	"dappco.re/go/lns/pkg/primitives"
+	core "github.com/dappcore/go"
+	"github.com/dappcore/go-lns/go/pkg/primitives"
 )
 
 // LockedName describes an entry from the JS locked-name reference data.

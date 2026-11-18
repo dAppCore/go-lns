@@ -2,7 +2,7 @@
 
 package nameutil
 
-import core "dappco.re/go"
+import core "github.com/dappcore/go"
 
 // BEGIN v090 file-aware generated coverage
 

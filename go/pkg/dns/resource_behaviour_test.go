@@ -6,8 +6,8 @@ import (
 	"net/netip"
 	"testing"
 
-	core "dappco.re/go"
-	chainpkg "dappco.re/go/lns/pkg/chain"
+	core "github.com/dappcore/go"
+	chainpkg "github.com/dappcore/go-lns/go/pkg/chain"
 )
 
 func TestResourceBehaviour_ToGlue_pointerAndSynth(t *testing.T) {

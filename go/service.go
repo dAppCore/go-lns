@@ -16,7 +16,7 @@
 package lns
 
 import (
-	core "dappco.re/go"
+	core "github.com/dappcore/go"
 )
 
 // Options is the public canonical-shape configuration for an LNS

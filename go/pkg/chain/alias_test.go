@@ -3,7 +3,7 @@
 package chain
 
 import (
-	core "dappco.re/go"
+	core "github.com/dappcore/go"
 	"net/http"
 	"net/http/httptest"
 	"reflect"

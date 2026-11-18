@@ -2,7 +2,7 @@
 
 package script
 
-import core "dappco.re/go"
+import core "github.com/dappcore/go"
 
 // scriptNumMaxBytes is the default maximum length (in bytes) of a number read
 // from the stack by arithmetic opcodes. It matches the HSD/Bitcoin 4-byte limit

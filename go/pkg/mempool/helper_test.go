@@ -8,8 +8,8 @@ import (
 	"github.com/decred/dcrd/dcrec/secp256k1/v4"
 	"golang.org/x/crypto/blake2b"
 
-	"dappco.re/go/lns/pkg/primitives"
-	"dappco.re/go/lns/pkg/script"
+	"github.com/dappcore/go-lns/go/pkg/primitives"
+	"github.com/dappcore/go-lns/go/pkg/script"
 )
 
 // These helpers build real, fully-signed P2WPKH transactions so the pool's

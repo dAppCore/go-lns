@@ -5,7 +5,7 @@ package net
 import (
 	"slices"
 
-	core "dappco.re/go"
+	core "github.com/dappcore/go"
 )
 
 // TestCache_PutGet_Good stores and retrieves a record, returning a deep copy.

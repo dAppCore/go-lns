@@ -2,7 +2,7 @@
 
 package covenant
 
-import core "dappco.re/go"
+import core "github.com/dappcore/go"
 
 func ExampleHasLockedName() {
 	core.Println(coverageExample(HasLockedName("lethean.lthn")))

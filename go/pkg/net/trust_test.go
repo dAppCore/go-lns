@@ -3,7 +3,7 @@
 package net
 
 import (
-	core "dappco.re/go"
+	core "github.com/dappcore/go"
 )
 
 // TestTrust_ScorePeer_Good gives a fully-verified, long-uptime, fast,

@@ -2,7 +2,7 @@
 
 package covenant
 
-import core "dappco.re/go"
+import core "github.com/dappcore/go"
 
 type jsonraw []byte
 

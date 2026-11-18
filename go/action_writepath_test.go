@@ -6,9 +6,9 @@ import (
 	"encoding/hex"
 	"testing"
 
-	core "dappco.re/go"
-	chainpkg "dappco.re/go/lns/pkg/chain"
-	"dappco.re/go/lns/pkg/primitives"
+	core "github.com/dappcore/go"
+	chainpkg "github.com/dappcore/go-lns/go/pkg/chain"
+	"github.com/dappcore/go-lns/go/pkg/primitives"
 )
 
 const testRegisterName = "charontest"

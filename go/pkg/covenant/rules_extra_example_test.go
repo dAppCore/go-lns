@@ -2,7 +2,7 @@
 
 package covenant
 
-import core "dappco.re/go"
+import core "github.com/dappcore/go"
 
 func ExampleGrindName() {
 	core.Println(coverageExample(GrindName(1, 1, coverageValue[NameRules]("good"))))

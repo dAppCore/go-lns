@@ -7,8 +7,8 @@ import (
 	"net/netip"
 	"reflect"
 
-	core "dappco.re/go"
-	"dappco.re/go/lns/pkg/primitives"
+	core "github.com/dappcore/go"
+	"github.com/dappcore/go-lns/go/pkg/primitives"
 )
 
 func coveragePack(values ...any) []any {
@@ -64,10 +64,10 @@ func coverageReflectValue(typ reflect.Type, variant string) reflect.Value {
 	if typ.PkgPath() == "context" && typ.Name() == "Context" {
 		return reflect.ValueOf(core.Background())
 	}
-	if typ.PkgPath() == "dappco.re/go" && typ.Name() == "Options" {
+	if typ.PkgPath() == "github.com/dappcore/go" && typ.Name() == "Options" {
 		return reflect.ValueOf(core.NewOptions())
 	}
-	if typ.Kind() == reflect.Pointer && typ.Elem().PkgPath() == "dappco.re/go" && typ.Elem().Name() == "Core" {
+	if typ.Kind() == reflect.Pointer && typ.Elem().PkgPath() == "github.com/dappcore/go" && typ.Elem().Name() == "Core" {
 		return reflect.ValueOf(core.New())
 	}
 	if typ.Kind() == reflect.Interface {

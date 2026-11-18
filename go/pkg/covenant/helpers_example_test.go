@@ -2,7 +2,7 @@
 
 package covenant
 
-import core "dappco.re/go"
+import core "github.com/dappcore/go"
 
 func Examplejsonraw_MarshalJSON() {
 	core.Println(coverageExample(new(jsonraw).MarshalJSON()))

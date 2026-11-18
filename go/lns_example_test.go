@@ -2,7 +2,7 @@
 
 package lns
 
-import core "dappco.re/go"
+import core "github.com/dappcore/go"
 
 func ExampleWithCore() {
 	core.Println(coverageExample(WithCore(core.New())))

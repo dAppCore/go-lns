@@ -3,7 +3,7 @@
 package net
 
 import (
-	core "dappco.re/go"
+	core "github.com/dappcore/go"
 )
 
 // TestPeerRecord_Validate_Good accepts a well-formed peer record.

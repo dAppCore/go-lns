@@ -3,7 +3,7 @@
 package primitives
 
 import (
-	core "dappco.re/go"
+	core "github.com/dappcore/go"
 	"encoding/binary"
 	"testing"
 

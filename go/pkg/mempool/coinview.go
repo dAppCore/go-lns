@@ -3,7 +3,7 @@
 package mempool
 
 import (
-	"dappco.re/go/lns/pkg/primitives"
+	"github.com/dappcore/go-lns/go/pkg/primitives"
 )
 
 // CoinView is the confirmed-chain UTXO lookup the pool validates spends against.

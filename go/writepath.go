@@ -5,12 +5,12 @@ package lns
 import (
 	"encoding/hex"
 
-	core "dappco.re/go"
-	chainpkg "dappco.re/go/lns/pkg/chain"
-	"dappco.re/go/lns/pkg/mempool"
-	"dappco.re/go/lns/pkg/primitives"
-	"dappco.re/go/lns/pkg/script"
-	walletpkg "dappco.re/go/lns/pkg/wallet"
+	core "github.com/dappcore/go"
+	chainpkg "github.com/dappcore/go-lns/go/pkg/chain"
+	"github.com/dappcore/go-lns/go/pkg/mempool"
+	"github.com/dappcore/go-lns/go/pkg/primitives"
+	"github.com/dappcore/go-lns/go/pkg/script"
+	walletpkg "github.com/dappcore/go-lns/go/pkg/wallet"
 	"github.com/decred/dcrd/dcrec/secp256k1/v4"
 )
 

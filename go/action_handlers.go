@@ -11,10 +11,10 @@ import (
 	"strconv"
 	"time"
 
-	core "dappco.re/go"
-	chainpkg "dappco.re/go/lns/pkg/chain"
-	dnspkg "dappco.re/go/lns/pkg/dns"
-	"dappco.re/go/lns/pkg/primitives"
+	core "github.com/dappcore/go"
+	chainpkg "github.com/dappcore/go-lns/go/pkg/chain"
+	dnspkg "github.com/dappcore/go-lns/go/pkg/dns"
+	"github.com/dappcore/go-lns/go/pkg/primitives"
 )
 
 const (

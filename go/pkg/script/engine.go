@@ -7,12 +7,12 @@ import (
 	"crypto/sha256"
 	sha30 "crypto/sha3"
 
-	core "dappco.re/go"
+	core "github.com/dappcore/go"
 	"golang.org/x/crypto/blake2b"
 	"golang.org/x/crypto/ripemd160"
 	"golang.org/x/crypto/sha3"
 
-	"dappco.re/go/lns/pkg/primitives"
+	"github.com/dappcore/go-lns/go/pkg/primitives"
 )
 
 // Verify flags. They mirror HSD's common.flags (lib/script/common.js) and

@@ -5,7 +5,7 @@ package primitives
 import (
 	"encoding/hex"
 
-	core "dappco.re/go"
+	core "github.com/dappcore/go"
 )
 
 // OutpointJSON represents the JSON form of an outpoint.

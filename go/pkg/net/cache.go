@@ -6,7 +6,7 @@ import (
 	"iter"
 	"slices"
 
-	core "dappco.re/go"
+	core "github.com/dappcore/go"
 )
 
 // Source identifies where a NameRecord came from (RFC §12.2). HSD-sourced

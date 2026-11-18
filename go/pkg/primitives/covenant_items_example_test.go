@@ -2,7 +2,7 @@
 
 package primitives
 
-import core "dappco.re/go"
+import core "github.com/dappcore/go"
 
 func ExampleCovenant_Len() {
 	core.Println(coverageExample(new(Covenant).Len()))

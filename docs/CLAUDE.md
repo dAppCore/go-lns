@@ -8,7 +8,7 @@ Lethean Name System as native CoreGO implementation. Converting lthn/itns-sidech
 
 ## Key Facts
 
-- **Module**: `dappco.re/go/lns`
+- **Module**: `github.com/dappcore/go-lns/go`
 - **Status**: Conversion from JS/HSD to Go (118k LoC → lean Go)
 - **Purpose**: Peer names, user names, team names, trust scoring
 - **API**: `c.Action("lns.resolve", {name, type})`

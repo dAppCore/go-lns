@@ -7,7 +7,7 @@ import (
 	"net/netip"
 	"testing"
 
-	core "dappco.re/go"
+	core "github.com/dappcore/go"
 	miekgdns "github.com/miekg/dns"
 )
 

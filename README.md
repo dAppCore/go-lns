@@ -3,7 +3,7 @@
 This module is the native Go implementation of the Lethean Name System (LNS).
 It provides name validation, name hashing, reserved and locked catalog lookup,
 covenant helpers, DNS resource encoding, and a Core service wrapper that exposes
-the same operations from the top-level `dappco.re/go/lns` package.
+the same operations from the top-level `github.com/dappcore/go-lns/go` package.
 
 The package is intentionally self-contained. The JavaScript and HSD source trees
 under `docs/js-*` are reference material for porting and compatibility checks;
@@ -16,8 +16,8 @@ and `pkg/dns`.
 package main
 
 import (
-	core "dappco.re/go"
-	"dappco.re/go/lns"
+	core "github.com/dappcore/go"
+	"github.com/dappcore/go-lns/go"
 )
 
 func main() {

@@ -2,7 +2,7 @@
 
 package primitives
 
-import core "dappco.re/go"
+import core "github.com/dappcore/go"
 
 // bech32Charset is the bech32 alphabet (BIP-173): the 32 symbols data values map
 // to, excluding the easily-confused 1, b, i, and o.

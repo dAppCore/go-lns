@@ -9,7 +9,7 @@ import (
 
 	"golang.org/x/crypto/ripemd160"
 
-	"dappco.re/go/lns/pkg/primitives"
+	"github.com/dappcore/go-lns/go/pkg/primitives"
 )
 
 // evalStack runs ops and returns the final top-of-stack item, failing on error.

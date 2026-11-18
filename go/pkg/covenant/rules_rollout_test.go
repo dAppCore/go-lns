@@ -5,7 +5,7 @@ package covenant
 import (
 	"testing"
 
-	"dappco.re/go/lns/pkg/primitives"
+	"github.com/dappcore/go-lns/go/pkg/primitives"
 )
 
 func TestGetRolloutAndHasRollout(t *testing.T) {

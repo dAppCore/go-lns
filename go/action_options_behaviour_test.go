@@ -5,8 +5,8 @@ package lns
 import (
 	"time"
 
-	core "dappco.re/go"
-	dnspkg "dappco.re/go/lns/pkg/dns"
+	core "github.com/dappcore/go"
+	dnspkg "github.com/dappcore/go-lns/go/pkg/dns"
 )
 
 func TestActionOptionsBehaviour_chainClientFromOptions_Good(t *core.T) {

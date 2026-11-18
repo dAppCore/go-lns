@@ -5,10 +5,10 @@ package mining
 import (
 	"encoding/binary"
 
-	core "dappco.re/go"
+	core "github.com/dappcore/go"
 	"golang.org/x/crypto/blake2b"
 
-	"dappco.re/go/lns/pkg/primitives"
+	"github.com/dappcore/go-lns/go/pkg/primitives"
 )
 
 // Header field byte lengths and offsets, mirroring HSD lib/primitives/

@@ -3,7 +3,7 @@
 package script
 
 import (
-	"dappco.re/go/lns/pkg/primitives"
+	"github.com/dappcore/go-lns/go/pkg/primitives"
 )
 
 // VerifyInput verifies the witness of a single transaction input against the

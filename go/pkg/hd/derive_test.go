@@ -5,7 +5,7 @@ package hd
 import (
 	"testing"
 
-	core "dappco.re/go"
+	core "github.com/dappcore/go"
 )
 
 // deriveManual walks m/44'/coin'/account'/branch/index one Child call at a time,

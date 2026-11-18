@@ -5,7 +5,7 @@ package dns
 import (
 	"testing"
 
-	chainpkg "dappco.re/go/lns/pkg/chain"
+	chainpkg "github.com/dappcore/go-lns/go/pkg/chain"
 )
 
 func TestResourceFromChainResource(t *testing.T) {

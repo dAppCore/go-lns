@@ -5,7 +5,7 @@ package primitives
 import (
 	"encoding/hex"
 
-	core "dappco.re/go"
+	core "github.com/dappcore/go"
 )
 
 // CovenantJSON represents the JSON form of a covenant.

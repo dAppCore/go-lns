@@ -5,9 +5,9 @@ package mining
 import (
 	"math/big"
 
-	core "dappco.re/go"
+	core "github.com/dappcore/go"
 
-	"dappco.re/go/lns/pkg/primitives"
+	"github.com/dappcore/go-lns/go/pkg/primitives"
 )
 
 // maxTargetBits is the bit ceiling for a valid target. A target wider than 256

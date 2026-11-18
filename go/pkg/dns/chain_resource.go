@@ -6,8 +6,8 @@ import (
 	"encoding/hex"
 	"net/netip"
 
-	core "dappco.re/go"
-	chainpkg "dappco.re/go/lns/pkg/chain"
+	core "github.com/dappcore/go"
+	chainpkg "github.com/dappcore/go-lns/go/pkg/chain"
 )
 
 func resourceFromChainResource(resource *chainpkg.NameResource) (*Resource, error) {

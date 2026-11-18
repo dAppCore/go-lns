@@ -2,7 +2,7 @@
 
 package dns
 
-import core "dappco.re/go"
+import core "github.com/dappcore/go"
 
 func ExampleRawMessage_MarshalJSON() {
 	core.Println(coverageExample(new(RawMessage).MarshalJSON()))

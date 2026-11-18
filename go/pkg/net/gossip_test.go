@@ -3,7 +3,7 @@
 package net
 
 import (
-	core "dappco.re/go"
+	core "github.com/dappcore/go"
 	"github.com/decred/dcrd/dcrec/secp256k1/v4"
 )
 

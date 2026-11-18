@@ -2,7 +2,7 @@
 
 package covenant
 
-import "dappco.re/go/lns/pkg/primitives"
+import "github.com/dappcore/go-lns/go/pkg/primitives"
 
 func nameHashFromCovenant(c primitives.Covenant) (primitives.Hash, bool) {
 	hash, err := c.GetHash(0)

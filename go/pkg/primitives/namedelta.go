@@ -5,7 +5,7 @@ package primitives
 import (
 	"encoding/binary"
 
-	core "dappco.re/go"
+	core "github.com/dappcore/go"
 )
 
 const (

@@ -3,7 +3,7 @@
 package net
 
 import (
-	core "dappco.re/go"
+	core "github.com/dappcore/go"
 )
 
 // fakeTransport is an in-memory Transport that records broadcasts so the gossip

@@ -5,7 +5,7 @@ package lns
 import (
 	"testing"
 
-	core "dappco.re/go"
+	core "github.com/dappcore/go"
 )
 
 // TestNewServiceFactory_DefaultOptions — happy path for the canonical

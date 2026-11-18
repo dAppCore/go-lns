@@ -7,8 +7,8 @@ import (
 	"encoding/hex"
 	"strconv"
 
-	core "dappco.re/go"
-	netpkg "dappco.re/go/lns/pkg/net"
+	core "github.com/dappcore/go"
+	netpkg "github.com/dappcore/go-lns/go/pkg/net"
 )
 
 const (

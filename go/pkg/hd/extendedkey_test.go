@@ -5,7 +5,7 @@ package hd
 import (
 	"testing"
 
-	core "dappco.re/go"
+	core "github.com/dappcore/go"
 )
 
 // assertKeyMatches verifies a derived node against known chain-code, private-key

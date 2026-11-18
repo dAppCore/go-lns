@@ -8,8 +8,8 @@ import (
 	"encoding/hex"
 	"net/netip"
 
-	core "dappco.re/go"
-	"dappco.re/go/lns/pkg/covenant"
+	core "github.com/dappcore/go"
+	"github.com/dappcore/go-lns/go/pkg/covenant"
 )
 
 const (

@@ -2,7 +2,7 @@
 
 package dns
 
-import core "dappco.re/go"
+import core "github.com/dappcore/go"
 
 // NSECRecord is a minimal representation of the reference NSEC helper output.
 //

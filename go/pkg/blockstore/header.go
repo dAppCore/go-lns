@@ -3,9 +3,9 @@
 package blockstore
 
 import (
-	core "dappco.re/go"
+	core "github.com/dappcore/go"
 
-	"dappco.re/go/lns/pkg/primitives"
+	"github.com/dappcore/go-lns/go/pkg/primitives"
 )
 
 // PutHeader stores the serialised header bytes for a block hash. Headers are

@@ -1,6 +1,6 @@
 # Claude Conventions
 
-This repository follows the `core/go` v0.9 conventions. Use `dappco.re/go`
+This repository follows the `core/go` v0.9 conventions. Use `github.com/dappcore/go`
 wrappers for formatted output, JSON, byte buffers, path helpers, string helpers,
 and test assertions. Do not add direct imports of `fmt`, `errors`, `strings`,
 `path`, `os`, `log`, `encoding/json`, or `bytes` in production or tests.

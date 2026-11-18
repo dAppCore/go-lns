@@ -5,7 +5,7 @@ package primitives
 import (
 	"testing"
 
-	core "dappco.re/go"
+	core "github.com/dappcore/go"
 )
 
 func TestNameStatePhaseBehaviour_String(t *testing.T) {

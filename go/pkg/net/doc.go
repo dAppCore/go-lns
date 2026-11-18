@@ -3,9 +3,9 @@
 // Package net is the LNS peer-networking layer (actions prefix lns.peer.*).
 //
 // It builds the Lethean Name System peer and gossip-replication layer on top
-// of the go-p2p transport (dappco.re/go/p2p), the Poindexter trust scorer
+// of the go-p2p transport (github.com/dappcore/go-p2p/go), the Poindexter trust scorer
 // (forge.lthn.ai/Snider/Poindexter), and the LNS chain primitives in
-// dappco.re/go/lns/pkg/primitives. It does NOT reimplement transport, peer
+// github.com/dappcore/go-lns/go/pkg/primitives. It does NOT reimplement transport, peer
 // discovery scoring, or identity — those come from go-p2p.
 //
 // The three responsibilities are:

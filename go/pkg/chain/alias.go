@@ -6,7 +6,7 @@ import (
 	"net/http" // AX-6: structural HTTP boundary for alias JSON-RPC transport.
 	"time"
 
-	core "dappco.re/go"
+	core "github.com/dappcore/go"
 )
 
 const opGetAliases = "chain.AliasClient.GetAliases"

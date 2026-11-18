@@ -17,13 +17,13 @@ import (
 	"context"
 	"sync"
 
-	core "dappco.re/go"
-	"dappco.re/go/lns/internal/nameutil"
-	"dappco.re/go/lns/pkg/covenant"
-	dnspkg "dappco.re/go/lns/pkg/dns"
-	netpkg "dappco.re/go/lns/pkg/net"
-	"dappco.re/go/lns/pkg/primitives"
-	walletpkg "dappco.re/go/lns/pkg/wallet"
+	core "github.com/dappcore/go"
+	"github.com/dappcore/go-lns/go/internal/nameutil"
+	"github.com/dappcore/go-lns/go/pkg/covenant"
+	dnspkg "github.com/dappcore/go-lns/go/pkg/dns"
+	netpkg "github.com/dappcore/go-lns/go/pkg/net"
+	"github.com/dappcore/go-lns/go/pkg/primitives"
+	walletpkg "github.com/dappcore/go-lns/go/pkg/wallet"
 )
 
 // ServiceName is the registered name for the LNS service group.

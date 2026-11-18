@@ -2,7 +2,7 @@
 
 package primitives
 
-import core "dappco.re/go"
+import core "github.com/dappcore/go"
 
 func ExampleNewClaim() {
 	core.Println(coverageExample(NewClaim()))

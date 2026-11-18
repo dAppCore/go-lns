@@ -6,8 +6,8 @@ import (
 	"errors"
 	"testing"
 
-	core "dappco.re/go"
-	"dappco.re/go/store"
+	core "github.com/dappcore/go"
+	"github.com/dappcore/go-store/go"
 )
 
 // TestGuards_NilReceiver_Ugly checks every read and probe helper reports

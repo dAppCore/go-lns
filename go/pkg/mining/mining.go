@@ -85,7 +85,7 @@
 package mining
 
 import (
-	"dappco.re/go/lns/pkg/primitives"
+	"github.com/dappcore/go-lns/go/pkg/primitives"
 )
 
 // Consensus limits, mirrored from HSD lib/protocol/consensus.js. They bound the

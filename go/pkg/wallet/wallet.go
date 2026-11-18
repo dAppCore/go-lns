@@ -12,9 +12,9 @@ import (
 	"encoding/hex"
 	"slices"
 
-	core "dappco.re/go"
-	"dappco.re/go/lns/pkg/hd"
-	"dappco.re/go/lns/pkg/primitives"
+	core "github.com/dappcore/go"
+	"github.com/dappcore/go-lns/go/pkg/hd"
+	"github.com/dappcore/go-lns/go/pkg/primitives"
 )
 
 // defaultAddressGap is the forward look-ahead applied when scanning derived

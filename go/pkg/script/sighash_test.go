@@ -6,7 +6,7 @@ import (
 	"bytes"
 	"testing"
 
-	"dappco.re/go/lns/pkg/primitives"
+	"github.com/dappcore/go-lns/go/pkg/primitives"
 )
 
 func TestSighash_Deterministic_Good(t *testing.T) {

@@ -2,7 +2,7 @@
 
 package primitives
 
-import core "dappco.re/go"
+import core "github.com/dappcore/go"
 
 func ExampleCovenant_MarshalBinary() {
 	core.Println(coverageExample(new(Covenant).MarshalBinary()))

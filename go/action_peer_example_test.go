@@ -6,8 +6,8 @@ import (
 	"context"
 	"encoding/hex"
 
-	core "dappco.re/go"
-	netpkg "dappco.re/go/lns/pkg/net"
+	core "github.com/dappcore/go"
+	netpkg "github.com/dappcore/go-lns/go/pkg/net"
 	"github.com/decred/dcrd/dcrec/secp256k1/v4"
 )
 

@@ -3,8 +3,8 @@
 package hd_test
 
 import (
-	core "dappco.re/go"
-	"dappco.re/go/lns/pkg/hd"
+	core "github.com/dappcore/go"
+	"github.com/dappcore/go-lns/go/pkg/hd"
 )
 
 // Example derives a Lethean BIP-44 receive address from a master seed,

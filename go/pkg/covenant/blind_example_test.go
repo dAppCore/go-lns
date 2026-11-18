@@ -2,7 +2,7 @@
 
 package covenant
 
-import core "dappco.re/go"
+import core "github.com/dappcore/go"
 
 func ExampleBlind() {
 	core.Println(coverageExample(Blind(1, [32]byte{1})))

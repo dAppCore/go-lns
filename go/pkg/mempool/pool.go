@@ -7,10 +7,10 @@ import (
 	"sync"
 	"time"
 
-	core "dappco.re/go"
+	core "github.com/dappcore/go"
 
-	"dappco.re/go/lns/pkg/primitives"
-	"dappco.re/go/lns/pkg/script"
+	"github.com/dappcore/go-lns/go/pkg/primitives"
+	"github.com/dappcore/go-lns/go/pkg/script"
 )
 
 // HSD policy defaults (lib/protocol/policy.js), reused so the pool's limits match

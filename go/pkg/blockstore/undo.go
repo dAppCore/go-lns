@@ -3,9 +3,9 @@
 package blockstore
 
 import (
-	core "dappco.re/go"
+	core "github.com/dappcore/go"
 
-	"dappco.re/go/lns/pkg/primitives"
+	"github.com/dappcore/go-lns/go/pkg/primitives"
 )
 
 // PutUndo stores the undo (rollback) data for a block hash. Undo data is the set

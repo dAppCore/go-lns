@@ -3,8 +3,8 @@
 package covenant
 
 import (
-	core "dappco.re/go"
-	"dappco.re/go/lns/pkg/primitives"
+	core "github.com/dappcore/go"
+	"github.com/dappcore/go-lns/go/pkg/primitives"
 )
 
 // MaxNameSize is the maximum size of a name label in bytes.

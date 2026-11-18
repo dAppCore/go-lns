@@ -3,13 +3,13 @@
 package covenant
 
 import (
-	core "dappco.re/go"
+	core "github.com/dappcore/go"
 	"encoding/binary"
 	"testing"
 
 	"golang.org/x/crypto/blake2b"
 
-	"dappco.re/go/lns/pkg/primitives"
+	"github.com/dappcore/go-lns/go/pkg/primitives"
 )
 
 func TestBlind(t *testing.T) {

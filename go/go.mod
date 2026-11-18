@@ -1,12 +1,12 @@
-module dappco.re/go/lns
+module github.com/dappcore/go-lns/go
 
 go 1.26.0
 
-require dappco.re/go v0.12.0
+require github.com/dappcore/go v0.14.0
 
 require (
-	dappco.re/go/store v0.14.1
 	forge.lthn.ai/Snider/Poindexter v0.0.3
+	github.com/dappcore/go-store/go v0.15.0
 	github.com/decred/dcrd/dcrec/secp256k1/v4 v4.4.1
 	github.com/miekg/dns v1.1.72
 	golang.org/x/crypto v0.54.0

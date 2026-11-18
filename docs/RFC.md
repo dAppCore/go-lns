@@ -1,5 +1,5 @@
 ---
-module: dappco.re/go/lns
+module: github.com/dappcore/go-lns/go
 repo: core/go-lns
 lang: go
 tier: lib
@@ -17,7 +17,7 @@ tags:
 > Every subsystem becomes a CoreApp service with actions → automatic MCP/API/CLI.
 > Any CoreApp includes LNS with a build tag. ISP-in-a-box level.
 
-**Module:** `dappco.re/go/lns`
+**Module:** `github.com/dappcore/go-lns/go`
 **Repository:** `core/go-lns`
 **Source:** `ssh://git@forge.lthn.ai:2223/lthn/itns-sidechain.git` (HSD 8.99.0 fork)
 **Existing Go:** `~/Code/lthn/lns/` (672 lines, DNS resolution working on testnet)
@@ -153,8 +153,8 @@ The JS code has Node.js-isms (EventEmitter, streams, callbacks) that don't trans
 | Component | Status | Location |
 |-----------|--------|----------|
 | DNS resolution | Working (672 lines Go) | `~/Code/lthn/lns/` |
-| P2P networking | go-p2p exists | `dappco.re/go/p2p` |
-| Block storage | go-store exists | `dappco.re/go/store` |
+| P2P networking | go-p2p exists | `github.com/dappcore/go-p2p/go` |
+| Block storage | go-store exists | `github.com/dappcore/go-store/go` |
 | Chain sync | go-blockchain has it | Charon's repo |
 | Wallet | Charon implementing today | go-blockchain |
 | Covenants | JS only | Needs conversion |
@@ -181,7 +181,7 @@ Any CoreApp includes LNS with a build tag:
 ```go
 //go:build lns
 
-import _ "dappco.re/go/lns"
+import _ "github.com/dappcore/go-lns/go"
 ```
 
 This auto-registers all `lns.*` actions. The app gets:
@@ -254,8 +254,8 @@ The C++ seed node on testnet IS the test harness:
 > It reads name records from the sidechain and serves them over port 53.
 > Subject matter expert: Charon. Proven on testnet with 14 names.
 
-**Module:** `dappco.re/go/core/lns`
-**Depends on:** `dappco.re/go/core/dns` (record DTOs), `dappco.re/go/core/blockchain` (alias discovery)
+**Module:** `github.com/dappcore/go-lns/go`
+**Depends on:** `github.com/dappcore/go-dns/go` (record DTOs), `github.com/dappcore/go-blockchain/go` (alias discovery)
 **Current implementation:** `~/Code/lthn/lns/` (672 lines, standalone)
 
 ## 1. Architecture
@@ -446,7 +446,7 @@ lnsSvc := lns.NewService(c, lns.Options{
 go-dns provides the record DTOs that go-lns populates:
 
 ```go
-import "dappco.re/go/core/dns"
+import "github.com/dappcore/go-dns/go"
 
 // go-dns provides:
 type ARecord struct { Address net.IP; TTL uint32 }

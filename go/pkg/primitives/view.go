@@ -6,7 +6,7 @@ import (
 	"encoding/binary"
 	"sort"
 
-	core "dappco.re/go"
+	core "github.com/dappcore/go"
 )
 
 // NameStateGetter is the minimal lookup interface used by NameView.

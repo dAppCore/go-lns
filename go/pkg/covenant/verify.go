@@ -2,7 +2,7 @@
 
 package covenant
 
-import "dappco.re/go/lns/pkg/primitives"
+import "github.com/dappcore/go-lns/go/pkg/primitives"
 
 // maxScriptStack mirrors the JS consensus limit used for covenant sanity checks.
 const maxScriptStack = 1000

@@ -7,12 +7,12 @@ import (
 	"encoding/binary"
 	"testing"
 
-	core "dappco.re/go"
+	core "github.com/dappcore/go"
 	"golang.org/x/crypto/blake2b"
 
-	"dappco.re/go/lns/pkg/covenant"
-	dnspkg "dappco.re/go/lns/pkg/dns"
-	"dappco.re/go/lns/pkg/primitives"
+	"github.com/dappcore/go-lns/go/pkg/covenant"
+	dnspkg "github.com/dappcore/go-lns/go/pkg/dns"
+	"github.com/dappcore/go-lns/go/pkg/primitives"
 )
 
 func TestPackageResolveAndVerifyAliases(t *testing.T) {

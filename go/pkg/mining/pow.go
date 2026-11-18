@@ -7,10 +7,10 @@ import (
 	"hash"
 	"math/big"
 
-	core "dappco.re/go"
+	core "github.com/dappcore/go"
 	"golang.org/x/crypto/blake2b"
 
-	"dappco.re/go/lns/pkg/primitives"
+	"github.com/dappcore/go-lns/go/pkg/primitives"
 )
 
 // shareHash computes the HSD share hash over a header's preheader. The share

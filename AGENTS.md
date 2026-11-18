@@ -1,7 +1,7 @@
 # Repository Guidelines
 
 ## Overview
-- Module: `dappco.re/go/lns`
+- Module: `github.com/dappcore/go-lns/go`
 - Purpose: native Go implementation of the Lethean Name System (LNS)
 - Primary design docs live in `docs/CLAUDE.md`, `docs/RFC.md`, and `docs/RFC.lns.md`
 - The `docs/js-*` trees are reference material from the JS/HSD lineage; treat them as porting references, not the primary source for new Go APIs

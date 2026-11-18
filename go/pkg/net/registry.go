@@ -6,7 +6,7 @@ import (
 	"iter"
 	"slices"
 
-	core "dappco.re/go"
+	core "github.com/dappcore/go"
 )
 
 // GossipMessageType is the transport message type carrying an LNS gossip delta
@@ -39,7 +39,7 @@ type GossipMessage struct {
 // in a tagged release. A thin adapter over *node.Transport satisfies this
 // interface; tests supply an in-memory fake.
 //
-// Deferred wiring: the live adapter binds to dappco.re/go/p2p/node.Transport
+// Deferred wiring: the live adapter binds to github.com/dappcore/go-p2p/go/node.Transport
 // (Broadcast/Send/OnMessage) once go-p2p publishes a tag that contains the node
 // package. Until then the registry runs offline (announcements are no-ops) or
 // against the test fake. See the package report for the deferred-wiring note.

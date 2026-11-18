@@ -3,10 +3,10 @@
 package mining
 
 import (
-	core "dappco.re/go"
+	core "github.com/dappcore/go"
 
-	"dappco.re/go/lns/pkg/mempool"
-	"dappco.re/go/lns/pkg/primitives"
+	"github.com/dappcore/go-lns/go/pkg/mempool"
+	"github.com/dappcore/go-lns/go/pkg/primitives"
 )
 
 // Marshal serialises the whole block to its HSD wire form: the 236-byte header,

@@ -5,9 +5,9 @@ package script_test
 import (
 	"bytes"
 
-	core "dappco.re/go"
+	core "github.com/dappcore/go"
 
-	"dappco.re/go/lns/pkg/script"
+	"github.com/dappcore/go-lns/go/pkg/script"
 )
 
 // ExampleFromPubkeyhash builds the standard pay-to-witness-pubkey-hash redeem
