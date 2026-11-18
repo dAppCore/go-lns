@@ -6,7 +6,7 @@ import (
 	"encoding/binary"
 	"testing"
 
-	core "dappco.re/go"
+	core "github.com/dappcore/go"
 )
 
 // proofBuilder assembles airdrop-proof wire bytes for decode tests.

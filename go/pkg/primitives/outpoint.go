@@ -5,7 +5,7 @@ package primitives
 import (
 	"encoding/binary"
 
-	core "dappco.re/go"
+	core "github.com/dappcore/go"
 )
 
 // NewOutpoint returns the null outpoint used by coinbase inputs and empty

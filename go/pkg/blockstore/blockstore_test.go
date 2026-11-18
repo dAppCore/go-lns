@@ -7,10 +7,10 @@ import (
 	"errors"
 	"testing"
 
-	core "dappco.re/go"
-	"dappco.re/go/store"
+	core "github.com/dappcore/go"
+	"github.com/dappcore/go-store/go"
 
-	"dappco.re/go/lns/pkg/primitives"
+	"github.com/dappcore/go-lns/go/pkg/primitives"
 )
 
 // newTestStore builds a block store over a real in-memory go-store. It uses a

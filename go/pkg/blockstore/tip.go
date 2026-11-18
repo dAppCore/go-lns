@@ -3,9 +3,9 @@
 package blockstore
 
 import (
-	core "dappco.re/go"
+	core "github.com/dappcore/go"
 
-	"dappco.re/go/lns/pkg/primitives"
+	"github.com/dappcore/go-lns/go/pkg/primitives"
 )
 
 // Tip returns the hash and height of the current chain tip: the most-work block

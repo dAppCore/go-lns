@@ -2,7 +2,7 @@
 
 package nameutil
 
-import core "dappco.re/go"
+import core "github.com/dappcore/go"
 
 func TestNameBehaviour_CatalogLabel_Good(t *core.T) {
 	label, ok := CatalogLabel("lethean.lthn")

@@ -2,7 +2,7 @@
 
 package primitives
 
-import core "dappco.re/go"
+import core "github.com/dappcore/go"
 
 func ExampleNameState_ToStats() {
 	core.Println(coverageExample(new(NameState).ToStats(1, coverageValue[NameStateRules]("good"))))

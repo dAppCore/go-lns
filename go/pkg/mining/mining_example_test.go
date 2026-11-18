@@ -5,9 +5,9 @@ package mining_test
 import (
 	"fmt"
 
-	"dappco.re/go/lns/pkg/mempool"
-	"dappco.re/go/lns/pkg/mining"
-	"dappco.re/go/lns/pkg/primitives"
+	"github.com/dappcore/go-lns/go/pkg/mempool"
+	"github.com/dappcore/go-lns/go/pkg/mining"
+	"github.com/dappcore/go-lns/go/pkg/primitives"
 )
 
 // exampleCoinbase builds a minimal coinbase transaction (null-outpoint input,

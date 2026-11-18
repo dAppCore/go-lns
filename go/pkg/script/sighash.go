@@ -3,12 +3,12 @@
 package script
 
 import (
-	core "dappco.re/go"
+	core "github.com/dappcore/go"
 	"github.com/decred/dcrd/dcrec/secp256k1/v4"
 	"github.com/decred/dcrd/dcrec/secp256k1/v4/ecdsa"
 	"golang.org/x/crypto/blake2b"
 
-	"dappco.re/go/lns/pkg/primitives"
+	"github.com/dappcore/go-lns/go/pkg/primitives"
 )
 
 // Sighash type flags. They mirror HSD's common.hashType (lib/script/common.js).

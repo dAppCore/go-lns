@@ -5,7 +5,7 @@ package mempool
 import (
 	"testing"
 
-	"dappco.re/go/lns/pkg/primitives"
+	"github.com/dappcore/go-lns/go/pkg/primitives"
 )
 
 // TestTxid_ComputeTxID_Good checks the id is deterministic and witness-independent.

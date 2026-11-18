@@ -48,10 +48,10 @@ package mempool
 import (
 	"encoding/binary"
 
-	core "dappco.re/go"
+	core "github.com/dappcore/go"
 	"golang.org/x/crypto/blake2b"
 
-	"dappco.re/go/lns/pkg/primitives"
+	"github.com/dappcore/go-lns/go/pkg/primitives"
 )
 
 // TxID is the 32-byte identifier of a transaction: the BLAKE2b-256 digest of its

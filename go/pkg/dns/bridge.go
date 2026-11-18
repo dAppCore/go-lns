@@ -10,8 +10,8 @@ import (
 	"sync"
 	"time"
 
-	core "dappco.re/go"
-	chainpkg "dappco.re/go/lns/pkg/chain"
+	core "github.com/dappcore/go"
+	chainpkg "github.com/dappcore/go-lns/go/pkg/chain"
 	miekgdns "github.com/miekg/dns"
 )
 

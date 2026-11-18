@@ -2,7 +2,7 @@
 
 package primitives
 
-import core "dappco.re/go"
+import core "github.com/dappcore/go"
 
 func ExampleAddress_Inject() {
 	core.Println(coverageExample(new(Address).Inject(coverageValue[Address]("good"))))

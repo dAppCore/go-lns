@@ -6,7 +6,7 @@ import (
 	"encoding/hex"
 	"testing"
 
-	"dappco.re/go/lns/pkg/primitives"
+	"github.com/dappcore/go-lns/go/pkg/primitives"
 )
 
 func witnessTestTx() primitives.Transaction {

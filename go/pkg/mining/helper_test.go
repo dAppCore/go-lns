@@ -5,7 +5,7 @@ package mining
 import (
 	"testing"
 
-	"dappco.re/go/lns/pkg/primitives"
+	"github.com/dappcore/go-lns/go/pkg/primitives"
 )
 
 // hashOf builds a deterministic 32-byte hash from a seed byte, for test

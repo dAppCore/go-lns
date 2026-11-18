@@ -2,7 +2,7 @@
 
 package covenant
 
-import "dappco.re/go/lns/pkg/primitives"
+import "github.com/dappcore/go-lns/go/pkg/primitives"
 
 // NameFlags mirrors the covenant verification flags used by the JS reference
 // rules module.

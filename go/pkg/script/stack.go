@@ -2,7 +2,7 @@
 
 package script
 
-import core "dappco.re/go"
+import core "github.com/dappcore/go"
 
 // Stack is the script execution stack: a LIFO of byte-string items. It backs
 // both the main and alt stacks during execution and is the input form a witness

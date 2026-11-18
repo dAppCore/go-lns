@@ -57,10 +57,10 @@ package blockstore
 import (
 	"encoding/binary"
 
-	core "dappco.re/go"
-	"dappco.re/go/store"
+	core "github.com/dappcore/go"
+	"github.com/dappcore/go-store/go"
 
-	"dappco.re/go/lns/pkg/primitives"
+	"github.com/dappcore/go-lns/go/pkg/primitives"
 )
 
 // Sentinel causes returned (wrapped by core.E) by the read and write helpers.

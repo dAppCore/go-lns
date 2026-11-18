@@ -2,7 +2,7 @@
 
 package hd
 
-import core "dappco.re/go"
+import core "github.com/dappcore/go"
 
 func ExampleDeriveAccount() {
 	seed := core.HexDecode("000102030405060708090a0b0c0d0e0f").Value.([]byte)

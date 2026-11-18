@@ -5,8 +5,8 @@ package hd
 import (
 	"math/big"
 
-	core "dappco.re/go"
-	"dappco.re/go/lns/pkg/primitives"
+	core "github.com/dappcore/go"
+	"github.com/dappcore/go-lns/go/pkg/primitives"
 	"github.com/decred/dcrd/dcrec/secp256k1/v4"
 	"golang.org/x/crypto/blake2b"
 )

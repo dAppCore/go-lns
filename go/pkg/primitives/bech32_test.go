@@ -6,7 +6,7 @@ import (
 	"encoding/hex"
 	"testing"
 
-	core "dappco.re/go"
+	core "github.com/dappcore/go"
 )
 
 // TestBech32_Encode_Good encodes a version-0 P2WPKH address and checks the

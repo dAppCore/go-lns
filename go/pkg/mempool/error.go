@@ -2,7 +2,7 @@
 
 package mempool
 
-import core "dappco.re/go"
+import core "github.com/dappcore/go"
 
 // Sentinel causes returned (wrapped by core.E) when Add rejects a transaction.
 // Match them with errors.Is via core.E's Unwrap chain:

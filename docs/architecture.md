@@ -1,6 +1,6 @@
 # Architecture
 
-`dappco.re/go/lns` is a native Go port of the Lethean Name System. The top-level
+`github.com/dappcore/go-lns/go` is a native Go port of the Lethean Name System. The top-level
 package is intentionally broad: `lns.go` re-exports and mirrors the public
 surface of the lower packages so application code can import one package when it
 does not need tighter ownership boundaries.
@@ -19,7 +19,7 @@ The implementation packages remain the source of behavior:
   action handlers and live bridge workflows.
 
 The service layer in `lns.go`, `action_handlers.go`, and `action_live.go`
-connects these packages to `dappco.re/go` Core actions. It should remain thin:
+connects these packages to `github.com/dappcore/go` Core actions. It should remain thin:
 construct inputs, call the package-local implementation, and return typed Core
 results.
 

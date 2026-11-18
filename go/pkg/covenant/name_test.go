@@ -5,7 +5,7 @@ package covenant
 import (
 	"testing"
 
-	core "dappco.re/go"
+	core "github.com/dappcore/go"
 )
 
 func TestNameSizeLimits(t *testing.T) {

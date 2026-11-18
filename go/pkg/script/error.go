@@ -2,7 +2,7 @@
 
 package script
 
-import core "dappco.re/go"
+import core "github.com/dappcore/go"
 
 // Script error codes. They mirror the HSD ScriptError codes
 // (lib/script/scripterror.js) so failures can be matched against the reference

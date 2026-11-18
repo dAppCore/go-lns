@@ -2,7 +2,7 @@
 
 package primitives
 
-import core "dappco.re/go"
+import core "github.com/dappcore/go"
 
 func ExampleAddress_Encode() {
 	addr := Address{Version: 0, Hash: make([]byte, 20)}

@@ -5,7 +5,7 @@ package dns
 import (
 	"testing"
 
-	core "dappco.re/go"
+	core "github.com/dappcore/go"
 )
 
 func TestNSECRecordHelpers(t *testing.T) {

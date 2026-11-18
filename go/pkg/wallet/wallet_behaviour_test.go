@@ -5,8 +5,8 @@ package wallet
 import (
 	"testing"
 
-	core "dappco.re/go"
-	"dappco.re/go/lns/pkg/primitives"
+	core "github.com/dappcore/go"
+	"github.com/dappcore/go-lns/go/pkg/primitives"
 )
 
 func TestWalletBehaviour_nilReceiver(t *testing.T) {

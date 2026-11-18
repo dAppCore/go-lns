@@ -3,8 +3,8 @@
 package lns
 
 import (
-	core "dappco.re/go"
-	dnspkg "dappco.re/go/lns/pkg/dns"
+	core "github.com/dappcore/go"
+	dnspkg "github.com/dappcore/go-lns/go/pkg/dns"
 )
 
 // txtResource builds a Resource carrying the given TXT entries.

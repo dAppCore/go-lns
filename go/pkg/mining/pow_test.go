@@ -5,7 +5,7 @@ package mining
 import (
 	"testing"
 
-	"dappco.re/go/lns/pkg/primitives"
+	"github.com/dappcore/go-lns/go/pkg/primitives"
 )
 
 // baseHeader builds a header with non-zero roots and a chosen difficulty, ready

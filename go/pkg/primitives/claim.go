@@ -6,7 +6,7 @@ import (
 	"encoding/binary"
 	"encoding/hex"
 
-	core "dappco.re/go"
+	core "github.com/dappcore/go"
 	"golang.org/x/crypto/blake2b"
 )
 

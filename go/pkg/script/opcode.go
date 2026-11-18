@@ -44,7 +44,7 @@ package script
 import (
 	"encoding/binary"
 
-	core "dappco.re/go"
+	core "github.com/dappcore/go"
 )
 
 // Opcode values for the Lethean name-chain script system. The set mirrors HSD

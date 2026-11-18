@@ -5,7 +5,7 @@ package net
 import (
 	"slices"
 
-	core "dappco.re/go"
+	core "github.com/dappcore/go"
 )
 
 // Capability is a peer service capability advertised through a PeerRecord.

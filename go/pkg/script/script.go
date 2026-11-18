@@ -6,7 +6,7 @@ import (
 	"crypto/sha3"
 	"encoding/binary"
 
-	core "dappco.re/go"
+	core "github.com/dappcore/go"
 )
 
 // Consensus limits for the script system. They mirror the HSD protocol

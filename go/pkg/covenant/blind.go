@@ -13,10 +13,10 @@ package covenant
 import (
 	"encoding/binary"
 
-	core "dappco.re/go"
+	core "github.com/dappcore/go"
 	"golang.org/x/crypto/blake2b"
 
-	"dappco.re/go/lns/pkg/primitives"
+	"github.com/dappcore/go-lns/go/pkg/primitives"
 )
 
 // Blind creates the sealed-bid commitment used by the JS covenant rules.

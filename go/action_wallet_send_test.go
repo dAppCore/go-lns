@@ -6,9 +6,9 @@ import (
 	"encoding/hex"
 	"testing"
 
-	core "dappco.re/go"
-	"dappco.re/go/lns/pkg/primitives"
-	walletpkg "dappco.re/go/lns/pkg/wallet"
+	core "github.com/dappcore/go"
+	"github.com/dappcore/go-lns/go/pkg/primitives"
+	walletpkg "github.com/dappcore/go-lns/go/pkg/wallet"
 )
 
 func TestWalletSendReturnsDraftPlan(t *testing.T) {

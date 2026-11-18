@@ -2,7 +2,7 @@
 
 package nameutil
 
-import core "dappco.re/go"
+import core "github.com/dappcore/go"
 
 func ExampleCatalogLabel() {
 	core.Println(coverageExample(CatalogLabel("lethean.lthn")))

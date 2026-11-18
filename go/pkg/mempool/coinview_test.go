@@ -5,7 +5,7 @@ package mempool
 import (
 	"testing"
 
-	"dappco.re/go/lns/pkg/primitives"
+	"github.com/dappcore/go-lns/go/pkg/primitives"
 )
 
 // TestCoinview_SpentSet_Good checks add, lookup, and spend semantics.

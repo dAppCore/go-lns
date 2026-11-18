@@ -3,11 +3,11 @@
 package covenant
 
 import (
-	core "dappco.re/go"
+	core "github.com/dappcore/go"
 	"encoding/binary"
 	"testing"
 
-	"dappco.re/go/lns/pkg/primitives"
+	"github.com/dappcore/go-lns/go/pkg/primitives"
 )
 
 func repeatByte(value byte, count int) []byte {

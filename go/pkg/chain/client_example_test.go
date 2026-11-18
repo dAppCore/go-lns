@@ -2,7 +2,7 @@
 
 package chain
 
-import core "dappco.re/go"
+import core "github.com/dappcore/go"
 
 func ExampleWithAPIKey() {
 	core.Println(coverageExample(WithAPIKey("lethean.lthn")))

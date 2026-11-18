@@ -7,9 +7,9 @@ import (
 	"encoding/binary"
 	"testing"
 
-	core "dappco.re/go"
-	"dappco.re/go/lns/pkg/covenant"
-	"dappco.re/go/lns/pkg/primitives"
+	core "github.com/dappcore/go"
+	"github.com/dappcore/go-lns/go/pkg/covenant"
+	"github.com/dappcore/go-lns/go/pkg/primitives"
 	"golang.org/x/crypto/blake2b"
 )
 

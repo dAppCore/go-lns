@@ -5,8 +5,8 @@ package mining
 import (
 	"testing"
 
-	"dappco.re/go/lns/pkg/mempool"
-	"dappco.re/go/lns/pkg/primitives"
+	"github.com/dappcore/go-lns/go/pkg/mempool"
+	"github.com/dappcore/go-lns/go/pkg/primitives"
 )
 
 // templateOpts builds a baseline TemplateOptions with a valid coinbase and easy

@@ -5,9 +5,9 @@ package mempool
 import (
 	"time"
 
-	core "dappco.re/go"
+	core "github.com/dappcore/go"
 
-	"dappco.re/go/lns/pkg/primitives"
+	"github.com/dappcore/go-lns/go/pkg/primitives"
 )
 
 // Entry is a transaction held in the pool together with the metadata the pool

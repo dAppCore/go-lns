@@ -7,7 +7,7 @@ import (
 
 	"golang.org/x/crypto/blake2b"
 
-	"dappco.re/go/lns/pkg/primitives"
+	"github.com/dappcore/go-lns/go/pkg/primitives"
 )
 
 // TestMerkle_MerkleRoot_Good computes a stable, non-zero root over several

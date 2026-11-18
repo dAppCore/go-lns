@@ -3,10 +3,10 @@
 package lns
 
 import (
-	core "dappco.re/go"
-	chainpkg "dappco.re/go/lns/pkg/chain"
-	"dappco.re/go/lns/pkg/primitives"
-	walletpkg "dappco.re/go/lns/pkg/wallet"
+	core "github.com/dappcore/go"
+	chainpkg "github.com/dappcore/go-lns/go/pkg/chain"
+	"github.com/dappcore/go-lns/go/pkg/primitives"
+	walletpkg "github.com/dappcore/go-lns/go/pkg/wallet"
 )
 
 // This file is the glue between the action layer and the write-path: it parses

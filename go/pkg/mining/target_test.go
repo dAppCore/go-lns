@@ -6,7 +6,7 @@ import (
 	"math/big"
 	"testing"
 
-	"dappco.re/go/lns/pkg/primitives"
+	"github.com/dappcore/go-lns/go/pkg/primitives"
 )
 
 // TestTarget_TargetFromBits_Good decodes well-formed compact targets and checks

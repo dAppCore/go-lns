@@ -5,10 +5,10 @@ package blockstore_test
 import (
 	"fmt"
 
-	"dappco.re/go/store"
+	"github.com/dappcore/go-store/go"
 
-	"dappco.re/go/lns/pkg/blockstore"
-	"dappco.re/go/lns/pkg/primitives"
+	"github.com/dappcore/go-lns/go/pkg/blockstore"
+	"github.com/dappcore/go-lns/go/pkg/primitives"
 )
 
 // exampleStore builds a block store over an in-memory go-store for the examples.

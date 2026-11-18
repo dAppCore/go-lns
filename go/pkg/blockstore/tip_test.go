@@ -6,8 +6,8 @@ import (
 	"errors"
 	"testing"
 
-	core "dappco.re/go"
-	"dappco.re/go/store"
+	core "github.com/dappcore/go"
+	"github.com/dappcore/go-store/go"
 )
 
 // TestTip_Good checks the tip advances as higher blocks are stored and reports

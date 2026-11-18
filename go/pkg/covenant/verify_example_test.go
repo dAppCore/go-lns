@@ -2,7 +2,7 @@
 
 package covenant
 
-import core "dappco.re/go"
+import core "github.com/dappcore/go"
 
 func ExampleVerifyCovenants() {
 	core.Println(coverageExample(VerifyCovenants(coverageTransaction("good"), coverageValue[CoinView]("good"), 1, coverageValue[Network]("good"))))

@@ -3,8 +3,8 @@
 package net_test
 
 import (
-	core "dappco.re/go"
-	"dappco.re/go/lns/pkg/net"
+	core "github.com/dappcore/go"
+	"github.com/dappcore/go-lns/go/pkg/net"
 	"github.com/decred/dcrd/dcrec/secp256k1/v4"
 )
 

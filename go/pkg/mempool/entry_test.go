@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	"dappco.re/go/lns/pkg/primitives"
+	"github.com/dappcore/go-lns/go/pkg/primitives"
 )
 
 // TestEntry_FeeRate_Good checks the fee rate is floor(fee*1000/size).

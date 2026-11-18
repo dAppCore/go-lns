@@ -2,7 +2,7 @@
 
 package covenant
 
-import core "dappco.re/go"
+import core "github.com/dappcore/go"
 
 // asciiLowerName lower-cases ASCII labels without performing Unicode
 // case-folding. The helper also strips an optional canonical `.lthn` suffix so

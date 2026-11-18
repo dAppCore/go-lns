@@ -3,12 +3,12 @@
 package script_test
 
 import (
-	core "dappco.re/go"
+	core "github.com/dappcore/go"
 	"github.com/decred/dcrd/dcrec/secp256k1/v4"
 	"golang.org/x/crypto/blake2b"
 
-	"dappco.re/go/lns/pkg/primitives"
-	"dappco.re/go/lns/pkg/script"
+	"github.com/dappcore/go-lns/go/pkg/primitives"
+	"github.com/dappcore/go-lns/go/pkg/script"
 )
 
 // ExampleVerifyInput demonstrates a complete pay-to-witness-pubkey-hash spend:

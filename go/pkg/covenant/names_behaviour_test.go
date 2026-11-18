@@ -5,8 +5,8 @@ package covenant
 import (
 	"testing"
 
-	core "dappco.re/go"
-	"dappco.re/go/lns/pkg/primitives"
+	core "github.com/dappcore/go"
+	"github.com/dappcore/go-lns/go/pkg/primitives"
 )
 
 // nameTx returns a transaction with a single TypeTransfer name covenant
